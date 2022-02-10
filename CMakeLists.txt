@@ -41,12 +41,6 @@ if(CXXTEST_FOUND)
     enable_testing()
 endif()
 
-message(${CMAKE_CXX_FLAGS})
-message(${CMAKE_CXX_FLAGS_DEBUG})
-message(${CMAKE_CXX_FLAGS_RELEASE})
-message(${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
-message(${CMAKE_CXX_FLAGS_MINSIZEREL})
-
 # We are no idiots, ignore these stupid deprecations!
 add_compile_definitions(_CRT_SECURE_NO_DEPRECATE _CRT_NON_CONFORMING_SWPRINTFS)
 
