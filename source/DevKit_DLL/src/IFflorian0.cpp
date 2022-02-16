@@ -9,13 +9,13 @@
 GFX_IMPLEMENT_DYNCREATE(CIFflorian0, CIFMainFrame)
 
 GFX_BEGIN_MESSAGE_MAP(CIFflorian0, CIFMainFrame)
-	ONG_COMMAND(GDR_FLORIAN0_BTN, &On_BtnClick)
-	ONG_WM_4001()
-	ONG_WM_4002()
-	ONG_WM_4003()
-	ONG_VISIBLE_CHANGE()
-	ONG_WM_4005()
-	ONG_WM_4006()
+                    ONG_COMMAND(GDR_FLORIAN0_BTN, &On_BtnClick)
+                    ONG_WM_4001()
+                    ONG_DESTROY()
+                    ONG_WM_4003()
+                    ONG_VISIBLE_CHANGE()
+                    ONG_WM_4005()
+                    ONG_ACTIVATE()
 GFX_END_MESSAGE_MAP()
 
 
@@ -104,7 +104,7 @@ int CIFflorian0::On4005(int a1, int a2)
 	return 0;
 }
 
-int CIFflorian0::On4006(int a1, int a2)
+int CIFflorian0::OnActivate(int a1, int a2)
 {
 	BS_DEBUG("> " __FUNCTION__ " ( %p, %p )", a1, a2);
 	return 0;

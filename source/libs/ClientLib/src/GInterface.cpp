@@ -311,3 +311,11 @@ void CGInterface::RequestStatIncrement(undefined4 a1, undefined4 a2, undefined4 
         }
     }
 }
+
+CNIFUnderMenuBar *CGInterface::GetUnderMenuBar() {
+    reinterpret_cast<void (__thiscall *)(CGInterface *)>(0x007994e0)(this);
+}
+
+CIFExtQuickSlot *CGInterface::GetExtQuickSlot() {
+    m_IRM.GetResObj<CIFExtQuickSlot>(GDR_EXT_QUICK_SLOT, 1);
+}

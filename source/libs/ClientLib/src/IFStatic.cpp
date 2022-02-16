@@ -38,9 +38,9 @@ bool CIFStatic::SetText(const wchar_t* src)
 }
 
 // CIFStatic::OnWndMessage .text 0064D850 00000037 00000004 00000004 R . . . . . .
-void CIFStatic::OnWndMessage(int a1)
+void CIFStatic::OnWndMessage(Event3D *a1)
 {
-	reinterpret_cast<void(__thiscall*)(CIFStatic*,int)>(0x0064D850)(this, a1);
+	reinterpret_cast<void(__thiscall*)(CIFStatic*,Event3D *)>(0x0064D850)(this, a1);
 }
 
 // CIFStatic::RenderMyself(void) .text 0064D940 00000065 00000004 00000000 R . . . . . .

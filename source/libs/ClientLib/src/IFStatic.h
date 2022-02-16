@@ -13,7 +13,7 @@ public:
 	bool OnCreate(long ln) override;
 
 	bool SetText(const wchar_t* src) override;
-	void OnWndMessage(int a1) override;
+	void OnWndMessage(Event3D *a1) override;
 
 	void RenderMyself() override;
 

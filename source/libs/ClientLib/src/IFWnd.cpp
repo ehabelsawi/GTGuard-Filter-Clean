@@ -9,7 +9,7 @@ GFX_BEGIN_MESSAGE_MAP(CIFWnd, CObjChild)
 // ONG_COMMAND(2, On2)
 
                     ONG_WM_4001()
-                    ONG_WM_4006()
+                    ONG_ACTIVATE()
 
 
 GFX_END_MESSAGE_MAP()
@@ -29,7 +29,7 @@ CIFWnd::CIFWnd(void) {
     this->N0000060A = 0;
     this->N0000060B = 0;
     this->N00009BFD = 0;
-    this->N000005BB = 0;
+    this->m_current_style = 0;
 
     CIFWnd::SetText(L"");
 
@@ -83,7 +83,7 @@ bool CIFWnd::OnRelease() {
 }
 
 // CIFWnd::Func_18(void) .text 006523D0 000000F9 00000008 00000004 R . . . . . .
-bool CIFWnd::Func_18(int a1) {
+bool CIFWnd::Func_18(Event3D *a1) {
     assert(FALSE);
     return false;
 }
@@ -144,8 +144,8 @@ void CIFWnd::ShowGWnd(bool bVisible) {
 }
 
 // CIFWnd::OnWndMessage(void) .text 00652FB0 0000008D 00000000 00000004 R . . . . . .
-void CIFWnd::OnWndMessage(int a1) {
-    reinterpret_cast<void (__thiscall *)(CIFWnd *, int)>(0x00652FB0)(this, a1);
+void CIFWnd::OnWndMessage(Event3D *a1) {
+    reinterpret_cast<void (__thiscall *)(CIFWnd *, Event3D *)>(0x00652FB0)(this, a1);
 }
 
 // CIFWnd::RenderMyself(void) .text 006550C0 00000043 00000004 00000000 R . . . . . .
@@ -222,8 +222,8 @@ int CIFWnd::On4001(int a2, int a3) {
     return reinterpret_cast<int (__thiscall *)(CIFWnd *, int, int)>(0x00652390)(this, a2, a3);
 }
 
-// CIFWnd::On4006(int,int) .text 006523B0 00000012 00000000 00000000 R . . . . . .
-int CIFWnd::On4006(int a2, int a3) {
+// CIFWnd::OnActivate(int,int) .text 006523B0 00000012 00000000 00000000 R . . . . . .
+int CIFWnd::OnActivate(int a2, int a3) {
     return reinterpret_cast<int (__thiscall *)(CIFWnd *, int, int)>(0x006523B0)(this, a2, a3);
 }
 
@@ -279,4 +279,8 @@ void CIFWnd::SetTooltipText(const std::n_wstring *str) {
 
 void CIFWnd::SetStyleThingy(StyleOptions option) {
     reinterpret_cast<void (__thiscall *)(CIFWnd *, StyleOptions)>(0x00652d20)(this, option);
+}
+
+bool CIFWnd::IsStyleThingy(StyleOptions option) const {
+    return ((option & m_current_style) != FALSE);
 }

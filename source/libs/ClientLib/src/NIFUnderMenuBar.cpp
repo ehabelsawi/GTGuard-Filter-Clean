@@ -10,17 +10,17 @@
 
 #include <cmath>
 
-void NIFUnderMenuBar::Update() {
+void CNIFUnderMenuBar::Update() {
     // Skip, if player object is not loaded yet (KEEP!)
     if (!g_pCICPlayer) {
         return;
     }
 
     // Some other call that is important (KEEP!)
-    ((void (__thiscall *)(NIFUnderMenuBar *)) 0x46CD80)(this);
+    ((void (__thiscall *)(CNIFUnderMenuBar *)) 0x46CD80)(this);
 
     // Check if control is visible
-    if (!((char (__thiscall *)(NIFUnderMenuBar *)) 0x00B8F530)(this)) {
+    if (!((char (__thiscall *)(CNIFUnderMenuBar *)) 0x00B8F530)(this)) {
         return;
     }
 

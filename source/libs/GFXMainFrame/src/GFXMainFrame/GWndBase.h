@@ -94,9 +94,9 @@ public:
 
     virtual bool On3DEvent_MAYBE(Event3D *a2);
 
-    virtual bool Func_18(int a1);
+    virtual bool Func_18(Event3D *a1);
 
-    virtual void OnWndMessage(int a1);
+    virtual void OnWndMessage(Event3D *a1);
 
     virtual void BringToFront();
 

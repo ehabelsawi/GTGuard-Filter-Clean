@@ -17,6 +17,7 @@
 #include "NIFCommunityWnd.h"
 #include "unsorted.h"
 #include "IFSystemMessage.h"
+#include "IFExtQuickSlot.h"
 
 #define GDR_CHAT_BOARD 1
 #define GDR_STORAGEROOM 19
@@ -28,6 +29,7 @@
 #define GDR_UPDATE_QUEST_INFO 42
 #define GDR_SYSTEM_MESSAGE_VIEW 68
 #define GDR_GUILDSTORAGEROOM 145
+#define GDR_EXT_QUICK_SLOT 133
 
 #define g_pCGInterface (*(CGInterface**)0x0110F80C)
 
@@ -217,6 +219,12 @@ public:
     /// \address 0078f4e0
     void RequestStatIncrement(undefined4 a1, undefined4 a2, undefined4 a3, undefined4 a4);
 
+    /// \address 007994e0
+    CNIFUnderMenuBar *GetUnderMenuBar();
+
+    /// \address 00799840
+    CIFExtQuickSlot *GetExtQuickSlot();
+
 private:
     /// \address 0079a7e0
     void FUN_0079a7e0(CGWndBase *pGWnd) const;
@@ -277,7 +285,7 @@ private:
     char pad_07F8[92]; //0x07F8
 
 
-    BEGIN_FIXTURE()
+BEGIN_FIXTURE()
         ENSURE_SIZE(0x854)
         ENSURE_OFFSET(m_pCSkillRunTimeManager, 0x780)
         ENSURE_OFFSET(field_0x7cd, 0x7cd)

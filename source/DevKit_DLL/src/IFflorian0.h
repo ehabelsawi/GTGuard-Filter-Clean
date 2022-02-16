@@ -22,7 +22,7 @@ private:
 	int On4003(int a1, int a2);
 	int OnVisibleStateChange(int a1, int a2);
 	int On4005(int a1, int a2);
-	int On4006(int a1, int a2);
+	int OnActivate(int a1, int a2);
 
 private:
 	CIFButton *m_mybutton;

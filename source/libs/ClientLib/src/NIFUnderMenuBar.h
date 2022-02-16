@@ -5,7 +5,7 @@
 #include "NIFStatic.h"
 
 // https://www.elitepvpers.com/forum/sro-pserver-guides-releases/4256375-source-fix-old-exp-bar-writing-code.html
-class NIFUnderMenuBar : public CNIFWnd {
+class CNIFUnderMenuBar : public CNIFWnd {
 public:
     char padx[8];
 
