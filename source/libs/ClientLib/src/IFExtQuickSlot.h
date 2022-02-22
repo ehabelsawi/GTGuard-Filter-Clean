@@ -11,6 +11,10 @@ GFX_DECLARE_DYNAMIC_EXISTING(CIFExtQuickSlot, 0x00eec908)
 GFX_DECLARE_MESSAGE_MAP(CIFExtQuickSlot)
 
     enum {
+        SECTION_TYPE_1 = 1, //Type1
+        SECTION_TYPE_2 = 2, //Type2
+        SECTION_TYPE_3 = 3, //Type3
+        SECTION_TYPE_4 = 4, //Type4
         GDR_EXT_QUICKSLOT_WND = 10, //CIFDragableArea
         GDR_EXT_QUICKSLOT_OPT_BTN = 11, //CIFButton
         GDR_EXT_QUICKSLOT_HORI_BTN = 12, //CIFButton
@@ -35,11 +39,15 @@ GFX_DECLARE_MESSAGE_MAP(CIFExtQuickSlot)
     };
 
 public:
+    CIFExtQuickSlot();
+
     ~CIFExtQuickSlot();
 
+public:
+    /// \address 0065f720
     bool OnCreate(long ln) override;
 
-private:
+public: // only for hooks..
     /// \address 0065e8d0
     void SetBarVerticalState(bool bState);
 
@@ -56,13 +64,22 @@ private:
     void SetBarTwoLinesState(bool bState);
 
     /// \address 0065e9b0
-    void SaveToolBarSetting();
+    void SaveExtSlotSetting();
 
+    /// \address 0065eef0
+    void ClearSlotsTexture();
+
+private:
     /// \address 0065eb10
     void ToggleExtQuickSlotOption(bool bVisible);
 
     /// \address 0065ecd0
     void SetSlotsVisible(bool bVisible);
+
+private:
+    void OnToggleSlotsOption();
+
+    void OnDropDownButton();
 
 private:
     bool m_bSlotsVisible; //0x036C

@@ -1,59 +1,74 @@
 #pragma once
 
-class CNIFWnd {
-	
-	char pad[836];
+#include "GFXMainFrame/GWnd.h"
+
+class CNIFWnd : public CGWnd { // also CNIFTextBoard...
+    //todo : reverse me in the future ^^?
 
 public:
-	virtual void *F01();
-	virtual void *F02();
-	virtual ~CNIFWnd();
-	virtual void F4();
-	virtual void F5();
-	virtual void F6();
-	virtual void F7();
-	virtual void F8();
-	virtual void F9();
-	virtual void F10();
-	virtual void F11();
-	virtual void F12();
-	virtual void F13();
-	virtual void F14();
-	virtual void F15();
-	virtual void F16();
-	virtual void F17();
-	virtual void F18();
-	virtual void F19();
-	virtual void F20();
-	virtual void F21();
-	virtual void F22();
-	virtual void F23();
-	virtual void F24();
-	virtual void F25();
-	virtual void F26();
-	virtual void F27();
-	virtual void F28();
-	virtual void F29();
-	virtual void F30();
-	virtual void F31();
-	virtual void F32();
-	virtual void F33();
-	virtual void F34();
-	virtual void F35();
-	virtual void F36();
-	virtual void F37();
-	virtual void F38();
-	virtual void F39();
-	virtual void F40();
-	virtual void F41();
-	virtual void F42();
-	virtual void F43();
-	virtual void F44();
-	virtual void F45();
-	virtual void F46();
-	virtual void F47();
-	virtual void F48();
-	virtual void F49();
-	virtual void F50();
+    CNIFWnd(void);
+
+    ~CNIFWnd(void);
+
+public:
+    /* CNIFTextBoard override funcs...
+    void NIFTB_Func_4() override;
+
+    void NIFTB_Func_7() override;
+
+    char NIFTB_Func_8() override;
+
+    void NIFTB_Func_11() override; */
+
+    bool OnCreate(long ln) override;
+
+    void OnUpdate() override;
+
+    bool OnRelease() override;
+
+    void RenderMyself() override;
+
+    void OnWndMessage(Event3D *a1) override;
+
+    bool Func_18(Event3D *a1) override;
+
+    bool On3DEvent_MAYBE(Event3D *a2) override;
+
+    void BringToFront() override;
+
+    void SetGWndSize(int width, int height) override;
+
+    void Func_22(int x, int y) override;
+
+    void ShowGWnd(bool bVisible) override;
+
+    void Func_37() override;
+
+    virtual void MoveGWnd(int x, int y);
+
+    virtual void MoveGWnd2(wnd_pos pos);
+
+    virtual void Func_40();
+
+    virtual void OnCIFReady();
+
+    virtual void Func_42();
+
+    virtual void OnCloseWnd();
+
+    virtual void Func_44();
+
+    virtual void Func_45();
+
+    virtual bool IsInside(int x, int y);
+
+    virtual bool SetText(const wchar_t *src);
+
+    virtual const wchar_t *GetText();
+
+    virtual void Func_49();
+
+private:
+    char pad[836 - 132];
 
 };

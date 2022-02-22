@@ -4,6 +4,8 @@
 #include "Process.h"
 #include "ICharactor.h"
 #include "GameCfg.h"
+#include "IFWnd.h"
+#include "IFSlotWithHelp.h"
 
 #include <GFX3DFunction/GFXVideo3d.h>
 #include <BSLib/BSLib.h>
@@ -72,3 +74,9 @@ void __stdcall WriteToChatWindow(ChatType type, const std::n_wstring &strRecipie
 GameCfg* Fun_GetCfgGame();
 
 void __stdcall FUN_00bbda70(undefined4 a1);
+
+/// \brief Get Window maybe??
+//im not sure if it for CIFSlotWithHelp but there is a proof
+//  0065ef19
+/// \address 00ba1140
+CIFSlotWithHelp *GetWindowByHGWnd(int hgWnd);

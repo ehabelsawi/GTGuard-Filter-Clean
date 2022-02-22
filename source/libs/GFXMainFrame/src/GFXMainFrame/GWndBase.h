@@ -22,7 +22,7 @@ struct Event3D {
  *
  */
 class CGWndBase : public CObjChild { // size 32 + 100 = 132
-    GFX_DECLARE_DYNAMIC_EXISTING(CGWndBase, 0x0110F630)
+GFX_DECLARE_DYNAMIC_EXISTING(CGWndBase, 0x0110F630)
 
 
 public:
@@ -151,6 +151,13 @@ public:
     /// \address 00B8F480
     wnd_size GetSize() const;
 
+    /// \address 00b8f4d0
+    int GethgWnd() const;
+
+    /// \brief Set the drag window by mouse
+    /// \address 00b9daf0
+    void SetDragChildState(bool bState);
+
 protected:
     /// \address 00B8F440
     void sub_B8F440(const RECT &rect);
@@ -175,7 +182,7 @@ protected:
     bool m_bVisible; //0x0061 61
     bool m_bClickable; //0x0062
     bool N0000074F; //0x0063
-    bool N00000702; //0x0064
+    bool m_bDragable; //0x0064
 private:
     char pad_0065[3]; //0x0065
     int N00000703; //0x0068
@@ -188,7 +195,7 @@ public:
 
 
 
-    BEGIN_FIXTURE()
+BEGIN_FIXTURE()
         ENSURE_SIZE(132)
     END_FIXTURE()
 

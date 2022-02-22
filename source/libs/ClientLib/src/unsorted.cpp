@@ -71,8 +71,8 @@ int GetIDOfInterfaceUnderCursor() {
 }
 
 // Fun_CacheTexture_Create .text 005008F0 00000010 00000000 00000004 R . . . . . .
-void* Fun_CacheTexture_Create(const std::n_string &a2) {
-    return reinterpret_cast<void*(__cdecl*)(const std::n_string*)>(0x005008F0)(&a2);
+void *Fun_CacheTexture_Create(const std::n_string &a2) {
+    return reinterpret_cast<void *(__cdecl *)(const std::n_string *)>(0x005008F0)(&a2);
 }
 
 // Fun_CacheTexture_Release .text 00500460 00000010 00000000 00000004 R . . . . . .
@@ -264,7 +264,7 @@ void __stdcall WriteToChatWindow(ChatType type, const std::n_wstring &strRecipie
 
         case CHAT_Academy:
             local_64 = L"(";
-            local_64 += TSM_GETTEXTPTR(L"UIIT_CTL_TC_TRAININGCAMP" );
+            local_64 += TSM_GETTEXTPTR(L"UIIT_CTL_TC_TRAININGCAMP");
             local_64 += L"):";
             break;
 
@@ -314,5 +314,9 @@ GameCfg *Fun_GetCfgGame() {
 }
 
 void __stdcall FUN_00bbda70(undefined4 a1) {
-    reinterpret_cast<void(__stdcall *)(undefined4)>(0x00bbda70)(a1);
+    reinterpret_cast<void (__stdcall *)(undefined4)>(0x00bbda70)(a1);
+}
+
+CIFSlotWithHelp *GetWindowByHGWnd(int hgWnd) {
+    return reinterpret_cast<CIFSlotWithHelp *(__cdecl *)(char)>(0x00ba1140)(hgWnd);
 }

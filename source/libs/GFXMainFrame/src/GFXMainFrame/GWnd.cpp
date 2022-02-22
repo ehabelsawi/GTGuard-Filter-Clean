@@ -61,7 +61,7 @@ CGWnd::CGWnd() {
     m_bVisible = true;
     m_bClickable = true;
     N0000074F = true;
-    N00000702 = false;
+    m_bDragable = false;
 
     sub_B9DA70(false);
 }

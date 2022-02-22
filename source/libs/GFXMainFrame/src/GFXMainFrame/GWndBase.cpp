@@ -93,10 +93,10 @@ CGWndBase::CGWndBase() {
     this->N00000703 = 0;
     this->N00000705 = 0;
 
-	this->bounds.pos.x = 0;
-	this->bounds.pos.y = 0;
-	this->bounds.size.height = 0;
-	this->bounds.size.width = 0;
+    this->bounds.pos.x = 0;
+    this->bounds.pos.y = 0;
+    this->bounds.size.height = 0;
+    this->bounds.size.width = 0;
 
     RECT rect = {0, 0, 0, 0};
 
@@ -112,7 +112,7 @@ void CGWndBase::ApplyGlobalScale(int x) {
 }
 
 CGWndBase::wnd_rect CGWndBase::GetBounds() const {
-	return this->bounds;
+    return this->bounds;
 }
 
 void CGWndBase::sub_6526E0(char a0, unsigned char opacity, float time, float a4, char a5) {
@@ -140,7 +140,7 @@ CGWndBase *CGWndBase::GetParentControl() const {
 
 // CGWndBase::SetFocus_MAYBE(void) .text 00B9D9F0 00000049 00000004 00000000 R . . . . . .
 void CGWndBase::SetFocus_MAYBE() {
-    reinterpret_cast<void(__thiscall*)(CGWndBase*)>(0x00B9D9F0)(this);
+    reinterpret_cast<void (__thiscall *)(CGWndBase *)>(0x00B9D9F0)(this);
 }
 
 CGWndBase::wnd_pos CGWndBase::GetPos() const {
@@ -149,4 +149,12 @@ CGWndBase::wnd_pos CGWndBase::GetPos() const {
 
 CGWndBase::wnd_size CGWndBase::GetSize() const {
     return this->bounds.size;
+}
+
+int CGWndBase::GethgWnd() const {
+    return m_hgWnd;
+}
+
+void CGWndBase::SetDragChildState(bool bState) {
+    m_bDragable = bState;
 }
