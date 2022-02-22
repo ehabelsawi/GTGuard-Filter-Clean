@@ -104,7 +104,7 @@ public:
 private:
     int On4001(int, int);
 
-    int OnActivate(int, int);
+    int On4006(int, int);
 
     void sub_652B00();
 

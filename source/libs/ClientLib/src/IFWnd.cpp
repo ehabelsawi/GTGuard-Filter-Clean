@@ -9,7 +9,7 @@ GFX_BEGIN_MESSAGE_MAP(CIFWnd, CObjChild)
 // ONG_COMMAND(2, On2)
 
                     ONG_WM_4001()
-                    ONG_ACTIVATE()
+                    ONG_WM_4006()
 
 
 GFX_END_MESSAGE_MAP()
@@ -222,8 +222,8 @@ int CIFWnd::On4001(int a2, int a3) {
     return reinterpret_cast<int (__thiscall *)(CIFWnd *, int, int)>(0x00652390)(this, a2, a3);
 }
 
-// CIFWnd::OnActivate(int,int) .text 006523B0 00000012 00000000 00000000 R . . . . . .
-int CIFWnd::OnActivate(int a2, int a3) {
+// CIFWnd::On4006(int,int) .text 006523B0 00000012 00000000 00000000 R . . . . . .
+int CIFWnd::On4006(int a2, int a3) {
     return reinterpret_cast<int (__thiscall *)(CIFWnd *, int, int)>(0x006523B0)(this, a2, a3);
 }
 

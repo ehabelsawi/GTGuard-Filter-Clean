@@ -59,7 +59,7 @@ enum {
     (static_cast< int (GFX_MSG_CALL CGWndBase::*)(int, int) > ( &ThisClass :: On4001)), \
         0, 0, 0},
 
-#define ONG_DESTROY() \
+#define ONG_WM_4002() \
     { 0x4002, 0, 0, 0, 0xA, 0, \
     (GFX_PMSG) \
     (static_cast< int (GFX_MSG_CALL CGWndBase::*)(int, int) > ( &ThisClass :: On4002)), \
@@ -83,16 +83,16 @@ enum {
     (static_cast< int (GFX_MSG_CALL CGWndBase::*)(int, int) > ( &ThisClass :: On4005)), \
         0, 0, 0},
 
-#define ONG_ACTIVATE() \
+#define ONG_WM_4006() \
 	{ 0x4006, 0, 0, 0, 0xA, 0, \
 	(GFX_PMSG) \
-	(static_cast< int (GFX_MSG_CALL CGWndBase::*)(int, int) > ( &ThisClass :: OnActivate)), \
+	(static_cast< int (GFX_MSG_CALL CGWndBase::*)(int, int) > ( &ThisClass :: On4006)), \
 		0, 0, 0},
 
 // Mostly used by:
 // SetFocus_MAYBE .text 00B9D9F0 00000049 00000004 00000000 R . . . . . .
-#define ONG_KILLFOCUS() \
+#define ONG_WM_4008() \
 	{ 0x4008, 0, 0, 0, 0xA, 0, \
 	(GFX_PMSG) \
-	(static_cast< int (GFX_MSG_CALL CGWndBase::*)(int, int) > ( &ThisClass :: OnKillFocus)), \
+	(static_cast< int (GFX_MSG_CALL CGWndBase::*)(int, int) > ( &ThisClass :: On4008)), \
 		0, 0, 0},
