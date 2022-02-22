@@ -69,6 +69,6 @@ public:
     virtual void Func_49();
 
 private:
-    char pad[836 - 132];
+    char pad[0x348 - 132];
 
 };

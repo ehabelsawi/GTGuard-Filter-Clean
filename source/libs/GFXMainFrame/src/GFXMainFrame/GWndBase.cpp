@@ -155,6 +155,10 @@ int CGWndBase::GethgWnd() const {
     return m_hgWnd;
 }
 
-void CGWndBase::SetDragChildState(bool bState) {
+void CGWndBase::SetClickable(bool bState) {
+    reinterpret_cast<void (__thiscall *)(CGWndBase *, bool)>(0x00b8f540)(this, bState);
+}
+
+void CGWndBase::SetDragable(bool bState) {
     m_bDragable = bState;
 }

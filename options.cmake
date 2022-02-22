@@ -52,3 +52,8 @@ option(CONFIG_MAINPOP_PLAYERINFO "Use Playerinfor implementation in SRO_DevKit" 
 if (CONFIG_MAINPOP_PLAYERINFO)
     add_definitions(-DCONFIG_MAINPOP_PLAYERINFO)
 endif()
+
+option(CONFIG_EXT_QUICK_SLOT "Allow our ExtQuickSlot Window" OFF)
+if (CONFIG_EXT_QUICK_SLOT)
+    add_definitions(-DCONFIG_EXT_QUICK_SLOT)
+endif()

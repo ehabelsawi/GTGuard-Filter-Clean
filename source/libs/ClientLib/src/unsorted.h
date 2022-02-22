@@ -79,4 +79,4 @@ void __stdcall FUN_00bbda70(undefined4 a1);
 //im not sure if it for CIFSlotWithHelp but there is a proof
 //  0065ef19
 /// \address 00ba1140
-CIFSlotWithHelp *GetWindowByHGWnd(int hgWnd);
+CIFSlotWithHelp *GetSlotWndByhgWnd(int hgWnd);

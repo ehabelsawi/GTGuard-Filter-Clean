@@ -11,7 +11,7 @@ CIFExtQuickSlotSlot::CIFExtQuickSlotSlot() :
         m_UnderBarSlot_hgWnd(NULL) {
     BS_DEBUG_LOW(">" __FUNCTION__ "<")
 
-    SetDragChildState(true);
+    SetDragable(true);
 }
 
 CIFExtQuickSlotSlot::~CIFExtQuickSlotSlot() {
@@ -24,17 +24,13 @@ bool CIFExtQuickSlotSlot::OnCreate(long ln) {
 }
 
 void CIFExtQuickSlotSlot::RenderMyself() {
-    BS_DEBUG_LOW(">" __FUNCTION__ "<")
-
-    CIFSlotWithHelp *pWnd = GetWindowByHGWnd(m_UnderBarSlot_hgWnd);
+    CIFSlotWithHelp *pWnd = GetSlotWndByhgWnd(m_UnderBarSlot_hgWnd);
     if (pWnd)
         pWnd->Func_24(this->GetPos().x, this->GetPos().y);
 }
 
 bool CIFExtQuickSlotSlot::Func_28(int a1, int a2, int a3) {
-    BS_DEBUG_LOW(">" __FUNCTION__ "<")
-
-    CIFSlotWithHelp *pWnd = GetWindowByHGWnd(m_UnderBarSlot_hgWnd);
+    CIFSlotWithHelp *pWnd = GetSlotWndByhgWnd(m_UnderBarSlot_hgWnd);
     if (pWnd)
         return pWnd->Func_28(a1, a2, a3);;
 
@@ -57,19 +53,15 @@ int CIFExtQuickSlotSlot::OnMouseRightUp(int a1, int x, int y) {
     return reinterpret_cast<bool (__thiscall *)(CIFExtQuickSlotSlot *, int, int, int)>(0x0065fc20)(this, a1, x, y);
 }
 
-void CIFExtQuickSlotSlot::UpdatehgWndSlot(CNIFWnd *pNIFWnd) {
-    BS_DEBUG_LOW(">" __FUNCTION__ "<")
-
-    if (!pNIFWnd) {
+void CIFExtQuickSlotSlot::UpdatehgWndSlot(CIFWnd *pIFWnd) {
+    if (!pIFWnd) {
         m_UnderBarSlot_hgWnd = NULL;
         return;
     }
-    m_UnderBarSlot_hgWnd = pNIFWnd->GethgWnd();
-    pNIFWnd->ShowGWnd(false);
+    m_UnderBarSlot_hgWnd = pIFWnd->GethgWnd();
+    pIFWnd->ShowGWnd(false);
 }
 
 CIFSlotWithHelp *CIFExtQuickSlotSlot::GetSlotUnderBarBySlothgWnd() const {
-    BS_DEBUG_LOW(">" __FUNCTION__ "<")
-
-    return GetWindowByHGWnd(m_UnderBarSlot_hgWnd);
+    return GetSlotWndByhgWnd(m_UnderBarSlot_hgWnd);
 }

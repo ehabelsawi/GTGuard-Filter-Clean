@@ -4,7 +4,7 @@
 #include "NIFUnderMenuBar.h"
 
 class CIFExtQuickSlot : public CIFWnd {
-GFX_DECLARE_DYNAMIC_EXISTING(CIFExtQuickSlot, 0x00eec908)
+GFX_DECLARE_DYNAMIC_EXISTING(CIFExtQuickSlot, 0x00ee9a28)
 
     GFX_DECLARE_DYNCREATE_FN(CIFExtQuickSlot)
 
@@ -69,6 +69,15 @@ public: // only for hooks..
     /// \address 0065eef0
     void ClearSlotsTexture();
 
+    /// \address 0065ef70
+    void UpdateBarSlotsStyle();
+
+    /// \address 0065f390
+    void UpdateSlotsBarDirection();
+
+    /// \address 0065f580
+    void LoadExtSlotSetting();
+
 private:
     /// \address 0065eb10
     void ToggleExtQuickSlotOption(bool bVisible);
@@ -80,6 +89,10 @@ private:
     void OnToggleSlotsOption();
 
     void OnDropDownButton();
+
+    void OnClickSlotsHorizontal();
+
+    void OnClickSlotsVertical();
 
 private:
     bool m_bSlotsVisible; //0x036C

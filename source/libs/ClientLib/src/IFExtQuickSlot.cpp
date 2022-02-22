@@ -1,8 +1,21 @@
+
 #include "IFExtQuickSlot.h"
 #include "GInterface.h"
 #include "Game.h"
 #include "IFExtQuickSlotSlot.h"
+#include "BSLib/Debug.h"
 #include <remodel/MemberFunctionHook.h>
+
+GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFExtQuickSlot, 0x00ee9a28)
+
+GFX_IMPLEMENT_DYNCREATE_FN(CIFExtQuickSlot, CIFWnd)
+
+GFX_BEGIN_MESSAGE_MAP(CIFExtQuickSlot, CIFWnd)
+                    ONG_COMMAND(GDR_EXT_QUICKSLOT_OPT_BTN, &CIFExtQuickSlot::OnToggleSlotsOption)
+                    ONG_COMMAND(GDR_EXT_QUICKSLOT_ONOFF_BTN, &CIFExtQuickSlot::OnDropDownButton)
+                    ONG_COMMAND(GDR_EXT_QUICKSLOT_HORI_BTN, &CIFExtQuickSlot::OnClickSlotsHorizontal)
+                    ONG_COMMAND(GDR_EXT_QUICKSLOT_VERT_BTN, &CIFExtQuickSlot::OnClickSlotsVertical)
+GFX_END_MESSAGE_MAP()
 
 CIFExtQuickSlot::CIFExtQuickSlot() :
         m_bVertical(false),
@@ -16,31 +29,26 @@ CIFExtQuickSlot::CIFExtQuickSlot() :
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065e8d0, &CIFExtQuickSlot::SetBarVerticalState)
-
 void CIFExtQuickSlot::SetBarVerticalState(bool bState) {
     m_bVertical = bState;
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065e8e0, &CIFExtQuickSlot::SetBarTransparentState)
-
 void CIFExtQuickSlot::SetBarTransparentState(bool bState) {
     m_bTransparent = bState;
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065e8f0, &CIFExtQuickSlot::SetSlotLockState)
-
 void CIFExtQuickSlot::SetSlotLockState(bool bState) {
     m_bSlotsLocked = bState;
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065e900, &CIFExtQuickSlot::SetBarLockState)
-
 void CIFExtQuickSlot::SetBarLockState(bool bState) {
     m_bToolBarLocked = bState;
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065e910, &CIFExtQuickSlot::SetBarTwoLinesState)
-
 void CIFExtQuickSlot::SetBarTwoLinesState(bool bState) {
     m_bTwoLines = bState;
 }
@@ -50,7 +58,7 @@ void CIFExtQuickSlot::SaveExtSlotSetting() {
     sprintf_s(buffer, "%s\\Setting\\SRExtQSOption.dat", theApp.GetWorkingDir());
 
     FILE *file = fopen(buffer, "wb+");
-    if (file != NULL) {
+    if (file) {
         bool data[6];
         // maybe thats easy?
         data[0] = m_bSlotsVisible;
@@ -120,11 +128,148 @@ void CIFExtQuickSlot::ClearSlotsTexture() {
 #endif
 }
 
+void CIFExtQuickSlot::UpdateBarSlotsStyle() {
+    reinterpret_cast<void (__thiscall *)(CIFExtQuickSlot *)>(0x0065ef70)(this);
+#if 0
+    short Sections = NULL;
+
+    if (!m_bVertical && m_bTwoLines)
+        Sections = SECTION_TYPE_1;
+    else {
+        if (m_bVertical && !m_bTwoLines)
+            Sections = SECTION_TYPE_2;
+        else if (m_bTwoLines)
+            Sections = SECTION_TYPE_3;
+    }
+
+    short CurSection = m_SectionTypeID;
+    if (Sections == CurSection) {
+        for (int iVar5 = NULL; iVar5 < 10; iVar5++)
+            m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + iVar5, 1)->UpdatehgWndSlot(
+                    m_pMyUnerMenuBar->m_slots[40 + iVar5]->m_main_slot);
+    }
+
+    if (CurSection == NULL)
+        m_IRM.DeleteCreatedSection("Type1");
+    else {
+        if (CurSection != SECTION_TYPE_4)
+            m_IRM.DeleteCreatedSection("Type4");
+    }
+
+    char buffer[80];
+    sprintf_s(buffer, sizeof(buffer), "Type%d", Sections + 1);
+    m_IRM.CreateInterfaceSection(buffer, this);
+
+    wnd_size dragsz = m_IRM.GetResObj(GDR_EXT_QUICKSLOT_WND, 1)->GetSize();
+    this->SetGWndSize(dragsz.width, dragsz.height);
+    wnd_pos barps = this->GetPos();
+
+    m_SectionTypeID = Sections;
+    if (m_SectionTypeID == NULL || m_SectionTypeID == SECTION_TYPE_2) {
+        for (int iVar5 = NULL; iVar5 < 10; iVar5++) {
+            CIFExtQuickSlotSlot *extslot = m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + iVar5, 1);
+            extslot->UpdatehgWndSlot(
+                    m_pMyUnerMenuBar->m_slots[40 + iVar5]->m_main_slot);
+            extslot->MoveGWnd(barps.x + 43, barps.y);
+        }
+    } else if (m_SectionTypeID == SECTION_TYPE_2 || m_SectionTypeID == SECTION_TYPE_1) {
+        for (int iVar5 = NULL; iVar5 < 10; iVar5++) {
+            CIFExtQuickSlotSlot *extslot = m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + iVar5, 1);
+            extslot->UpdatehgWndSlot(
+                    m_pMyUnerMenuBar->m_slots[40 + iVar5]->m_main_slot);
+            if (iVar5 < 5)
+                extslot->MoveGWnd(barps.x + 31, barps.y);
+            else
+                extslot->MoveGWnd(barps.x - 149, barps.y + 40);
+        }
+    }
+    SetSlotsVisible(m_bSlotsVisible);
+#endif
+}
+
+void CIFExtQuickSlot::UpdateSlotsBarDirection() {
+    //why iwant this btw !??
+    //UpdateBarSlotsStyle();
+
+    char N00009BB9 = -1;
+
+    if (m_bTransparent)
+        N00009BB9 = 110;
+
+    for (int Id = 10; Id < 15; Id++)
+        m_IRM.GetResObj(Id, 1)->TB_Func_9(N00009BB9);
+
+    if (!m_bSlotsVisible)
+        return;
+    
+    m_IRM.GetResObj(GDR_EXT_QUICKSLOT_SLOT_END, 1)->TB_Func_9(N00009BB9);
+
+    if (m_SectionTypeID == SECTION_TYPE_1 || m_SectionTypeID == SECTION_TYPE_3) {
+        for (int v11 = NULL; v11 < 10; v11++) {
+            m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + v11, 1)->TB_Func_9(N00009BB9);
+            if (v11 < 5)
+                m_IRM.GetResObj<CIFStatic>(GDR_EXT_QUICKSLOT_SLOT_BOARD_1 + v11, 1)->TB_Func_9(N00009BB9);
+        }
+    } else if (m_SectionTypeID == NULL || m_SectionTypeID == SECTION_TYPE_2) {
+        for (int v22 = 10, v14 = 30; v22 != NULL; v14++, v22--) {
+              m_IRM.GetResObj(v14 + 70, 1)->TB_Func_9(N00009BB9);
+            m_IRM.GetResObj(v14, 1)->TB_Func_9(N00009BB9);
+        }
+    }
+
+    for (int v17 = NULL; v17 < 10; v17++)
+        m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + v17, 1)->SetDragable(!m_bSlotsLocked);
+
+    m_IRM.GetResObj<CIFDragableArea>(GDR_EXT_QUICKSLOT_WND, 1)->SetClickable(!m_bToolBarLocked);
+}
+
+void CIFExtQuickSlot::LoadExtSlotSetting() {
+    char buffer[0x200];
+
+    sprintf_s(buffer, "%s\\Setting\\SRExtQSOption.dat", theApp.GetWorkingDir());
+
+    FILE *file = fopen(buffer, "rb");
+
+    int local_210;
+    if (!file) {
+        SetBarVerticalState(true);
+        SetBarTransparentState(true);
+        SetSlotLockState(false);
+        SetBarLockState(false);
+        SetBarTwoLinesState(true);
+    } else {
+        fread_s(&local_210, -1, 4, 1, file);
+        if (local_210 == 1) {
+            bool config[6];
+
+            fread_s(&config[0], sizeof(config), 1, 6, file);
+            m_bSlotsVisible = config[0];
+            SetBarVerticalState(config[1]);
+            SetBarTransparentState(config[2]);
+            SetSlotLockState(config[3]);
+            SetBarLockState(config[4]);
+            SetBarTwoLinesState(config[5]);
+        }
+        fclose(file);
+    }
+    UpdateSlotsBarDirection();
+}
+
+void CIFExtQuickSlot::OnClickSlotsHorizontal() {
+    SetBarVerticalState(false);
+    UpdateSlotsBarDirection();
+}
+
+void CIFExtQuickSlot::OnClickSlotsVertical() {
+    SetBarVerticalState(true);
+    UpdateSlotsBarDirection();
+}
+
 bool CIFExtQuickSlot::OnCreate(long ln) {
     m_IRM.LoadFromFile("resinfo\\ifextquickslot.txt");
 
     m_pMyUnerMenuBar = g_pCGInterface->GetUnderMenuBar();
-
+    LoadExtSlotSetting();
 
     return true;
 }

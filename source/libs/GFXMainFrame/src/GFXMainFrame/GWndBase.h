@@ -154,9 +154,13 @@ public:
     /// \address 00b8f4d0
     int GethgWnd() const;
 
+    /// \brief Allow Window to click or move
+    /// \address 00b8f540
+    void SetClickable(bool bState);
+
     /// \brief Set the drag window by mouse
     /// \address 00b9daf0
-    void SetDragChildState(bool bState);
+    void SetDragable(bool bState);
 
 protected:
     /// \address 00B8F440

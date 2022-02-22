@@ -38,7 +38,7 @@ public:
 
 public:
     /// \address 0065fc70
-    void UpdatehgWndSlot(CNIFWnd *pNIFWnd);
+    void UpdatehgWndSlot(CIFWnd *pIFWnd);
 
     /// \address 0065fcb0
     CIFSlotWithHelp *GetSlotUnderBarBySlothgWnd() const;

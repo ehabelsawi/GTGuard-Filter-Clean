@@ -317,6 +317,6 @@ void __stdcall FUN_00bbda70(undefined4 a1) {
     reinterpret_cast<void (__stdcall *)(undefined4)>(0x00bbda70)(a1);
 }
 
-CIFSlotWithHelp *GetWindowByHGWnd(int hgWnd) {
+CIFSlotWithHelp *GetSlotWndByhgWnd(int hgWnd) {
     return reinterpret_cast<CIFSlotWithHelp *(__cdecl *)(char)>(0x00ba1140)(hgWnd);
 }

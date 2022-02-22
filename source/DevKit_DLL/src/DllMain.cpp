@@ -8,8 +8,11 @@
 
 #include "IFflorian0.h"
 #include "IFflorian0Guide.h"
+#include "IFExtQuickSlot.h"
 
-extern "C" _declspec(dllexport) BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdwReason, LPVOID lpReserved) {
+extern "C" _declspec(dllexport)
+
+BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdwReason, LPVOID lpReserved) {
     if (fdwReason == DLL_PROCESS_ATTACH) {
         // Setup all the required hooks
         Setup();
@@ -18,13 +21,17 @@ extern "C" _declspec(dllexport) BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdw
         RegisterObject(&GFX_RUNTIME_CLASS(CIFflorian0));
         RegisterObject(&GFX_RUNTIME_CLASS(CIFflorian0Guide));
 
-#ifdef CONFIG_OLD_MAINPOPUP
-        OverrideObject<CIFMainPopup, 0x00eea6dc>();
+        // Override existing objects
+
+#ifdef CONFIG_EXT_QUICK_SLOT
+        OverrideObject<CIFExtQuickSlot, 0x00ee9a28>();
 #endif
 
         OverrideObject<CIFChatOptionBoard, 0x00eec128>();
 
-        // Override existing objects
+#ifdef CONFIG_OLD_MAINPOPUP
+        OverrideObject<CIFMainPopup, 0x00eea6dc>();
+#endif
 #ifdef CONFIG_CHATVIEWER
         OverrideObject<CIFChatViewer, 0x00EEC168>();
 #endif // CONFIG_CHATVIEWER

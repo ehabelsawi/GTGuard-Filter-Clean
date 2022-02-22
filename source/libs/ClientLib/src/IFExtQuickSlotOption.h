@@ -1,8 +1,1 @@
-//
-// Created by Kurama on 1/13/2022.
-//
-
-#ifndef SRO_DEVKIT_IFEXTQUICKSLOTOPTION_H
-#define SRO_DEVKIT_IFEXTQUICKSLOTOPTION_H
-
-#endif //SRO_DEVKIT_IFEXTQUICKSLOTOPTION_H
+#pragma once
