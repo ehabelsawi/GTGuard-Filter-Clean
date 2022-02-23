@@ -29,26 +29,31 @@ CIFExtQuickSlot::CIFExtQuickSlot() :
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065e8d0, &CIFExtQuickSlot::SetBarVerticalState)
+
 void CIFExtQuickSlot::SetBarVerticalState(bool bState) {
     m_bVertical = bState;
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065e8e0, &CIFExtQuickSlot::SetBarTransparentState)
+
 void CIFExtQuickSlot::SetBarTransparentState(bool bState) {
     m_bTransparent = bState;
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065e8f0, &CIFExtQuickSlot::SetSlotLockState)
+
 void CIFExtQuickSlot::SetSlotLockState(bool bState) {
     m_bSlotsLocked = bState;
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065e900, &CIFExtQuickSlot::SetBarLockState)
+
 void CIFExtQuickSlot::SetBarLockState(bool bState) {
     m_bToolBarLocked = bState;
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065e910, &CIFExtQuickSlot::SetBarTwoLinesState)
+
 void CIFExtQuickSlot::SetBarTwoLinesState(bool bState) {
     m_bTwoLines = bState;
 }
@@ -83,27 +88,35 @@ void CIFExtQuickSlot::ToggleExtQuickSlotOption(bool bVisible) {
 void CIFExtQuickSlot::SetSlotsVisible(bool bVisible) {
     m_bSlotsVisible = bVisible;
 
-    if (!bVisible)
-        m_IRM.GetResObj<CIFButton>(GDR_EXT_QUICKSLOT_ONOFF_BTN, 1)->TB_Func_13(
-                "interface\\quick_slot\\qsl_hopen_button.ddj", NULL, NULL);
-    else
-        m_IRM.GetResObj<CIFButton>(GDR_EXT_QUICKSLOT_ONOFF_BTN, 1)->TB_Func_13(
-                "interface\\quick_slot\\qsl_hclose_button.ddj", NULL, NULL);
+    if (m_SectionTypeID == NULL || m_SectionTypeID == SECTION_TYPE_1) {
+        if (!bVisible)
+            m_IRM.GetResObj<CIFButton>(GDR_EXT_QUICKSLOT_ONOFF_BTN, 1)->TB_Func_13(
+                    "interface\\quick_slot\\qsl_hopen_button.ddj", NULL, NULL);
+        else
+            m_IRM.GetResObj<CIFButton>(GDR_EXT_QUICKSLOT_ONOFF_BTN, 1)->TB_Func_13(
+                    "interface\\quick_slot\\qsl_hclose_button.ddj", NULL, NULL);
+    } else {
+        if (!bVisible)
+            m_IRM.GetResObj<CIFButton>(GDR_EXT_QUICKSLOT_ONOFF_BTN, 1)->TB_Func_13(
+                    "interface\\quick_slot\\qsl_vopen_button.ddj", NULL, NULL);
+        else
+            m_IRM.GetResObj<CIFButton>(GDR_EXT_QUICKSLOT_ONOFF_BTN, 1)->TB_Func_13(
+                    "interface\\quick_slot\\qsl_vclose_button.ddj", NULL, NULL);
+    }
 
-    if (m_SectionTypeID == NULL || m_SectionTypeID == SECTION_TYPE_2)
-        for (int iVar4 = -9; iVar4 != 1; iVar4++) {
-            m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_10 + iVar4, 1)->ShowGWnd(m_bSlotsVisible);
-            if (iVar4 <= -5)
-                m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_BOARD_5 + (iVar4 + 5), 1)->ShowGWnd(
+    if (m_SectionTypeID == NULL || m_SectionTypeID == SECTION_TYPE_2) {
+        for (int iVar4 = 30, iVar2 = 10; iVar2 != NULL; iVar4++, iVar2--) {
+            m_IRM.GetResObj<CIFExtQuickSlotSlot>(70 + iVar4, 1)->ShowGWnd(m_bSlotsVisible);
+            m_IRM.GetResObj<CIFExtQuickSlotSlot>(iVar4, 1)->ShowGWnd(m_bSlotsVisible);
+        }
+    } else if (m_SectionTypeID == SECTION_TYPE_1 || m_SectionTypeID == SECTION_TYPE_3) {
+        for (int iVar4 = 0; iVar4 < 10; iVar4++) {
+            m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + iVar4, 1)->ShowGWnd(m_bSlotsVisible);
+            if (iVar4 < 5)
+                m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_BOARD_1 + iVar4, 1)->ShowGWnd(
                         m_bSlotsVisible);
         }
-    else if (m_SectionTypeID == SECTION_TYPE_1 || m_SectionTypeID == SECTION_TYPE_3)
-        for (int iVar2 = 0; iVar2 < 10; iVar2++) {
-            m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + iVar2, 1)->ShowGWnd(m_bSlotsVisible);
-            if (iVar2 < 5)
-                m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_BOARD_1 + iVar2, 1)->ShowGWnd(
-                        m_bSlotsVisible);
-        }
+    }
 
     m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_END, 1)->ShowGWnd(m_bSlotsVisible);
 }
@@ -188,37 +201,40 @@ void CIFExtQuickSlot::UpdateBarSlotsStyle() {
 }
 
 void CIFExtQuickSlot::UpdateSlotsBarDirection() {
-    //why iwant this btw !??
-    //UpdateBarSlotsStyle();
+    UpdateBarSlotsStyle();
 
     char N00009BB9 = -1;
 
     if (m_bTransparent)
         N00009BB9 = 110;
 
-    for (int Id = 10; Id < 15; Id++)
-        m_IRM.GetResObj(Id, 1)->TB_Func_9(N00009BB9);
+    m_IRM.GetResObj<CIFDragableArea>(GDR_EXT_QUICKSLOT_WND, 1)->TB_Func_9(N00009BB9);
+    m_IRM.GetResObj<CIFButton>(GDR_EXT_QUICKSLOT_OPT_BTN, 1)->TB_Func_9(N00009BB9);
+    m_IRM.GetResObj<CIFButton>(GDR_EXT_QUICKSLOT_HORI_BTN, 1)->TB_Func_9(N00009BB9);
+    m_IRM.GetResObj<CIFButton>(GDR_EXT_QUICKSLOT_VERT_BTN, 1)->TB_Func_9(N00009BB9);
+    m_IRM.GetResObj<CIFButton>(GDR_EXT_QUICKSLOT_ONOFF_BTN, 1)->TB_Func_9(N00009BB9);
 
     if (!m_bSlotsVisible)
         return;
-    
+
     m_IRM.GetResObj(GDR_EXT_QUICKSLOT_SLOT_END, 1)->TB_Func_9(N00009BB9);
 
-    if (m_SectionTypeID == SECTION_TYPE_1 || m_SectionTypeID == SECTION_TYPE_3) {
+    if (m_SectionTypeID == NULL || m_SectionTypeID == SECTION_TYPE_2) {
+        for (int v22 = 10, v14 = 30; v22 != NULL; v14++, v22--) {
+            m_IRM.GetResObj(v14 + 70, 1)->TB_Func_9(N00009BB9);
+            m_IRM.GetResObj(v14, 1)->TB_Func_9(N00009BB9);
+        }
+    } else if (m_SectionTypeID == SECTION_TYPE_1 || m_SectionTypeID == SECTION_TYPE_3) {
         for (int v11 = NULL; v11 < 10; v11++) {
             m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + v11, 1)->TB_Func_9(N00009BB9);
             if (v11 < 5)
                 m_IRM.GetResObj<CIFStatic>(GDR_EXT_QUICKSLOT_SLOT_BOARD_1 + v11, 1)->TB_Func_9(N00009BB9);
         }
-    } else if (m_SectionTypeID == NULL || m_SectionTypeID == SECTION_TYPE_2) {
-        for (int v22 = 10, v14 = 30; v22 != NULL; v14++, v22--) {
-              m_IRM.GetResObj(v14 + 70, 1)->TB_Func_9(N00009BB9);
-            m_IRM.GetResObj(v14, 1)->TB_Func_9(N00009BB9);
-        }
     }
 
-    for (int v17 = NULL; v17 < 10; v17++)
+    for (int v17 = NULL; v17 < 10; v17++) {
         m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + v17, 1)->SetDragable(!m_bSlotsLocked);
+    }
 
     m_IRM.GetResObj<CIFDragableArea>(GDR_EXT_QUICKSLOT_WND, 1)->SetClickable(!m_bToolBarLocked);
 }
