@@ -29,31 +29,26 @@ CIFExtQuickSlot::CIFExtQuickSlot() :
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065e8d0, &CIFExtQuickSlot::SetBarVerticalState)
-
 void CIFExtQuickSlot::SetBarVerticalState(bool bState) {
     m_bVertical = bState;
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065e8e0, &CIFExtQuickSlot::SetBarTransparentState)
-
 void CIFExtQuickSlot::SetBarTransparentState(bool bState) {
     m_bTransparent = bState;
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065e8f0, &CIFExtQuickSlot::SetSlotLockState)
-
 void CIFExtQuickSlot::SetSlotLockState(bool bState) {
     m_bSlotsLocked = bState;
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065e900, &CIFExtQuickSlot::SetBarLockState)
-
 void CIFExtQuickSlot::SetBarLockState(bool bState) {
     m_bToolBarLocked = bState;
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065e910, &CIFExtQuickSlot::SetBarTwoLinesState)
-
 void CIFExtQuickSlot::SetBarTwoLinesState(bool bState) {
     m_bTwoLines = bState;
 }
@@ -63,9 +58,11 @@ void CIFExtQuickSlot::SaveExtSlotSetting() {
     sprintf_s(buffer, "%s\\Setting\\SRExtQSOption.dat", theApp.GetWorkingDir());
 
     FILE *file = fopen(buffer, "wb+");
+
+    int local_208 = 1; //hmm setting is saved? // or Config type?
     if (file) {
         bool data[6];
-        // maybe thats easy?
+        fwrite(&local_208, 4, 1, file);
         data[0] = m_bSlotsVisible;
         data[1] = m_bVertical;
         data[2] = m_bTwoLines;
@@ -122,14 +119,14 @@ void CIFExtQuickSlot::SetSlotsVisible(bool bVisible) {
 }
 
 void CIFExtQuickSlot::OnToggleSlotsOption() {
-    ToggleExtQuickSlotOption(!m_IRM.GetResObj(5, 1));
+    ToggleExtQuickSlotOption(!m_IRM.GetResObj(GDR_EXT_QUICKSLOT_OPTION, 1));
 }
 
 void CIFExtQuickSlot::OnDropDownButton() {
-    SetSlotsVisible(!m_bSlotsVisible); //wait... what???
+    SetSlotsVisible(!m_bSlotsVisible);
 }
 
-void CIFExtQuickSlot::ClearSlotsTexture() {
+void CIFExtQuickSlot::ClearChildofSlot() {
     reinterpret_cast<void (__thiscall *)(CIFExtQuickSlot *)>(0x0065eef0)(this);
 #if 0
     for (int iVar2 = 0; iVar2 < 10; iVar2++) {
@@ -170,8 +167,10 @@ void CIFExtQuickSlot::UpdateBarSlotsStyle() {
     }
 
     char buffer[80];
-    sprintf_s(buffer, sizeof(buffer), "Type%d", Sections + 1);
-    m_IRM.CreateInterfaceSection(buffer, this);
+    if(Sections != SECTION_TYPE_4) {
+        sprintf_s(buffer, sizeof(buffer), "Type%d", Sections + 1);
+        m_IRM.CreateInterfaceSection(buffer, this);
+    }
 
     wnd_size dragsz = m_IRM.GetResObj(GDR_EXT_QUICKSLOT_WND, 1)->GetSize();
     this->SetGWndSize(dragsz.width, dragsz.height);
@@ -246,7 +245,7 @@ void CIFExtQuickSlot::LoadExtSlotSetting() {
 
     FILE *file = fopen(buffer, "rb");
 
-    int local_210;
+    int local_210; // Config type?
     if (!file) {
         SetBarVerticalState(true);
         SetBarTransparentState(true);

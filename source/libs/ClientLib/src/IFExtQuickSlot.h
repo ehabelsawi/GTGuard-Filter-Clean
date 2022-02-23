@@ -15,6 +15,7 @@ GFX_DECLARE_MESSAGE_MAP(CIFExtQuickSlot)
         SECTION_TYPE_2 = 2, //Type2
         SECTION_TYPE_3 = 3, //Type3
         SECTION_TYPE_4 = 4, //Type4
+        GDR_EXT_QUICKSLOT_OPTION = 5, //CIFExtQuickSlotOption
         GDR_EXT_QUICKSLOT_WND = 10, //CIFDragableArea
         GDR_EXT_QUICKSLOT_OPT_BTN = 11, //CIFButton
         GDR_EXT_QUICKSLOT_HORI_BTN = 12, //CIFButton
@@ -47,7 +48,7 @@ public:
     /// \address 0065f720
     bool OnCreate(long ln) override;
 
-public: // only for hooks..
+public:
     /// \address 0065e8d0
     void SetBarVerticalState(bool bState);
 
@@ -67,7 +68,7 @@ public: // only for hooks..
     void SaveExtSlotSetting();
 
     /// \address 0065eef0
-    void ClearSlotsTexture();
+    void ClearChildofSlot();
 
     /// \address 0065ef70
     void UpdateBarSlotsStyle();
@@ -78,7 +79,6 @@ public: // only for hooks..
     /// \address 0065f580
     void LoadExtSlotSetting();
 
-private:
     /// \address 0065eb10
     void ToggleExtQuickSlotOption(bool bVisible);
 
