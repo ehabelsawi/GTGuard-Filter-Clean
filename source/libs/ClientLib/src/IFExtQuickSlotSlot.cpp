@@ -9,17 +9,10 @@ GFX_IMPLEMENT_DYNCREATE_FN(CIFExtQuickSlotSlot, CIFWnd)
 
 CIFExtQuickSlotSlot::CIFExtQuickSlotSlot() :
         m_UnderBarSlot_hgWnd(NULL) {
-    BS_DEBUG_LOW(">" __FUNCTION__ "<")
-
     SetDragable(true);
 }
 
-CIFExtQuickSlotSlot::~CIFExtQuickSlotSlot() {
-    BS_DEBUG_LOW(">" __FUNCTION__ "<")
-}
-
 bool CIFExtQuickSlotSlot::OnCreate(long ln) {
-    BS_DEBUG_LOW(">" __FUNCTION__ "<")
     return true;
 }
 

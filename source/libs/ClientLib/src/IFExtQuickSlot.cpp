@@ -119,7 +119,7 @@ void CIFExtQuickSlot::SetSlotsVisible(bool bVisible) {
 }
 
 void CIFExtQuickSlot::OnToggleSlotsOption() {
-    ToggleExtQuickSlotOption(!m_IRM.GetResObj(GDR_EXT_QUICKSLOT_OPTION, 1));
+    ToggleExtQuickSlotOption(!m_IRM.GetResObj<CIFExtQuickSlotOption>(GDR_EXT_QUICKSLOT_OPTION, 1));
 }
 
 void CIFExtQuickSlot::OnDropDownButton() {

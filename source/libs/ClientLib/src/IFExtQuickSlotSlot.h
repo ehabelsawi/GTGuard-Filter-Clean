@@ -12,7 +12,8 @@ GFX_DECLARE_DYNAMIC_EXISTING(CIFExtQuickSlotSlot, 0x00ee9a68)
 public:
     CIFExtQuickSlotSlot();
 
-    ~CIFExtQuickSlotSlot();
+    /// \address 0065fad0
+    ///~CIFExtQuickSlotSlot();
 
 public:
     /// \address 0065faf0

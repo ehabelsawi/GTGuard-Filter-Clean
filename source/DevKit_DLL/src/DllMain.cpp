@@ -10,9 +10,7 @@
 #include "IFflorian0Guide.h"
 #include "IFExtQuickSlot.h"
 
-extern "C" _declspec(dllexport)
-
-BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdwReason, LPVOID lpReserved) {
+extern "C" _declspec(dllexport) BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdwReason, LPVOID lpReserved) {
     if (fdwReason == DLL_PROCESS_ATTACH) {
         // Setup all the required hooks
         Setup();
@@ -25,6 +23,8 @@ BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdwReason, LPVOID lpReserved) {
 
 #ifdef CONFIG_EXT_QUICK_SLOT
         OverrideObject<CIFExtQuickSlot, 0x00ee9a28>();
+        // Option for ExtQuickSlot
+        OverrideObject<CIFExtQuickSlotOption, 0x00ee9a48>();
 #endif
 
         OverrideObject<CIFChatOptionBoard, 0x00eec128>();

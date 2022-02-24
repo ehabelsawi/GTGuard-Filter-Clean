@@ -179,8 +179,9 @@ set(SOURCE_FILES src/BufRender.h
         src/IFTargetWindowFortressStructure.cpp src/IFTargetWindowFortressStructure.h
         src/IFExtQuickSlot.cpp src/IFExtQuickSlot.h
         src/IFExtQuickSlotSlot.cpp src/IFExtQuickSlotSlot.h
-        src/IFExtQuickSlotOption.h
-        src/NIFWnd.cpp src/NIFWnd.h src/IFSlotWithHelpEx.h)
+        src/IFExtQuickSlotOption.cpp src/IFExtQuickSlotOption.h
+        src/NIFWnd.cpp src/NIFWnd.h
+        src/IFSlotWithHelpEx.h)
 
 add_library(ClientLib STATIC ${SOURCE_FILES})
 target_link_libraries(ClientLib GFXMainFrame GFX3DFunction GFXFileManagerLIB NavMesh ClientNet TypeId abi-testing imgui remodel ghidra)

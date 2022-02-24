@@ -2,11 +2,10 @@
 
 #include "IFWnd.h"
 #include "NIFUnderMenuBar.h"
+#include "IFExtQuickSlotOption.h"
 
 class CIFExtQuickSlot : public CIFWnd {
 GFX_DECLARE_DYNAMIC_EXISTING(CIFExtQuickSlot, 0x00ee9a28)
-
-    GFX_DECLARE_DYNCREATE_FN(CIFExtQuickSlot)
 
 GFX_DECLARE_MESSAGE_MAP(CIFExtQuickSlot)
 
@@ -40,6 +39,8 @@ GFX_DECLARE_MESSAGE_MAP(CIFExtQuickSlot)
     };
 
 public:
+    GFX_DECLARE_DYNCREATE_FN(CIFExtQuickSlot)
+
     CIFExtQuickSlot();
 
     ~CIFExtQuickSlot();
