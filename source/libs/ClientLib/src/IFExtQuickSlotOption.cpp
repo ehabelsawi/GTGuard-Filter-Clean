@@ -14,8 +14,7 @@ GFX_BEGIN_MESSAGE_MAP(CIFExtQuickSlotOption, CIFMainFrame)
 GFX_END_MESSAGE_MAP()
 
 undefined1 CIFExtQuickSlotOption::OnCloseWnd() {
-    g_pCGInterface->GetExtQuickSlot()->ToggleExtQuickSlotOption(false);
-    return true;
+    return g_pCGInterface->GetExtQuickSlot()->ToggleExtQuickSlotOption(false);
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065f800, &CIFExtQuickSlotOption::SetCheckBoxState)
@@ -43,10 +42,12 @@ void CIFExtQuickSlotOption::ApplyExtQSSetting() {
 
 void CIFExtQuickSlotOption::OnClickConfirm() {
     ApplyExtQSSetting();
-    OnCloseWnd();
+    this->OnCloseWnd();
 }
 
 bool CIFExtQuickSlotOption::OnCreate(long ln) {
+    CIFMainFrame::OnCreate(ln);
+
     m_IRM.LoadFromFile("resinfo\\ifextquickslotoption.txt");
     m_IRM.CreateInterfaceSection("Create", this);
 

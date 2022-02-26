@@ -81,7 +81,7 @@ public:
     void LoadExtSlotSetting();
 
     /// \address 0065eb10
-    void ToggleExtQuickSlotOption(bool bVisible);
+    undefined1 ToggleExtQuickSlotOption(bool bVisible);
 
     /// \address 0065ecd0
     void SetSlotsVisible(bool bVisible);

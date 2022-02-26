@@ -12,6 +12,10 @@ void CIRMManager::CreateInterfaceSection(std::string section, CObj *base) {
     reinterpret_cast<void (__thiscall *)(CIRMManager *, std::string, CObj *)>(0x008B5580)(this, section, base);
 }
 
+void CIRMManager::DeleteCreatedSection(std::string section) {
+    reinterpret_cast<void (__thiscall *)(CIRMManager *, std::string)>(0x008b59f0)(this, section);
+}
+
 CIFWnd *CIRMManager::GetResObj(int id, int a2) {
     return reinterpret_cast<CIFWnd *(__thiscall *)(CIRMManager *, int, int)>(0x008B51F0)(this, id, a2);
 }
