@@ -20,4 +20,16 @@ if (WIN32)
 
 else ()
     message(STATUS "Searching for DirectX on this platform is not supported")
+    message(STATUS "Defaulting to source/third-parts/dxsdk")
+
+    set(DirectX_ROOT_DIR "${CMAKE_SOURCE_DIR}/source/third-parts/dxsdk")
+    set(DirectX_INCLUDE_DIRS ${DirectX_ROOT_DIR}/Include)
+    set(DirectX_LIBRARY_PATHS "${DirectX_ROOT_DIR}/Lib")
+
+    set(DirectX_D3D9_LIBRARY d3d9)
+    set(DirectX_D3DX9_LIBRARY d3dx9)
+
+    set(DirectX_LIBRARIES ${DirectX_D3D9_LIBRARY} ${DirectX_D3DX9_LIBRARY})
+
+    find_package_handle_standard_args(DirectX DEFAULT_MSG DirectX_ROOT_DIR DirectX_LIBRARIES DirectX_INCLUDE_DIRS)
 endif ()
