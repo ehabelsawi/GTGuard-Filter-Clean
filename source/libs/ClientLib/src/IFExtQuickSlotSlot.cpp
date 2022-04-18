@@ -18,13 +18,13 @@ bool CIFExtQuickSlotSlot::OnCreate(long ln) {
 
 void CIFExtQuickSlotSlot::RenderMyself() {
     CIFSlotWithHelp *pWnd = GetSlotWndByhgWnd(m_UnderBarSlot_hgWnd);
-    if (pWnd)
+    if (pWnd != NULL)
         pWnd->Func_24(this->GetPos().x, this->GetPos().y);
 }
 
 bool CIFExtQuickSlotSlot::Func_28(int a1, int a2, int a3) {
     CIFSlotWithHelp *pWnd = GetSlotWndByhgWnd(m_UnderBarSlot_hgWnd);
-    if (pWnd)
+    if (pWnd != NULL)
         return pWnd->Func_28(a1, a2, a3);;
 
     return this->Func_28(a1, a2, a3);
@@ -46,13 +46,13 @@ int CIFExtQuickSlotSlot::OnMouseRightUp(int a1, int x, int y) {
     return reinterpret_cast<bool (__thiscall *)(CIFExtQuickSlotSlot *, int, int, int)>(0x0065fc20)(this, a1, x, y);
 }
 
-void CIFExtQuickSlotSlot::UpdatehgWndSlot(CIFWnd *pIFWnd) {
-    if (!pIFWnd) {
-        m_UnderBarSlot_hgWnd = NULL;
+void CIFExtQuickSlotSlot::UpdatehgWndSlot(CIFWnd *pWnd) {
+    if (pWnd == NULL) {
+        m_UnderBarSlot_hgWnd = 0;
         return;
     }
-    m_UnderBarSlot_hgWnd = pIFWnd->GethgWnd();
-    pIFWnd->ShowGWnd(false);
+    m_UnderBarSlot_hgWnd = pWnd->GethgWnd();
+    pWnd->ShowGWnd(false);
 }
 
 CIFSlotWithHelp *CIFExtQuickSlotSlot::GetSlotUnderBarBySlothgWnd() const {

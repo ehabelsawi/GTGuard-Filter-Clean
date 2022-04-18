@@ -14,6 +14,8 @@ GFX_BEGIN_MESSAGE_MAP(CIFExtQuickSlotOption, CIFMainFrame)
 GFX_END_MESSAGE_MAP()
 
 undefined1 CIFExtQuickSlotOption::OnCloseWnd() {
+    CIFWnd::OnCloseWnd();
+    
     return g_pCGInterface->GetExtQuickSlot()->ToggleExtQuickSlotOption(false);
 }
 

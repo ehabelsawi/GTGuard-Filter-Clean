@@ -29,7 +29,6 @@ CIFExtQuickSlot::CIFExtQuickSlot() :
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065e8d0, &CIFExtQuickSlot::SetBarVerticalState)
-
 void CIFExtQuickSlot::SetBarVerticalState(bool bState) {
     m_bVertical = bState;
 }
@@ -61,7 +60,7 @@ void CIFExtQuickSlot::SaveExtSlotSetting() {
     FILE* file = fopen(buffer, "wb+");
 
     int local_208 = 1; //hmm setting is saved? // or Config type?
-    if (file) {
+    if (file != NULL) {
         bool data[6];
         fwrite(&local_208, 4, 1, file);
         data[0] = m_bSlotsVisible;
@@ -86,7 +85,7 @@ undefined1 CIFExtQuickSlot::ToggleExtQuickSlotOption(bool bVisible) {
 void CIFExtQuickSlot::SetSlotsVisible(bool bVisible) {
     m_bSlotsVisible = bVisible;
 
-    if (m_SectionTypeID == NULL || m_SectionTypeID == SECTION_TYPE_1) {
+    if (m_SectionTypeID == 0 || m_SectionTypeID == SECTION_TYPE_1) {
         if (!bVisible)
             m_IRM.GetResObj<CIFButton>(GDR_EXT_QUICKSLOT_ONOFF_BTN, 1)->TB_Func_13(
                     "interface\\quick_slot\\qsl_hopen_button.ddj", NULL, NULL);
@@ -102,8 +101,8 @@ void CIFExtQuickSlot::SetSlotsVisible(bool bVisible) {
                     "interface\\quick_slot\\qsl_vclose_button.ddj", NULL, NULL);
     }
 
-    if (m_SectionTypeID == NULL || m_SectionTypeID == SECTION_TYPE_2) {
-        for (int iVar4 = 30, iVar2 = 10; iVar2 != NULL; iVar4++, iVar2--) {
+    if (m_SectionTypeID == 0 || m_SectionTypeID == SECTION_TYPE_2) {
+        for (int iVar4 = 30, iVar2 = 10; iVar2 != 0; iVar4++, iVar2--) {
             m_IRM.GetResObj<CIFExtQuickSlotSlot>(70 + iVar4, 1)->ShowGWnd(m_bSlotsVisible);
             m_IRM.GetResObj<CIFExtQuickSlotSlot>(iVar4, 1)->ShowGWnd(m_bSlotsVisible);
         }
@@ -116,7 +115,7 @@ void CIFExtQuickSlot::SetSlotsVisible(bool bVisible) {
         }
     }
 
-    m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_END, 1)->ShowGWnd(m_bSlotsVisible);
+    m_IRM.GetResObj<CIFStatic>(GDR_EXT_QUICKSLOT_SLOT_END, 1)->ShowGWnd(m_bSlotsVisible);
 }
 
 void CIFExtQuickSlot::OnToggleSlotsOption() {
@@ -134,13 +133,13 @@ void CIFExtQuickSlot::ClearChildofSlot() {
         m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + iVar2,
             1)->GetSlotUnderBarBySlothgWnd()->FUN_006871d0(NULL);
         m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + iVar2,
-            1)->GetSlotUnderBarBySlothgWnd()->TB_Func_13("", NULL, NULL);
+            1)->GetSlotUnderBarBySlothgWnd()->TB_Func_13("", 0, 0);
     }
 #endif
 }
 
 void CIFExtQuickSlot::UpdateBarSlotsStyle() {
-    short Sections = NULL;
+    short Sections = 0;
 
     if (!m_bVertical && m_bTwoLines)
         Sections = SECTION_TYPE_1;
@@ -150,17 +149,17 @@ void CIFExtQuickSlot::UpdateBarSlotsStyle() {
         Sections = SECTION_TYPE_3;
 
     if (Sections == m_SectionTypeID) {
-        for (int iVar5 = NULL; iVar5 < 10; iVar5++)
+        for (int iVar5 = 0; iVar5 < 10; iVar5++)
             m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + iVar5, 1)->UpdatehgWndSlot(
                     m_pMyUnerMenuBar->m_slots[40 + iVar5]->m_main_slot);
     }
 
-    if (m_SectionTypeID == NULL)
+    if (m_SectionTypeID == 0)
         m_IRM.DeleteCreatedSection("Type1");
     else if (m_SectionTypeID != SECTION_TYPE_4)
         m_IRM.DeleteCreatedSection("Type4");
 
-    if (Sections == NULL)
+    if (Sections == 0)
         m_IRM.CreateInterfaceSection("Type1", this);
     else if (Sections == SECTION_TYPE_1)
         m_IRM.CreateInterfaceSection("Type2", this);
@@ -176,8 +175,8 @@ void CIFExtQuickSlot::UpdateBarSlotsStyle() {
     m_SectionTypeID = Sections;
     switch (m_SectionTypeID) {
         case SECTION_TYPE_1: {
-            int v32 = NULL;
-            for (int iVar5 = NULL; iVar5 < 10; iVar5++) {
+            int v32 = 0;
+            for (int iVar5 = 0; iVar5 < 10; iVar5++) {
                 CIFExtQuickSlotSlot* extslot = m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + iVar5,
                                                                                     1);
                 extslot->UpdatehgWndSlot(
@@ -190,8 +189,8 @@ void CIFExtQuickSlot::UpdateBarSlotsStyle() {
             }
             break;
         } case SECTION_TYPE_2: {
-            int v32 = NULL;
-            for (int iVar5 = NULL; iVar5 < 10; iVar5++) {
+            int v32 = 0;
+            for (int iVar5 = 0; iVar5 < 10; iVar5++) {
                 CIFExtQuickSlotSlot* extslot = m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + iVar5,
                                                                                     1);
                 extslot->UpdatehgWndSlot(
@@ -201,8 +200,8 @@ void CIFExtQuickSlot::UpdateBarSlotsStyle() {
             }
             break;
         } case SECTION_TYPE_3: {
-            int v32 = NULL;
-            for (int iVar5 = NULL; iVar5 < 10; iVar5++) {
+            int v32 = 0;
+            for (int iVar5 = 0; iVar5 < 10; iVar5++) {
                 CIFExtQuickSlotSlot* extslot = m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + iVar5,
                                                                                     1);
                 extslot->UpdatehgWndSlot(
@@ -215,8 +214,8 @@ void CIFExtQuickSlot::UpdateBarSlotsStyle() {
             }
             break;
         } default: {
-            for (int iVar5 = NULL; iVar5 < 10; iVar5++) {
-                int v32 = NULL;
+            for (int iVar5 = 0; iVar5 < 10; iVar5++) {
+                int v32 = 0;
                 CIFExtQuickSlotSlot* extslot = m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + iVar5,
                                                                                     1);
                 extslot->UpdatehgWndSlot(
@@ -250,20 +249,20 @@ void CIFExtQuickSlot::UpdateSlotsBarDirection() {
 
     m_IRM.GetResObj(GDR_EXT_QUICKSLOT_SLOT_END, 1)->TB_Func_9(N00009BB9);
 
-    if (m_SectionTypeID == NULL || m_SectionTypeID == SECTION_TYPE_2) {
-        for (int v22 = 10, v14 = 30; v22 != NULL; v14++, v22--) {
+    if (m_SectionTypeID == 0 || m_SectionTypeID == SECTION_TYPE_2) {
+        for (int v22 = 10, v14 = 30; v22 != 0; v14++, v22--) {
             m_IRM.GetResObj(v14 + 70, 1)->TB_Func_9(N00009BB9);
             m_IRM.GetResObj(v14, 1)->TB_Func_9(N00009BB9);
         }
     } else if (m_SectionTypeID == SECTION_TYPE_1 || m_SectionTypeID == SECTION_TYPE_3) {
-        for (int v11 = NULL; v11 < 10; v11++) {
+        for (int v11 = 0; v11 < 10; v11++) {
             m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + v11, 1)->TB_Func_9(N00009BB9);
             if (v11 < 5)
                 m_IRM.GetResObj<CIFStatic>(GDR_EXT_QUICKSLOT_SLOT_BOARD_1 + v11, 1)->TB_Func_9(N00009BB9);
         }
     }
 
-    for (int v17 = NULL; v17 < 10; v17++) {
+    for (int v17 = 0; v17 < 10; v17++) {
         m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + v17, 1)->SetDragable(!m_bSlotsLocked);
     }
 
@@ -278,7 +277,7 @@ void CIFExtQuickSlot::LoadExtSlotSetting() {
     FILE *file = fopen(buffer, "rb");
 
     int local_210; // Config type?
-    if (!file) {
+    if (file == NULL) {
         SetBarVerticalState(true);
         SetBarTransparentState(true);
         SetSlotLockState(false);
