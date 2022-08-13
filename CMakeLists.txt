@@ -13,7 +13,7 @@ find_package(DirectX)
 
 if (NOT DirectX_FOUND)
     message(FATAL_ERROR "DirectX was NOT found. DevKit can not be used without it. Make sure you checked out all submodules.")
-endif()
+endif ()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /X")
 
@@ -30,16 +30,16 @@ set(CompilerFlags
         CMAKE_C_FLAGS_RELWITHDEBINFO
         CMAKE_C_FLAGS_MINSIZEREL
         )
-foreach(CompilerFlag ${CompilerFlags})
+foreach (CompilerFlag ${CompilerFlags})
     string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
-endforeach()
+endforeach ()
 
 find_package(CxxTest)
-if(CXXTEST_FOUND)
+if (CXXTEST_FOUND)
     message(STATUS "CxxTest found. Testing enabled!")
     include_directories(${CXXTEST_INCLUDE_DIR})
     enable_testing()
-endif()
+endif ()
 
 # We are no idiots, ignore these stupid deprecations!
 add_compile_definitions(_CRT_SECURE_NO_DEPRECATE _CRT_NON_CONFORMING_SWPRINTFS)

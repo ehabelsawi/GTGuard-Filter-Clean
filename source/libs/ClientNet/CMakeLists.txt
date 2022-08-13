@@ -1,4 +1,4 @@
-set(SOURCE_FILES 
+set(SOURCE_FILES
         src/ClientNet/MsgStreamBuffer.h
         src/ClientNet/MsgStreamBuffer.cpp
         src/ClientNet/IClientNet.h
