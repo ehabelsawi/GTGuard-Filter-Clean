@@ -24,7 +24,7 @@ public:
 
     virtual void Func_35();
 
-    virtual const CCharacterData::SData &Func_36(); // TODO:: could lead to crashes further on
+    virtual const SCommonData &Func_36(); // TODO:: could lead to crashes further on
 
     virtual void Func_37();
 

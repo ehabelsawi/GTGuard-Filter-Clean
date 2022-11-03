@@ -41,7 +41,7 @@ public:
     undefined4 FUN_008cbac0(int a1);
 
     /// \address 0093f370
-    const CCharacterData::SData *GetCharacterData(int id) const;
+    const CCharacterData *GetCharacterData(int id);
 
     /// \address 0093f5f0
     const CItemData::SData &GetItemData(int refObjItemId) const;
@@ -58,6 +58,9 @@ public:
 private:
     /// \address 0093f2f0
     const CItemData *FUN_0093f2f0(int refObjItemId) const;
+
+    /// \address 0093ef10
+    undefined4 LoadFromPk2(int typeMAYBE, int id);
 
     char gap0[0x254];
 

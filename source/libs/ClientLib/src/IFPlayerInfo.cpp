@@ -235,7 +235,7 @@ void CIFPlayerInfo::OnUpdate() {
 
             requiredExp = levelData.m_jobExpTrader;
 
-            if (g_pCICPlayer->Func_36().m_nationality == 0) {
+            if (g_pCICPlayer->Func_36().Country == 0) {
                 title = L"UIIT_STT_CLASS_MERCHANT_%d";
             } else {
                 title = L"UIIT_STT_CLASS_EU_MERCHANT_%d";
@@ -245,7 +245,7 @@ void CIFPlayerInfo::OnUpdate() {
 
             requiredExp = levelData.m_jobExpRobber;
 
-            if (g_pCICPlayer->Func_36().m_nationality == 0) {
+            if (g_pCICPlayer->Func_36().Country == 0) {
                 title = L"UIIT_STT_CLASS_THIEF_%d";
             } else {
                 title = L"UIIT_STT_CLASS_EU_THIEF_%d";
@@ -255,7 +255,7 @@ void CIFPlayerInfo::OnUpdate() {
 
             requiredExp = levelData.m_jobExpHunter;
 
-            if (g_pCICPlayer->Func_36().m_nationality == 0) {
+            if (g_pCICPlayer->Func_36().Country == 0) {
                 title = L"UIIT_STT_CLASS_HUNTER_%d";
             } else {
                 title = L"UIIT_STT_CLASS_EU_HUNTER_%d";

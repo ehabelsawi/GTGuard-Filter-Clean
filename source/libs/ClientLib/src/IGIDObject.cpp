@@ -4,8 +4,8 @@ const std::n_wstring &CIGIDObject::GetName() const {
     return m_name;
 }
 
-const CCharacterData::SData *CIGIDObject::GetSData() const {
-    return m_characterData;
+const SCommonData *CIGIDObject::GetCommonData() const {
+    return m_commonData;
 }
 
 const int CIGIDObject::GetUniqueId() const {
