@@ -194,8 +194,8 @@ void CIFPlayerInfo::OnUpdate() {
                                        g_CCharacterDependentData.FUN_00987090().field_12);
 
     {
-        float value1 = g_pCICPlayer->GetIntelligence() * 100;
-        float value2 = (g_pCICPlayer->GetCurrentLevel() + 7) * 4;
+        float value1 = g_pCICPlayer->GetIntelligence() * 100.0f;
+        float value2 = (g_pCICPlayer->GetCurrentLevel() + 7) * 4.0f;
 
         // Cap at 120 %
         float value3 = min(120, value1 / value2);
@@ -225,7 +225,7 @@ void CIFPlayerInfo::OnUpdate() {
         m_pGDR_PI_JOB_EXP->SetText(L"0 %");
     } else {
         int jobLevel = g_pCICPlayer->GetJobLevel();
-        const CLevelData::SData &levelData = g_CGlobalDataManager->GetLevelData(jobLevel);
+        const SLevelData &levelData = g_CGlobalDataManager->GetLevelData(jobLevel);
 
         const wchar_t *title = NULL;
         int requiredExp = -1;

@@ -30,7 +30,7 @@ public:
 
     virtual void Func_38();
 
-    virtual void Func_39();
+    virtual void SetMaxHP();
 
     virtual void Func_40();
 

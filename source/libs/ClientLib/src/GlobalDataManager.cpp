@@ -30,9 +30,13 @@ const CItemData *CGlobalDataManager::GetItem(int refObjItemId) const {
                                                                                                           refObjItemId);
 }
 
-const CLevelData::SData &CGlobalDataManager::GetLevelData(int level) const {
-    return reinterpret_cast<const CLevelData::SData &(__thiscall *)(const CGlobalDataManager *, int)>(0x00937f20)(this,
-                                                                                                                  level);
+const CLevelData *CGlobalDataManager::GetLevel(int level) const {
+    return reinterpret_cast<const CLevelData *(__thiscall *)(const CGlobalDataManager *, int)>(0x00937e00)(this, level);
+}
+
+const SLevelData &CGlobalDataManager::GetLevelData(int level) const {
+    const CLevelData *levelData = GetLevel(level);
+    return levelData->GetData();
 }
 
 undefined CGlobalDataManager::FUN_00939a60(undefined4 param_1) {

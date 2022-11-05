@@ -47,7 +47,7 @@ public:
     const SItemData &GetItemData(int refObjItemId) const;
 
     /// \address 00937f20
-    const CLevelData::SData &GetLevelData(int level) const;
+    const SLevelData &GetLevelData(int level) const;
 
     /// \address 00939a60
     undefined FUN_00939a60(undefined4 param_1);
@@ -58,6 +58,9 @@ public:
 private:
     /// \address 0093f2f0
     const CItemData *GetItem(int refObjItemId) const;
+
+    /// \address 0x00937e00
+    const CLevelData *GetLevel(int level) const;
 
     /// \address 0093ef10
     undefined4 LoadFromPk2(int typeMAYBE, int id);
