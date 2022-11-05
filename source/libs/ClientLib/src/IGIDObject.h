@@ -46,7 +46,7 @@ public:
     /// \brief Get the assigned name of this object
     const std::n_wstring &GetName() const;
 
-    const CCharacterData::SData *GetSData() const;
+    const SCommonData *GetCommonData() const;
 
     const int GetUniqueId() const;
 private:
@@ -62,7 +62,7 @@ protected:
     CGFontTexture fonttexture_title; //0x01B0
 private:
     char pad_0218[8]; //0x0218
-    CCharacterData::SData* m_characterData; //0x0220
+    SCommonData *m_commonData; //0x0220
     char pad_0224[48]; //0x0224
 
 BEGIN_FIXTURE()
@@ -71,6 +71,7 @@ BEGIN_FIXTURE()
         ENSURE_OFFSET(m_name, 0x110)
         ENSURE_OFFSET(fonttexture_playername, 0x12c)
         ENSURE_OFFSET(fonttexture_title, 0x1b0)
+        ENSURE_OFFSET(m_commonData, 0x220)
 
     END_FIXTURE()
 

@@ -10,7 +10,7 @@ set(SOURCE_FILES src/BufRender.h
         src/Data/GachaNpcData.h
         src/Data/GameGuideData.h
         src/Data/ItemData.h src/Data/ItemData.cpp
-        src/Data/LevelData.h
+        src/Data/LevelData.h src/Data/LevelData.cpp
         src/Data/LevelGoldData.h
         src/Data/MagicOptionData.h
         src/Data/MallItemMenuListData.h

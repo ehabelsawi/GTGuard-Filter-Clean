@@ -244,7 +244,7 @@ void CGInterface::WriteGlobalMessage(unsigned char nSlot, std::n_wstring message
         return;
     }
 
-    const CItemData::SData *pItemData = item->GetItemData();
+    const SItemData *pItemData = item->GetItemData();
 
     if (pItemData->IsGlobalMessageScroll()) {
         NEWMSG(0x704c)
