@@ -20,7 +20,7 @@ enum Blue : short {
 class CSOItem {
 public:
     /// \address 008ba440
-    const CItemData::SData *GetItemData() const;
+    const SItemData *GetItemData() const;
 
     /// \address 008ba460
     int GetQuantity() const;

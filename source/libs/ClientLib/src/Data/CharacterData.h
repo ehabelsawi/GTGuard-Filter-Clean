@@ -63,7 +63,7 @@ public:
     const SCharacterData &GetData() const;
 
 private:
-    undefined pad[4];
+    //undefined pad[4];
     SCharacterData m_data;
 
     BEGIN_FIXTURE()

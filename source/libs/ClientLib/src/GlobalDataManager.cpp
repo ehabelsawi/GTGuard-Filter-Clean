@@ -6,7 +6,7 @@ undefined4 CGlobalDataManager::FUN_008cbac0(int a1) {
     return reinterpret_cast<undefined4(__thiscall *)(CGlobalDataManager *, int)>(0x008cbac0)(this, a1);
 }
 
-const CCharacterData *CGlobalDataManager::GetCharacterData(int id) {
+const CCharacterData *CGlobalDataManager::GetCharacter(int id) {
     std::n_map<unsigned __int32, CCharacterData *>::const_iterator it = m_characterDataMap.find(id);
     if (it == m_characterDataMap.end()) {
         if (LoadFromPk2(0, id) == 0) {
@@ -18,16 +18,14 @@ const CCharacterData *CGlobalDataManager::GetCharacterData(int id) {
     return it->second;
 }
 
-const CItemData::SData &CGlobalDataManager::GetItemData(int refObjItemId) const {
+const SItemData &CGlobalDataManager::GetItemData(int refObjItemId) const {
 
-    const CItemData *pItem = FUN_0093f2f0(refObjItemId);
-    if (pItem == NULL) {
-        BS_ASSERT_MSG(pItem != NULL, "Item: %d", pItem);
-    }
+    const CItemData *pItem = GetItem(refObjItemId);
+    BS_ASSERT_MSG(pItem != NULL, "Item: %d", pItem);
     return pItem->GetData();
 }
 
-const CItemData *CGlobalDataManager::FUN_0093f2f0(int refObjItemId) const {
+const CItemData *CGlobalDataManager::GetItem(int refObjItemId) const {
     return reinterpret_cast<const CItemData *(__thiscall *)(const CGlobalDataManager *, int)>(0x0093f2f0)(this,
                                                                                                           refObjItemId);
 }

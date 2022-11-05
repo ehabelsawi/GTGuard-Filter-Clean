@@ -2,8 +2,8 @@
 #include "GlobalDataManager.h"
 
 
-const CItemData::SData *CSOItem::GetItemData() const {
-    const CItemData::SData *data = NULL;
+const SItemData *CSOItem::GetItemData() const {
+    const SItemData *data = NULL;
 
     if (m_refObjItemId != 0) {
         data = &g_CGlobalDataManager->GetItemData(m_refObjItemId);

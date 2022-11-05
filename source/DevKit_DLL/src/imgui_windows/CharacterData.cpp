@@ -22,7 +22,7 @@ void CharacterData::Render() {
 
     if (ImGui::InputInt("ID", &id)) {
         // Update
-        data = g_CGlobalDataManager->GetCharacterData(id);
+        data = g_CGlobalDataManager->GetCharacter(id);
     }
 
     if (data != NULL) {

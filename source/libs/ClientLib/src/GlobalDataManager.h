@@ -41,10 +41,10 @@ public:
     undefined4 FUN_008cbac0(int a1);
 
     /// \address 0093f370
-    const CCharacterData *GetCharacterData(int id);
+    const CCharacterData *GetCharacter(int id);
 
     /// \address 0093f5f0
-    const CItemData::SData &GetItemData(int refObjItemId) const;
+    const SItemData &GetItemData(int refObjItemId) const;
 
     /// \address 00937f20
     const CLevelData::SData &GetLevelData(int level) const;
@@ -57,7 +57,7 @@ public:
 
 private:
     /// \address 0093f2f0
-    const CItemData *FUN_0093f2f0(int refObjItemId) const;
+    const CItemData *GetItem(int refObjItemId) const;
 
     /// \address 0093ef10
     undefined4 LoadFromPk2(int typeMAYBE, int id);
