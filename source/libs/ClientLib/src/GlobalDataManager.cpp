@@ -31,7 +31,15 @@ const CItemData *CGlobalDataManager::GetItem(int refObjItemId) const {
 }
 
 const CLevelData *CGlobalDataManager::GetLevel(int level) const {
-    return reinterpret_cast<const CLevelData *(__thiscall *)(const CGlobalDataManager *, int)>(0x00937e00)(this, level);
+    std::map<unsigned __int32, CLevelData *>::const_iterator it = m_levelDataMap.find(level);
+    if (it != m_levelDataMap.end())
+    {
+        return it->second;
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 const SLevelData &CGlobalDataManager::GetLevelData(int level) const {

@@ -46,7 +46,11 @@ public:
     /// \address 0093f5f0
     const SItemData &GetItemData(int refObjItemId) const;
 
+    /// \brief Get level data for given level
+    /// \details Returns the data from leveldata.txt
+    /// \param level Level of character or job
     /// \address 00937f20
+    /// \remark Known bug: Will crash if value of level is not present in leveldata.txt
     const SLevelData &GetLevelData(int level) const;
 
     /// \address 00939a60
@@ -59,6 +63,10 @@ private:
     /// \address 0093f2f0
     const CItemData *GetItem(int refObjItemId) const;
 
+    /// \brief Get level object for given level
+    /// \param level Level of either character or job
+    /// \return pointer to leveldata if level was found
+    /// \return NULL if level was not found
     /// \address 0x00937e00
     const CLevelData *GetLevel(int level) const;
 
@@ -111,6 +119,7 @@ private:
 private:
 BEGIN_FIXTURE()
         ENSURE_OFFSET(m_characterDataMap, 0x0264)
+        ENSURE_OFFSET(m_levelDataMap, 0x0410)
     END_FIXTURE()
 
     RUN_FIXTURE(CGlobalDataManager)
