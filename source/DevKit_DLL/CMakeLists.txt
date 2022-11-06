@@ -19,6 +19,7 @@ set(SOURCE_FILES
         src/imgui_windows/Inventory.h src/imgui_windows/Inventory.cpp
         src/imgui_windows/PartyInfo.cpp src/imgui_windows/PartyInfo.h
         src/imgui_windows/CharacterData.cpp src/imgui_windows/CharacterData.h
+        src/imgui_windows/ItemData.cpp src/imgui_windows/ItemData.h
         src/Util.cpp src/Util.h
         src/QuickStart.cpp src/QuickStart.h
         src/MathUtil.cpp src/MathUtil.h)
