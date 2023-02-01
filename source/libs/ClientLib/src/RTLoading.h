@@ -1,5 +1,5 @@
 #pragma once
-#include "GFXFileManagerLIB/IFileManager.h"
+#include "GFXFM/IFileManager.h"
 
 
 // This name is from an error message of CRTLoading ... 

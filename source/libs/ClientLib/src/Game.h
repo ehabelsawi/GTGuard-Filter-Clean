@@ -2,7 +2,7 @@
 #include <string>
 #include "GFXMainFrame/GFXMainFrame.h"
 #include <GFX3DFunction/GFontTexture.h>
-#include <GFXFileManagerLIB/IFileManager.h>
+#include <GFXFM/IFileManager.h>
 #include <BSLib/StringCheck.h>
 
 #include "unsorted.h"

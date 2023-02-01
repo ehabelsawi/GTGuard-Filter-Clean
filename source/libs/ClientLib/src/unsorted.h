@@ -41,12 +41,6 @@ bool StartNetEngine();
 void DrawRect(int x, int y, int height, int width, int color);
 void DrawRect(int x, int y, int height, int width);
 
-struct UISize
-{
-	int width;
-	int height;
-};
-
 void sub_BBDA70(int a1);
 void PopulateCharPositionsForNameChange(CGFXVideo3d *p);
 

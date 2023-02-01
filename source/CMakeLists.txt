@@ -1,10 +1,14 @@
 
-add_subdirectory(libs/BSLib)
+# JOYMAX libs
+add_subdirectory(libs/JMX_Library/BSLib)
+add_subdirectory(libs/JMX_Library/GFX/GFX3DFunction)
+add_subdirectory(libs/JMX_Library/GFX/FM)
+add_subdirectory(libs/JMX_Library/GFX/GFXMainFrame)
+add_subdirectory(libs/JMX_Library/SROInterfaceLib)
+
 add_subdirectory(libs/ClientNet)
 add_subdirectory(libs/ClientLib)
-add_subdirectory(libs/GFX3DFunction)
-add_subdirectory(libs/GFXFileManagerLIB)
-add_subdirectory(libs/GFXMainFrame)
+
 add_subdirectory(libs/NavMesh)
 add_subdirectory(libs/SimpleViewer)
 add_subdirectory(libs/MathHelpers)
