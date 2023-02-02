@@ -1,14 +1,18 @@
 #pragma once
 #include <string>
+
 #include "GFXMainFrame/GFXMainFrame.h"
+
 #include <GFX3DFunction/GFontTexture.h>
+#include <GFX3DFunction/RTLoading.h>
+
 #include <GFXFM/IFileManager.h>
+
 #include <BSLib/StringCheck.h>
 
 #include "unsorted.h"
 #include "GEffSoundBody.h"
 #include "DxSound.h"
-#include "RTLoading.h"
 #include "IFConsole.h"
 #include "is_this_important.h"
 

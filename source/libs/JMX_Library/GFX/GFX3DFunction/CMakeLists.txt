@@ -9,7 +9,7 @@ set(SOURCE_FILES
         src/GFX3DFunction/Common/dxutil.cpp src/GFX3DFunction/Common/dxutil.h
         src/GFX3DFunction/RStateMgr.cpp src/GFX3DFunction/RStateMgr.h
         src/GFX3DFunction/TextureRuntime.h
-        src/RTLoading.cpp src/RTLoading.h)
+        src/GFX3DFunction/RTLoading.cpp src/GFX3DFunction/RTLoading.h)
 
 add_library(GFX3DFunction STATIC ${SOURCE_FILES})
 target_link_libraries(GFX3DFunction GFXMainFrame d3d9 GFXFileManagerLIB)
