@@ -28,7 +28,7 @@ public:
 public:
     virtual ~CNIFTextBoard();
 
-    virtual void NTB_Func_1(float a2);
+    virtual void OnAniFading(float fGameAniSpeedCorrection);
 
     virtual void OnRender();
 
@@ -36,16 +36,16 @@ public:
 
     virtual void FontTextureRender();
 
-    virtual void SetHAlign(ENUM_HALIGN_TYPE Type);
+    virtual void SetHAlign(ENUM_HALIGN_TYPE eType);
 
-    virtual void SetVAlign(ENUM_VALIGN_TYPE Type);
+    virtual void SetVAlign(ENUM_VALIGN_TYPE eType);
 
-    virtual void NTB_Func_7();
+    virtual void OnAniFadeRelease();
 
     ///\Alpha Alpha, is the Transparency
-    virtual BYTE GetAlpha();
+    virtual BYTE GetAlphaScale();
 
-    virtual void SetAlpha(BYTE btValue);
+    virtual void SetAlphaScale(BYTE btValue);
 
     virtual void NTB_Func_10();
 
@@ -53,16 +53,41 @@ public:
 
     virtual void NTB_Func_12(const char *str, int a3, int a4);
 
-    virtual void NTB_Func_13(std::n_string str, int a3, int a4);
+    virtual void NTB_Func_13(const std::n_string &str, int a3, int a4);
 
-    virtual void NTB_Func_14(std::n_string str, int a3, int a4);
+    virtual void SetBaseTexture(const std::n_string &str, int a3, int a4);
 
-    virtual void NTB_Func_15(int a2);
+    virtual void SetBaseTexture(IDirect3DBaseTexture9 *pNewTexture);
 
-    virtual void NTB_Func_16();
+    virtual void ClearBaseTexture();
 
 public:
     void InstantiateFontText(const wchar_t *pText);
+
+    void SetFontData(void *pData);
+
+    void SetTextureBGColor(DWORD dwColor);
+
+    void SetAniFadeData(BYTE btAlphaStart, BYTE btAlphaMax, float fTime, float fStartupTime);
+
+private:
+    void UpdateAlphaFading();
+
+    void AnimateTextureFade(float fGameAniSpeedCorrection);
+
+protected:
+    void EnableTextureAlphaOperations(DWORD dwColorValue);
+
+    void DefaultTextureAlphaOperations();
+
+public:
+    void SetHoverTexture(const std::n_string &strPath);
+
+    void SetReleaseTextureValue(DWORD dwValue);
+
+    DWORD SetReleaseTextureMask(DWORD dwValue);
+
+    void ClearReleaseTextureValue();
 
 private:
     ENUM_HALIGN_TYPE m_nTextureHAlignType; //0x0004
@@ -83,13 +108,13 @@ private:
     BYTE m_btCurrentTextureAlpha; //0x00AD
     BYTE m_cAniFadeAlphaMax; //0x00AE // Count
     float m_fAniFadeTime; //0x00B0
-    float m_fAniFadeSpeed; //0x00B4
+    float m_fAniFadeCurrentTime; //0x00B4
     IDirect3DBaseTexture9 *m_pBgTexture3D; //0x00B8 // Background
     IDirect3DBaseTexture9 *m_pHoverTexture3D; //0x00BC
     std::n_string m_strFocusTexturePath; //0x00C0
     IDirect3DBaseTexture9 *m_pMainTexture3D; //0x00DC // Current
     std::n_string m_strBGroundTexturePath; //0x00E0 // Background
-    DWORD m_dwDestroyBGTextureMask; //0x00FC Bit 1 mean release its from the game texture mgr
+    DWORD m_dwReleaseTexture; //0x00FC Bit 1 mean release its from the game texture mgr
     bool m_bRenderTexture; //0x0100
 private:
 BEGIN_FIXTURE()
@@ -106,13 +131,13 @@ BEGIN_FIXTURE()
         ENSURE_OFFSET(m_btCurrentTextureAlpha, 0x00AD)
         ENSURE_OFFSET(m_cAniFadeAlphaMax, 0x00AE)
         ENSURE_OFFSET(m_fAniFadeTime, 0x00B0)
-        ENSURE_OFFSET(m_fAniFadeSpeed, 0x00B4)
+        ENSURE_OFFSET(m_fAniFadeCurrentTime, 0x00B4)
         ENSURE_OFFSET(m_pBgTexture3D, 0x00B8)
         ENSURE_OFFSET(m_pHoverTexture3D, 0x00BC)
         ENSURE_OFFSET(m_strFocusTexturePath, 0x00C0)
         ENSURE_OFFSET(m_pMainTexture3D, 0x00DC)
         ENSURE_OFFSET(m_strBGroundTexturePath, 0x00E0)
-        ENSURE_OFFSET(m_dwDestroyBGTextureMask, 0x00FC)
+        ENSURE_OFFSET(m_dwReleaseTexture, 0x00FC)
         ENSURE_OFFSET(m_bRenderTexture, 0x0100)
     END_FIXTURE()
 

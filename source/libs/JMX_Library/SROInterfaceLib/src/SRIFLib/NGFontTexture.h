@@ -27,7 +27,9 @@ public:
     void *m_pFontData; //0x0004
 private:
     char pad_0008[4]; //0x0008
+public:
     D3DCOLOR m_dwBGColor; //0x000C
+private:
     D3DCOLOR m_dwFGColor; //0x0010
     char pad_0014[0x30]; //0x0014
 public:
