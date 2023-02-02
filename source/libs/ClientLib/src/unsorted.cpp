@@ -70,16 +70,6 @@ int GetIDOfInterfaceUnderCursor() {
     }
 }
 
-// Fun_CacheTexture_Create .text 005008F0 00000010 00000000 00000004 R . . . . . .
-void* Fun_CacheTexture_Create(const std::n_string &a2) {
-    return reinterpret_cast<void*(__cdecl*)(const std::n_string*)>(0x005008F0)(&a2);
-}
-
-// Fun_CacheTexture_Release .text 00500460 00000010 00000000 00000004 R . . . . . .
-void Fun_CacheTexture_Release(std::n_string *a2) {
-    assert(FALSE);
-}
-
 void SendRestartRequest(char type) {
     reinterpret_cast<void (__stdcall *)(char)>(0x0081F030)(type);
 }

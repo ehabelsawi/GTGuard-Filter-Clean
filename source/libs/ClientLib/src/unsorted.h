@@ -46,9 +46,6 @@ void PopulateCharPositionsForNameChange(CGFXVideo3d *p);
 
 int GetIDOfInterfaceUnderCursor();
 
-void* Fun_CacheTexture_Create(const std::n_string &a2);
-void Fun_CacheTexture_Release(std::n_string *a2);
-
 void SendRestartRequest(char type);
 
 int sub_4F9C50();

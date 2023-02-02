@@ -16,7 +16,6 @@ add_subdirectory(libs/TypeId)
 
 add_subdirectory(tests)
 
-
 add_subdirectory(third-party/remodel)
 add_subdirectory(third-party/memory)
 add_subdirectory(third-party/imgui)
