@@ -37,7 +37,7 @@ CNIFTextBoard::CNIFTextBoard() : m_NFontTexture() {
     m_nTextureVAlignType = VALIGN_CENTER;
     NTB_Func_3();
 
-    m_pMainTexture3D = NULL;
+    m_pRenderTexture = NULL;
     m_dwReleaseTexture = FALSE;
     m_pHoverTexture3D = NULL;
     m_pBgTexture3D = NULL;
@@ -161,21 +161,21 @@ void CNIFTextBoard::NTB_Func_12(const char *str, int a3, int a4) {
 }
 
 void CNIFTextBoard::NTB_Func_13(const std::n_string &str, int a3, int a4) {
-    if (m_strBGroundTexturePath.empty() && m_pMainTexture3D != NULL)
-        m_pMainTexture3D->Release();
+    if (m_strBGroundTexturePath.empty() && m_pRenderTexture != NULL)
+        m_pRenderTexture->Release();
 
-    if (m_pMainTexture3D != NULL)
+    if (m_pRenderTexture != NULL)
         Fun_CacheTexture_Release(&m_strBGroundTexturePath);
 
     if (str.empty()) {
         m_strBGroundTexturePath.clear();
-        m_pMainTexture3D = NULL;
+        m_pRenderTexture = NULL;
         m_bRenderTexture = false;
         return;
     }
 
     IDirect3DBaseTexture9 *pTexture = Fun_CacheTexture_Create(str);
-    m_pMainTexture3D = pTexture;
+    m_pRenderTexture = pTexture;
     m_pBgTexture3D = pTexture;
     m_strBGroundTexturePath = str;
     m_bRenderTexture = true;
@@ -195,38 +195,38 @@ void CNIFTextBoard::SetHoverTexture(const std::n_string &strPath) {
 }
 
 void CNIFTextBoard::SetBaseTexture(const std::n_string &str, int a3, int a4) {
-    if (m_strBGroundTexturePath.empty() && m_pMainTexture3D != NULL)
-        m_pMainTexture3D->Release();
+    if (m_strBGroundTexturePath.empty() && m_pRenderTexture != NULL)
+        m_pRenderTexture->Release();
 
-    if (m_pMainTexture3D != NULL)
+    if (m_pRenderTexture != NULL)
         Fun_CacheTexture_Release(&m_strBGroundTexturePath);
 
     if (str.empty()) {
         m_strBGroundTexturePath.clear();
-        m_pMainTexture3D = NULL;
+        m_pRenderTexture = NULL;
         m_bRenderTexture = false;
         return;
     }
 
     IDirect3DBaseTexture9 *pTexture = Fun_CacheTexture_Create(str);
-    m_pMainTexture3D = pTexture;
+    m_pRenderTexture = pTexture;
     // m_pBgTexture3D = pTexture;
     m_strBGroundTexturePath = str;
     m_bRenderTexture = true;
 }
 
 void CNIFTextBoard::SetBaseTexture(IDirect3DBaseTexture9 *pNewTexture) {
-    if (m_strBGroundTexturePath.empty() && m_pMainTexture3D != NULL)
-        m_pMainTexture3D->Release();
+    if (m_strBGroundTexturePath.empty() && m_pRenderTexture != NULL)
+        m_pRenderTexture->Release();
 
     m_strBGroundTexturePath.clear();
-    m_pMainTexture3D = pNewTexture;
+    m_pRenderTexture = pNewTexture;
     m_bRenderTexture = true;
 }
 
 void CNIFTextBoard::ClearBaseTexture() {
     m_strBGroundTexturePath.clear();
-    m_pMainTexture3D = NULL;
+    m_pRenderTexture = NULL;
     m_bRenderTexture = false;
 }
 
