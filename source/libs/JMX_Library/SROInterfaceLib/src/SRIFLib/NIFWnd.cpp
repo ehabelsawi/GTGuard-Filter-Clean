@@ -574,7 +574,7 @@ DWORD CNIFWnd::RemoveStyleThingy(StyleOptions eOptions) {
     return m_dwStyleOptionBit;
 }
 
-bool CNIFWnd::IsStyleThingy(StyleOptionShiftType eStyle) const {
+bool CNIFWnd::IsStyleThingy(StyleOptions eStyle) const {
     return ((m_dwStyleOptionBit & eStyle) != FALSE);
 }
 

@@ -204,7 +204,7 @@ public:
     DWORD RemoveStyleThingy(StyleOptions eOptions);
 
     /// \address 0046d900
-    bool IsStyleThingy(StyleOptionShiftType eStyle) const;
+    bool IsStyleThingy(StyleOptions eStyle) const;
 
     /// \address 0046d910
     void UseCurrentAlphaScale();
