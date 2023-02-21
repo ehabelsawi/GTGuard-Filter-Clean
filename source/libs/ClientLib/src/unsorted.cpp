@@ -9,7 +9,8 @@
 #include <GFX3DFunction/DrawingHelpers.h>
 #include <ICharactor.h>
 
-#include "NIFCommunityWnd.h"
+#include "SRIFLib/NIFCommunityWnd.h"
+
 #include "IFChatViewer.h"
 
 #include <Game.h>

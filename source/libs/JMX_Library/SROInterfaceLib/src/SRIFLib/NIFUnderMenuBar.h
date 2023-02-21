@@ -1,8 +1,8 @@
 #pragma once
 
-#include "NIFWnd.h"
 #include "NIFGauge.h"
 #include "NIFStatic.h"
+#include "NIFWnd.h"
 
 // https://www.elitepvpers.com/forum/sro-pserver-guides-releases/4256375-source-fix-old-exp-bar-writing-code.html
 class NIFUnderMenuBar : public CNIFWnd {
