@@ -37,7 +37,11 @@ public:
 
     /// \brief Get the working directory of the client
     const char *GetWorkingDir() const;
-	
+
+    const CETime *GetTimeBase() const {
+        return &primary_timebase;
+    }
+
 private:
 	CProcess* process_current; //0x0024
 	CProcess* process_next; //0x0028, Is CPSOuterInterface as of CPSLogo::OnUpdate (accesses 0xE8, which is out of range of CProcess)

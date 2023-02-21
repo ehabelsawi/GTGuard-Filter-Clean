@@ -7,7 +7,7 @@
 
 #include "GFXFM/IFileManager.h"
 
-class CNIFWnd;
+#include "NIFWnd.h"
 
 struct UISize {
     int width;
@@ -89,4 +89,4 @@ BEGIN_FIXTURE()
     RUN_FIXTURE(CNInterfaceManager)
 };
 
-#define g_sNewInterfaceMgr (reinterpret_cast<CNInterfaceManager *>(0x0115dd40))
+#define g_sNewInterfaceMgr *(reinterpret_cast<CNInterfaceManager *>(0x0115dd40))

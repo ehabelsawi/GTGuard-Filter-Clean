@@ -23,6 +23,8 @@ public:
 
     void EraseTextLetters();
 
+    void SetColor(DWORD dwColor);
+
 public:
     void *m_pFontData; //0x0004
 private:
