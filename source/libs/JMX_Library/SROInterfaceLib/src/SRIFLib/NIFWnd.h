@@ -243,6 +243,7 @@ public: // non client stuff
         return ((m_dwStyleOptionBit >> st) & 1) != false;
     }
 
+    // Sned GFX_WM_STYLE_CHANGE to the window msg proc
     inline void UpdateStyle() {
         UpdateTexturesCoordinates();
         Event3D sEventMsg;
@@ -282,7 +283,25 @@ private:
     DWORD field_0344; //0x0344
 private:
 BEGIN_FIXTURE()
-        ENSURE_SIZE(0x348)
+        ENSURE_SIZE(0x0348)
+        ENSURE_OFFSET(m_bMineAlphaScaleUse, 0x0188)
+        ENSURE_OFFSET(m_dwIsAniFadeIn, 0x018C)
+        ENSURE_OFFSET(m_dwStyleOptionBit, 0x0190)
+        ENSURE_OFFSET(m_rcTextTexturePos, 0x0194)
+        ENSURE_OFFSET(m_wstrInnerText, 0x01A4)
+        ENSURE_OFFSET(m_dwEnableMouseActions, 0x01C0)
+        ENSURE_OFFSET(m_dwTextureBGColor, 0x01C4)
+        ENSURE_OFFSET(m_dwTextureFGColor, 0x01C8)
+        ENSURE_OFFSET(m_fRenderColorRight, 0x01CC)
+        ENSURE_OFFSET(m_fRenderColorDown, 0x01D0)
+        ENSURE_OFFSET(m_wstrTooltipText, 0x01D8)
+        ENSURE_OFFSET(m_blWndDragMode, 0x01F4)
+        ENSURE_OFFSET(m_vTextureUV, 0x021C)
+        ENSURE_OFFSET(m_vTexturedRenderCords, 0x023C)
+        ENSURE_OFFSET(m_vTextureColorRenderCords, 0x02B4)
+        ENSURE_OFFSET(m_vecEdgesTextureHelper, 0x032C)
+        ENSURE_OFFSET(m_bEdgesHelperVisibleState, 0x033C)
+        ENSURE_OFFSET(m_dwWndType, 0x0340)
     END_FIXTURE()
 
     RUN_FIXTURE(CNIFWnd)
