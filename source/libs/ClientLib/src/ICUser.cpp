@@ -388,7 +388,7 @@ void CICUser::RenderFortressIcons(D3DVECTOR *dataOut, float *param_2) {
     dataOut[4].y = dataOut[0].y + 32.0f;
     dataOut[2].y = dataOut[0].y;
     dataOut[6].y = dataOut[4].y;
-    g_RStateMgr.FUN_00470310(0x104);
+    g_RStateMgr.SetDeviceFVFState(0x104);
 
     int local_158 = 0;
     if (g_pDynamicVertexBuffer->IVBDynamic_Func_6(dataOut, 0x60, &local_158) != 0) {

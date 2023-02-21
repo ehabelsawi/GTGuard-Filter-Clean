@@ -21,7 +21,7 @@ public:
     void FUN_00470060(undefined4 param_1, int param_2, int param_3);
 
     /// \address 00470310
-    undefined4 FUN_00470310(int param_1);
+    HRESULT SetDeviceFVFState(DWORD dwFVF);
 
     template<DWORD Stage, D3DTEXTURESTAGESTATETYPE Type>
     static inline void SetStageOperator(DWORD value) {
