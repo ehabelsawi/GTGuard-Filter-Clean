@@ -44,8 +44,6 @@ void DrawRect(int x, int y, int height, int width);
 void sub_BBDA70(int a1);
 void PopulateCharPositionsForNameChange(CGFXVideo3d *p);
 
-int GetIDOfInterfaceUnderCursor();
-
 void SendRestartRequest(char type);
 
 int sub_4F9C50();

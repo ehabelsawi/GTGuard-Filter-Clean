@@ -16,8 +16,6 @@
 
 #include <remodel/GlobalPtr.h>
 
-GlobalPtr<CGWndBase, 0x0110F60C> g_CurrentIF_UnderCursor;
-
 bool TryCreateCompatibleDC() {
     g_hdc = CreateCompatibleDC(0);
     return g_hdc != 0;
@@ -60,14 +58,6 @@ void sub_BBDA70(int a1) {
 
 void PopulateCharPositionsForNameChange(CGFXVideo3d *p) {
     reinterpret_cast<void (__cdecl *)(CGFXVideo3d *)>(0x85AFF0)(p);
-}
-
-int GetIDOfInterfaceUnderCursor() {
-    if (g_CurrentIF_UnderCursor) {
-        return g_CurrentIF_UnderCursor->UniqueID();
-    } else {
-        return -1;
-    }
 }
 
 void SendRestartRequest(char type) {

@@ -8,8 +8,8 @@ GFX_BEGIN_MESSAGE_MAP(CIFWnd, CObjChild)
 
 // ONG_COMMAND(2, On2)
 
-                    ONG_WM_4001()
-                    ONG_WM_4006()
+                    ONG_CREATE()
+                    ONG_MOVE()
 
 
 GFX_END_MESSAGE_MAP()
@@ -114,7 +114,7 @@ void CIFWnd::Func_22(int x, int y) {
 }
 
 // CIFWnd::Func_37(void) .text 00652660 0000000A   R . . . . . .
-void CIFWnd::Func_37() {
+void CIFWnd::OnGWndDimensionChange() {
     OnCIFReady();
 }
 

@@ -2,7 +2,19 @@
 
 #include "GWndBase.h"
 
-class CProcess; /* forward decl to avoid include recursion */
+#include "remodel/GlobalPtr.h"
+
+enum StyleOptions : DWORD {
+    NONE = 0x00,
+    UNKNOWN_0x01 = 0x01,
+    PASSWORD_MASKED = 0x02,
+    UNKNOWN_0x04 = 0x04,
+    UNKNOWN_0x08 = 0x08,
+    UNKNOWN_0x10 = 0x10,
+    UNKNOWN_0x20 = 0x20,
+    INVISIBLE = 0x40,
+    TOOLTIP = 0x80
+};
 
 /// Adds just a bunch of virtuals to \ref CGWndBase which are pretty much all unknown ...
 class CGWnd : public CGWndBase {
@@ -33,7 +45,11 @@ public:
     /// \address 0046fd60
     virtual int OnMouseLeftDown(int a1, int x, int y);
 
-    virtual int Func_31(int a1, int a2, int a3);
+    /// \brief Called when the left mouse button is released twice
+    /// \param x Position X of the mouse
+    /// \param y Position Y of the mouse
+    /// \address 0046fd50
+    virtual int OnMouseDbLeftUp(int a1, int a2, int a3);
 
     /// \brief Called when the right mouse button is pressed
     /// \param x Position X of the mouse
@@ -57,10 +73,13 @@ public:
 
     virtual int Func_36(int a1, short action, int a3, int a4);
 
-    virtual void Func_37();
+    virtual void OnGWndDimensionChange();
 
     /// \address 00B9E270
     CGWnd();
+
+    /// \address 00b9d7a0
+    ~CGWnd();
 
     /// \address 00B9D7E0
     void OnUpdate() override;
@@ -80,6 +99,15 @@ public:
     /// \address 00B9D890
     bool On3DEvent_MAYBE(Event3D *a2) override;
 
+public:
+    /// \address 00b9db10
+    void SetHoldingMouseSlot(CGWnd *pSlot);
+
+    /// \address 00b9dc60
+    static int GetCurrentEventMsgCtrlId();
+
+    /// \address 00ba0e40
+    void EraseWindowObj();
 
     /// Create a new CGWnd-instance based on the given runtime class
     /// \deprecated This function is deprecated. Please use the one that uses wnd_rect instead of RECT!
@@ -100,7 +128,14 @@ public:
     /// \param a4 Presumably the Id
     /// \param a5 Unknown
     static CGWnd *CreateInstance(CGWnd *pParent, const CGfxRuntimeClass &pType, wnd_rect &Rect, int a4, int a5) {
-        return reinterpret_cast<CGWnd *(__cdecl *)(CGWnd *, const CGfxRuntimeClass *, wnd_rect *, int, int)>(0x00BA20B0)(
+        return reinterpret_cast<CGWnd *(__cdecl *)(CGWnd *, const CGfxRuntimeClass *, wnd_rect *, int,
+                                                   int)>(0x00BA20B0)(
                 pParent, &pType, &Rect, a4, a5);
     }
 };
+
+#define g_pOnMouseDownClickCtrl (*((CGWnd**)0x0110f5fc))
+#define g_pUnderFocusCtrl (*((CGWnd**)0x0110f600))
+#define g_pMouseHoldingSlot (*((CGWnd**)0x0110f604))
+/// \brief Current event msg map element like click etc
+#define g_pCurrentEventCtrl (*((CGWnd**)0x0110F60C))
