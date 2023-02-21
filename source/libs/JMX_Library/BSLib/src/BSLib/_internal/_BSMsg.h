@@ -21,6 +21,12 @@ enum BSSig {
 enum {
     GFX_WM_KEYUP = 0x101,
     GFX_WM_CHAR = 0x102,
+    GFX_WM_CREATE = 0x4001,
+    GFX_WM_MOVE = 0x4006,
+    GFX_WM_MOUSEHOVER_DOWN = 0x4009,
+    GFX_WM_MOUSEHOVER_UP = 0x400A,
+    GFX_WM_STYLE_CHANGE = 0x400B,
+    GFX_WM_FADERELEASING = 0x8064,
 };
 
 #define ONG_COMMAND(Id, Func) \
@@ -47,16 +53,10 @@ enum {
         (static_cast< int (GFX_MSG_CALL CGWndBase::*)(UINT, UINT, UINT) > ( &ThisClass :: OnChar)), \
         0, 0, 0},
 
-#define ONG_WM_32868() \
-    { 32868, 0, 0, 0, BSSig_u10, 0, \
+#define ONG_CREATE() \
+    { GFX_WM_CREATE, 0, 0, 0, 0xA, 0, \
     (GFX_PMSG) \
-    (static_cast< int (GFX_MSG_CALL CGWndBase::*)(int, int) > ( &ThisClass :: On32868)), \
-        0, 0, 0},
-
-#define ONG_WM_4001() \
-    { 0x4001, 0, 0, 0, 0xA, 0, \
-    (GFX_PMSG) \
-    (static_cast< int (GFX_MSG_CALL CGWndBase::*)(int, int) > ( &ThisClass :: On4001)), \
+    (static_cast< int (GFX_MSG_CALL CGWndBase::*)(UINT, UINT) > ( &ThisClass :: OnCreatedInstance)), \
         0, 0, 0},
 
 #define ONG_WM_4002() \
@@ -83,10 +83,10 @@ enum {
     (static_cast< int (GFX_MSG_CALL CGWndBase::*)(int, int) > ( &ThisClass :: On4005)), \
         0, 0, 0},
 
-#define ONG_WM_4006() \
-	{ 0x4006, 0, 0, 0, 0xA, 0, \
+#define ONG_MOVE() \
+	{ GFX_WM_MOVE, 0, 0, 0, 0xA, 0, \
 	(GFX_PMSG) \
-	(static_cast< int (GFX_MSG_CALL CGWndBase::*)(int, int) > ( &ThisClass :: On4006)), \
+	(static_cast< int (GFX_MSG_CALL CGWndBase::*)(UINT, UINT) > ( &ThisClass :: OnWindowPosChanged)), \
 		0, 0, 0},
 
 // Mostly used by:
@@ -96,3 +96,9 @@ enum {
 	(GFX_PMSG) \
 	(static_cast< int (GFX_MSG_CALL CGWndBase::*)(int, int) > ( &ThisClass :: On4008)), \
 		0, 0, 0},
+
+#define ONG_ALPHAANI_RELEASING() \
+    { GFX_WM_FADERELEASING, 0, 0, 0, BSSig_u10, 0, \
+    (GFX_PMSG) \
+    (static_cast< int (GFX_MSG_CALL CGWndBase::*)(int, int) > ( &ThisClass :: OnAlphaAniReleasing)), \
+        0, 0, 0},

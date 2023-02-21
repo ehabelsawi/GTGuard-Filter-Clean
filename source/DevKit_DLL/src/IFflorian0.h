@@ -17,12 +17,12 @@ public:
 private:
 	void On_BtnClick();
 
-	int On4001(int a1, int a2);
+	int OnCreatedInstance(UINT a1, UINT a2);
 	int On4002(int a1, int a2);
 	int On4003(int a1, int a2);
 	int OnVisibleStateChange(int a1, int a2);
 	int On4005(int a1, int a2);
-	int On4006(int a1, int a2);
+	int OnWindowPosChanged(UINT a1, UINT a2);
 
 private:
 	CIFButton *m_mybutton;

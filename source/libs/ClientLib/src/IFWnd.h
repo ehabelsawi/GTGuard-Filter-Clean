@@ -100,9 +100,9 @@ public:
     void SetStyleThingy(StyleOptions option);
 
 private:
-    int On4001(int, int);
+    int OnCreatedInstance(UINT lParam, UINT wParam);
 
-    int On4006(int, int);
+    int OnWindowPosChanged(UINT lParam, UINT wParam);
 
     void sub_652B00();
 

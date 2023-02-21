@@ -218,13 +218,13 @@ void CIFWnd::Func_48() {
 }
 
 // CIFWnd::On4001(int,int) .text 00652390 00000012 00000000 00000000 R . . . . . .
-int CIFWnd::On4001(int a2, int a3) {
-    return reinterpret_cast<int (__thiscall *)(CIFWnd *, int, int)>(0x00652390)(this, a2, a3);
+int CIFWnd::OnCreatedInstance(UINT lParam, UINT wParam) {
+    return reinterpret_cast<int (__thiscall *)(CIFWnd *, UINT, UINT)>(0x00652390)(this, lParam, wParam);
 }
 
 // CIFWnd::On4006(int,int) .text 006523B0 00000012 00000000 00000000 R . . . . . .
-int CIFWnd::On4006(int a2, int a3) {
-    return reinterpret_cast<int (__thiscall *)(CIFWnd *, int, int)>(0x006523B0)(this, a2, a3);
+int CIFWnd::OnWindowPosChanged(UINT lParam, UINT wParam) {
+    return reinterpret_cast<int (__thiscall *)(CIFWnd *, UINT, UINT)>(0x006523B0)(this, lParam, wParam);
 }
 
 // CIFWnd::sub_652B00(void) .text 00652B00 00000045   R . . . . . .
