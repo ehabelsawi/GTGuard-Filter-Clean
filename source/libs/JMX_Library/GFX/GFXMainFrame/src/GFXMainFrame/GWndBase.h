@@ -22,7 +22,7 @@ struct Event3D {
  *
  */
 class CGWndBase : public CObjChild { // size 32 + 100 = 132
-    GFX_DECLARE_DYNAMIC_EXISTING(CGWndBase, 0x0110F630)
+GFX_DECLARE_DYNAMIC_EXISTING(CGWndBase, 0x0110F630)
 
 
 public:
@@ -94,9 +94,9 @@ public:
 
     virtual bool On3DEvent_MAYBE(Event3D *a2);
 
-    virtual bool Func_18(int a1);
+    virtual bool Func_18(Event3D *a1);
 
-    virtual void OnWndMessage(int a1);
+    virtual void OnWndMessage(Event3D *a1);
 
     virtual void BringToFront();
 
@@ -125,9 +125,6 @@ public:
 
     void ApplyGlobalScale(int x);
 
-    /// \address 006526E0
-    void sub_6526E0(char n00009771, unsigned char opacity, float time, float a4, char a5);
-
     /// \address 00B9DA70
     void sub_B9DA70(bool b);
 
@@ -151,10 +148,29 @@ public:
     /// \address 00B8F480
     wnd_size GetSize() const;
 
+    /// \address 00b9db00
+    bool IsDragable() const;
+
+    /// \address 00b9d8f0
+    bool SendMessageToParentDispatcher(DWORD dwMSG, DWORD lParam, DWORD wParam);
+
+    /// \address 00b90d90
+    void SetPosition(int nX, int nY);
+
+    /// \address 00b9d940
+    bool IsGWndKindOf(CGWndBase *pGWnd) {
+        for (; pGWnd != NULL; pGWnd = pGWnd->GetParentControl())
+            if (this == pGWnd) {
+                return true;
+            }
+        return false;
+    }
+
 protected:
     /// \address 00B8F440
     void sub_B8F440(const RECT &rect);
 
+public: // 0046c8b6 getting call by global ptr
     CGWndBase *GetParentControl() const;
 
 private:
@@ -175,7 +191,7 @@ protected:
     bool m_bVisible; //0x0061 61
     bool m_bClickable; //0x0062
     bool N0000074F; //0x0063
-    bool N00000702; //0x0064
+    bool m_bDragable; //0x0064
 private:
     char pad_0065[3]; //0x0065
     int N00000703; //0x0068
@@ -188,7 +204,7 @@ public:
 
 
 
-    BEGIN_FIXTURE()
+BEGIN_FIXTURE()
         ENSURE_SIZE(132)
     END_FIXTURE()
 

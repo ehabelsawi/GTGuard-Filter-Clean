@@ -22,7 +22,7 @@ public:
 
     bool OnRelease() override;
 
-    bool Func_18(int a1) override;
+    bool Func_18(Event3D *a1) override;
 
     bool On3DEvent_MAYBE(Event3D *a2) override;
 
@@ -46,7 +46,7 @@ public:
     void ShowGWnd(bool bVisible) override;
 
 
-    void OnWndMessage(int a1) override;
+    void OnWndMessage(Event3D *a1) override;
 
     void RenderMyself() override;
 
@@ -86,6 +86,9 @@ public:
     /// \See StyleOptions
     /// \address 00652d20
     void SetStyleThingy(StyleOptions option);
+
+    /// \address 006526E0
+    void sub_6526E0(char n00009771, unsigned char opacity, float time, float a4, char a5);
 
 private:
     int OnCreatedInstance(UINT lParam, UINT wParam);

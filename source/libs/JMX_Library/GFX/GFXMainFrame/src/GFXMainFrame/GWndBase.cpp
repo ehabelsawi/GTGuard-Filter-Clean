@@ -56,11 +56,11 @@ bool CGWndBase::On3DEvent_MAYBE(Event3D *a2) {
     return reinterpret_cast<bool (__thiscall *)(CGWndBase *, Event3D *)>(0x00B91440)(this, a2);
 }
 
-bool CGWndBase::Func_18(int a1) {
+bool CGWndBase::Func_18(Event3D *a1) {
     return false;
 }
 
-void CGWndBase::OnWndMessage(int a1) {
+void CGWndBase::OnWndMessage(Event3D *a1) {
     return;
 }
 
@@ -93,10 +93,10 @@ CGWndBase::CGWndBase() {
     this->N00000703 = 0;
     this->N00000705 = 0;
 
-	this->bounds.pos.x = 0;
-	this->bounds.pos.y = 0;
-	this->bounds.size.height = 0;
-	this->bounds.size.width = 0;
+    this->bounds.pos.x = 0;
+    this->bounds.pos.y = 0;
+    this->bounds.size.height = 0;
+    this->bounds.size.width = 0;
 
     RECT rect = {0, 0, 0, 0};
 
@@ -112,13 +112,7 @@ void CGWndBase::ApplyGlobalScale(int x) {
 }
 
 CGWndBase::wnd_rect CGWndBase::GetBounds() const {
-	return this->bounds;
-}
-
-void CGWndBase::sub_6526E0(char a0, unsigned char opacity, float time, float a4, char a5) {
-    reinterpret_cast<void (__thiscall *)(CGWndBase *, char, unsigned char, float, float, char)>(0x6526E0)(this, a0,
-                                                                                                          opacity, time,
-                                                                                                          a4, a5);
+    return this->bounds;
 }
 
 void CGWndBase::sub_B9DA70(bool b) {
@@ -140,7 +134,7 @@ CGWndBase *CGWndBase::GetParentControl() const {
 
 // CGWndBase::SetFocus_MAYBE(void) .text 00B9D9F0 00000049 00000004 00000000 R . . . . . .
 void CGWndBase::SetFocus_MAYBE() {
-    reinterpret_cast<void(__thiscall*)(CGWndBase*)>(0x00B9D9F0)(this);
+    reinterpret_cast<void (__thiscall *)(CGWndBase *)>(0x00B9D9F0)(this);
 }
 
 CGWndBase::wnd_pos CGWndBase::GetPos() const {
@@ -149,4 +143,17 @@ CGWndBase::wnd_pos CGWndBase::GetPos() const {
 
 CGWndBase::wnd_size CGWndBase::GetSize() const {
     return this->bounds.size;
+}
+
+bool CGWndBase::IsDragable() const {
+    return m_bDragable;
+}
+
+bool CGWndBase::SendMessageToParentDispatcher(DWORD dwMSG, DWORD lParam, DWORD wParam) {
+    return reinterpret_cast<bool (__thiscall *)(CGWndBase *, DWORD, DWORD, DWORD)>(0x00b9d8f0)(this, dwMSG, lParam,
+                                                                                               wParam);
+}
+
+void CGWndBase::SetPosition(int nX, int nY) {
+    reinterpret_cast<void (__cdecl *)(CGWndBase *, int, int)>(0x00b90d90)(this, nX, nY);
 }

@@ -83,7 +83,7 @@ bool CIFWnd::OnRelease() {
 }
 
 // CIFWnd::Func_18(void) .text 006523D0 000000F9 00000008 00000004 R . . . . . .
-bool CIFWnd::Func_18(int a1) {
+bool CIFWnd::Func_18(Event3D *a1) {
     assert(FALSE);
     return false;
 }
@@ -144,8 +144,8 @@ void CIFWnd::ShowGWnd(bool bVisible) {
 }
 
 // CIFWnd::OnWndMessage(void) .text 00652FB0 0000008D 00000000 00000004 R . . . . . .
-void CIFWnd::OnWndMessage(int a1) {
-    reinterpret_cast<void (__thiscall *)(CIFWnd *, int)>(0x00652FB0)(this, a1);
+void CIFWnd::OnWndMessage(Event3D *a1) {
+    reinterpret_cast<void (__thiscall *)(CIFWnd *, Event3D *)>(0x00652FB0)(this, a1);
 }
 
 // CIFWnd::RenderMyself(void) .text 006550C0 00000043 00000004 00000000 R . . . . . .
@@ -279,4 +279,10 @@ void CIFWnd::SetTooltipText(const std::n_wstring *str) {
 
 void CIFWnd::SetStyleThingy(StyleOptions option) {
     reinterpret_cast<void (__thiscall *)(CIFWnd *, StyleOptions)>(0x00652d20)(this, option);
+}
+
+void CIFWnd::sub_6526E0(char a0, unsigned char opacity, float time, float a4, char a5) {
+    reinterpret_cast<void (__thiscall *)(CIFWnd *, char, unsigned char, float, float, char)>(0x6526E0)(this, a0,
+                                                                                                       opacity, time,
+                                                                                                       a4, a5);
 }
