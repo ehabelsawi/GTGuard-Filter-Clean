@@ -25,7 +25,7 @@ CNIFTextBoard::CNIFTextBoard() : m_NFontTexture() {
 
     m_dwTextureColor = D3DCOLOR_RGBA(0, 0, 0, 0);
 
-    void *pFontData = g_sNFontDataVec.at(0);
+    void *pFontData = g_sNFontDataVec[0];
     m_pFontTextData = pFontData;
     m_NFontTexture.m_pFontData = pFontData;
     m_dwUnknwonColor = D3DCOLOR_RGBA(255, 255, 255, 255);
@@ -96,15 +96,15 @@ void CNIFTextBoard::SetFontData(void *pData) {
     m_NFontTexture.m_pFontData = pData;
 }
 
+// JMX developer was high or what? the function already getting call at the constructor of CNIFWnd.
 void CNIFTextBoard::InstantiateFontText(const wchar_t *pText) {
-    if (pText != NULL) {
-        m_wstrFontTexture = pText;
-        m_NFontTexture.SortTextLetters(m_wstrFontTexture.c_str());
+    if (pText == NULL) {
+        m_wstrFontTexture.clear();
+        m_NFontTexture.EraseTextLetters();
         return;
     }
-
-    m_wstrFontTexture.clear();
-    m_NFontTexture.EraseTextLetters();
+    m_wstrFontTexture = (pText);
+    m_NFontTexture.SortTextLetters(m_wstrFontTexture.c_str());
 }
 
 void CNIFTextBoard::SetTextureBGColor(DWORD dwColor) {

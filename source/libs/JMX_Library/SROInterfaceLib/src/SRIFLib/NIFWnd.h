@@ -229,14 +229,18 @@ public:
     /// \address 0046dba0
     void InitEdgesHelper();
 
+#if 0
     /// \address 0046dd00
     void UpdateEdgesHelperPos();
+#endif // if 0
 
     /// \address 0046de20
     void EraseEdgesHelper();
 
+#if 0
     /// \address 0046de80
     void ShowEdgesHelper();
+#endif // if 0
 
 public: // non client stuff
     inline bool IsStyleThingyShift(CNIFWnd::StyleOptionShiftType st) const {

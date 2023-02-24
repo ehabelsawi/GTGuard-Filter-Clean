@@ -55,7 +55,7 @@ CNIFWnd::CNIFWnd() {
 
     m_dwStyleOptionBit = 0;
 
-    void *pFontData = g_sNFontDataVec.at(0);
+    void *pFontData = g_sNFontDataVec[0];
     m_pFontTextData = pFontData;
     m_NFontTexture.m_pFontData = pFontData;
     CNIFWnd::SetText(L"");
@@ -242,12 +242,17 @@ CGWnd::wnd_rect CNIFWnd::GetFontBounds() const {
 }
 
 bool CNIFWnd::SetText(const wchar_t *pText) {
+    // We have SortTextLetters is __usercall
+    return reinterpret_cast<bool (__thiscall *)(CNIFWnd *, const wchar_t *)>(0x0046cc80)(this, pText);
+
+#if 0
     if (pText == NULL)
         return false;
 
     m_wstrInnerText = pText;
     CNIFTextBoard::InstantiateFontText(m_wstrInnerText.c_str());
     return true;
+#endif // if 0
 }
 
 const wchar_t *CNIFWnd::GetText() {
@@ -642,8 +647,10 @@ void CNIFWnd::InitEdgesHelper() {
     m_vecEdgesTextureHelper.push_back((CNIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CNIFWnd), rcEdges, 0, 0));
 
     SetEdgesHelperColor();
+#if 0
     UpdateEdgesHelperPos();
     ShowEdgesHelper();
+#endif // if 0
 }
 
 #if 0
