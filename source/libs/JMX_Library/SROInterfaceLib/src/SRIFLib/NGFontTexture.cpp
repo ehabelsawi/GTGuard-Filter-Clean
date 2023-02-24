@@ -5,11 +5,19 @@
 #include "NGFontTexture.h"
 
 CNGFontTexture::CNGFontTexture() {
-    reinterpret_cast<void (__thiscall *)(CNGFontTexture *)>(0x004759d0)(this);
+    reinterpret_cast<void (__stdcall *)(CNGFontTexture *)>(0x004759d0)(this);
+}
+
+CNGFontTexture::~CNGFontTexture() {
+    EraseTextLetters();
 }
 
 void CNGFontTexture::SortTextLetters(const wchar_t *pText) {
+    /// \Why
+    /// the func haz __usercall, we must use a wrapper and wrapper = asm.
+#if 0
     reinterpret_cast<void (__thiscall *)(CNGFontTexture *, const wchar_t *)>(0x00476350)(this, pText);
+#endif // if 0
 }
 
 void CNGFontTexture::EraseTextLetters() {
@@ -17,7 +25,7 @@ void CNGFontTexture::EraseTextLetters() {
     m_BGroundDimensions.height = 0;
 
     // Clear all
-    m_listTextChar.erase(m_listTextChar.begin(), m_listTextChar.end());
+    m_listTextChar.clear();
 }
 
 void CNGFontTexture::SetColor(DWORD dwColor) {

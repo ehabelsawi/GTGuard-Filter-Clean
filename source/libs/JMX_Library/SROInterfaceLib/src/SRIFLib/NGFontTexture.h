@@ -15,7 +15,6 @@ class CNGFontTexture {
 public:
     CNGFontTexture();
 
-public:
     virtual ~CNGFontTexture();
 
 public:
@@ -35,7 +34,7 @@ private:
     D3DCOLOR m_dwFGColor; //0x0010
     char pad_0014[0x30]; //0x0014
 public:
-    std::n_list<void * /*CNGFontChar*/> m_listTextChar; //0x0044
+    std::n_list<std::pair<wchar_t /*Character Key*/, void * /*CNGFontChar*/>> m_listTextChar; //0x0044
 private:
     TextureDimensions m_BGroundDimensions; //0x0050
     char pad_0054[0x18]; //0x0054
