@@ -8,6 +8,10 @@
 #include "SimpleViewer/VBDynamic.h"
 
 bool CNIFFrame::OnCreate(long ln) {
+    return reinterpret_cast<bool (__thiscall *)(CNIFFrame *, long)>(0x00473670)(this, ln);
+
+    // InitializeFrameTextures is messed up
+#if 0
     // Its getting cal but as inline,
     CNIFTileWnd::OnCreate(ln);
 
@@ -15,6 +19,7 @@ bool CNIFFrame::OnCreate(long ln) {
     field_0348 = false;
 
     return true;
+#endif // if 0
 }
 
 void CNIFFrame::RenderMyself() {
