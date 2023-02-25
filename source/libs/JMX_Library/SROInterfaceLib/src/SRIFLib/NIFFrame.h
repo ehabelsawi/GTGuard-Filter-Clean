@@ -6,6 +6,8 @@
 #include "NIFTileWnd.h"
 
 class CNIFFrame : public CNIFTileWnd {
+GFX_DECLARE_DYNAMIC_EXISTING(CNIFFrame, 0x0115df28)
+
 public:
     /// \address 00473670
     bool OnCreate(long ln) override;
@@ -18,6 +20,7 @@ private:
     void SetFrameTexture(const std::n_string &strTexture) override;
 
 private:
+    // the class is just for texture stuff...
 private:
 BEGIN_FIXTURE()
         ENSURE_SIZE(0x078c)

@@ -3,6 +3,7 @@
 //
 
 #include "NIFFrame.h"
+
 #include "GFX3DFunction/RStateMgr.h"
 #include "SimpleViewer/VBDynamic.h"
 
@@ -417,4 +418,20 @@ void CNIFFrame::RenderMyself() {
 
     // Back to main one
     DefaultTextureAlphaOperations();
+}
+
+void CNIFFrame::SetFrameTexture(const std::n_string &strTexture) {
+    std::n_string strCoords[4];
+
+    strCoords[CORNER_LEFT_UP] = strTexture + "left_up.ddj";
+    strCoords[CORNER_RIGHT_UP] = strTexture + "right_up.ddj";
+    strCoords[CORNER_RIGHT_DOWN] = strTexture + "right_down.ddj";
+    strCoords[CORNER_LEFT_DOWN] = strTexture + "left_down.ddj";
+    SetCornersTexture(strCoords);
+
+    strCoords[EDGE_LEFT_SIDE] = strTexture + "left_side.ddj";
+    strCoords[EDGE_MID_UP] = strTexture + "mid_up.ddj";
+    strCoords[EDGE_RIGHT_SIDE] = strTexture + "right_side.ddj";
+    strCoords[EDGE_MID_DOWN] = strTexture + "mid_down.ddj";
+    SetEdgesTexture(strCoords);
 }
