@@ -16,6 +16,8 @@
 #define EDGE_MID_DOWN 3
 
 class CNIFTileWnd : public CNIFWnd {
+GFX_DECLARE_DYNAMIC_EXISTING(CNIFTileWnd, 0x0115df48)
+
 public:
     /// \address 004748c0
     ~CNIFTileWnd();
@@ -34,7 +36,7 @@ public:
     /// \address 00475710
     void NTB_Func_13(const std::n_string &str, int a3, int a4) override;
 
-public:
+private:
     /// \address 00474ed0
     virtual void SetFrameTexture(const std::n_string &strTexture);
 
@@ -60,7 +62,7 @@ protected:
     void SetEdgesTexture(const std::n_string strEdges[4]);
 
 public:
-private:
+protected:
     bool field_0348; //0x0348
     IDirect3DBaseTexture9 *m_pCornersTexture[4]; //0x034C
     IDirect3DBaseTexture9 *m_pEdgesTexture[4]; //0x035C

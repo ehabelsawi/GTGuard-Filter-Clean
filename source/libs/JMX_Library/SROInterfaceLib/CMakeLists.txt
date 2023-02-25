@@ -7,7 +7,7 @@ set(SOURCE_FILES
         src/SRIFLib/NIFUnderMenuBar.cpp src/SRIFLib/NIFUnderMenuBar.h
         src/SRIFLib/NIFCommunityWnd.cpp src/SRIFLib/NIFCommunityWnd.h
         src/SRIFLib/NIFBlockWnd.cpp src/SRIFLib/NIFBlockWnd.h
-        src/SRIFLib/NIFTileWnd.cpp src/SRIFLib/NIFTileWnd.h)
+        src/SRIFLib/NIFTileWnd.cpp src/SRIFLib/NIFTileWnd.h src/SRIFLib/NIFFrame.cpp src/SRIFLib/NIFFrame.h)
 
 add_library(SROInterfaceLIB STATIC ${SOURCE_FILES})
 target_include_directories(SROInterfaceLIB PUBLIC src/)
