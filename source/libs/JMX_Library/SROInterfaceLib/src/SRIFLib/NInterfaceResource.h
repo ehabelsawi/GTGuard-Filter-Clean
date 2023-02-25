@@ -52,7 +52,7 @@ public:
     /// \param p2DFilePath Path and filename in Media.pk2 to load. Example: "res_ui/file.2dt"
     /// \param pParent The Parent of the window like "Ginterface"
     /// \param b Unknown  always "false"
-    void InstantiateDimensional(const char *p2DFilePath, CNIFWnd *pParent, bool b);
+    void InstantiateDimensional(const char *p2DFilePath, CGWnd *pParent, bool b);
 
     /// Get a pointer to a control identified by the Id
     /// \param nId The Id of the main control in 2dt file
@@ -89,4 +89,4 @@ BEGIN_FIXTURE()
     RUN_FIXTURE(CNInterfaceManager)
 };
 
-#define g_sNewInterfaceMgr *(reinterpret_cast<CNInterfaceManager *>(0x0115dd40))
+#define g_sNewInterfaceMgr (*reinterpret_cast<CNInterfaceManager *>(0x0115dd40))

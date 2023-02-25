@@ -69,10 +69,10 @@ public:
     virtual void NTB_Func_12(const char *str, int a3, int a4);
 
     /// \address 00470ce0
-    virtual void NTB_Func_13(const std::n_string &str, int a3, int a4);
+    virtual void NTB_Func_13(std::n_string str, int a3, int a4);
 
     /// \address 00470ea0
-    virtual void SetBaseTexture(const std::n_string &str, int a3, int a4);
+    virtual void SetBaseTexture(std::n_string str, int a3, int a4);
 
     /// \address 00470f90
     virtual void SetBaseTexture(IDirect3DBaseTexture9 *pNewTexture);

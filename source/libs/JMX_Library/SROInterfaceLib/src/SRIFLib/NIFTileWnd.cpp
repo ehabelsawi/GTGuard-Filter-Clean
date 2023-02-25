@@ -6,6 +6,8 @@
 
 #include "GFX3DFunction/RTLoading.h"
 
+GFX_IMPLEMENT_DYNAMIC_EXISTING(CNIFTileWnd, 0x0115df48)
+
 CNIFTileWnd::~CNIFTileWnd() {
     ReleaseTextures();
 }
@@ -18,6 +20,8 @@ bool CNIFTileWnd::OnCreate(long ln) {
 }
 
 void CNIFTileWnd::InitializeFrameTextures() {
+    // .....
+#if 0
     for (int i = 4; i != 0; i--) {
         m_pCornersTexture[i] = NULL;
         m_pEdgesTexture[i] = NULL;
@@ -44,6 +48,7 @@ void CNIFTileWnd::InitializeFrameTextures() {
 
         // ....
     }
+#endif // if 0
 }
 
 void CNIFTileWnd::ReleaseTextures() {
@@ -191,7 +196,7 @@ void CNIFTileWnd::UpdateTexturesCoordinates() {
     m_vecCornersRenderBuff[CORNER_LEFT_DOWN][6].x = fWndPosX;
 }
 
-void CNIFTileWnd::SetFrameTexture(const std::n_string &strTexture) {
+void CNIFTileWnd::SetFrameTexture(std::n_string strTexture) {
     std::n_string strCoords[4] = {"",
                                   "",
                                   "",
@@ -208,7 +213,7 @@ void CNIFTileWnd::SetFrameTexture(const std::n_string &strTexture) {
     OptimizeEdgesVerticesPos();
 }
 
-void CNIFTileWnd::SetCornersTexture(const std::n_string strCorners[4]) {
+void CNIFTileWnd::SetCornersTexture(std::n_string strCorners[4]) {
     OptimizeCornersVerticesPos();
 
     for (int i = 4; i != 0; i--) {
@@ -258,11 +263,9 @@ void CNIFTileWnd::SetCornersTexture(const std::n_string strCorners[4]) {
         m_sCornersSize[CORNER_LEFT_DOWN].height = d3dsTexture.Height;
         m_strCornersTexture[CORNER_LEFT_DOWN] = strCorners[CORNER_LEFT_DOWN];
     }
-
-    delete &strCorners;
 }
 
-void CNIFTileWnd::SetEdgesTexture(const std::n_string strEdges[4]) {
+void CNIFTileWnd::SetEdgesTexture(std::n_string strEdges[4]) {
     OptimizeEdgesVerticesPos();
 
     // lets clear first
@@ -313,11 +316,9 @@ void CNIFTileWnd::SetEdgesTexture(const std::n_string strEdges[4]) {
         m_sEdgesSize[EDGE_MID_DOWN].height = d3dsTexture.Height;
         m_strEdgesTexture[EDGE_MID_DOWN] = strEdges[EDGE_MID_DOWN];
     }
-
-    delete &strEdges;
 }
 
-void CNIFTileWnd::NTB_Func_13(const std::n_string &str, int a3, int a4) {
+void CNIFTileWnd::NTB_Func_13(std::n_string str, int a3, int a4) {
     SetFrameTexture(str);
 }
 

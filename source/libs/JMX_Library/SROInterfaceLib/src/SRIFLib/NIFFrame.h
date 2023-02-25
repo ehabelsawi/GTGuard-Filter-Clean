@@ -17,7 +17,7 @@ public:
 
 private:
     /// \address 004745a0
-    void SetFrameTexture(const std::n_string &strTexture) override;
+    void SetFrameTexture(std::n_string strTexture) override;
 
 private:
     // the class is just for texture stuff...

@@ -155,5 +155,5 @@ bool CGWndBase::SendMessageToParentDispatcher(DWORD dwMSG, DWORD lParam, DWORD w
 }
 
 void CGWndBase::SetPosition(int nX, int nY) {
-    reinterpret_cast<void (__cdecl *)(CGWndBase *, int, int)>(0x00b90d90)(this, nX, nY);
+    reinterpret_cast<void (__thiscall *)(CGWndBase *, int, int)>(0x00b90d90)(this, nX, nY);
 }

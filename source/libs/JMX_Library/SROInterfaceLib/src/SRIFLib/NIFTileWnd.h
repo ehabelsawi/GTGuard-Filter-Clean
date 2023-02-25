@@ -34,11 +34,11 @@ public:
 
 public:
     /// \address 00475710
-    void NTB_Func_13(const std::n_string &str, int a3, int a4) override;
+    void NTB_Func_13(std::n_string str, int a3, int a4) override;
 
 private:
     /// \address 00474ed0
-    virtual void SetFrameTexture(const std::n_string &strTexture);
+    virtual void SetFrameTexture(std::n_string strTexture);
 
 protected:
     /// \address 00474980
@@ -56,10 +56,10 @@ protected:
     void OptimizeCornersVerticesPos();
 
     /// \address 004750a0
-    void SetCornersTexture(const std::n_string strCorners[4]);
+    void SetCornersTexture(std::n_string strCorners[4]);
 
     /// \address 00475400
-    void SetEdgesTexture(const std::n_string strEdges[4]);
+    void SetEdgesTexture(std::n_string strEdges[4]);
 
 public:
 protected:

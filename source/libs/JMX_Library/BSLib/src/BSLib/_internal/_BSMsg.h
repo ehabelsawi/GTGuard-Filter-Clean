@@ -27,6 +27,7 @@ enum {
     GFX_WM_MOUSEHOVER_UP = 0x400A,
     GFX_WM_STYLE_CHANGE = 0x400B,
     GFX_WM_FADERELEASING = 0x8064,
+    GFX_WM_SROIF_PARSE = 0x8065,
 };
 
 #define ONG_COMMAND(Id, Func) \
@@ -101,4 +102,10 @@ enum {
     { GFX_WM_FADERELEASING, 0, 0, 0, BSSig_u10, 0, \
     (GFX_PMSG) \
     (static_cast< int (GFX_MSG_CALL CGWndBase::*)(int, int) > ( &ThisClass :: OnAlphaAniReleasing)), \
+        0, 0, 0},
+
+#define ONG_SRO_INTERFACE_PARSE() \
+    { GFX_WM_SROIF_PARSE, 0, 0, 0, BSSig_u10, 0, \
+    (GFX_PMSG) \
+    (static_cast< int (GFX_MSG_CALL CGWndBase::*)(int, int) > ( &ThisClass :: OnSROInterfaceCreate)), \
         0, 0, 0},

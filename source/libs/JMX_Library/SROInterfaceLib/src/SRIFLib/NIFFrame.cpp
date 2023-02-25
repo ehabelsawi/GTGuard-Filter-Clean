@@ -7,6 +7,8 @@
 #include "GFX3DFunction/RStateMgr.h"
 #include "SimpleViewer/VBDynamic.h"
 
+GFX_IMPLEMENT_DYNAMIC_EXISTING(CNIFFrame, 0x0115df28)
+
 bool CNIFFrame::OnCreate(long ln) {
     return reinterpret_cast<bool (__thiscall *)(CNIFFrame *, long)>(0x00473670)(this, ln);
 
@@ -318,11 +320,12 @@ void CNIFFrame::RenderMyself() {
 
             m_vecEdgesRenderBuff[EDGE_LEFT_SIDE][2].y = fRenderLastEdgeY;
 
-            float fRenderLastEdgeYPerv = fRenderLastEdgeY + (float) (nEdgeBoundSize % m_sEdgesSize[EDGE_LEFT_SIDE].height);
+            float fRenderLastEdgeYPerv =
+                    fRenderLastEdgeY + (float) (nEdgeBoundSize % m_sEdgesSize[EDGE_LEFT_SIDE].height);
             m_vecEdgesRenderBuff[EDGE_LEFT_SIDE][4].y = fRenderLastEdgeYPerv;
 
             m_vecEdgesRenderBuff[EDGE_LEFT_SIDE][6].y = fRenderLastEdgeYPerv;
-            m_vecEdgesRenderBuff[EDGE_LEFT_SIDE][6].x =  fRenderX;
+            m_vecEdgesRenderBuff[EDGE_LEFT_SIDE][6].x = fRenderX;
 
             if (g_pDynamicVertexBuffer->IVBDynamic_Func_6(m_vecEdgesRenderBuff[EDGE_LEFT_SIDE],
                                                           sizeof(m_vecEdgesRenderBuff[EDGE_LEFT_SIDE]), &local_3c) !=
@@ -405,11 +408,12 @@ void CNIFFrame::RenderMyself() {
             m_vecEdgesRenderBuff[EDGE_RIGHT_SIDE][2].x = fRenderWidth;
 
             m_vecEdgesRenderBuff[EDGE_RIGHT_SIDE][4].x = fRenderWidth;
-            float fRenderLastEdgeYPerv = fRenderLastEdgeY + (float) (nEdgeBoundSize % m_sEdgesSize[EDGE_RIGHT_SIDE].height);
+            float fRenderLastEdgeYPerv =
+                    fRenderLastEdgeY + (float) (nEdgeBoundSize % m_sEdgesSize[EDGE_RIGHT_SIDE].height);
             m_vecEdgesRenderBuff[EDGE_RIGHT_SIDE][4].y = fRenderLastEdgeYPerv;
 
             m_vecEdgesRenderBuff[EDGE_RIGHT_SIDE][6].y = fRenderLastEdgeYPerv;
-            m_vecEdgesRenderBuff[EDGE_RIGHT_SIDE][6].x =  fEdgeRenderX;
+            m_vecEdgesRenderBuff[EDGE_RIGHT_SIDE][6].x = fEdgeRenderX;
 
             if (g_pDynamicVertexBuffer->IVBDynamic_Func_6(m_vecEdgesRenderBuff[EDGE_RIGHT_SIDE],
                                                           sizeof(m_vecEdgesRenderBuff[EDGE_RIGHT_SIDE]), &local_3c) !=
@@ -425,18 +429,12 @@ void CNIFFrame::RenderMyself() {
     DefaultTextureAlphaOperations();
 }
 
-void CNIFFrame::SetFrameTexture(const std::n_string &strTexture) {
-    std::n_string strCoords[4];
+void CNIFFrame::SetFrameTexture(std::n_string strTexture) {
+    std::n_string strCorners[4] = {strTexture + "left_up.ddj", strTexture + "right_up.ddj",
+                                   strTexture + "right_down.ddj", strTexture + "left_down.ddj"};
+    SetCornersTexture(strCorners);
 
-    strCoords[CORNER_LEFT_UP] = strTexture + "left_up.ddj";
-    strCoords[CORNER_RIGHT_UP] = strTexture + "right_up.ddj";
-    strCoords[CORNER_RIGHT_DOWN] = strTexture + "right_down.ddj";
-    strCoords[CORNER_LEFT_DOWN] = strTexture + "left_down.ddj";
-    SetCornersTexture(strCoords);
-
-    strCoords[EDGE_LEFT_SIDE] = strTexture + "left_side.ddj";
-    strCoords[EDGE_MID_UP] = strTexture + "mid_up.ddj";
-    strCoords[EDGE_RIGHT_SIDE] = strTexture + "right_side.ddj";
-    strCoords[EDGE_MID_DOWN] = strTexture + "mid_down.ddj";
-    SetEdgesTexture(strCoords);
+    std::n_string strEdges[4] = {strTexture + "left_side.ddj", strTexture + "mid_up.ddj",
+                                 strTexture + "right_side.ddj", strTexture + "mid_down.ddj"};
+    SetEdgesTexture(strEdges);
 }

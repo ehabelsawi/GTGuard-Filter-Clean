@@ -160,7 +160,7 @@ void CNIFTextBoard::NTB_Func_12(const char *str, int a3, int a4) {
     NTB_Func_13(str, a3, a4);
 }
 
-void CNIFTextBoard::NTB_Func_13(const std::n_string &str, int a3, int a4) {
+void CNIFTextBoard::NTB_Func_13(std::n_string str, int a3, int a4) {
     if (m_strBGroundTexturePath.empty() && m_pRenderTexture != NULL)
         m_pRenderTexture->Release();
 
@@ -194,7 +194,7 @@ void CNIFTextBoard::SetHoverTexture(const std::n_string &strPath) {
     m_pHoverTexture3D = NULL;
 }
 
-void CNIFTextBoard::SetBaseTexture(const std::n_string &str, int a3, int a4) {
+void CNIFTextBoard::SetBaseTexture(std::n_string str, int a3, int a4) {
     if (m_strBGroundTexturePath.empty() && m_pRenderTexture != NULL)
         m_pRenderTexture->Release();
 
