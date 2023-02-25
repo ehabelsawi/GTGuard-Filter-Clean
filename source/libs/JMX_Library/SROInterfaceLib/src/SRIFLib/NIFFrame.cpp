@@ -25,6 +25,10 @@ bool CNIFFrame::OnCreate(long ln) {
 }
 
 void CNIFFrame::RenderMyself() {
+    reinterpret_cast<void (__thiscall *)(CNIFFrame *)>(0x004736a0)(this);
+
+    // there is a something wrong with the edges so we will use the orignal one
+#if 0
     EnableTextureAlphaOperations(D3DCOLOR_RGBA(0, 0, 0, 0));
 
     g_RStateMgr.SetDeviceFVFState(0x104);
@@ -427,6 +431,7 @@ void CNIFFrame::RenderMyself() {
 
     // Back to main one
     DefaultTextureAlphaOperations();
+#endif // if 0
 }
 
 void CNIFFrame::SetFrameTexture(std::n_string strTexture) {

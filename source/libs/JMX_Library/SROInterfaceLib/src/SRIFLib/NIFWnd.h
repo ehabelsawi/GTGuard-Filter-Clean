@@ -242,6 +242,22 @@ public:
     void ShowEdgesHelper();
 #endif // if 0
 
+protected:
+    CNIFWnd *GetResObj(int nId) {
+        return GetResObj < CNIFWnd > (nId);
+    }
+
+    /// \address 0046e060
+    template<typename T>
+    T *GetResObj(int nId) {
+        std::n_list<CGWndBase *>::const_iterator it = N00000707.begin();
+        for (; it != N00000707.end(); it++)
+            if ((*it)->UniqueID() == nId)
+                return (T *) (*it);
+        // Not Found
+        return NULL;
+    }
+
 public: // non client stuff
     inline bool IsStyleThingyShift(CNIFWnd::StyleOptionShiftType st) const {
         return ((m_dwStyleOptionBit >> st) & 1) != false;

@@ -50,7 +50,7 @@ bool CNIFMainFrame::OnCreate(long ln) {
                                                     0);
     m_pCloseBtnCtrl->NTB_Func_13("interface\\ifcommon\\com_windowclose.ddj", 0, 0);
 
-    RECT rect = { 0 };
+    RECT rect = {0, 0, 0, 0};
 
     m_pTitleCtrl->SetTextPosBounds(rect);
     m_pTitleCtrl->SetFontData(g_sNFontDataVec[0]);
@@ -78,15 +78,15 @@ void CNIFMainFrame::UpdateElementsDimension() {
     rcNewBounds.pos.x = rcBounds.pos.x + 10;
     rcNewBounds.size.width = rcBounds.size.width - 21;
 
-    m_pTitleCtrl->MoveGWnd(rcNewBounds.pos.x,rcNewBounds.pos.y);
-    m_pTitleCtrl->SetGWndSize(rcNewBounds.size.width,12);
+    m_pTitleCtrl->MoveGWnd(rcNewBounds.pos.x, rcNewBounds.pos.y);
+    m_pTitleCtrl->SetGWndSize(rcNewBounds.size.width, 12);
 
     rcNewBounds.pos.x += 10;
 
-    m_pDragAreaCtrl->MoveGWnd(rcNewBounds.pos.x,rcNewBounds.pos.y);
-    m_pDragAreaCtrl->SetGWndSize(rcNewBounds.size.width,34);
+    m_pDragAreaCtrl->MoveGWnd(rcNewBounds.pos.x, rcNewBounds.pos.y);
+    m_pDragAreaCtrl->SetGWndSize(rcNewBounds.size.width, 34);
 
-    m_pCloseBtnCtrl->MoveGWnd(rcNewBounds.pos.x - 26 + rcNewBounds.size.width,rcNewBounds.pos.y + 10);
+    m_pCloseBtnCtrl->MoveGWnd(rcNewBounds.pos.x - 26 + rcNewBounds.size.width, rcNewBounds.pos.y + 10);
 }
 
 void CNIFMainFrame::SetGWndSize(int nWidth, int nHeight) {
@@ -96,7 +96,7 @@ void CNIFMainFrame::SetGWndSize(int nWidth, int nHeight) {
 }
 
 bool CNIFMainFrame::SetText(const wchar_t *pSrc) {
-    return ((CNIFWnd *)m_pTitleCtrl)->SetText(pSrc);
+    return ((CNIFWnd *) m_pTitleCtrl)->SetText(pSrc);
 }
 
 void CNIFMainFrame::OnCloseBtnClick() {

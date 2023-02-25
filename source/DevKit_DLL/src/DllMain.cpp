@@ -6,7 +6,8 @@
 #include "imgui_windows/ImGui_Windows.h"
 #include <IFWholeChat.h>
 
-#include "IFflorian0.h"
+#include "example/NIFKyuubi09.h"
+#include "example/IFflorian0.h"
 #include "IFflorian0Guide.h"
 
 extern "C" _declspec(dllexport) BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdwReason, LPVOID lpReserved) {
@@ -17,6 +18,7 @@ extern "C" _declspec(dllexport) BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdw
         // Inject all the new objects
         RegisterObject(&GFX_RUNTIME_CLASS(CIFflorian0));
         RegisterObject(&GFX_RUNTIME_CLASS(CIFflorian0Guide));
+        RegisterObject(&GFX_RUNTIME_CLASS(CNIFKyuubi09));
 
 #ifdef CONFIG_OLD_MAINPOPUP
         OverrideObject<CIFMainPopup, 0x00eea6dc>();
