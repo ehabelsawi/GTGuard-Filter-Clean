@@ -46,10 +46,12 @@ public:
     virtual int OnMouseLeftDown(int a1, int x, int y);
 
     /// \brief Called when the left mouse button is released twice
-    /// \param x Position X of the mouse
-    /// \param y Position Y of the mouse
+    /// \param nPos Is the x-y of the mouse
+    /// \b GET_X_LPARAM Macro to get \b X pos
+    /// \b GET_Y_LPARAM Macro to get \b Y pos
+    /// \param nDownVK Indicates whether various virtual keys are down.
     /// \address 0046fd50
-    virtual int OnMouseDbLeftUp(int a1, int a2, int a3);
+    virtual int OnMouseDbLeftUp(int a1, int nPos, int nDownVK);
 
     /// \brief Called when the right mouse button is pressed
     /// \param x Position X of the mouse

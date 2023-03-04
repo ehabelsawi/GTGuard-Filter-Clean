@@ -29,7 +29,7 @@ int CGWnd::OnMouseLeftDown(int a1, int x, int y) {
     return 0;
 }
 
-int CGWnd::OnMouseDbLeftUp(int a1, int a2, int a3) {
+int CGWnd::OnMouseDbLeftUp(int a1, int nPos, int nDownVK) {
     return 0;
 }
 

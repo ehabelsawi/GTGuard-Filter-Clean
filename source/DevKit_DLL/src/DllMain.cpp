@@ -6,8 +6,8 @@
 #include "imgui_windows/ImGui_Windows.h"
 #include <IFWholeChat.h>
 
-#include "example/NIFKyuubi09.h"
-#include "example/IFflorian0.h"
+#include "examples/NIFKyuubi09.h"
+#include "examples/IFflorian0.h"
 #include "IFflorian0Guide.h"
 
 extern "C" _declspec(dllexport) BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdwReason, LPVOID lpReserved) {

@@ -25,7 +25,7 @@ void CNIFKyuubi09::OnUpdate() {
 
     wcsftime(buffer, sizeof(buffer), L"%d-%m-%Y %H:%M:%S", timeinfo);
 
-    ((CNIFWnd *) m_pTime_label)->SetText(buffer);
+    m_pTime_label->SetText(buffer);
 }
 
 int CNIFKyuubi09::OnSROInterfaceCreate(int, int) {
@@ -34,7 +34,7 @@ int CNIFKyuubi09::OnSROInterfaceCreate(int, int) {
     m_pTime_label = GetResObj<CNIFStatic>(GDR_KYUUBI09_LABEL_TIME);
     m_pCustom_label = GetResObj<CNIFStatic>(GDR_KYUUBI09_LABEL);
 
-    ((CNIFWnd *) m_pCustom_label)->SetText(L"Kyuubi is a fox and he has 9 tails.");
+    m_pCustom_label->SetText(L"Kyuubi is a fox and he has 9 tails.");
 
     return 0;
 }

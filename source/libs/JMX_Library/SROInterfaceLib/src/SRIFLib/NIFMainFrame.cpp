@@ -92,11 +92,12 @@ void CNIFMainFrame::UpdateElementsDimension() {
 void CNIFMainFrame::SetGWndSize(int nWidth, int nHeight) {
     // inline
     CNIFWnd::SetGWndSize(nWidth, nHeight);
+
     UpdateElementsDimension();
 }
 
 bool CNIFMainFrame::SetText(const wchar_t *pSrc) {
-    return ((CNIFWnd *) m_pTitleCtrl)->SetText(pSrc);
+    return m_pTitleCtrl->SetText(pSrc);
 }
 
 void CNIFMainFrame::OnCloseBtnClick() {

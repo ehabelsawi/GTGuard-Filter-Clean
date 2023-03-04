@@ -544,7 +544,7 @@ bool CNIFWnd::OnCloseWnd() {
 void CNIFWnd::SetTooltipText(const std::n_wstring *pWStr) {
     m_wstrTooltipText = *pWStr;
 
-    if (IsGWndKindOf(g_CurrentIfUnderCursor) && IsStyleThingyShift(TOOLTIP_S))
+    if (IsParentOf(g_CurrentIfUnderCursor) && IsStyleThingyShift(TOOLTIP_S))
         EnableToolTipsCtrl();
 }
 

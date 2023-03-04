@@ -158,7 +158,7 @@ public:
     void SetPosition(int nX, int nY);
 
     /// \address 00b9d940
-    bool IsGWndKindOf(CGWndBase *pGWnd) {
+    bool IsParentOf(CGWndBase *pGWnd) {
         for (; pGWnd != NULL; pGWnd = pGWnd->GetParentControl())
             if (this == pGWnd) {
                 return true;

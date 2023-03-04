@@ -65,16 +65,16 @@ void NIFUnderMenuBar::Update() {
     gauges[barnum]->foreground_value = exp_remain;
 
     // Assign more texts
-    this->lbl_level->SetText(L"Level: %d", g_pCICPlayer->m_exp_current);
-    this->lbl_percentage->SetText(L"%.2lf %%", exp_percentage);
+    this->lbl_level->SetTextFormatted(L"Level: %d", g_pCICPlayer->m_exp_current);
+    this->lbl_percentage->SetTextFormatted(L"%.2lf %%", exp_percentage);
 
     // Skillpoints
-    this->lbl_spcount->SetText(L"%d", g_pCICPlayer->m_skillpoint);
+    this->lbl_spcount->SetTextFormatted(L"%d", g_pCICPlayer->m_skillpoint);
     this->gauge_skillexp->background_value = g_pCICPlayer->m_skillpoint_progress / 400.0f;
     this->gauge_skillexp->foreground_value = g_pCICPlayer->m_skillpoint_progress / 400.0f;
 
     // You can also draw text directly at the gauge. It will be centered automatically
-    // this->gauge_skillexp->SetText(L"%d", g_CICPlayer->skill_exp);
+    // this->gauge_skillexp->SetTextFormatted(L"%d", g_CICPlayer->skill_exp);
 
 
     this->lbl_exp_bar_scaler->SetText(L""); // Prescaler is disabled

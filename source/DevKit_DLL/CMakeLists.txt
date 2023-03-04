@@ -4,8 +4,8 @@ set(SOURCE_FILES
         src/hooks/GFXVideo3d_Hook.cpp src/hooks/GFXVideo3d_Hook.h
         src/hooks/WndProc_Hook.cpp src/hooks/WndProc_Hook.h
         src/hooks/CGame_Hook.cpp src/hooks/CGame_Hook.h
-        src/example/IFflorian0.cpp src/example/IFflorian0.h
-        src/example/NIFKyuubi09.cpp src/example/NIFKyuubi09.h
+        src/examples/IFflorian0.cpp src/examples/IFflorian0.h
+        src/examples/NIFKyuubi09.cpp src/examples/NIFKyuubi09.h
         src/imgui_windows/ImGui_Windows.cpp src/imgui_windows/ImGui_Windows.h
         src/imgui_windows/InterfaceDebugger.cpp src/imgui_windows/InterfaceDebugger.h
         src/imgui_windows/SoundTool.cpp src/imgui_windows/SoundTool.h
