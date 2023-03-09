@@ -3,11 +3,16 @@
 #include <imgui/imgui.h>
 #include <GInterface.h>
 
+#include "SRIFLib/NInterfaceResource.h"
+#include "SRIFLib/NIFWnd.h"
+
+#include "Game.h"
+
 void About::MenuItem() {
     ImGui::MenuItem("About", 0, &bShow);
 }
 
-About::About() : bShow(true), m_bButtonNotFound(false) {
+About::About() : bShow(true), m_bButtonFloNotFound(false), m_bButtonQbiNotFound(false) {
 }
 
 void About::Render() {
@@ -32,23 +37,39 @@ void About::Render() {
                        "\n"
                        "SRO_DevKit is free, open-source.");
 
-    if (g_pCGInterface == NULL) {
-        ImGui::TextWrapped("Log in to show the demo window.");
-    } else {
-        ImGui::TextWrapped("If you imported the files for the demo window correctly, "
-                           "you can go ahead and press the button below to show it.");
+    ImGui::TextWrapped("If you imported the files for the demo window correctly, "
+                       "you can go ahead and press the button below to show it.");
 
-        if (ImGui::Button("Show Demo Window")) {
+    if (g_pCGInterface == NULL) {
+        ImGui::TextWrapped("Log in to show the cif demo window btn.");
+    } else {
+        if (ImGui::Button("Show Demo CIF Window")) {
             CIFWnd *demoWnd = g_pCGInterface->m_IRM.GetResObj(1338, 1);
-            m_bButtonNotFound = demoWnd == 0;
+            m_bButtonFloNotFound = demoWnd == 0;
 
             if (demoWnd != NULL) {
                 demoWnd->ShowGWnd(true);
             }
         }
 
-        if (m_bButtonNotFound) {
-            ImGui::TextColored(ImColor(255, 0, 0), "Error: Window could not be found.");
+        if (m_bButtonFloNotFound) {
+            ImGui::TextColored(ImColor(255, 0, 0), "Error: CIF Window could not be found.");
+        }
+    }
+
+    if (ImGui::Button("Show Demo CNIF Window")) {
+        if (g_sNewInterfaceMgr.GetInterfaceObj(125051) == NULL && !m_bButtonQbiNotFound)
+            g_sNewInterfaceMgr.InstantiateDimensional("res_ui\\nifkyuubi09.2dt", theApp.GetCurrentProcess(), 0);
+
+        CNIFWnd *demoWnd = g_sNewInterfaceMgr.GetInterfaceObj(125051);
+        m_bButtonQbiNotFound = demoWnd == 0;
+
+        if (demoWnd != NULL) {
+            demoWnd->ShowGWnd(true);
+        }
+
+        if (m_bButtonQbiNotFound) {
+            ImGui::TextColored(ImColor(255, 0, 0), "Error: CNIF Window could not be found.");
         }
     }
 

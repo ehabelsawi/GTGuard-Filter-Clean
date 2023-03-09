@@ -6,18 +6,6 @@
 #include <Test/Test.h>
 #include <ghidra/undefined.h>
 
-enum StyleOptions : undefined4 {
-    NONE = 0x00,
-    UNKNOWN_0x01 = 0x01,
-    PASSWORD_MASKED = 0x02,
-    UNKNOWN_0x04 = 0x04,
-    UNKNOWN_0x08 = 0x08,
-    UNKNOWN_0x10 = 0x10,
-    UNKNOWN_0x20 = 0x20,
-    INVISIBLE = 0x40,
-    TOOLTIP = 0x80
-};
-
 class CIFWnd : public CGWnd, public CTextBoard {
 GFX_DECLARE_DYNAMIC_EXISTING(CIFWnd, 0x00EE9808)
 
@@ -34,7 +22,7 @@ public:
 
     bool OnRelease() override;
 
-    bool Func_18(int a1) override;
+    bool Func_18(Event3D *a1) override;
 
     bool On3DEvent_MAYBE(Event3D *a2) override;
 
@@ -44,7 +32,7 @@ public:
 
     void Func_22(int x, int y) override;
 
-    void Func_37() override;
+    void OnGWndDimensionChange() override;
 
     void TB_Func_7() override;
 
@@ -58,7 +46,7 @@ public:
     void ShowGWnd(bool bVisible) override;
 
 
-    void OnWndMessage(int a1) override;
+    void OnWndMessage(Event3D *a1) override;
 
     void RenderMyself() override;
 
@@ -99,10 +87,13 @@ public:
     /// \address 00652d20
     void SetStyleThingy(StyleOptions option);
 
-private:
-    int On4001(int, int);
+    /// \address 006526E0
+    void sub_6526E0(char n00009771, unsigned char opacity, float time, float a4, char a5);
 
-    int On4006(int, int);
+private:
+    int OnCreatedInstance(UINT lParam, UINT wParam);
+
+    int OnWindowPosChanged(UINT lParam, UINT wParam);
 
     void sub_652B00();
 

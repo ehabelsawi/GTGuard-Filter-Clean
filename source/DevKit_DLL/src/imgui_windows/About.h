@@ -12,5 +12,6 @@ public:
 
 private:
     bool bShow;
-    bool m_bButtonNotFound;
+    bool m_bButtonFloNotFound;
+    bool m_bButtonQbiNotFound;
 };

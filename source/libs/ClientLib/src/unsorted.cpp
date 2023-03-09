@@ -9,14 +9,13 @@
 #include <GFX3DFunction/DrawingHelpers.h>
 #include <ICharactor.h>
 
-#include "NIFCommunityWnd.h"
+#include "SRIFLib/NIFCommunityWnd.h"
+
 #include "IFChatViewer.h"
 
 #include <Game.h>
 
 #include <remodel/GlobalPtr.h>
-
-GlobalPtr<CGWndBase, 0x0110F60C> g_CurrentIF_UnderCursor;
 
 bool TryCreateCompatibleDC() {
     g_hdc = CreateCompatibleDC(0);
@@ -60,24 +59,6 @@ void sub_BBDA70(int a1) {
 
 void PopulateCharPositionsForNameChange(CGFXVideo3d *p) {
     reinterpret_cast<void (__cdecl *)(CGFXVideo3d *)>(0x85AFF0)(p);
-}
-
-int GetIDOfInterfaceUnderCursor() {
-    if (g_CurrentIF_UnderCursor) {
-        return g_CurrentIF_UnderCursor->UniqueID();
-    } else {
-        return -1;
-    }
-}
-
-// Fun_CacheTexture_Create .text 005008F0 00000010 00000000 00000004 R . . . . . .
-void* Fun_CacheTexture_Create(const std::n_string &a2) {
-    return reinterpret_cast<void*(__cdecl*)(const std::n_string*)>(0x005008F0)(&a2);
-}
-
-// Fun_CacheTexture_Release .text 00500460 00000010 00000000 00000004 R . . . . . .
-void Fun_CacheTexture_Release(std::n_string *a2) {
-    assert(FALSE);
 }
 
 void SendRestartRequest(char type) {

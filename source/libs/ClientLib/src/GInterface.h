@@ -14,7 +14,9 @@
 #include "IFSkillPracticeBox.h"
 #include "IFHelperBubbleWindow.h"
 #include "MessageBoxManager.h"
-#include "NIFCommunityWnd.h"
+
+#include "SRIFLib/NIFCommunityWnd.h"
+
 #include "unsorted.h"
 #include "IFSystemMessage.h"
 

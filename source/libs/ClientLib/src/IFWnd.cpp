@@ -8,8 +8,8 @@ GFX_BEGIN_MESSAGE_MAP(CIFWnd, CObjChild)
 
 // ONG_COMMAND(2, On2)
 
-                    ONG_WM_4001()
-                    ONG_WM_4006()
+                    ONG_CREATE()
+                    ONG_MOVE()
 
 
 GFX_END_MESSAGE_MAP()
@@ -83,7 +83,7 @@ bool CIFWnd::OnRelease() {
 }
 
 // CIFWnd::Func_18(void) .text 006523D0 000000F9 00000008 00000004 R . . . . . .
-bool CIFWnd::Func_18(int a1) {
+bool CIFWnd::Func_18(Event3D *a1) {
     assert(FALSE);
     return false;
 }
@@ -114,7 +114,7 @@ void CIFWnd::Func_22(int x, int y) {
 }
 
 // CIFWnd::Func_37(void) .text 00652660 0000000A   R . . . . . .
-void CIFWnd::Func_37() {
+void CIFWnd::OnGWndDimensionChange() {
     OnCIFReady();
 }
 
@@ -144,8 +144,8 @@ void CIFWnd::ShowGWnd(bool bVisible) {
 }
 
 // CIFWnd::OnWndMessage(void) .text 00652FB0 0000008D 00000000 00000004 R . . . . . .
-void CIFWnd::OnWndMessage(int a1) {
-    reinterpret_cast<void (__thiscall *)(CIFWnd *, int)>(0x00652FB0)(this, a1);
+void CIFWnd::OnWndMessage(Event3D *a1) {
+    reinterpret_cast<void (__thiscall *)(CIFWnd *, Event3D *)>(0x00652FB0)(this, a1);
 }
 
 // CIFWnd::RenderMyself(void) .text 006550C0 00000043 00000004 00000000 R . . . . . .
@@ -218,13 +218,13 @@ void CIFWnd::Func_48() {
 }
 
 // CIFWnd::On4001(int,int) .text 00652390 00000012 00000000 00000000 R . . . . . .
-int CIFWnd::On4001(int a2, int a3) {
-    return reinterpret_cast<int (__thiscall *)(CIFWnd *, int, int)>(0x00652390)(this, a2, a3);
+int CIFWnd::OnCreatedInstance(UINT lParam, UINT wParam) {
+    return reinterpret_cast<int (__thiscall *)(CIFWnd *, UINT, UINT)>(0x00652390)(this, lParam, wParam);
 }
 
 // CIFWnd::On4006(int,int) .text 006523B0 00000012 00000000 00000000 R . . . . . .
-int CIFWnd::On4006(int a2, int a3) {
-    return reinterpret_cast<int (__thiscall *)(CIFWnd *, int, int)>(0x006523B0)(this, a2, a3);
+int CIFWnd::OnWindowPosChanged(UINT lParam, UINT wParam) {
+    return reinterpret_cast<int (__thiscall *)(CIFWnd *, UINT, UINT)>(0x006523B0)(this, lParam, wParam);
 }
 
 // CIFWnd::sub_652B00(void) .text 00652B00 00000045   R . . . . . .
@@ -279,4 +279,10 @@ void CIFWnd::SetTooltipText(const std::n_wstring *str) {
 
 void CIFWnd::SetStyleThingy(StyleOptions option) {
     reinterpret_cast<void (__thiscall *)(CIFWnd *, StyleOptions)>(0x00652d20)(this, option);
+}
+
+void CIFWnd::sub_6526E0(char a0, unsigned char opacity, float time, float a4, char a5) {
+    reinterpret_cast<void (__thiscall *)(CIFWnd *, char, unsigned char, float, float, char)>(0x6526E0)(this, a0,
+                                                                                                       opacity, time,
+                                                                                                       a4, a5);
 }

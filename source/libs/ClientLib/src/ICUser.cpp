@@ -184,7 +184,7 @@ void CICUser::Func_15(int param_1, float *param_2) {
             dataOut_2[7].y = 0.0;
             dataOut_2[7].z = 1.0;
 
-            g_RStateMgr.SetTextureForStage(0, m_pGuildInfo->m_runtimeTexture->Func_2());
+            g_RStateMgr.SetTextureForStage(0, m_pGuildInfo->m_runtimeTexture->GetRuntimeTexture());
             int local_158 = 0;
             if (g_pDynamicVertexBuffer->IVBDynamic_Func_6(dataOut_2, 0x60, &local_158) != 0) {
                 IDirect3DVertexBuffer9 *iVar5 = g_pDynamicVertexBuffer->IVBDynamic_Func_5();
@@ -221,7 +221,7 @@ void CICUser::Func_15(int param_1, float *param_2) {
 
             dataOut_2[7].y = 0.0f;
             dataOut_2[7].z = 1.0f;
-            g_RStateMgr.SetTextureForStage(0, m_pGuildInfo->m_anotherRuntimeTexture->Func_2());
+            g_RStateMgr.SetTextureForStage(0, m_pGuildInfo->m_anotherRuntimeTexture->GetRuntimeTexture());
             int local_158 = 0;
             if (g_pDynamicVertexBuffer->IVBDynamic_Func_6(dataOut_2, 0x60, &local_158) != 0) {
                 IDirect3DVertexBuffer9 *iVar5 = g_pDynamicVertexBuffer->IVBDynamic_Func_5();
@@ -388,7 +388,7 @@ void CICUser::RenderFortressIcons(D3DVECTOR *dataOut, float *param_2) {
     dataOut[4].y = dataOut[0].y + 32.0f;
     dataOut[2].y = dataOut[0].y;
     dataOut[6].y = dataOut[4].y;
-    g_RStateMgr.FUN_00470310(0x104);
+    g_RStateMgr.SetDeviceFVFState(0x104);
 
     int local_158 = 0;
     if (g_pDynamicVertexBuffer->IVBDynamic_Func_6(dataOut, 0x60, &local_158) != 0) {
