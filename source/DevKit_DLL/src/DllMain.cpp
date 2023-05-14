@@ -6,12 +6,15 @@
 #include "imgui_windows/ImGui_Windows.h"
 #include <IFWholeChat.h>
 
-#include "examples/NIFKyuubi09.h"
-#include "examples/IFflorian0.h"
 #include "IFflorian0Guide.h"
+#include "SRIFLib/NIFUnderMenuBar.h"
+#include "examples/IFflorian0.h"
+#include "examples/NIFKyuubi09.h"
+#include "memory/hook.h"
 
 extern "C" _declspec(dllexport) BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdwReason, LPVOID lpReserved) {
     if (fdwReason == DLL_PROCESS_ATTACH) {
+
         // Setup all the required hooks
         Setup();
 
