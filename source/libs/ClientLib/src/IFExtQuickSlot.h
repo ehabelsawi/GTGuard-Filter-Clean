@@ -10,39 +10,41 @@ GFX_DECLARE_DYNAMIC_EXISTING(CIFExtQuickSlot, 0x00ee9a28)
 GFX_DECLARE_MESSAGE_MAP(CIFExtQuickSlot)
 
     enum {
-        SECTION_TYPE_1 = 1, //Type1
-        SECTION_TYPE_2 = 2, //Type2
-        SECTION_TYPE_3 = 3, //Type3
-        SECTION_TYPE_4 = 4, //Type4
-        GDR_EXT_QUICKSLOT_OPTION = 5, //CIFExtQuickSlotOption
-        GDR_EXT_QUICKSLOT_WND = 10, //CIFDragableArea
-        GDR_EXT_QUICKSLOT_OPT_BTN = 11, //CIFButton
-        GDR_EXT_QUICKSLOT_HORI_BTN = 12, //CIFButton
-        GDR_EXT_QUICKSLOT_VERT_BTN = 13, //CIFButton
-        GDR_EXT_QUICKSLOT_ONOFF_BTN = 14, //CIFButton
-        GDR_EXT_QUICKSLOT_SLOT_END = 20, //CIFStatic
-        GDR_EXT_QUICKSLOT_SLOT_BOARD_1 = 30, //CIFStatic
-        GDR_EXT_QUICKSLOT_SLOT_BOARD_2 = 31, //CIFStatic
-        GDR_EXT_QUICKSLOT_SLOT_BOARD_3 = 32, //CIFStatic
-        GDR_EXT_QUICKSLOT_SLOT_BOARD_4 = 33, //CIFStatic
-        GDR_EXT_QUICKSLOT_SLOT_BOARD_5 = 34, //CIFStatic
-        GDR_EXT_QUICKSLOT_SLOT_1 = 100, //CIFExtQuickSlotSlot
-        GDR_EXT_QUICKSLOT_SLOT_2 = 101, //CIFExtQuickSlotSlot
-        GDR_EXT_QUICKSLOT_SLOT_3 = 102, //CIFExtQuickSlotSlot
-        GDR_EXT_QUICKSLOT_SLOT_4 = 103, //CIFExtQuickSlotSlot
-        GDR_EXT_QUICKSLOT_SLOT_5 = 104, //CIFExtQuickSlotSlot
-        GDR_EXT_QUICKSLOT_SLOT_6 = 105, //CIFExtQuickSlotSlot
-        GDR_EXT_QUICKSLOT_SLOT_7 = 106, //CIFExtQuickSlotSlot
-        GDR_EXT_QUICKSLOT_SLOT_8 = 107, //CIFExtQuickSlotSlot
-        GDR_EXT_QUICKSLOT_SLOT_9 = 108, //CIFExtQuickSlotSlot
-        GDR_EXT_QUICKSLOT_SLOT_10 = 109, //CIFExtQuickSlotSlot
+        SECTION_TYPE_1 = 1, // Type1
+        SECTION_TYPE_2 = 2, // Type2
+        SECTION_TYPE_3 = 3, // Type3
+        SECTION_TYPE_4 = 4, // Type4
+        GDR_EXT_QUICKSLOT_OPTION = 5, // CIFExtQuickSlotOption
+        GDR_EXT_QUICKSLOT_WND = 10, // CIFDragableArea
+        GDR_EXT_QUICKSLOT_OPT_BTN = 11, // CIFButton
+        GDR_EXT_QUICKSLOT_HORI_BTN = 12, // CIFButton
+        GDR_EXT_QUICKSLOT_VERT_BTN = 13, // CIFButton
+        GDR_EXT_QUICKSLOT_ONOFF_BTN = 14, // CIFButton
+        GDR_EXT_QUICKSLOT_SLOT_END = 20, // CIFStatic
+        GDR_EXT_QUICKSLOT_SLOT_BOARD_1 = 30, // CIFStatic
+        GDR_EXT_QUICKSLOT_SLOT_BOARD_2 = 31, // CIFStatic
+        GDR_EXT_QUICKSLOT_SLOT_BOARD_3 = 32, // CIFStatic
+        GDR_EXT_QUICKSLOT_SLOT_BOARD_4 = 33, // CIFStatic
+        GDR_EXT_QUICKSLOT_SLOT_BOARD_5 = 34, // CIFStatic
+        GDR_EXT_QUICKSLOT_SLOT_1 = 100, // CIFExtQuickSlotSlot
+        GDR_EXT_QUICKSLOT_SLOT_2 = 101, // CIFExtQuickSlotSlot
+        GDR_EXT_QUICKSLOT_SLOT_3 = 102, // CIFExtQuickSlotSlot
+        GDR_EXT_QUICKSLOT_SLOT_4 = 103, // CIFExtQuickSlotSlot
+        GDR_EXT_QUICKSLOT_SLOT_5 = 104, // CIFExtQuickSlotSlot
+        GDR_EXT_QUICKSLOT_SLOT_6 = 105, // CIFExtQuickSlotSlot
+        GDR_EXT_QUICKSLOT_SLOT_7 = 106, // CIFExtQuickSlotSlot
+        GDR_EXT_QUICKSLOT_SLOT_8 = 107, // CIFExtQuickSlotSlot
+        GDR_EXT_QUICKSLOT_SLOT_9 = 108, // CIFExtQuickSlotSlot
+        GDR_EXT_QUICKSLOT_SLOT_10 = 109, // CIFExtQuickSlotSlot
     };
 
 public:
     GFX_DECLARE_DYNCREATE_FN(CIFExtQuickSlot)
 
+    ///\address 0065e870
     CIFExtQuickSlot();
 
+    /// \address 0065ead0
     ~CIFExtQuickSlot();
 
 public:
@@ -87,12 +89,16 @@ public:
     void SetSlotsVisible(bool bVisible);
 
 private:
+    /// \address 0065eea0
     void OnToggleSlotsOption();
 
+    /// \address 0065f700
     void OnDropDownButton();
 
+    /// \address 0065f710
     void OnClickSlotsHorizontal();
 
+    /// \address 0065eed0
     void OnClickSlotsVertical();
 
 private:
@@ -102,8 +108,8 @@ private:
     bool m_bTransparent; //0x036F
     bool m_bSlotsLocked; //0x0370
     bool m_bToolBarLocked; //0x0371
-    short m_SectionTypeID; //0x0372 // the types in resinfo file
-    CNIFUnderMenuBar *m_pMyUnerMenuBar; //0x0374
+    BYTE m_btSectionTypeID; //0x0372 // the types in resinfo file
+    CNIFUnderMenuBar *m_pMyUnderMenuBar; //0x0374
 private:
 BEGIN_FIXTURE()
         ENSURE_SIZE(0x378)
@@ -113,9 +119,8 @@ BEGIN_FIXTURE()
         ENSURE_OFFSET(m_bTransparent, 0x36f)
         ENSURE_OFFSET(m_bSlotsLocked, 0x370)
         ENSURE_OFFSET(m_bToolBarLocked, 0x371)
-        ENSURE_OFFSET(m_SectionTypeID, 0x372)
-        ENSURE_OFFSET(m_pMyUnerMenuBar, 0x374)
-
+        ENSURE_OFFSET(m_btSectionTypeID, 0x372)
+        ENSURE_OFFSET(m_pMyUnderMenuBar, 0x374)
     END_FIXTURE()
 
     RUN_FIXTURE(CIFExtQuickSlot)
