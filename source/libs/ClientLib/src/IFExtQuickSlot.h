@@ -1,8 +1,9 @@
 #pragma once
 
 #include "IFWnd.h"
-#include "NIFUnderMenuBar.h"
 #include "IFExtQuickSlotOption.h"
+
+#include "SRIFLIB/NIFUnderMenuBar.h"
 
 class CIFExtQuickSlot : public CIFWnd {
 GFX_DECLARE_DYNAMIC_EXISTING(CIFExtQuickSlot, 0x00ee9a28)
