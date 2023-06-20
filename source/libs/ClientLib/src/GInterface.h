@@ -14,7 +14,9 @@
 #include "IFSkillPracticeBox.h"
 #include "IFHelperBubbleWindow.h"
 #include "MessageBoxManager.h"
-#include "NIFCommunityWnd.h"
+
+#include "SRIFLib/NIFCommunityWnd.h"
+
 #include "unsorted.h"
 #include "IFSystemMessage.h"
 #include "IFExtQuickSlot.h"
@@ -175,6 +177,9 @@ public:
     /// \address 00777A50
     CIFQuickStateHalfWnd *Get_QuickStateHalfWnd();
 
+    /// \address 00777a70
+    void FUN_00777a70(undefined4 param_1,undefined4 param_2);
+
     /// \address 00798D40
     CIF_NPCWindow *Get_GDR_NPCWINDOW();
 
@@ -249,9 +254,9 @@ private:
     class CIFCameraDataWnd *m_pCameraDataWnd; //0x0400
     class CIFCameraDataMainWnd *m_pCameraDataMainWnd; //0x0404
     char pad_0x0408[0xA4]; //0x0408
-    DWORD N00002675; //0x04AC
-    DWORD N00002676; //0x04B0
-    DWORD N00006601; //0x04B4
+    int m_silk_own; //0x04AC
+    int m_silk_gift; //0x04B0
+    int m_silk_point; //0x04B4
     char pad_0x04B8[0x4C]; //0x04B8
     DWORD N0000268B; //0x0504
     char pad_0x0508[0x120]; //0x0508

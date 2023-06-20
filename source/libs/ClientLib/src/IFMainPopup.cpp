@@ -185,6 +185,8 @@ void CIFMainPopup::ShowSubPage(int page) {
             SetText(TSM_GETTEXTPTR(L"UIIT_STT_ACTION"));
 
             m_actionWindow->ShowGWnd(true);
+
+            m_background->ShowGWnd(true);
             m_background->MoveGWnd(rect.pos.x + 40, rect.pos.y + 154);
             m_background->SetGWndSize(308, 124);
 

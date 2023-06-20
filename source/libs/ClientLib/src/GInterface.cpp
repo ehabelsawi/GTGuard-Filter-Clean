@@ -244,7 +244,7 @@ void CGInterface::WriteGlobalMessage(unsigned char nSlot, std::n_wstring message
         return;
     }
 
-    const CItemData::SData *pItemData = item->GetItemData();
+    const SItemData *pItemData = item->GetItemData();
 
     if (pItemData->IsGlobalMessageScroll()) {
         NEWMSG(0x704c)
@@ -318,4 +318,8 @@ CNIFUnderMenuBar *CGInterface::GetUnderMenuBar() {
 
 CIFExtQuickSlot *CGInterface::GetExtQuickSlot() {
     return m_IRM.GetResObj<CIFExtQuickSlot>(GDR_EXT_QUICK_SLOT, 1);
+}
+
+void CGInterface::FUN_00777a70(undefined4 param_1, undefined4 param_2) {
+    reinterpret_cast<void(__thiscall *)(CGInterface *, undefined4, undefined4)>(0x00777a70)(this, param_1, param_2);
 }

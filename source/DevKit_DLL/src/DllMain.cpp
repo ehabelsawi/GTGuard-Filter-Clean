@@ -1,23 +1,30 @@
 #include <IFChatViewer.h>
 #include <IFMainPopup.h>
 #include <IFChatOptionBoard.h>
+#include <IFWholeChat.h>
+#include "IFExtQuickSlot.h"
+#include "SRIFLib/NIFUnderMenuBar.h"
+
 #include "hooks/Hooks.h"
 #include "Util.h"
 #include "imgui_windows/ImGui_Windows.h"
-#include <IFWholeChat.h>
 
-#include "IFflorian0.h"
 #include "IFflorian0Guide.h"
-#include "IFExtQuickSlot.h"
+#include "examples/IFflorian0.h"
+#include "examples/NIFKyuubi09.h"
+
+#include "memory/hook.h"
 
 extern "C" _declspec(dllexport) BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdwReason, LPVOID lpReserved) {
     if (fdwReason == DLL_PROCESS_ATTACH) {
+
         // Setup all the required hooks
         Setup();
 
         // Inject all the new objects
         RegisterObject(&GFX_RUNTIME_CLASS(CIFflorian0));
         RegisterObject(&GFX_RUNTIME_CLASS(CIFflorian0Guide));
+        RegisterObject(&GFX_RUNTIME_CLASS(CNIFKyuubi09));
 
         // Override existing objects
 
@@ -25,13 +32,14 @@ extern "C" _declspec(dllexport) BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdw
         OverrideObject<CIFExtQuickSlot, 0x00ee9a28>();
         // Option for ExtQuickSlot
         OverrideObject<CIFExtQuickSlotOption, 0x00ee9a48>();
-#endif
+#endif // CONFIG_EXT_QUICK_SLOT
 
         OverrideObject<CIFChatOptionBoard, 0x00eec128>();
 
 #ifdef CONFIG_OLD_MAINPOPUP
         OverrideObject<CIFMainPopup, 0x00eea6dc>();
-#endif
+#endif // CONFIG_OLD_MAINPOPUP
+
 #ifdef CONFIG_CHATVIEWER
         OverrideObject<CIFChatViewer, 0x00EEC168>();
 #endif // CONFIG_CHATVIEWER

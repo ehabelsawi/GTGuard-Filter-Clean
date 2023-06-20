@@ -38,7 +38,7 @@ void CIFTargetWindowJobPlayer::FUN_0069ac90(int objectId) {
     if(pUser == NULL) {
         return;
     }
-    m_IRM.GetResObj<CIFStatic>(GDR_TWJP_KINDRED_MARK, 1)->TB_Func_13(GetKindredTextureFilePath(pUser->GetSData()->m_nationality, 0), 0, 0);
+    m_IRM.GetResObj<CIFStatic>(GDR_TWJP_KINDRED_MARK, 1)->TB_Func_13(GetKindredTextureFilePath(pUser->GetCommonData()->Country, 0), 0, 0);
     m_IRM.GetResObj<CIFStatic>(GDR_TWJP_JOB_ALIAS, 1)->SetText(pUser->GetName().c_str());
     CIFStatic* p_JOB_ICON = m_IRM.GetResObj<CIFStatic>(GDR_TWJP_JOB_ICON, 1);
 
@@ -48,7 +48,7 @@ void CIFTargetWindowJobPlayer::FUN_0069ac90(int objectId) {
     if(trijobType == TRIJOB_TRADER) {
         p_JOB_ICON->TB_Func_13("interface\\targetwindow\\tw_job_merchant.ddj", 0, 0);
 
-        if (pUser->GetSData()->m_nationality == 0) {
+        if (pUser->GetCommonData()->Country == 0) {
             title = L"UIIT_STT_CLASS_MERCHANT_%d";
         } else {
             title = L"UIIT_STT_CLASS_EU_MERCHANT_%d";
@@ -56,7 +56,7 @@ void CIFTargetWindowJobPlayer::FUN_0069ac90(int objectId) {
     } else if (trijobType == TRIJOB_THIEF) {
         p_JOB_ICON->TB_Func_13("interface\\targetwindow\\tw_job_thief.ddj", 0, 0);
 
-        if (pUser->GetSData()->m_nationality == 0) {
+        if (pUser->GetCommonData()->Country == 0) {
             title = L"UIIT_STT_CLASS_THIEF_%d";
         } else {
             title = L"UIIT_STT_CLASS_EU_THIEF_%d";
@@ -64,7 +64,7 @@ void CIFTargetWindowJobPlayer::FUN_0069ac90(int objectId) {
     } else if (trijobType == TRIJOB_HUNTER) {
         p_JOB_ICON->TB_Func_13("interface\\targetwindow\\tw_job_hunter.ddj", 0, 0);
 
-        if (pUser->GetSData()->m_nationality == 0) {
+        if (pUser->GetCommonData()->Country == 0) {
             title = L"UIIT_STT_CLASS_HUNTER_%d";
         } else {
             title = L"UIIT_STT_CLASS_EU_HUNTER_%d";

@@ -28,6 +28,7 @@
 #include "SystemMessage.h"
 #include "CharacterData.h"
 #include "Inventory.h"
+#include "ItemData.h"
 #include <BSLib/Debug.h>
 #include <BSLib/multibyte.h>
 
@@ -47,6 +48,7 @@ ProcessViewer processViewer;
 Inventory inventory;
 PartyInfo partyInfo;
 CharacterData characterData;
+ItemData itemData;
 
 void ImGui_OnCreate(HWND hWindow, void *msghandler, int a3) {
     BS_DEBUG("ImGui_OnCreate");
@@ -135,6 +137,7 @@ void ImGui_OnEndScene() {
         if (ImGui::BeginMenu("Data")) {
             partyInfo.MenuItem();
             characterData.MenuItem();
+            itemData.MenuItem();
             ImGui::EndMenu();
         }
 
@@ -169,6 +172,7 @@ void ImGui_OnEndScene() {
     inventory.Render();
     partyInfo.Render();
     characterData.Render();
+    itemData.Render();
 
     ImGui::EndFrame();
 

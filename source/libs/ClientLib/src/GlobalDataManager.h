@@ -41,17 +41,40 @@ public:
     undefined4 FUN_008cbac0(int a1);
 
     /// \address 0093f370
-    const CCharacterData::SData *GetCharacterData(int id) const;
+    const CCharacterData *GetCharacter(int id);
+
+    /// \address 0093f2f0
+    /// \return valid pointer to item data
+    /// \return NULL if item was not found
+    const CItemData *GetItem(int refObjItemId) const;
 
     /// \address 0093f5f0
-    const CItemData::SData &GetItemData(int refObjItemId) const;
+    /// \remark Will assert when refObjItemId is not found
+    const SItemData &GetItemData(int refObjItemId) const;
 
+    /// \brief Get level data for given level
+    /// \details Returns the data from leveldata.txt
+    /// \param level Level of character or job
     /// \address 00937f20
-    const CLevelData::SData &GetLevelData(int level) const;
+    /// \remark Known bug: Will crash if value of level is not present in leveldata.txt
+    const SLevelData &GetLevelData(int level) const;
+
+    /// \address 00939a60
+    undefined FUN_00939a60(undefined4 param_1);
+
+    /// \address 0093a610
+    undefined4 FUN_0093a610(std::n_wstring param_1);
 
 private:
-    /// \address 0093f2f0
-    const CItemData *FUN_0093f2f0(int refObjItemId) const;
+    /// \brief Get level object for given level
+    /// \param level Level of either character or job
+    /// \return pointer to leveldata if level was found
+    /// \return NULL if level was not found
+    /// \address 0x00937e00
+    const CLevelData *GetLevel(int level) const;
+
+    /// \address 0093ef10
+    undefined4 LoadFromPk2(int typeMAYBE, int id);
 
     char gap0[0x254];
 
@@ -97,8 +120,9 @@ private:
 
 
 private:
-    BEGIN_FIXTURE()
+BEGIN_FIXTURE()
         ENSURE_OFFSET(m_characterDataMap, 0x0264)
+        ENSURE_OFFSET(m_levelDataMap, 0x0410)
     END_FIXTURE()
 
     RUN_FIXTURE(CGlobalDataManager)

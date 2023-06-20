@@ -10,7 +10,7 @@ set(SOURCE_FILES src/BufRender.h
         src/Data/GachaNpcData.h
         src/Data/GameGuideData.h
         src/Data/ItemData.h src/Data/ItemData.cpp
-        src/Data/LevelData.h
+        src/Data/LevelData.h src/Data/LevelData.cpp
         src/Data/LevelGoldData.h
         src/Data/MagicOptionData.h
         src/Data/MallItemMenuListData.h
@@ -112,8 +112,6 @@ set(SOURCE_FILES src/BufRender.h
         src/PSOuterInterface.cpp
         src/PSOuterInterface.h
         src/PSVersionCheck.h
-        src/RTLoading.cpp
-        src/RTLoading.h
         src/StringUtils.h
         src/TextBoard.cpp
         src/TextBoard.h
@@ -130,7 +128,6 @@ set(SOURCE_FILES src/BufRender.h
         src/IFflorian0Guide.cpp src/IFflorian0Guide.h
         src/PSQuickStart.cpp
         src/PSQuickStart.h
-        src/NIFUnderMenuBar.cpp src/NIFUnderMenuBar.h
         src/TextStringManager.cpp src/TextStringManager.h
         src/IFNotify.cpp src/IFNotify.h
         src/IFListCtrl.cpp src/IFListCtrl.h
@@ -146,8 +143,6 @@ set(SOURCE_FILES src/BufRender.h
         src/IFEdit.cpp src/IFEdit.h
         src/SRO_MSG_DEF.h
         src/CharacterDependentData.cpp src/CharacterDependentData.h
-        src/NIFCommunityWnd.cpp src/NIFCommunityWnd.h
-        src/NIFBlockWnd.cpp src/NIFBlockWnd.h
         src/ICharactor.cpp src/ICharactor.h
         src/ClassLink.h
         src/IGIDObject.cpp src/IGIDObject.h
@@ -177,12 +172,10 @@ set(SOURCE_FILES src/BufRender.h
         src/IFTargetWindowSpecialMob.cpp src/IFTargetWindowSpecialMob.h
         src/IFTargetWindowCommonEnemy.cpp src/IFTargetWindowCommonEnemy.h
         src/IFTargetWindowFortressStructure.cpp src/IFTargetWindowFortressStructure.h
-        src/IFExtQuickSlot.cpp src/IFExtQuickSlot.h
-        src/IFExtQuickSlotSlot.cpp src/IFExtQuickSlotSlot.h
-        src/IFExtQuickSlotOption.cpp src/IFExtQuickSlotOption.h
-        src/NIFWnd.cpp src/NIFWnd.h
-        src/IFSlotWithHelpEx.h)
+        src/ICNonuser.cpp src/ICNonuser.h
+        src/ICMonster.cpp src/ICMonster.h
+        src/ICCos.cpp src/ICCos.h)
 
 add_library(ClientLib STATIC ${SOURCE_FILES})
-target_link_libraries(ClientLib GFXMainFrame GFX3DFunction GFXFileManagerLIB NavMesh ClientNet TypeId abi-testing imgui remodel ghidra)
+target_link_libraries(ClientLib SROInterfaceLIB GFXMainFrame GFX3DFunction GFXFileManagerLIB NavMesh ClientNet SimpleViewer TypeId abi-testing imgui remodel ghidra)
 target_include_directories(ClientLib PUBLIC src/)

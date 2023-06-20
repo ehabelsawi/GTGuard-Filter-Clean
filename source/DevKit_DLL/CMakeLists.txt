@@ -4,7 +4,8 @@ set(SOURCE_FILES
         src/hooks/GFXVideo3d_Hook.cpp src/hooks/GFXVideo3d_Hook.h
         src/hooks/WndProc_Hook.cpp src/hooks/WndProc_Hook.h
         src/hooks/CGame_Hook.cpp src/hooks/CGame_Hook.h
-        src/IFflorian0.cpp src/IFflorian0.h
+        src/examples/IFflorian0.cpp src/examples/IFflorian0.h
+        src/examples/NIFKyuubi09.cpp src/examples/NIFKyuubi09.h
         src/imgui_windows/ImGui_Windows.cpp src/imgui_windows/ImGui_Windows.h
         src/imgui_windows/InterfaceDebugger.cpp src/imgui_windows/InterfaceDebugger.h
         src/imgui_windows/SoundTool.cpp src/imgui_windows/SoundTool.h
@@ -16,15 +17,16 @@ set(SOURCE_FILES
         src/imgui_windows/ErrorMessageTool.h src/imgui_windows/ErrorMessageTool.cpp
         src/imgui_windows/InterfaceTree.cpp src/imgui_windows/InterfaceTree.h
         src/imgui_windows/ProcessViewer.cpp src/imgui_windows/ProcessViewer.h
-        src/ImGui_Windows/Inventory.h src/ImGui_Windows/Inventory.cpp
+        src/imgui_windows/Inventory.h src/imgui_windows/Inventory.cpp
         src/imgui_windows/PartyInfo.cpp src/imgui_windows/PartyInfo.h
         src/imgui_windows/CharacterData.cpp src/imgui_windows/CharacterData.h
+        src/imgui_windows/ItemData.cpp src/imgui_windows/ItemData.h
         src/Util.cpp src/Util.h
         src/QuickStart.cpp src/QuickStart.h
         src/MathUtil.cpp src/MathUtil.h)
 
 add_library(DevKit_DLL SHARED ${SOURCE_FILES})
-target_link_libraries(DevKit_DLL BSLib ClientLib MathHelpers memory winmm)
+target_link_libraries(DevKit_DLL BSLib SROInterfaceLIB ClientLib MathHelpers memory winmm)
 
 set_target_properties(DevKit_DLL
         PROPERTIES

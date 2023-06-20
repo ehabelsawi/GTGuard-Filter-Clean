@@ -1,14 +1,18 @@
 #pragma once
 #include <string>
+
 #include "GFXMainFrame/GFXMainFrame.h"
+
 #include <GFX3DFunction/GFontTexture.h>
-#include <GFXFileManagerLIB/IFileManager.h>
+#include <GFX3DFunction/RTLoading.h>
+
+#include <GFXFM/IFileManager.h>
+
 #include <BSLib/StringCheck.h>
 
 #include "unsorted.h"
 #include "GEffSoundBody.h"
 #include "DxSound.h"
-#include "RTLoading.h"
 #include "IFConsole.h"
 #include "is_this_important.h"
 
@@ -28,6 +32,14 @@ struct ClientRes
 struct WhatIsThis {
     undefined4 field_0;
     char field_4;
+    undefined4 field_8;
+    undefined1 field_c;
+    undefined1 field_10;
+    undefined1 field_11;
+    char pad_0012[3];
+    undefined1 field_15;
+    char pad_0016[1];
+    undefined1 field_17;
 };
 
 class CGame : public CGFXMainFrame {

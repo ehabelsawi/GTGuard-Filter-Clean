@@ -18,16 +18,18 @@ void CharacterData::Render() {
     }
 
     static int id = 0;
-    static const CCharacterData::SData *data = NULL;
+    static const CCharacterData *data = NULL;
 
     if (ImGui::InputInt("ID", &id)) {
         // Update
-        data = g_CGlobalDataManager->GetCharacterData(id);
+        data = g_CGlobalDataManager->GetCharacter(id);
     }
 
     if (data != NULL) {
-        ImGui::LabelText("CodeName", "%ls", data->m_codename.c_str());
-        ImGui::LabelText("Health", "%d", data->m_health);
+        const SCharacterData &sdata = data->GetData();
+        ImGui::LabelText("CodeName", "%ls", sdata.CodeName.c_str());
+        ImGui::LabelText("Level", "%d", sdata.Level);
+        ImGui::LabelText("Max HP", "%d", sdata.MaxHP);
     }
 
     ImGui::End();

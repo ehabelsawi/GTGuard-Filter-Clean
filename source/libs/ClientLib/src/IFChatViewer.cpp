@@ -614,7 +614,7 @@ void CIFChatViewer::OnChatTabSize() {
 }
 
 void CIFChatViewer::OnUnknownStuff() {
-    int id = GetIDOfInterfaceUnderCursor();
+    int id = GetCurrentEventMsgCtrlId();
     int i = 0;
 
     for (int i = 0; i < numberOfTabs; ++i) {
@@ -637,7 +637,7 @@ void CIFChatViewer::OnChatMode() {
 void CIFChatViewer::OnListChatThing(int a1, int a2) {
     BS_DEBUG_LOW("%s(%d, %d)", __FUNCTION__, a1, a2);
 
-    int id = GetIDOfInterfaceUnderCursor();
+    int id = GetCurrentEventMsgCtrlId();
     CIFListCtrl *pList;
 
     if (id == m_ChatLists[0]->UniqueID()) {

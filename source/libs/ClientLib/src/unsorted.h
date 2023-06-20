@@ -13,6 +13,7 @@
 #define ARRAY_SIZE(ar) ((int)(sizeof(ar)/sizeof(*ar)))
 
 #define g_currentTime (*reinterpret_cast<int*>(0x0110F800))
+#define DAT_00eef5e8 (*reinterpret_cast<undefined4*>(0x00eef5e8))
 
 // This is used for some debugging stuff ... no idea what this exactly is
 #define dword_EECC18 (*reinterpret_cast<int*>(0xEECC18))
@@ -42,19 +43,8 @@ bool StartNetEngine();
 void DrawRect(int x, int y, int height, int width, int color);
 void DrawRect(int x, int y, int height, int width);
 
-struct UISize
-{
-	int width;
-	int height;
-};
-
 void sub_BBDA70(int a1);
 void PopulateCharPositionsForNameChange(CGFXVideo3d *p);
-
-int GetIDOfInterfaceUnderCursor();
-
-void* Fun_CacheTexture_Create(const std::n_string &a2);
-void Fun_CacheTexture_Release(std::n_string *a2);
 
 void SendRestartRequest(char type);
 

@@ -1,24 +1,34 @@
 variables:
-  registry: registry.gitlab.com/florian0/sro_devkit
-  
+  DOCKER_DRIVER: overlay2
+  build_docker: "false"
 
 stages:
   - build
   - deploy
   - docs
+  - publish
 
 docker_doxygen:
   stage: build
   variables:
     name: doxygen
-  image: dind
+  image: docker
+  services:
+    - docker:dind
   script:
     - docker info
-    - docker build -t "${registry}:${name}" docker/${name}/
-    - echo $REGISTRY_PASSWORD | docker login -u "$REGISTRY_USER" --password-stdin
-    - docker push -t "${registry}:${name}"
-  only:
-    - docker
+    - docker build -t "${CI_REGISTRY_IMAGE}:${name}" docker/${name}/
+    - docker login ${CI_REGISTRY} -u gitlab-ci-token -p ${CI_BUILD_TOKEN}
+    - docker push "${CI_REGISTRY_IMAGE}:${name}"
+  rules:
+    - changes:
+        - docker/doxygen/Dockerfile
+      when: always
+    - if: $CI_COMMIT_BRANCH =~ /^docker\//
+      when: always
+    - if: $build_docker == "true"
+      when: always
+    - when: never
 
 build:
   variables:
@@ -37,3 +47,51 @@ build:
     paths:
       - BinOut/
     expire_in: 1 day
+  rules:
+    - when: always
+
+mkdocs:
+  stage: docs
+  image:
+    name: squidfunk/mkdocs-material:8.2.2
+    entrypoint: [ "" ]
+  script:
+    - mkdocs build -v
+  artifacts:
+    untracked: false
+    paths:
+      - site/
+    expire_in: 1 hour
+  rules:
+    - when: always
+
+doxygen:
+  stage: docs
+  image: ${CI_REGISTRY_IMAGE}:doxygen
+  script:
+    - doxygen
+  artifacts:
+    untracked: false
+    paths:
+      - doxygen/html
+    expire_in: 1 hour
+  rules:
+    - when: always
+
+pages:
+  stage: publish
+  dependencies:
+    - mkdocs
+    - doxygen
+  script:
+    - mv site/ public/
+    - mkdir public/doxygen/
+    - mv doxygen/html/* public/doxygen
+  artifacts:
+    paths:
+      - public/
+    expire_in: 1 day
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - when: never

@@ -35,6 +35,6 @@ void CIFTargetWindowPlayer::FUN_0069b0d0(int objectId) {
     CIGIDObject* pObject = GetCharacterObjectByID_MAYBE(m_objectId);
     if(pObject != NULL) {
         m_IRM.GetResObj<CIFStatic>(GDR_TWP_TEXT_NAME, 1)->SetText(pObject->GetName().c_str());
-        m_IRM.GetResObj<CIFStatic>(GDR_TW_KINDRED_MARK, 1)->TB_Func_13(GetKindredTextureFilePath(pObject->GetSData()->m_nationality, 0), 0, 0);
+        m_IRM.GetResObj<CIFStatic>(GDR_TW_KINDRED_MARK, 1)->TB_Func_13(GetKindredTextureFilePath(pObject->GetCommonData()->Country, 0), 0, 0);
     }
 }

@@ -7,6 +7,9 @@
 
 class CIGIDObject : public CIObject {
 public:
+    /// \address 004df110
+    void Func_15(int param_1, float *param_2) override;
+
     virtual void Func_18();
 
     virtual void Func_19();
@@ -39,24 +42,27 @@ public:
 
     virtual void Func_33();
 
-
 public:
     /// \brief Get the assigned name of this object
     const std::n_wstring &GetName() const;
 
-    const CCharacterData::SData *GetSData() const;
+    const SCommonData *GetCommonData() const;
 
     const int GetUniqueId() const;
 private:
     char pad_00DC[28]; //0x00DC
+protected:
     int m_uniqueId; // 0x00F8
+private:
     char pad_00FC[20]; // 0x00FC
+protected:
     std::n_wstring m_name; //0x0110
     CGFontTexture fonttexture_playername; //0x012C
-    char pad_0194[28]; //0x0194
+    std::n_wstring m_titleText; //0x0194
     CGFontTexture fonttexture_title; //0x01B0
+private:
     char pad_0218[8]; //0x0218
-    CCharacterData::SData* m_characterData; //0x0220
+    SCommonData *m_commonData; //0x0220
     char pad_0224[48]; //0x0224
 
 BEGIN_FIXTURE()
@@ -65,6 +71,7 @@ BEGIN_FIXTURE()
         ENSURE_OFFSET(m_name, 0x110)
         ENSURE_OFFSET(fonttexture_playername, 0x12c)
         ENSURE_OFFSET(fonttexture_title, 0x1b0)
+        ENSURE_OFFSET(m_commonData, 0x220)
 
     END_FIXTURE()
 

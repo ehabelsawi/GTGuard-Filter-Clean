@@ -194,8 +194,8 @@ void CIFPlayerInfo::OnUpdate() {
                                        g_CCharacterDependentData.FUN_00987090().field_12);
 
     {
-        float value1 = g_pCICPlayer->GetIntelligence() * 100;
-        float value2 = (g_pCICPlayer->GetCurrentLevel() + 7) * 4;
+        float value1 = g_pCICPlayer->GetIntelligence() * 100.0f;
+        float value2 = (g_pCICPlayer->GetCurrentLevel() + 7) * 4.0f;
 
         // Cap at 120 %
         float value3 = min(120, value1 / value2);
@@ -225,7 +225,7 @@ void CIFPlayerInfo::OnUpdate() {
         m_pGDR_PI_JOB_EXP->SetText(L"0 %");
     } else {
         int jobLevel = g_pCICPlayer->GetJobLevel();
-        const CLevelData::SData &levelData = g_CGlobalDataManager->GetLevelData(jobLevel);
+        const SLevelData &levelData = g_CGlobalDataManager->GetLevelData(jobLevel);
 
         const wchar_t *title = NULL;
         int requiredExp = -1;
@@ -235,7 +235,7 @@ void CIFPlayerInfo::OnUpdate() {
 
             requiredExp = levelData.m_jobExpTrader;
 
-            if (g_pCICPlayer->Func_36().m_nationality == 0) {
+            if (g_pCICPlayer->Func_36().Country == 0) {
                 title = L"UIIT_STT_CLASS_MERCHANT_%d";
             } else {
                 title = L"UIIT_STT_CLASS_EU_MERCHANT_%d";
@@ -245,7 +245,7 @@ void CIFPlayerInfo::OnUpdate() {
 
             requiredExp = levelData.m_jobExpRobber;
 
-            if (g_pCICPlayer->Func_36().m_nationality == 0) {
+            if (g_pCICPlayer->Func_36().Country == 0) {
                 title = L"UIIT_STT_CLASS_THIEF_%d";
             } else {
                 title = L"UIIT_STT_CLASS_EU_THIEF_%d";
@@ -255,7 +255,7 @@ void CIFPlayerInfo::OnUpdate() {
 
             requiredExp = levelData.m_jobExpHunter;
 
-            if (g_pCICPlayer->Func_36().m_nationality == 0) {
+            if (g_pCICPlayer->Func_36().Country == 0) {
                 title = L"UIIT_STT_CLASS_HUNTER_%d";
             } else {
                 title = L"UIIT_STT_CLASS_EU_HUNTER_%d";
