@@ -65,8 +65,6 @@ GameCfg* Fun_GetCfgGame();
 
 void __stdcall FUN_00bbda70(undefined4 a1);
 
-/// \brief Get Window maybe??
-//im not sure if it for CIFSlotWithHelp but there is a proof
-//  0065ef19
+
 /// \address 00ba1140
-CIFSlotWithHelp *GetSlotWndByhgWnd(int hgWnd);
+CIFWnd *GetWndByGID(int hgWnd);

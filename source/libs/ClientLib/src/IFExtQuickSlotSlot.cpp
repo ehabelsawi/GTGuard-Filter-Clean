@@ -18,7 +18,7 @@ GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFExtQuickSlotSlot, 0x00ee9a68)
 GFX_IMPLEMENT_DYNCREATE_FN(CIFExtQuickSlotSlot, CIFWnd)
 
 CIFExtQuickSlotSlot::CIFExtQuickSlotSlot() :
-        m_UnderBarSlot_hgWnd(NULL) {
+        m_nMagicCubeSlotGID(0) {
     SetDragable(true);
 }
 
@@ -27,13 +27,13 @@ bool CIFExtQuickSlotSlot::OnCreate(long ln) {
 }
 
 void CIFExtQuickSlotSlot::RenderMyself() {
-    CIFSlotWithHelp *pWnd = GetSlotWndByhgWnd(m_UnderBarSlot_hgWnd);
+    CIFSlotWithHelp *pWnd = (CIFSlotWithHelp *) GetWndByGID(m_nMagicCubeSlotGID);
     if (pWnd != NULL)
         pWnd->Func_24(this->GetPos().x, this->GetPos().y);
 }
 
 bool CIFExtQuickSlotSlot::Func_28(int a1, int a2, int a3) {
-    CIFSlotWithHelp *pWnd = GetSlotWndByhgWnd(m_UnderBarSlot_hgWnd);
+    CIFSlotWithHelp *pWnd = (CIFSlotWithHelp *) GetWndByGID(m_nMagicCubeSlotGID);
     if (pWnd != NULL)
         return pWnd->Func_28(a1, a2, a3);;
 
@@ -58,13 +58,13 @@ int CIFExtQuickSlotSlot::OnMouseRightUp(int a1, int x, int y) {
 
 void CIFExtQuickSlotSlot::UpdatehgWndSlot(CIFWnd *pSlot) {
     if (pSlot == NULL) {
-        m_UnderBarSlot_hgWnd = 0;
+        m_nMagicCubeSlotGID = 0;
         return;
     }
-    m_UnderBarSlot_hgWnd = pSlot->GethgWnd();
+    m_nMagicCubeSlotGID = pSlot->GethgWnd();
     pSlot->ShowGWnd(false);
 }
 
-CIFSlotWithHelp *CIFExtQuickSlotSlot::GetSlotUnderBarBySlothgWnd() const {
-    return GetSlotWndByhgWnd(m_UnderBarSlot_hgWnd);
+CIFSlotWithHelp *CIFExtQuickSlotSlot::GetSlot() const {
+    return (CIFSlotWithHelp *) GetWndByGID(m_nMagicCubeSlotGID);
 }

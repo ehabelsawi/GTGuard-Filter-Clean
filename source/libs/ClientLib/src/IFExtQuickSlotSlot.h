@@ -53,10 +53,10 @@ public:
     void UpdatehgWndSlot(CIFWnd *pSlot);
 
     /// \address 0065fcb0
-    CIFSlotWithHelp *GetSlotUnderBarBySlothgWnd() const;
+    CIFSlotWithHelp *GetSlot() const;
 
 private:
-    int m_UnderBarSlot_hgWnd; //0x036C //its -stole- the hgwnd from the underbarslots
+    int m_nMagicCubeSlotGID; //0x036C //its -stole- the hgwnd from the underbarslots
 
 private:
 BEGIN_FIXTURE()

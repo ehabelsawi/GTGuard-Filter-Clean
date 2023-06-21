@@ -142,7 +142,7 @@ void CIFExtQuickSlot::OnDropDownButton() {
 void CIFExtQuickSlot::EnsureSlots() {
     for (int i = 0; i < 10; i++) {
         CIFSlotWithHelp *pSlot = m_IRM.GetResObj<CIFExtQuickSlotSlot>(GDR_EXT_QUICKSLOT_SLOT_1 + i,
-                                                                      1)->GetSlotUnderBarBySlothgWnd();
+                                                                      1)->GetSlot();
 
         pSlot->SetSlotData(NULL);
         pSlot->TB_Func_13("", 0, 0);
