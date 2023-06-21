@@ -245,7 +245,7 @@ void __stdcall WriteToChatWindow(ChatType type, const std::n_wstring &strRecipie
 
         case CHAT_Academy:
             local_64 = L"(";
-            local_64 += TSM_GETTEXTPTR(L"UIIT_CTL_TC_TRAININGCAMP" );
+            local_64 += TSM_GETTEXTPTR(L"UIIT_CTL_TC_TRAININGCAMP");
             local_64 += L"):";
             break;
 
@@ -295,5 +295,9 @@ GameCfg *Fun_GetCfgGame() {
 }
 
 void __stdcall FUN_00bbda70(undefined4 a1) {
-    reinterpret_cast<void(__stdcall *)(undefined4)>(0x00bbda70)(a1);
+    reinterpret_cast<void (__stdcall *)(undefined4)>(0x00bbda70)(a1);
+}
+
+CIFWnd *GetWndByGID(int hgWnd) {
+    return reinterpret_cast<CIFWnd *(__cdecl *)(int)>(0x00ba1140)(hgWnd);
 }

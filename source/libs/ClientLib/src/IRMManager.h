@@ -21,6 +21,8 @@ public:
     /// \param base Pointer to the object to instantiate the controls in.
     void CreateInterfaceSection(std::string section, CObj *base);
 
+    void DeleteCreatedSection(std::string section);
+
     /// Get a pointer to a control identified by the Id
     /// \param id The Id of the control as stated in the resinfo file or set on creation
     /// \param a2 Completely unknown, is always 1

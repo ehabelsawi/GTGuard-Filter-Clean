@@ -29,7 +29,7 @@ CIFWnd::CIFWnd(void) {
     this->N0000060A = 0;
     this->N0000060B = 0;
     this->N00009BFD = 0;
-    this->N000005BB = 0;
+    this->m_current_style = 0;
 
     CIFWnd::SetText(L"");
 
@@ -279,6 +279,10 @@ void CIFWnd::SetTooltipText(const std::n_wstring *str) {
 
 void CIFWnd::SetStyleThingy(StyleOptions option) {
     reinterpret_cast<void (__thiscall *)(CIFWnd *, StyleOptions)>(0x00652d20)(this, option);
+}
+
+bool CIFWnd::IsStyleThingy(StyleOptions option) const {
+    return ((option & m_current_style) != FALSE);
 }
 
 void CIFWnd::sub_6526E0(char a0, unsigned char opacity, float time, float a4, char a5) {

@@ -15,7 +15,7 @@ public:
 
     ~CIFWnd(void);
 
-
+public:
     void OnTimer(int) override;
 
     bool OnCreate(long ln) override;
@@ -42,9 +42,7 @@ public:
 
     void OnUpdate() override;
 
-
     void ShowGWnd(bool bVisible) override;
-
 
     void OnWndMessage(Event3D *a1) override;
 
@@ -77,7 +75,6 @@ public:
     /// \address 006527D0
     void SetSomeRect(const RECT &rect);
 
-
     /// \brief Set the tooltip text (mouse hover)
     /// \address 00653DC0
     void SetTooltipText(const std::n_wstring *str);
@@ -86,6 +83,11 @@ public:
     /// \See StyleOptions
     /// \address 00652d20
     void SetStyleThingy(StyleOptions option);
+
+    /// \brief Check Style for Window
+    /// \See StyleOptions
+    /// \address 00652da0
+    bool IsStyleThingy(StyleOptions option) const;
 
     /// \address 006526E0
     void sub_6526E0(char n00009771, unsigned char opacity, float time, float a4, char a5);
@@ -103,8 +105,7 @@ private:
 
 private:
     int N000005A9; //0x0184
-    int N000005BB; //0x0188
-
+    int m_current_style; //0x0188
     RECT m_someRECT; //0x018C
     std::n_wstring m_innerText; //0x019C
     char N00009BFD; //0x01B8

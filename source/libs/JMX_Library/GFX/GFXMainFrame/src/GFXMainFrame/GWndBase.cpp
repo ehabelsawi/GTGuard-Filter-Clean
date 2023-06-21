@@ -145,8 +145,20 @@ CGWndBase::wnd_size CGWndBase::GetSize() const {
     return this->bounds.size;
 }
 
+int CGWndBase::GethgWnd() const {
+    return m_hgWnd;
+}
+
+void CGWndBase::SetClickable(bool bState) {
+    reinterpret_cast<void (__thiscall *)(CGWndBase *, bool)>(0x00b8f540)(this, bState);
+}
+
 bool CGWndBase::IsDragable() const {
     return m_bDragable;
+}
+
+void CGWndBase::SetDragable(bool bState) {
+    m_bDragable = bState;
 }
 
 bool CGWndBase::SendMessageToParentDispatcher(DWORD dwMSG, DWORD lParam, DWORD wParam) {
