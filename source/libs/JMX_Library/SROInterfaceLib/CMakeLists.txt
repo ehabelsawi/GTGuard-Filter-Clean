@@ -11,7 +11,8 @@ set(SOURCE_FILES
         src/SRIFLib/NIFFrame.cpp src/SRIFLib/NIFFrame.h
         src/SRIFLib/NIFMainFrame.cpp src/SRIFLib/NIFMainFrame.h
         src/SRIFLib/NIFButton.h
-        src/SRIFLib/NIFDragableArea.h)
+        src/SRIFLib/NIFDragableArea.h
+        src/SRIFLib/IFSlotWithHelpEx.h)
 
 add_library(SROInterfaceLIB STATIC ${SOURCE_FILES})
 target_include_directories(SROInterfaceLIB PUBLIC src/)
