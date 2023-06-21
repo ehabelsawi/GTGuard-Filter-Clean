@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IFWnd.h"
-#include "NIFWnd.h"
+
 #include "IFSlotWithHelp.h"
 
 class CIFExtQuickSlotSlot : public CIFWnd {
