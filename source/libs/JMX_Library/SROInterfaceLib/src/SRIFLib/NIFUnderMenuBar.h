@@ -22,13 +22,13 @@ public:
     CNIFStatic *lbl_level; //0x0368
     CNIFGauge *gauges[10]; //0x036C
     char pad_0394[4 * 16]; //0x0394
-    CIFSlotWithHelpEx *m_slots[51]; //0x03D4 //yep 50 slots ;-;
+    CIFSlotWithHelpEx *m_pMySlots[51]; //0x03D4 //yep 50 slots ;-;
     char pad_cnifundermenubar[8];
 
 private:
 BEGIN_FIXTURE()
         ENSURE_SIZE(0x4a8)
-        ENSURE_OFFSET(m_slots, 0x3d4)
+        ENSURE_OFFSET(m_pMySlots, 0x3d4)
     END_FIXTURE()
 
     RUN_FIXTURE(CNIFUnderMenuBar)

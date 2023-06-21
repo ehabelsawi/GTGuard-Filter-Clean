@@ -2,8 +2,13 @@
 
 #include "IFWnd.h"
 
+#include "SOItem.h"
+
 class CIFSlotWithHelp : public CIFWnd {
 public:
+public:
+    void SetSlotData(CSOItem *pItemSocket);
+
 private:
     char pad_036C[0x35C]; //0x036C
 private:

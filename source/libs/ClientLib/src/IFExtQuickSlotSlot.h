@@ -1,3 +1,14 @@
+///******************************************************************************
+/// \File IFExtQuickSlotSlot.h
+///
+/// \Desc
+///
+/// \Author kyuubi09 on 2/16/2022.
+///
+/// \Copyright Copyright © 2023 SRO_DevKit.
+///
+///******************************************************************************
+
 #pragma once
 
 #include "IFWnd.h"
@@ -39,7 +50,7 @@ public:
 
 public:
     /// \address 0065fc70
-    void UpdatehgWndSlot(CIFWnd *pIFWnd);
+    void UpdatehgWndSlot(CIFWnd *pSlot);
 
     /// \address 0065fcb0
     CIFSlotWithHelp *GetSlotUnderBarBySlothgWnd() const;

@@ -1,3 +1,14 @@
+///******************************************************************************
+/// \File IFExtQuickSlot.h
+///
+/// \Desc
+///
+/// \Author kyuubi09 on 2/16/2022.
+///
+/// \Copyright Copyright © 2023 SRO_DevKit.
+///
+///******************************************************************************
+
 #pragma once
 
 #include "IFWnd.h"
@@ -10,11 +21,16 @@ GFX_DECLARE_DYNAMIC_EXISTING(CIFExtQuickSlot, 0x00ee9a28)
 
 GFX_DECLARE_MESSAGE_MAP(CIFExtQuickSlot)
 
+protected:
+    enum TYPE : BYTE {
+        TYPE_HORIZONTAL_1LINE,
+        TYPE_HORIZONTAL_2LINE,
+        TYPE_VERTICAL_1LINE,
+        TYPE_VERTICAL_2LINE,
+        DUMMY = 255
+    };
+
     enum {
-        SECTION_TYPE_1 = 1, // Type1
-        SECTION_TYPE_2 = 2, // Type2
-        SECTION_TYPE_3 = 3, // Type3
-        SECTION_TYPE_4 = 4, // Type4
         GDR_EXT_QUICKSLOT_OPTION = 5, // CIFExtQuickSlotOption
         GDR_EXT_QUICKSLOT_WND = 10, // CIFDragableArea
         GDR_EXT_QUICKSLOT_OPT_BTN = 11, // CIFButton
@@ -72,19 +88,19 @@ public:
     void SaveExtSlotSetting();
 
     /// \address 0065eef0
-    void ClearChildofSlot();
+    void EnsureSlots();
 
     /// \address 0065ef70
-    void UpdateBarSlotsStyle();
+    void UpdateSlotsBarDirection();
 
     /// \address 0065f390
-    void UpdateSlotsBarDirection();
+    void UpdateBarSlotsStyle();
 
     /// \address 0065f580
     void LoadExtSlotSetting();
 
     /// \address 0065eb10
-    undefined1 ToggleExtQuickSlotOption(bool bVisible);
+    void ToggleExtQuickSlotOption(bool bVisible);
 
     /// \address 0065ecd0
     void SetSlotsVisible(bool bVisible);
@@ -109,7 +125,7 @@ private:
     bool m_bTransparent; //0x036F
     bool m_bSlotsLocked; //0x0370
     bool m_bToolBarLocked; //0x0371
-    BYTE m_btSectionTypeID; //0x0372 // the types in resinfo file
+    CIFExtQuickSlot::TYPE m_btSectionTypeID; //0x0372 // the types in resinfo file
     CNIFUnderMenuBar *m_pMyUnderMenuBar; //0x0374
 private:
 BEGIN_FIXTURE()

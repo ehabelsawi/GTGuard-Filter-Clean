@@ -30,7 +30,6 @@ extern "C" _declspec(dllexport) BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdw
 
 #ifdef CONFIG_EXT_QUICK_SLOT
         OverrideObject<CIFExtQuickSlot, 0x00ee9a28>();
-        // Option for ExtQuickSlot
         OverrideObject<CIFExtQuickSlotOption, 0x00ee9a48>();
 #endif // CONFIG_EXT_QUICK_SLOT
 

@@ -13,12 +13,12 @@ public:
     void Func_26(int a1) override;
 
 public:
-    CIFSlotWithHelp *m_main_slot; //0x0348
+    CIFSlotWithHelp *m_pSlot; //0x0348
 
 private:
 BEGIN_FIXTURE()
         ENSURE_SIZE(0x34c)
-        ENSURE_OFFSET(m_main_slot, 0x0348)
+        ENSURE_OFFSET(m_pSlot, 0x0348)
     END_FIXTURE()
 
     RUN_FIXTURE(CIFSlotWithHelpEx)

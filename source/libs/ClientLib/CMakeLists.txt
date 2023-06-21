@@ -82,7 +82,7 @@ set(SOURCE_FILES src/BufRender.h
         src/IFSkill.h src/IFSkill.cpp
         src/IFSkillBoard.h
         src/IFSkillPracticeBox.h
-        src/IFSlotWithHelp.h
+        src/IFSlotWithHelp.cpp src/IFSlotWithHelp.h
         src/IFSpinButtonCtrl.h
         src/IFStatic.cpp
         src/IFStatic.h

@@ -1,3 +1,13 @@
+///******************************************************************************
+/// \File IFExtQuickSlotOption.cpp
+///
+/// \Desc
+///
+/// \Author kyuubi09 on 2/16/2022.
+///
+/// \Copyright Copyright © 2023 SRO_DevKit.
+///
+///******************************************************************************
 
 #include "IFExtQuickSlotOption.h"
 #include "GInterface.h"
@@ -16,7 +26,8 @@ GFX_END_MESSAGE_MAP()
 undefined1 CIFExtQuickSlotOption::OnCloseWnd() {
     CIFWnd::OnCloseWnd();
     
-    return g_pCGInterface->GetExtQuickSlot()->ToggleExtQuickSlotOption(false);
+    g_pCGInterface->GetExtQuickSlot()->ToggleExtQuickSlotOption(false);
+    return true;
 }
 
 HOOK_ORIGINAL_MEMBER(0x0065f800, &CIFExtQuickSlotOption::SetCheckBoxState)
@@ -39,7 +50,7 @@ void CIFExtQuickSlotOption::ApplyExtQSSetting() {
             m_IRM.GetResObj<CIFCheckBox>(GDR_EXT_QUICKSLOT_OPT_FIX_CHECKBOX, 1)->GetCheckedState_MAYBE());
     g_pCGInterface->GetExtQuickSlot()->SetBarTwoLinesState(
             m_IRM.GetResObj<CIFCheckBox>(GDR_EXT_QUICKSLOT_OPT_DOUBLELINE_CHECKBOX, 1)->GetCheckedState_MAYBE());
-    g_pCGInterface->GetExtQuickSlot()->UpdateSlotsBarDirection();
+    g_pCGInterface->GetExtQuickSlot()->UpdateBarSlotsStyle();
 }
 
 void CIFExtQuickSlotOption::OnClickConfirm() {

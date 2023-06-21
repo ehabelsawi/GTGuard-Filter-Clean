@@ -1,3 +1,13 @@
+///******************************************************************************
+/// \File IFExtQuickSlotSlot.cpp
+///
+/// \Desc
+///
+/// \Author kyuubi09 on 2/16/2022.
+///
+/// \Copyright Copyright © 2023 SRO_DevKit.
+///
+///******************************************************************************
 
 #include "IFExtQuickSlotSlot.h"
 #include "BSLib/Debug.h"
@@ -46,13 +56,13 @@ int CIFExtQuickSlotSlot::OnMouseRightUp(int a1, int x, int y) {
     return reinterpret_cast<bool (__thiscall *)(CIFExtQuickSlotSlot *, int, int, int)>(0x0065fc20)(this, a1, x, y);
 }
 
-void CIFExtQuickSlotSlot::UpdatehgWndSlot(CIFWnd *pWnd) {
-    if (pWnd == NULL) {
+void CIFExtQuickSlotSlot::UpdatehgWndSlot(CIFWnd *pSlot) {
+    if (pSlot == NULL) {
         m_UnderBarSlot_hgWnd = 0;
         return;
     }
-    m_UnderBarSlot_hgWnd = pWnd->GethgWnd();
-    pWnd->ShowGWnd(false);
+    m_UnderBarSlot_hgWnd = pSlot->GethgWnd();
+    pSlot->ShowGWnd(false);
 }
 
 CIFSlotWithHelp *CIFExtQuickSlotSlot::GetSlotUnderBarBySlothgWnd() const {
