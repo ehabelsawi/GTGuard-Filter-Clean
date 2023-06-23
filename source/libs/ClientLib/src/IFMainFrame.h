@@ -27,6 +27,9 @@ public:
     bool SetText(const wchar_t *pSrcText) override;
 
 private:
+    /// \address 00817170
+    void UpdateControlsSizePos();
+
     void OnClick_Exit();
 
 private:
