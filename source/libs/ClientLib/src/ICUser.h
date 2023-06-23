@@ -11,7 +11,7 @@ public:
     void Func_15(int param_1, float *param_2) override;
     void Func_15_impl(int param_1, float *param_2);
 
-    const std::wstring &GetGuildName() const;
+    const std::n_wstring &GetGuildName() const;
 
     void Render(void);
 
