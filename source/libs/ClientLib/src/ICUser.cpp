@@ -139,15 +139,15 @@ void CICUser::Func_15(int param_1, float *param_2) {
         m_renderX -= 20.0f;
 
         // GuildName
-        guildString += L"[" + m_guildName;
-        if (!m_grantName.empty()) {
-            guildString += L" * " + m_grantName;
+        guildString += L"[" + m_wstrGuildName;
+        if (!m_wstrGrantName.empty()) {
+            guildString += L" * " + m_wstrGrantName;
         }
 
         if (g_CGlobalDataManager->FUN_00939a60(g_pCICPlayer->FUN_009d68f0()) == 0 &&
-            g_CGlobalDataManager->FUN_0093a610(m_guildName) != 0) {
-            if (!m_fortressWarTitle.empty()) {
-                guildString += L"(" + m_fortressWarTitle + L")";
+            g_CGlobalDataManager->FUN_0093a610(m_wstrGuildName) != 0) {
+            if (!m_wstrFortressWarTitle.empty()) {
+                guildString += L"(" + m_wstrFortressWarTitle + L")";
             }
         }
 
@@ -231,7 +231,7 @@ void CICUser::Func_15(int param_1, float *param_2) {
         }
 
         // Fortress Icon?
-        if (g_CGlobalDataManager->FUN_0093a610(m_guildName) != 0) {
+        if (g_CGlobalDataManager->FUN_0093a610(m_wstrGuildName) != 0) {
             D3DVECTOR dataOut_2[8];
             m_pGuildInfo->m_pFontTexture->FUN_008b2d30(param_2, dataOut_2);
             dataOut_2[1].y = 0.0f;
@@ -253,7 +253,7 @@ void CICUser::Func_15(int param_1, float *param_2) {
 
 
             const IDirect3DBaseTexture9 *puVar8 = g_RuntimeTextureSomething.find(
-                    g_CGlobalDataManager->FUN_0093a610(m_guildName))->second;
+                    g_CGlobalDataManager->FUN_0093a610(m_wstrGuildName))->second;
             g_RStateMgr.SetTextureForStage(0, puVar8);
 
             int local_158 = 0;

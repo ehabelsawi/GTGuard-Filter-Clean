@@ -32,18 +32,18 @@ private:
 private:
     char pad_078C[56]; //0x078C
     UserGuildInfo *m_pGuildInfo; //0x07C4
-    std::n_wstring m_grantName; //0x07C8
-    std::n_wstring m_guildName; //0x07E4
-    std::n_wstring m_fortressWarTitle; //0x0800
+    std::n_wstring m_wstrGrantName; //0x07C8
+    std::n_wstring m_wstrGuildName; //0x07E4
+    std::n_wstring m_wstrFortressWarTitle; //0x0800
     undefined1 field_81c; //0x081C
     char pad_081D[15]; //0x081D
 
     BEGIN_FIXTURE()
         ENSURE_SIZE(2092)
         ENSURE_OFFSET(m_pGuildInfo, 0x07C4)
-        ENSURE_OFFSET(m_grantName, 0x07C8)
-        ENSURE_OFFSET(m_guildName, 0x07E4)
-        ENSURE_OFFSET(m_fortressWarTitle, 0x0800)
+        ENSURE_OFFSET(m_wstrGrantName, 0x07C8)
+        ENSURE_OFFSET(m_wstrGuildName, 0x07E4)
+        ENSURE_OFFSET(m_wstrFortressWarTitle, 0x0800)
     END_FIXTURE()
 
     RUN_FIXTURE(CICUser)
