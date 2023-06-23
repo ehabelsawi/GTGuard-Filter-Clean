@@ -93,7 +93,7 @@ void CIFMainFrame::SetGWndSize(int nWidth, int nHeight) {
 }
 
 bool CIFMainFrame::SetText(const wchar_t *pSrcText) {
-    return reinterpret_cast<bool (__thiscall *)(CIFMainFrame *, const wchar_t *)>(0x00817230)(this, pSrcText);
+    return m_pTitleText->SetText(pSrcText);
 }
 
 void CIFMainFrame::OnClick_Exit() {
