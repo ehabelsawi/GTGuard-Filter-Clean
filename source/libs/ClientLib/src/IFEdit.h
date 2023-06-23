@@ -22,7 +22,7 @@ public:
     bool IsSetValue_404(undefined4 value) const;
 
     /// \address 00634f80
-    void SetMaxLength(int length); 
+    void SetMaxLength(int length);
 
     /// \address 006351b0
     void SetTextmode(undefined4 mode);
@@ -32,4 +32,11 @@ public:
 private:
     HWND m_hEditBoxWnd; //0x0380
     char pad_0384[0xB0FC]; //0x0384 ????
+private:
+BEGIN_FIXTURE()
+        ENSURE_SIZE(0xb480) // big size, ha
+        ENSURE_OFFSET(m_hEditBoxWnd, 0x0380)
+    END_FIXTURE()
+
+    RUN_FIXTURE(CIFEdit)
 };
