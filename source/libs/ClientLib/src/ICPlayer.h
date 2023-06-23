@@ -13,7 +13,8 @@ public:
 
     bool IsGameMaster();
 
-    std::n_wstring *sub_9D6580(std::n_wstring *str);
+    /// \address 009D6580
+    std::n_wstring *GetCharName(std::n_wstring *pWstr);
 
     /// \address 009d6580
     std::n_wstring GetCharName() const;
@@ -40,21 +41,21 @@ public:
 
 private:
     char pad_082C[32]; //0x082C
-    std::n_wstring m_charname; //0x084C
+    std::n_wstring m_wstrCharName; //0x084C
 public:
-    unsigned char m_level; //0x0868 level of your character, crashes when set too high
+    BYTE m_btLevel; //0x0868 level of your character, crashes when set too high
 private:
     char pad_0869[7]; //0x0869
 public:
-    long long int m_exp_current; //0x0870
-    int m_skillpoint_progress; //0x0878
+    long long int m_i64CurrentExp; //0x0870
+    int m_nSkillPoint_Progress; //0x0878
 private:
-    short m_str_stat; //0x087C
-    short m_int_stat; //0x087E
+    short m_sStrStat; //0x087C
+    short m_sIntStat; //0x087E
 public:
-    int m_skillpoint; //0x0880
+    int m_nSkillPoint; //0x0880
 private:
-    short m_statpoint_available; //0x0884
+    short m_sStatPointAvailable; //0x0884
     char pad_0886[26]; //0x0886
     CSOItem N0000947A; //0x08A0
     CSOItem N0000947B; //0x0A70
@@ -72,25 +73,25 @@ private:
     char pad_2030[96]; //0x2030
     char N000094A7; //0x2090 bit 0 = isGameMaster
     char pad_2091[7]; //0x2091
-    std::n_wstring m_jobAlias; // 0x2098
+    std::n_wstring m_wstrJobAlias; // 0x2098
     char pad_20B4[48]; //0x20B4
-    short m_WorldID; //0x20E4
+    short m_sWorldID; //0x20E4
     char pad_20E6[50]; //0x20E6
 
 
     BEGIN_FIXTURE()
         ENSURE_SIZE(0x2118)
 
-        ENSURE_OFFSET(m_charname, 0x084C)
-        ENSURE_OFFSET(m_level, 0x0868)
-        ENSURE_OFFSET(m_exp_current, 0x0870)
-        ENSURE_OFFSET(m_skillpoint_progress, 0x0878)
-        ENSURE_OFFSET(m_str_stat, 0x087C)
-        ENSURE_OFFSET(m_int_stat, 0x087E)
-        ENSURE_OFFSET(m_skillpoint, 0x0880)
-        ENSURE_OFFSET(m_statpoint_available, 0x0884)
-        ENSURE_OFFSET(m_jobAlias, 0x2098)
-        ENSURE_OFFSET(m_WorldID, 0x20E4)
+        ENSURE_OFFSET(m_wstrCharName, 0x084C)
+        ENSURE_OFFSET(m_btLevel, 0x0868)
+        ENSURE_OFFSET(m_i64CurrentExp, 0x0870)
+        ENSURE_OFFSET(m_nSkillPoint_Progress, 0x0878)
+        ENSURE_OFFSET(m_sStrStat, 0x087C)
+        ENSURE_OFFSET(m_sIntStat, 0x087E)
+        ENSURE_OFFSET(m_nSkillPoint, 0x0880)
+        ENSURE_OFFSET(m_sStatPointAvailable, 0x0884)
+        ENSURE_OFFSET(m_wstrJobAlias, 0x2098)
+        ENSURE_OFFSET(m_sWorldID, 0x20E4)
 
         END_FIXTURE()
 
