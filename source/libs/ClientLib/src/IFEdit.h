@@ -30,5 +30,6 @@ public:
     const std::n_wstring &GetCurrentText() const;
 
 private:
-    char pad_0x0380[0xB100]; //0x0380 ????
+    HWND m_hEditBoxWnd; //0x0380
+    char pad_0384[0xB0FC]; //0x0384 ????
 };
