@@ -17,9 +17,9 @@ docker_doxygen:
     - docker:dind
   script:
     - docker info
-    - docker build -t "${CI_REGISTRY_IMAGE}:${name}" docker/${name}/
+    - docker build -t "${CI_REGISTRY_IMAGE}/${name}:latest" docker/${name}/
     - docker login ${CI_REGISTRY} -u gitlab-ci-token -p ${CI_BUILD_TOKEN}
-    - docker push "${CI_REGISTRY_IMAGE}:${name}"
+    - docker push "${CI_REGISTRY_IMAGE}/${name}:latest"
   rules:
     - changes:
         - docker/doxygen/Dockerfile
@@ -33,15 +33,11 @@ docker_doxygen:
 build:
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
+    WINEDEBUG: -all
   stage: build
-  tags:
-    - windows
-    - cygwin
+  image: ${CI_REGISTRY_IMAGE}/build:latest
   script:
-    - cd helpers
-    - chmod +x make_project_nmake.cmd make_project_nmake_build.cmd
-    - ./make_project_nmake.cmd
-    - ./make_project_nmake_build.cmd
+    - xvfb-run wine cmd /c helpers/ninja-build.cmd
   artifacts:
     untracked: false
     paths:
@@ -67,7 +63,7 @@ mkdocs:
 
 doxygen:
   stage: docs
-  image: ${CI_REGISTRY_IMAGE}:doxygen
+  image: ${CI_REGISTRY_IMAGE}/doxygen:latest
   script:
     - doxygen
   artifacts:
