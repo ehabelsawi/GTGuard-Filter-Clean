@@ -47,7 +47,7 @@ bool CIFMainFrame::OnCreate(long ln) {
     m_pCloseBtn = (CIFCloseButton *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFCloseButton), sz, GDR_BTN_CLOSE, 0);
     BS_DEBUG("Created close btn at %d|%d [%d|%d]", sz.pos.x, sz.pos.y, sz.size.width, sz.size.height);
 
-    RECT rect = {0};
+    RECT rect = { 0 };
 
     m_pTitleText->SetSomeRect(rect);
     m_pTitleText->SetFont(theApp.GetFont(0));
@@ -67,9 +67,29 @@ bool CIFMainFrame::OnCreate(long ln) {
     return true;
 }
 
+void CIFMainFrame::UpdateControlsSizePos() {
+    wnd_rect rcBounds = GetBounds();
+    wnd_rect rcNewBounds;
+
+    rcNewBounds.pos.y = rcBounds.pos.y + 12;
+    rcNewBounds.pos.x = rcBounds.pos.x + 10;
+    rcNewBounds.size.width = rcBounds.size.width - 21;
+
+    m_pTitleText->MoveGWnd(rcNewBounds.pos.x, rcNewBounds.pos.y);
+    m_pTitleText->SetGWndSize(rcNewBounds.size.width, 12);
+
+    rcNewBounds.pos.x += 10;
+
+    m_pHandleBar->MoveGWnd(rcNewBounds.pos.x, rcNewBounds.pos.y);
+    m_pHandleBar->SetGWndSize(rcNewBounds.size.width, 34);
+
+    m_pCloseBtn->MoveGWnd(rcNewBounds.pos.x - 26 + rcNewBounds.size.width, rcNewBounds.pos.y + 10);
+}
+
 void CIFMainFrame::SetGWndSize(int nWidth, int nHeight) {
-    // Issue #89
-    BS_ASSERT_MSG(FALSE, "Not yet implemented");
+    CIFTileWnd::SetGWndSize(nWidth, nHeight);
+
+    UpdateControlsSizePos();
 }
 
 bool CIFMainFrame::SetText(const wchar_t *pSrcText) {
