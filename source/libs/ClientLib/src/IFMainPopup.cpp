@@ -32,14 +32,14 @@ GFX_BEGIN_MESSAGE_MAP(CIFMainPopup, CIFMainFrame)
 GFX_END_MESSAGE_MAP()
 
 CIFMainPopup::CIFMainPopup() :
-        m_inventoryWindow(NULL),
-        m_equipmentWindow(NULL),
-        m_skillWindow(NULL),
-        m_actionWindow(NULL),
-        m_partyWindow(NULL),
-        m_apprenticeShipWindow(NULL),
-        m_playerInfoWindow(NULL),
-        m_questWindow(NULL),
+        m_pInventoryWindow(NULL),
+        m_pEquipmentWindow(NULL),
+        m_pSkillWindow(NULL),
+        m_pActionWindow(NULL),
+        m_pPartyWindow(NULL),
+        m_pApprenticeShipWindow(NULL),
+        m_pPlayerInfoWindow(NULL),
+        m_pQuestWindow(NULL),
         field_0x7fc(0) {
 }
 
@@ -50,69 +50,67 @@ bool CIFMainPopup::OnCreate(long ln) {
 
     m_IRM.CreateInterfaceSection("Create", this);
 
-    m_inventoryWindow = m_IRM.GetResObj<CIFInventory>(GDR_INVENTORY, 1);
-    m_equipmentWindow = m_IRM.GetResObj<CIFEquipment>(GDR_EQUIPMENT, 1);
-    m_skillWindow = m_IRM.GetResObj<CIFSkill>(GDR_SKILL, 1);
-    m_actionWindow = m_IRM.GetResObj<CIFAction>(GDR_ACTION, 1);
-    m_partyWindow = m_IRM.GetResObj<CIFParty>(GDR_PARTY, 1);
-    m_playerInfoWindow = m_IRM.GetResObj<CIFPlayerInfo>(GDR_PLAYERINFO, 1);
-    m_questWindow = m_IRM.GetResObj<CIFQuest>(GDR_QUEST, 1);
-    m_apprenticeShipWindow = m_IRM.GetResObj<CIFApprenticeShip>(GDR_APPRENTICESHIP, 1);
+    m_pInventoryWindow = m_IRM.GetResObj<CIFInventory>(GDR_INVENTORY, 1);
+    m_pEquipmentWindow = m_IRM.GetResObj<CIFEquipment>(GDR_EQUIPMENT, 1);
+    m_pSkillWindow = m_IRM.GetResObj<CIFSkill>(GDR_SKILL, 1);
+    m_pActionWindow = m_IRM.GetResObj<CIFAction>(GDR_ACTION, 1);
+    m_pPartyWindow = m_IRM.GetResObj<CIFParty>(GDR_PARTY, 1);
+    m_pPlayerInfoWindow = m_IRM.GetResObj<CIFPlayerInfo>(GDR_PLAYERINFO, 1);
+    m_pQuestWindow = m_IRM.GetResObj<CIFQuest>(GDR_QUEST, 1);
+    m_pApprenticeShipWindow = m_IRM.GetResObj<CIFApprenticeShip>(GDR_APPRENTICESHIP, 1);
 
-    m_btnInventory = m_IRM.GetResObj<CIFButton>(GDR_BTN_INV, 1);
-    m_btnSkill = m_IRM.GetResObj<CIFButton>(GDR_BTN_SKILL, 1);
-    m_btnAction = m_IRM.GetResObj<CIFButton>(GDR_BTN_ACT, 1);
-    m_btnParty = m_IRM.GetResObj<CIFButton>(GDR_BTN_PARTY, 1);
-    m_btnCharacter = m_IRM.GetResObj<CIFButton>(GDR_BTN_CHAR, 1);
-    m_btnQuest = m_IRM.GetResObj<CIFButton>(GDR_BTN_QUEST, 1);
-    m_btnApprentice = m_IRM.GetResObj<CIFButton>(GDR_BTN_APPRENTICE, 1);
+    m_pBtnInventory = m_IRM.GetResObj<CIFButton>(GDR_BTN_INV, 1);
+    m_pBtnSkill = m_IRM.GetResObj<CIFButton>(GDR_BTN_SKILL, 1);
+    m_pBtnAction = m_IRM.GetResObj<CIFButton>(GDR_BTN_ACT, 1);
+    m_pBtnParty = m_IRM.GetResObj<CIFButton>(GDR_BTN_PARTY, 1);
+    m_pBtnCharacter = m_IRM.GetResObj<CIFButton>(GDR_BTN_CHAR, 1);
+    m_pBtnQuest = m_IRM.GetResObj<CIFButton>(GDR_BTN_QUEST, 1);
+    m_pBtnApprentice = m_IRM.GetResObj<CIFButton>(GDR_BTN_APPRENTICE, 1);
 
-    m_background = m_IRM.GetResObj<CIFStatic>(GDR_MAINPOPUP_BG_TILE, 1);
+    m_pBackground = m_IRM.GetResObj<CIFStatic>(GDR_MAINPOPUP_BG_TILE, 1);
 
-    m_btnCharacter->FUN_00655fa0(8);
-    m_btnInventory->FUN_00655fa0(8);
-    m_btnSkill->FUN_00655fa0(8);
-    m_btnAction->FUN_00655fa0(8);
-    m_btnParty->FUN_00655fa0(8);
-    m_btnQuest->FUN_00655fa0(8);
-    m_skillWindow->FUN_006a6e60(1);
+    m_pBtnCharacter->FUN_00655fa0(8);
+    m_pBtnInventory->FUN_00655fa0(8);
+    m_pBtnSkill->FUN_00655fa0(8);
+    m_pBtnAction->FUN_00655fa0(8);
+    m_pBtnParty->FUN_00655fa0(8);
+    m_pBtnQuest->FUN_00655fa0(8);
+    m_pSkillWindow->FUN_006a6e60(1);
 
+    m_pBtnInventory->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_INVENTORY"));
+    m_pBtnInventory->SetStyleThingy(TOOLTIP);
 
-    m_btnInventory->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_INVENTORY"));
-    m_btnInventory->SetStyleThingy(TOOLTIP);
+    m_pBtnCharacter->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_CHARACTER"));
+    m_pBtnCharacter->SetStyleThingy(TOOLTIP);
 
-    m_btnCharacter->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_CHARACTER"));
-    m_btnCharacter->SetStyleThingy(TOOLTIP);
+    m_pBtnSkill->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_SKILL"));
+    m_pBtnSkill->SetStyleThingy(TOOLTIP);
 
-    m_btnSkill->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_SKILL"));
-    m_btnSkill->SetStyleThingy(TOOLTIP);
+    m_pBtnAction->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_ACTION"));
+    m_pBtnAction->SetStyleThingy(TOOLTIP);
 
-    m_btnAction->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_ACTION"));
-    m_btnAction->SetStyleThingy(TOOLTIP);
+    m_pBtnParty->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_PARTY"));
+    m_pBtnParty->SetStyleThingy(TOOLTIP);
 
-    m_btnParty->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_PARTY"));
-    m_btnParty->SetStyleThingy(TOOLTIP);
+    m_pBtnQuest->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_QUEST"));
+    m_pBtnQuest->SetStyleThingy(TOOLTIP);
 
-    m_btnQuest->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_QUEST"));
-    m_btnQuest->SetStyleThingy(TOOLTIP);
-
-    m_btnApprentice->SetTooltipText(TSM_GETTEXT(L"UIIT_CTL_TC_SHORTKEY_L"));
-    m_btnApprentice->SetStyleThingy(TOOLTIP);
-
+    m_pBtnApprentice->SetTooltipText(TSM_GETTEXT(L"UIIT_CTL_TC_SHORTKEY_L"));
+    m_pBtnApprentice->SetStyleThingy(TOOLTIP);
 
 #ifndef CONFIG_OLD_MAINPOPUP
-    m_btnInventory->ShowGWnd(false);
-    m_btnSkill->ShowGWnd(false);
-    m_btnAction->ShowGWnd(false);
-    m_btnParty->ShowGWnd(false);
-    m_btnCharacter->ShowGWnd(false);
-    m_btnQuest->ShowGWnd(false);
-    m_btnApprentice->ShowGWnd(false);
+    m_pBtnInventory->ShowGWnd(false);
+    m_pBtnSkill->ShowGWnd(false);
+    m_pBtnAction->ShowGWnd(false);
+    m_pBtnParty->ShowGWnd(false);
+    m_pBtnCharacter->ShowGWnd(false);
+    m_pBtnQuest->ShowGWnd(false);
+    m_pBtnApprentice->ShowGWnd(false);
 
     m_IRM.GetResObj(GDR_MAINPOPUP_LEFT_DECO_STATIC, 1)->ShowGWnd(false);
 #endif
 
-    m_inventoryWindow->BringToFront();
+    m_pInventoryWindow->BringToFront();
 
     return true;
 }
@@ -122,34 +120,34 @@ void CIFMainPopup::OnUpdate() {
 }
 
 void CIFMainPopup::HideAll() {
-    m_inventoryWindow->ShowGWnd(false);
-    m_equipmentWindow->ShowGWnd(false);
-    m_skillWindow->ShowGWnd(false);
-    m_actionWindow->ShowGWnd(false);
-    m_partyWindow->ShowGWnd(false);
-    m_playerInfoWindow->ShowGWnd(false);
-    m_questWindow->ShowGWnd(false);
-    m_apprenticeShipWindow->ShowGWnd(false);
+    m_pInventoryWindow->ShowGWnd(false);
+    m_pEquipmentWindow->ShowGWnd(false);
+    m_pSkillWindow->ShowGWnd(false);
+    m_pActionWindow->ShowGWnd(false);
+    m_pPartyWindow->ShowGWnd(false);
+    m_pPlayerInfoWindow->ShowGWnd(false);
+    m_pQuestWindow->ShowGWnd(false);
+    m_pApprenticeShipWindow->ShowGWnd(false);
 }
 
-void CIFMainPopup::ShowSubPage(int page) {
+void CIFMainPopup::ShowSubPage(int nPageId) {
     HideAll();
 
     wnd_rect rect = GetBounds();
 
     const ClientResolutonData &res = CGame::GetClientDimensionStuff();
 
-    switch (page) {
+    switch (nPageId) {
         case GDR_INVENTORY: {
             field_0x7fc = 1;
             SetText(TSM_GETTEXTPTR(L"UIIT_STT_INVENTORY"));
 
-            m_inventoryWindow->ShowGWnd(true);
-            m_equipmentWindow->ShowGWnd(true);
+            m_pInventoryWindow->ShowGWnd(true);
+            m_pEquipmentWindow->ShowGWnd(true);
 
-            m_background->ShowGWnd(true);
-            m_background->MoveGWnd(rect.pos.x + 189, rect.pos.y + 68);
-            m_background->SetGWndSize(9, 292);
+            m_pBackground->ShowGWnd(true);
+            m_pBackground->MoveGWnd(rect.pos.x + 189, rect.pos.y + 68);
+            m_pBackground->SetGWndSize(9, 292);
 
             MoveGWnd(((res.width - GetSize().width) - 80), GetPos().y);
             BringToFront();
@@ -160,8 +158,8 @@ void CIFMainPopup::ShowSubPage(int page) {
             field_0x7fc = 4;
             SetText(TSM_GETTEXTPTR(L"UIIT_STT_PARTY"));
 
-            m_partyWindow->ShowGWnd(true);
-            m_background->ShowGWnd(false);
+            m_pPartyWindow->ShowGWnd(true);
+            m_pBackground->ShowGWnd(false);
 
             MoveGWnd(((res.width - GetSize().width) - 80), GetPos().y);
             BringToFront();
@@ -172,8 +170,8 @@ void CIFMainPopup::ShowSubPage(int page) {
             field_0x7fc = 2;
             SetText(TSM_GETTEXTPTR(L"UIIT_STT_SKILL"));
 
-            m_skillWindow->ShowGWnd(true);
-            m_background->ShowGWnd(false);
+            m_pSkillWindow->ShowGWnd(true);
+            m_pBackground->ShowGWnd(false);
 
             MoveGWnd(((res.width - GetSize().width) - 80), GetPos().y);
             BringToFront();
@@ -184,11 +182,11 @@ void CIFMainPopup::ShowSubPage(int page) {
             field_0x7fc = 3;
             SetText(TSM_GETTEXTPTR(L"UIIT_STT_ACTION"));
 
-            m_actionWindow->ShowGWnd(true);
+            m_pActionWindow->ShowGWnd(true);
 
-            m_background->ShowGWnd(true);
-            m_background->MoveGWnd(rect.pos.x + 40, rect.pos.y + 154);
-            m_background->SetGWndSize(308, 124);
+            m_pBackground->ShowGWnd(true);
+            m_pBackground->MoveGWnd(rect.pos.x + 40, rect.pos.y + 154);
+            m_pBackground->SetGWndSize(308, 124);
 
             MoveGWnd(((res.width - GetSize().width) - 80), GetPos().y);
             BringToFront();
@@ -199,8 +197,8 @@ void CIFMainPopup::ShowSubPage(int page) {
             field_0x7fc = 0;
             SetText(TSM_GETTEXTPTR(L"UIIT_STT_ACTION"));
 
-            m_playerInfoWindow->ShowGWnd(true);
-            m_background->ShowGWnd(false);
+            m_pPlayerInfoWindow->ShowGWnd(true);
+            m_pBackground->ShowGWnd(false);
 
             MoveGWnd(80, GetPos().y);
             BringToFront();
@@ -211,8 +209,8 @@ void CIFMainPopup::ShowSubPage(int page) {
             field_0x7fc = 5;
             SetText(TSM_GETTEXTPTR(L"UIIT_STT_QUEST"));
 
-            m_questWindow->ShowGWnd(true);
-            m_background->ShowGWnd(false);
+            m_pQuestWindow->ShowGWnd(true);
+            m_pBackground->ShowGWnd(false);
 
             MoveGWnd(80, GetPos().y);
             BringToFront();
@@ -223,9 +221,9 @@ void CIFMainPopup::ShowSubPage(int page) {
             field_0x7fc = 5;
             SetText(TSM_GETTEXTPTR(L"UIIT_CTL_TC_TRAININGCAMP"));
 
-            m_apprenticeShipWindow->ShowGWnd(true);
-            m_background->ShowGWnd(true);
-            m_background->ShowGWnd(false);
+            m_pApprenticeShipWindow->ShowGWnd(true);
+            m_pBackground->ShowGWnd(true);
+            m_pBackground->ShowGWnd(false);
 
             MoveGWnd(80, GetPos().y);
             BringToFront();
@@ -296,14 +294,14 @@ void CIFMainPopup::ShowGWnd(bool bVisible) {
                 break;
         }
     } else {
-        m_inventoryWindow->ShowGWnd(false);
-        m_equipmentWindow->ShowGWnd(false);
-        m_skillWindow->ShowGWnd(false);
-        m_actionWindow->ShowGWnd(false);
-        m_partyWindow->ShowGWnd(false);
-        m_playerInfoWindow->ShowGWnd(false);
-        m_questWindow->ShowGWnd(false);
-        m_apprenticeShipWindow->ShowGWnd(false);
+        m_pInventoryWindow->ShowGWnd(false);
+        m_pEquipmentWindow->ShowGWnd(false);
+        m_pSkillWindow->ShowGWnd(false);
+        m_pActionWindow->ShowGWnd(false);
+        m_pPartyWindow->ShowGWnd(false);
+        m_pPlayerInfoWindow->ShowGWnd(false);
+        m_pQuestWindow->ShowGWnd(false);
+        m_pApprenticeShipWindow->ShowGWnd(false);
     }
 
     CIFMainFrame::ShowGWnd(bVisible);
@@ -312,53 +310,53 @@ void CIFMainPopup::ShowGWnd(bool bVisible) {
 
 HOOK_ORIGINAL_MEMBER(0x006a1d20, &CIFMainPopup::GetInventory);
 CIFInventory *CIFMainPopup::GetInventory() const {
-    BS_ASSERT_MSG(m_inventoryWindow, "Mainpop에 세팅된 Inventory가 이상하다");
-    return m_inventoryWindow;
+    BS_ASSERT_MSG(m_pInventoryWindow, "Mainpop에 세팅된 Inventory가 이상하다");
+    return m_pInventoryWindow;
 }
 
 HOOK_ORIGINAL_MEMBER(0x006a1d80, &CIFMainPopup::GetSkill);
 CIFSkill *CIFMainPopup::GetSkill() const {
-    BS_ASSERT_MSG(m_skillWindow, "Mainpop에 세팅된 Skill이 이상하다");
-    return m_skillWindow;
+    BS_ASSERT_MSG(m_pSkillWindow, "Mainpop에 세팅된 Skill이 이상하다");
+    return m_pSkillWindow;
 }
 
 HOOK_ORIGINAL_MEMBER(0x006a1db0, &CIFMainPopup::GetAction);
 CIFAction *CIFMainPopup::GetAction() const {
-    BS_ASSERT_MSG(m_actionWindow, "Mainpop에 세팅된 Action이 이상하다");
-    return m_actionWindow;
+    BS_ASSERT_MSG(m_pActionWindow, "Mainpop에 세팅된 Action이 이상하다");
+    return m_pActionWindow;
 }
 
 HOOK_ORIGINAL_MEMBER(0x006a1de0, &CIFMainPopup::GetParty);
 CIFParty *CIFMainPopup::GetParty() const {
-    BS_ASSERT_MSG(m_partyWindow, "Mainpop에 세팅된 Party가 이상하다");
-    return m_partyWindow;
+    BS_ASSERT_MSG(m_pPartyWindow, "Mainpop에 세팅된 Party가 이상하다");
+    return m_pPartyWindow;
 }
 
 HOOK_ORIGINAL_MEMBER(0x06a1e10, &CIFMainPopup::GetPlayerInfo);
 CIFPlayerInfo *CIFMainPopup::GetPlayerInfo() const {
-    BS_ASSERT_MSG(m_playerInfoWindow, "Mainpop에 세팅된 PlayerInfo가 이상하다");
-    return m_playerInfoWindow;
+    BS_ASSERT_MSG(m_pPlayerInfoWindow, "Mainpop에 세팅된 PlayerInfo가 이상하다");
+    return m_pPlayerInfoWindow;
 }
 
 HOOK_ORIGINAL_MEMBER(0x006a1e40, &CIFMainPopup::GetQuest);
 CIFQuest *CIFMainPopup::GetQuest() const {
-    BS_ASSERT_MSG(m_questWindow, "Mainpop에 세팅된 Quest가 이상하다");
-    return m_questWindow;
+    BS_ASSERT_MSG(m_pQuestWindow, "Mainpop에 세팅된 Quest가 이상하다");
+    return m_pQuestWindow;
 }
 
 HOOK_ORIGINAL_MEMBER(0x006a1e70, &CIFMainPopup::GetApprenticeShip);
 CIFApprenticeShip *CIFMainPopup::GetApprenticeShip() const {
-    BS_ASSERT_MSG(m_apprenticeShipWindow, "Mainpop에 세팅된 ApprenticeShip이 이상하다");
-    return m_apprenticeShipWindow;
+    BS_ASSERT_MSG(m_pApprenticeShipWindow, "Mainpop에 세팅된 ApprenticeShip이 이상하다");
+    return m_pApprenticeShipWindow;
 }
 
 HOOK_ORIGINAL_MEMBER(0x006a1d50, &CIFMainPopup::GetEquipment);
 CIFEquipment *CIFMainPopup::GetEquipment() const {
-    BS_ASSERT_MSG(m_equipmentWindow, "Mainpop에 세팅된 Equipment가 이상하다");
-    return m_equipmentWindow;
+    BS_ASSERT_MSG(m_pEquipmentWindow, "Mainpop에 세팅된 Equipment가 이상하다");
+    return m_pEquipmentWindow;
 }
 
 HOOK_ORIGINAL_MEMBER(0x006a1cf0, &CIFMainPopup::IsSubPageActive);
-bool CIFMainPopup::IsSubPageActive(int page) {
-    return m_IRM.GetResObj<CIFWnd>(page, 1)->IsVisible();
+bool CIFMainPopup::IsSubPageActive(int nPageId) {
+    return m_IRM.GetResObj<CIFWnd>(nPageId, 1)->IsVisible();
 }

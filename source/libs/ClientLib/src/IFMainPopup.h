@@ -68,13 +68,13 @@ public:
     CIFEquipment *GetEquipment() const;
 
     /// \address 006a1cf0
-    bool IsSubPageActive(int page);
+    bool IsSubPageActive(int nPageId);
 
     /// \address 006a1c70
     void HideAll();
 
     /// \address 006a1f70
-    void ShowSubPage(int page);
+    void ShowSubPage(int nPageId);
 
 private:
 
@@ -100,43 +100,42 @@ private:
     void OnClick_BtnApprentice();
 
 private:
-    CIFInventory *m_inventoryWindow; //0x07BC
-    CIFEquipment *m_equipmentWindow; //0x07C0
-    CIFSkill *m_skillWindow; //0x07C4
-    CIFAction *m_actionWindow; //0x07C8
-    CIFParty *m_partyWindow; //0x07CC
-    CIFPlayerInfo *m_playerInfoWindow; //0x07D0
-    CIFQuest *m_questWindow; //0x07D4
-    CIFApprenticeShip *m_apprenticeShipWindow; //0x07D8
-    CIFButton *m_btnInventory; //0x07DC
-    CIFButton *m_btnSkill; //0x07E0
-    CIFButton *m_btnAction; //0x07E4
-    CIFButton *m_btnParty; //0x07E8
-    CIFButton *m_btnCharacter; //0x07EC
-    CIFButton *m_btnQuest; //0x07F0
-    CIFButton *m_btnApprentice; //0x07F4
-    CIFStatic *m_background; //0x07F8
+    CIFInventory *m_pInventoryWindow; //0x07BC
+    CIFEquipment *m_pEquipmentWindow; //0x07C0
+    CIFSkill *m_pSkillWindow; //0x07C4
+    CIFAction *m_pActionWindow; //0x07C8
+    CIFParty *m_pPartyWindow; //0x07CC
+    CIFPlayerInfo *m_pPlayerInfoWindow; //0x07D0
+    CIFQuest *m_pQuestWindow; //0x07D4
+    CIFApprenticeShip *m_pApprenticeShipWindow; //0x07D8
+    CIFButton *m_pBtnInventory; //0x07DC
+    CIFButton *m_pBtnSkill; //0x07E0
+    CIFButton *m_pBtnAction; //0x07E4
+    CIFButton *m_pBtnParty; //0x07E8
+    CIFButton *m_pBtnCharacter; //0x07EC
+    CIFButton *m_pBtnQuest; //0x07F0
+    CIFButton *m_pBtnApprentice; //0x07F4
+    CIFStatic *m_pBackground; //0x07F8
     undefined4 field_0x7fc; //0x07FC
 private:
 BEGIN_FIXTURE()
         ENSURE_SIZE(0x800)
-
-        ENSURE_OFFSET(m_inventoryWindow, 0x07BC)
-        ENSURE_OFFSET(m_equipmentWindow, 0x07C0)
-        ENSURE_OFFSET(m_skillWindow, 0x07C4)
-        ENSURE_OFFSET(m_actionWindow, 0x07C8)
-        ENSURE_OFFSET(m_partyWindow, 0x07CC)
-        ENSURE_OFFSET(m_playerInfoWindow, 0x07D0)
-        ENSURE_OFFSET(m_questWindow, 0x07D4)
-        ENSURE_OFFSET(m_apprenticeShipWindow, 0x07D8)
-        ENSURE_OFFSET(m_btnInventory, 0x07DC)
-        ENSURE_OFFSET(m_btnSkill, 0x07E0)
-        ENSURE_OFFSET(m_btnAction, 0x07E4)
-        ENSURE_OFFSET(m_btnParty, 0x07E8)
-        ENSURE_OFFSET(m_btnCharacter, 0x07EC)
-        ENSURE_OFFSET(m_btnQuest, 0x07F0)
-        ENSURE_OFFSET(m_btnApprentice, 0x07F4)
-        ENSURE_OFFSET(m_background, 0x07F8)
+        ENSURE_OFFSET(m_pInventoryWindow, 0x07BC)
+        ENSURE_OFFSET(m_pEquipmentWindow, 0x07C0)
+        ENSURE_OFFSET(m_pSkillWindow, 0x07C4)
+        ENSURE_OFFSET(m_pActionWindow, 0x07C8)
+        ENSURE_OFFSET(m_pPartyWindow, 0x07CC)
+        ENSURE_OFFSET(m_pPlayerInfoWindow, 0x07D0)
+        ENSURE_OFFSET(m_pQuestWindow, 0x07D4)
+        ENSURE_OFFSET(m_pApprenticeShipWindow, 0x07D8)
+        ENSURE_OFFSET(m_pBtnInventory, 0x07DC)
+        ENSURE_OFFSET(m_pBtnSkill, 0x07E0)
+        ENSURE_OFFSET(m_pBtnAction, 0x07E4)
+        ENSURE_OFFSET(m_pBtnParty, 0x07E8)
+        ENSURE_OFFSET(m_pBtnCharacter, 0x07EC)
+        ENSURE_OFFSET(m_pBtnQuest, 0x07F0)
+        ENSURE_OFFSET(m_pBtnApprentice, 0x07F4)
+        ENSURE_OFFSET(m_pBackground, 0x07F8)
         ENSURE_OFFSET(field_0x7fc, 0x07FC)
     END_FIXTURE()
 
