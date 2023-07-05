@@ -195,7 +195,7 @@ void CIFMainPopup::ShowSubPage(int nPageId) {
 
         case GDR_PLAYERINFO: {
             m_nWindowType = MAINPOP_PLAYER_INFO;
-            SetText(TSM_GETTEXTPTR(L"UIIT_STT_ACTION"));
+            SetText(TSM_GETTEXTPTR(L"UIIT_STT_CHARACTER"));
 
             m_pPlayerInfoWindow->ShowGWnd(true);
             m_pBackground->ShowGWnd(false);
