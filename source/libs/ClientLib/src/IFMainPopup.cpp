@@ -40,7 +40,7 @@ CIFMainPopup::CIFMainPopup() :
         m_pApprenticeShipWindow(NULL),
         m_pPlayerInfoWindow(NULL),
         m_pQuestWindow(NULL),
-        field_0x7fc(0) {
+        m_nWindowType(DUMMY) {
 }
 
 bool CIFMainPopup::OnCreate(long ln) {
@@ -139,7 +139,7 @@ void CIFMainPopup::ShowSubPage(int nPageId) {
 
     switch (nPageId) {
         case GDR_INVENTORY: {
-            field_0x7fc = 1;
+            m_nWindowType = MAINPOP_INVENTORY;
             SetText(TSM_GETTEXTPTR(L"UIIT_STT_INVENTORY"));
 
             m_pInventoryWindow->ShowGWnd(true);
@@ -155,7 +155,7 @@ void CIFMainPopup::ShowSubPage(int nPageId) {
         }
 
         case GDR_PARTY: {
-            field_0x7fc = 4;
+            m_nWindowType = MAINPOP_PARTY;
             SetText(TSM_GETTEXTPTR(L"UIIT_STT_PARTY"));
 
             m_pPartyWindow->ShowGWnd(true);
@@ -167,7 +167,7 @@ void CIFMainPopup::ShowSubPage(int nPageId) {
         }
 
         case GDR_SKILL: {
-            field_0x7fc = 2;
+            m_nWindowType = MAINPOP_SKILL;
             SetText(TSM_GETTEXTPTR(L"UIIT_STT_SKILL"));
 
             m_pSkillWindow->ShowGWnd(true);
@@ -179,7 +179,7 @@ void CIFMainPopup::ShowSubPage(int nPageId) {
         }
 
         case GDR_ACTION: {
-            field_0x7fc = 3;
+            m_nWindowType = MAINPOP_ACTION;
             SetText(TSM_GETTEXTPTR(L"UIIT_STT_ACTION"));
 
             m_pActionWindow->ShowGWnd(true);
@@ -194,7 +194,7 @@ void CIFMainPopup::ShowSubPage(int nPageId) {
         }
 
         case GDR_PLAYERINFO: {
-            field_0x7fc = 0;
+            m_nWindowType = MAINPOP_PLAYER_INFO;
             SetText(TSM_GETTEXTPTR(L"UIIT_STT_ACTION"));
 
             m_pPlayerInfoWindow->ShowGWnd(true);
@@ -206,7 +206,7 @@ void CIFMainPopup::ShowSubPage(int nPageId) {
         }
 
         case GDR_QUEST: {
-            field_0x7fc = 5;
+            m_nWindowType = MAINPOP_QUEST;
             SetText(TSM_GETTEXTPTR(L"UIIT_STT_QUEST"));
 
             m_pQuestWindow->ShowGWnd(true);
@@ -218,7 +218,7 @@ void CIFMainPopup::ShowSubPage(int nPageId) {
         }
 
         case GDR_APPRENTICESHIP: {
-            field_0x7fc = 5;
+            m_nWindowType = MAINPOP_ACADEMY;
             SetText(TSM_GETTEXTPTR(L"UIIT_CTL_TC_TRAININGCAMP"));
 
             m_pApprenticeShipWindow->ShowGWnd(true);
@@ -270,26 +270,26 @@ void CIFMainPopup::RenderMyself() {
 
 void CIFMainPopup::ShowGWnd(bool bVisible) {
     if (bVisible) {
-        switch (this->field_0x7fc) {
-            case 0:
+        switch (this->m_nWindowType) {
+            case MAINPOP_PLAYER_INFO:
                 ShowSubPage(GDR_PLAYERINFO);
                 break;
-            case 1:
+            case MAINPOP_INVENTORY:
                 ShowSubPage(GDR_INVENTORY);
                 break;
-            case 2:
+            case MAINPOP_SKILL:
                 ShowSubPage(GDR_SKILL);
                 break;
-            case 3:
+            case MAINPOP_ACTION:
                 ShowSubPage(GDR_ACTION);
                 break;
-            case 4:
+            case MAINPOP_PARTY:
                 ShowSubPage(GDR_PARTY);
                 break;
-            case 5:
+            case MAINPOP_QUEST:
                 ShowSubPage(GDR_QUEST);
                 break;
-            case 6:
+            case MAINPOP_ACADEMY:
                 ShowSubPage(GDR_APPRENTICESHIP);
                 break;
         }

@@ -100,6 +100,18 @@ private:
     void OnClick_BtnApprentice();
 
 private:
+    enum eMainPopWndType : int {
+        DUMMY = 0,
+        MAINPOP_PLAYER_INFO = 0,
+        MAINPOP_INVENTORY,
+        MAINPOP_SKILL,
+        MAINPOP_ACTION,
+        MAINPOP_PARTY,
+        MAINPOP_QUEST,
+        MAINPOP_ACADEMY
+    };
+
+private:
     CIFInventory *m_pInventoryWindow; //0x07BC
     CIFEquipment *m_pEquipmentWindow; //0x07C0
     CIFSkill *m_pSkillWindow; //0x07C4
@@ -116,7 +128,7 @@ private:
     CIFButton *m_pBtnQuest; //0x07F0
     CIFButton *m_pBtnApprentice; //0x07F4
     CIFStatic *m_pBackground; //0x07F8
-    undefined4 field_0x7fc; //0x07FC
+    eMainPopWndType m_nWindowType; //0x07FC
 private:
 BEGIN_FIXTURE()
         ENSURE_SIZE(0x800)
@@ -136,7 +148,7 @@ BEGIN_FIXTURE()
         ENSURE_OFFSET(m_pBtnQuest, 0x07F0)
         ENSURE_OFFSET(m_pBtnApprentice, 0x07F4)
         ENSURE_OFFSET(m_pBackground, 0x07F8)
-        ENSURE_OFFSET(field_0x7fc, 0x07FC)
+        ENSURE_OFFSET(m_nWindowType, 0x07FC)
     END_FIXTURE()
 
     RUN_FIXTURE(CIFMainPopup)
