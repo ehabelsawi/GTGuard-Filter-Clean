@@ -27,9 +27,10 @@ public:
     GFX_DECLARE_DYNCREATE_FN(CIFMainPopup)
 
 public:
-
     CIFMainPopup();
 
+public:
+    /// \address 006a2560
     bool OnCreate(long ln) override;
 
     /// \address 006a1c50
@@ -41,6 +42,7 @@ public:
     /// \address 006a2390
     void ShowGWnd(bool bVisible) override;
 
+public:
     /// \address 006a1d20
     CIFInventory *GetInventory() const;
 
@@ -106,7 +108,6 @@ private:
     CIFPlayerInfo *m_playerInfoWindow; //0x07D0
     CIFQuest *m_questWindow; //0x07D4
     CIFApprenticeShip *m_apprenticeShipWindow; //0x07D8
-
     CIFButton *m_btnInventory; //0x07DC
     CIFButton *m_btnSkill; //0x07E0
     CIFButton *m_btnAction; //0x07E4
@@ -116,8 +117,7 @@ private:
     CIFButton *m_btnApprentice; //0x07F4
     CIFStatic *m_background; //0x07F8
     undefined4 field_0x7fc; //0x07FC
-
-
+private:
 BEGIN_FIXTURE()
         ENSURE_SIZE(0x800)
 
