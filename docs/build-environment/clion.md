@@ -30,14 +30,13 @@ In order to add Visual Studio 2005 as a compiler, we need to make a small change
 CLion requires the environment variable `%VisualStudioVersion%` to be present. Visual Studio 2005 does not populate this
 environment variable, therefore CLion will only state *Not found* when simply adding Visual Studio 2005 as a toolchain.
 
-Change this file `%VS80COMNTOOLS%vsvars32.bat` and add this line at an appropriate location.
+Change this file `C:\Program Files (x86)\Microsoft Visual Studio 8\VC\vcvarsall.bat` and add in a new line after `@echo off`.
 
 ```batch
 @set VisualStudioVersion=8.0
 ```
 
-If you can not find this file, press `Win + R` on your keyboard, enter `%VS80COMNTOOLS%` in the dialog and press enter. 
-The explorer should open and you can open `vsvars32.bat` from there.
+Note that this instruction has changed from vcvars32.bat. CLion now needs this line in a different file.
 
 #### 2. Add Toolchain
 
