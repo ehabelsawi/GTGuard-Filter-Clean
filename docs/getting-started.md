@@ -54,12 +54,7 @@ SRO_DevKit relies on Visual Studio 2005. Nobody will use Visual Studio 2005 by
 choice, for sure. That's why this project uses CMake to support a variety of 
 Visual Studio Versions, and also other IDEs aswell.
 
-Choose your favourite IDE from the list below. 
-
-!!! info "Undocumented Visual Studio versions"
-    
-    Most Visual Studio versions seem to work if you follow the guide for Visual
-    Studio 2010. Please let us know if any additional steps were required.
+Choose your favourite IDE from the list below.
 
 | IDE                                                            | Compile                | Debug                  |
 |----------------------------------------------------------------|------------------------|------------------------|
@@ -81,72 +76,6 @@ Choose your favourite IDE from the list below.
 If you got any issues regarding these configurations, please create an issue so
 we can improve the documentation.
 
-## Compile the project
-
-SRO_DevKit does not come with "ready to use" project files. Instead, we use 
-CMake to generate project files for each IDE.
-
-!!! help "Why not just put a Visual Studio project"
-
-    Dealing with Visual Studio projects/solutions in version control systems 
-    like Git has always been a pain. Visual Studio keeps changing a lot of 
-    values (e. g. UUIDs) which results in a lot of changes in Git and almost 
-    always in a merge conflict. Since files are not meant to be human-readable,
-    merging two conflicting files is a nightmare.
-    
-    People use different Visual Studio versions. We can not make a project for 
-    every version, and with up- and downgrading, things get even messier.
-    
-    We don't have any of these problems with CMake as CMake-files are human-
-    readable and independed of any IDE.
-    
-    Lastly, the maintainer of this project is not using Visual Studio at all.
-    All development is done in CLion which works on CMake by default.
-
-### ... with Visual Studio
-
-After following the guide to setup your Visual Studio based build environment,
-you are ready to create the project files.
-
-Check out the `helpers/`-folder in the project directory. Run the file 
-`make_project_vs2010.cmd` by doubleclicking on it. This will run CMake with the
-correct arguments to generate a compatible Visual Studio project.
-
-The helpers folder should now contain a Visual Studio project you can open. 
-After opening, make sure to select "RelWithDebInfo" from the build 
-configuration dropdown. Visual Studio selects Debug by default and Debug is not
-working.
-
-You can find the built DLL in the `BinOut/` folder.
-
-!!! failure "Troubleshooting"
-    
-    If you can not see a Visual Studio project after running 
-    `make_project_vs2010.cmd`, open the file and add a `pause` in a new line 
-    at the end. Save, then run it again. The console window should now stay 
-    open and you can read the error message.
-    
-    If it states *cmake.exe Command not found*, make sure you installed CMake 
-    correctly. Double check the settings regarding "Add CMake to PATH variable".
-    Refer to the CMake Setup Guide if in doubt.
-    
-    If it states something about imgui or directx files not found, make sure you 
-    downloaded the project using Git, and not with the download button on 
-    GitLab.
-    
-    If it returns the following message, you did not install Visual Studio 2010, or something went wrong during installation.
-    > The imported project "C:\Microsoft.Cpp.Default.props" was not found. Confirm that the path in the <Import> declaration is correct, and that the file exists on disk.
-    
-    
-    
-
-### ... with CLion
-
-After adding Visual Studio 2005 to CLion, simply open the project. Choose 
-`DevKit_DLL | RelWithDebInfo` from the build configuration dropdown if not 
-already choosen. After that click the little hammer-icon to start the build.
-
-You can find the built DLL in the `BinOut/` folder.
 
 ## Configuration
 
@@ -167,47 +96,37 @@ The following options are configureable:
 | CONFIG_DEBUG_NET_RECEIVE | Print NetProcess debug messages on receive | OFF |
 
 
-To change one of these options, alter the CMake command in `helpers/make_project_vs2010.cmd` to include the option.
+To change one of these options, create a CMakeUserPresets.json and define your own CMake preset. Your 
+configuration options go into the `cacheVariables` section. Don't forget to change the selected preset in your IDE to your own one.
 
-!!! example
-    To override the ChatViewer with the one supplied in SRO_DevKit, add `-DCONFIG_CHATVIEWER=ON` to the CMake command.
-    ```
-    cmake -G "Visual Studio 10 2010" -T v80 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCONFIG_CHATVIEWER=ON ..
-    ```
-
-## Run & Debug
-
-You need to inject the Dll into your client with the method of your choice. This is not covered here. This section
-covers how to run the client from your IDE.
-
-Independent of your IDE, you need to copy a working client to the `RelWithDebInfo`-folder. Make sure to copy it where 
-the resulting Dll can be found. 
-
-### ... with Visual Studio
-
-First, open the project settings of the `ALL_BUILD`-project. This project should always be the startup project.
-
-![Visual Studio 2010 project settings](visual-studio-project-settings.png)
-
-Make sure you're editing the *RelWithDebInfo*-configuration. Editing any other will get you nowhere. Select 
-*Debugging* on the left. Select your client as the command, set `/22 0 0` as the command arguments and set the working 
-directory accordingly.
-
-![Visual Studio 2010 debugging settings](visual-studio-debugging-settings.png)
-
-You can now run and debug in Visual Studio.
-
-### ... with CLion
-
-First, open the *Run/Debug Configurations* Editor in Clion.
-
-![Run/Debug Configurations](clion-edit-configurations.png) 
-
-Then set the *executable* to your client binary and the program arguments to `/22 0 0`.
-
-![Configuration](clion-edit-configurations-details.png)
-
-After this you can use both the Run and the Debug button.
+```json
+{
+    "version": 6,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 19,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "My Own Config",
+            "inherits": "RelWithDebInfo-cfg",
+            "generator": "Ninja",
+            "binaryDir": "cmake-build-relwithdebinfo",
+            "cacheVariables": {
+                "CONFIG_IMGUI": "OFF",
+                "CONFIG_DEBUG_CONSOLE": "OFF"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "My Own Config",
+            "configurePreset": "My Own Config"
+        }
+    ]
+}
+```
 
 ## Working with Git
 
@@ -258,5 +177,3 @@ After that pull the most recent version from the repository and merge it with yo
     ```
     This will merge all changes into your own code, respecting all changes you made.
     
-    
-After merging, recreate the Visual Studio project (if needed) by running `make_project_vs2010.cmd` again.
