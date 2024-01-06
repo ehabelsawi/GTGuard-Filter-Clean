@@ -61,23 +61,18 @@ Choose your favourite IDE from the list below.
     Most Visual Studio versions seem to work if you follow the guide for Visual
     Studio 2010. Please let us know if any additional steps were required.
 
-| IDE                                               | Compile               | Debug        | Rating     |
-|---------------------------------------------------|-----------------------|--------------|------------|
-| [Jetbrains CLion](build-environment/clion.md)     |  ✅ Working            | ✅ Working    | ⭐⭐⭐⭐⭐     |
-| Visual Studio 2008                                |  ❔ Unknown            | ❔ Unknown    | ❔ Unrated |
-| [Visual Studio 2010](build-environment/visual-studio/2010.md)    |  ✅ Working            | ✅ Working    | ⭐⭐⭐   |
-| Visual Studio 2012                                |  ❔ Unknown            | ❔ Unknown    | ❔ Unrated |
-| Visual Studio 2013                                |  ❔ Unknown            | ❔ Unknown    | ❔ Unrated |
-| Visual Studio 2015                                |  ❔ Unknown            | ❔ Unknown    | ❔ Unrated |
-| Visual Studio 2017                                |  ❔ Unknown             | ❔ Unknown     | ❔ Unrated |
-| [Visual Studio 2019](build-environment/visual-studio/2019.md) |  ✅ Working            | ✅ Working    | ❔ Unrated |
-| Visual Studio Code                                |  ❗ Not easy to set up | ❔ Unknown    | ❔ Unrated |
-| Code::Blocks                                      |  ❔ Unknown            | ❔ Unknown    | ❔ Unrated |
-| CodeLite                                          |  ❔ Unknown            | ❔ Unknown    | ❔ Unrated |
-| Netbeans IDE                                      |  ❔ Unknown            | ❔ Unknown    | ❔ Unrated |
-| Qt Creator                                        |  ❔ Unknown            | ❔ Unknown    | ❔ Unrated |
-| Dev-C++                                           |  ❔ Unknown            | ❔ Unknown    | ❔ Unrated |
-| Eclipse                                           |  ❔ Unknown            | ❔ Unknown    | 💩         |
+| IDE                                                            | Compile                | Debug                  |
+|----------------------------------------------------------------|------------------------|------------------------|
+| [Jetbrains CLion](build-environment/clion.md)                  | ✅ Working             | ✅ Working             |
+| Visual Studio 2008                                             | ❌ No longer supported | ❌ No longer supported |
+| Visual Studio 2010                                             | ❌ No longer supported | ❌ No longer supported |
+| Visual Studio 2012                                             | ❌ No longer supported | ❌ No longer supported |
+| Visual Studio 2013                                             | ❌ No longer supported | ❌ No longer supported |
+| Visual Studio 2015                                             | ❌ No longer supported | ❌ No longer supported |
+| Visual Studio 2017                                             | ❌ No longer supported | ❌ No longer supported |
+| [Visual Studio 2019](build-environment/visual-studio/cmake.md) | ✅ Working             | ✅ Working             |
+| [Visual Studio 2022](build-environment/visual-studio/cmake.md) | ✅ Working             | ✅ Working             |
+| [Visual Studio Code](build-environment/visual-studio/code.md)  | ✅ Working             | ❔ Unknown             |
 
 > ✅ Everything is fine
 > ❗ Known issues existing

@@ -40,23 +40,11 @@ Note that this instruction has changed from vcvars32.bat. CLion now needs this l
 
 #### 2. Add Toolchain
 
-Next add Visual Studio 2005 as a toolchain in CLion. Choose the root path of your Visual Studio install, e.g. 
+Next add Visual Studio 2005 as a toolchain in CLion. Make sure to name it `Visual Studion 2005`. Choose the root path of your Visual Studio install, e.g. 
 `C:\Program Files (x86)\Visual Studio 8.0\`
 
 CLion should then properly detect Visual Studio 2005. It will warn you about the version, but that's okay for now.
 ![clion-toolchain](clion-toolchain.png)
-
-
-#### 3. Add Release-Build configuration
-
-For some reason, debug builds fail to execute with return code `0xC0000135` (STATUS_DLL_NOT_FOUND). Debug builds are
-linked against msvcXX**d**.dll versions, which for some random reason can't be found.
-
-A workaround is to just add the `Release`-configuration in CLion and stick to that until a better solution is available.
-
-Since SRO_DevKit only supports building on Release, this is not an issue for us.
-
-![clion-configuration](clion-configuration.png)
 
 # Working with CLion
 
@@ -72,10 +60,17 @@ In case you don't get the welcome window, you can open the project by clicking "
 
 ![clion-open](clion-open.png)
 
-In the following dialog, select the folder containing the SRO_DevKit project. CLion automatically marks valid project 
-folders with a small icon.
+In the following dialog, select the folder containing the SRO_DevKit project.
 
 ![clion-open-dialog](clion-open-dialog.png)
+
+
+## Enable the build configuration preset
+
+DevKit comes with a CMakePresets.json file, which contains a predefined configuration. You just need to enable it.
+
+![clion-enable-preset](clion-enable-preset.png)
+
 
 ## Run configuration
 
