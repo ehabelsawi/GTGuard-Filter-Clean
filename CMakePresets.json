@@ -24,6 +24,11 @@
                 "INCLUDE": "$env{VSINSTALLDIR}/VC/ATLMFC/INCLUDE;$env{VSINSTALLDIR}/VC/INCLUDE;$env{VSINSTALLDIR}/VC/PlatformSDK/include;$penv{INCLUDE}",
                 "LIB": "$env{VSINSTALLDIR}/VC/ATLMFC/LIB;$env{VSINSTALLDIR}/VC/LIB;$env{VSINSTALLDIR}/VC/PlatformSDK/lib;$env{FrameworkSDKDir}/lib;$penv{LIB}",
                 "LIBPATH": "$env{FrameworkDir}/$env{FrameworkVersion};$env{VSINSTALLDIR}/VC/ATLMFC/LIB"
+            },
+            "vendor": {
+                "jetbrains.com/clion": {
+                    "toolchain": "Visual Studio 2005"
+                }
             }
         },{
             "name": "RelWithDebInfo-cfg",
