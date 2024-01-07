@@ -1,8 +1,10 @@
-# Setup CMake-enabled Visual Studio (2020 and newer)
+# Visual Studio (2020 and newer)
+
+This guide requires a CMake-capable Visual Studio. As of today, 2020 and newer.
 
 ## Setup
 
-1. Follow [this guide](2005.md) to install Visual Studio 2005
+1. Follow [this guide](../../required-tools/visual-studio-2005/index.md) to install Visual Studio 2005
 2. Install 2020 or newer and select C++ support.
 
 ## Open Project

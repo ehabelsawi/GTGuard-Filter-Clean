@@ -1,4 +1,4 @@
-# Setup Jetbrains CLion IDE
+# Jetbrains CLion
 
 CLion is my favourite C++ IDE by far. Microsoft's Visual Studio can't stand a chance against what CLion has to offer. 
 The autocompletion is superior and works out of the box without random dropouts or errors. CLion doesn't have stupid 
@@ -19,7 +19,7 @@ If you want to give CLion a try, you can use the 30-days trial.
 
 ## Prepare CLion
 
-Most important step: Install [Visual Studio 2005](visual-studio/2005.md) and CLion.
+Most important step: Install [Visual Studio 2005](../../required-tools/visual-studio-2005/index.md) and CLion.
 
 ### Add the Toolchain
 

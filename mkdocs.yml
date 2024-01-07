@@ -47,7 +47,16 @@ markdown_extensions:
 # Page tree
 nav:
   - Home: index.md
-  - Getting started: getting-started.md
+  - Getting started: 
+    - "getting-started/index.md"
+    - Supported IDEs:
+      - "getting-started/supported-ides/clion/index.md"
+      - "getting-started/supported-ides/visual-studio/index.md"
+      - "getting-started/supported-ides/vscode/index.md"
+    - Required Tools:
+      - "getting-started/required-tools/cmake/index.md"
+      - "getting-started/required-tools/ninja/index.md"
+      - "getting-started/required-tools/visual-studio-2005/index.md"
   - Features: features.md
   - User Interface:
     - "user-interface/creating-windows.md"

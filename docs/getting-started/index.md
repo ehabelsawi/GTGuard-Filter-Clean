@@ -1,4 +1,4 @@
-# Getting started
+# Overview
 
 SRO_DevKit uses a number of different tools you might not have dealt with,
 yet. This page contains all the information you need to download the 
@@ -58,16 +58,16 @@ Choose your favourite IDE from the list below.
 
 | IDE                                                            | Compile                | Debug                  |
 |----------------------------------------------------------------|------------------------|------------------------|
-| [Jetbrains CLion](build-environment/clion.md)                  | ✅ Working             | ✅ Working             |
+| [Jetbrains CLion](supported-ides/clion/index.md)                  | ✅ Working             | ✅ Working             |
 | Visual Studio 2008                                             | ❌ No longer supported | ❌ No longer supported |
 | Visual Studio 2010                                             | ❌ No longer supported | ❌ No longer supported |
 | Visual Studio 2012                                             | ❌ No longer supported | ❌ No longer supported |
 | Visual Studio 2013                                             | ❌ No longer supported | ❌ No longer supported |
 | Visual Studio 2015                                             | ❌ No longer supported | ❌ No longer supported |
 | Visual Studio 2017                                             | ❌ No longer supported | ❌ No longer supported |
-| [Visual Studio 2019](build-environment/visual-studio/cmake.md) | ✅ Working             | ✅ Working             |
-| [Visual Studio 2022](build-environment/visual-studio/cmake.md) | ✅ Working             | ✅ Working             |
-| [Visual Studio Code](build-environment/visual-studio/code.md)  | ✅ Working             | ❔ Unknown             |
+| [Visual Studio 2019](supported-ides/visual-studio/index.md) | ✅ Working             | ✅ Working             |
+| [Visual Studio 2022](supported-ides/visual-studio/index.md) | ✅ Working             | ✅ Working             |
+| [Visual Studio Code](supported-ides/vscode/index.md)  | ✅ Working             | ❔ Unknown             |
 
 > ✅ Everything is fine
 > ❗ Known issues existing
@@ -133,7 +133,7 @@ configuration options go into the `cacheVariables` section. Don't forget to chan
 Using *Git* will come in handy, even if you don't plan to contribute. It allows you to track your changes, figure out 
 where a bug was introduced, and ultimately update the project to the latest version easily.
 
-A full guide on working with Git can be read [here](working-with/working-with-git.md).
+A full guide on working with Git can be read [here](../working-with/working-with-git.md).
 
 ### Staying up to date / Updating
 

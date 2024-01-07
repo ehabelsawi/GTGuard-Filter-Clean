@@ -1,4 +1,4 @@
-# Setup Visual Studio 2005
+# Visual Studio 2005
 
 SRO_DevKit depends on Visual Studio 2005, on the Standard Template Library (STL) of Visual Studio 2005 to be exact.
 

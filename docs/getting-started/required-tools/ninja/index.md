@@ -1,4 +1,4 @@
-# Setup Ninja build
+# Ninja build
 
 [Ninja](https://ninja-build.org/) is a build tool just like make, but it's faster.
 

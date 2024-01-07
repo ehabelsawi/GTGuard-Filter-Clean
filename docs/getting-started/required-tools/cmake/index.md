@@ -1,4 +1,4 @@
-# Setup CMake
+# CMake
 
 This project requires CMake. CMake will generate a Visual Studio Project, or 
 any other project file for the IDE of your choice.
