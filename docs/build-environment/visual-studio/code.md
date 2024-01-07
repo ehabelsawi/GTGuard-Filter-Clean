@@ -3,7 +3,8 @@
 ## Setup
 
 1. Follow [this guide](2005.md) to install Visual Studio 2005
-2. Install VSCode
+2. Follow [this guide](../ninja.md) to install Ninja build
+3. Install VSCode
 
 ## Open Project
 
