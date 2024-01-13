@@ -30,13 +30,13 @@ Visual Studio Versions, and also other IDEs aswell.
 
 Choose your favourite IDE from the list below.
 
-| IDE                                                            | Compile                | Debug                  |
-|----------------------------------------------------------------|------------------------|------------------------|
-| [Jetbrains CLion](supported-ides/clion/index.md)               | ✅ Working             | ✅ Working             |
-| Visual Studio 2008, 2010, 2012, 2013, 2015, 2017               | ❌ No longer supported | ❌ No longer supported |
-| Visual Studio 2019                                             | ❗ CMake integration bugged | ? Unknown             |
-| [Visual Studio 2022](supported-ides/visual-studio/index.md) | ✅ Working             | ✅ Working             |
-| [Visual Studio Code](supported-ides/vscode/index.md)  | ✅ Working             | ❔ Unknown             |
+| IDE                                                            | Compile                     | Debug                  |
+|----------------------------------------------------------------|-----------------------------|------------------------|
+| [Jetbrains CLion](supported-ides/clion/index.md)               | ✅ Working                  | ✅ Working             |
+| Visual Studio 2008, 2010, 2012, 2013, 2015, 2017               | ❌ No longer supported      | ❌ No longer supported |
+| Visual Studio 2019                                             | ❗ CMake integration bugged | ? Unknown              |
+| [Visual Studio 2022](supported-ides/visual-studio/index.md)    | ✅ Working                  | ✅ Working             |
+| [Visual Studio Code](supported-ides/vscode/index.md)           | ✅ Working                  | ✅ Working             |
 
 > ✅ Everything is fine
 > ❗ Known issues existing
