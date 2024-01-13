@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "name": "Run client",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/BinOut/RelWithDebInfo/sro_client_devkit.exe",
+            "args": ["0 /22 0 0"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/BinOut/RelWithDebInfo/",
+            "environment": [],
+            "console": "internalConsole"
+        }
+    ]
+}

@@ -37,7 +37,7 @@ Short list of additional software to be installed:
 * Visual Studio 2005
 * CMake
 
-Create a new virtual machine and install a windows version of your choice. Windows 7 and above should be fine. You don't need to activate it. The nag does not matter. Follow the steps to setup [Visual Studio 2005](build-environment/visual-studio/2005.md) and [CMake](build-environment/cmake.md).
+Create a new virtual machine and install a windows version of your choice. Windows 7 and above should be fine. You don't need to activate it. The nag does not matter. Follow the steps to setup [Visual Studio 2005](getting-started/required-tools/visual-studio-2005/index.md) and [CMake](getting-started/required-tools/cmake/index.md).
 
 #### Validate your environment
 

@@ -32,8 +32,8 @@ markdown_extensions:
   - pymdownx.critic
   - pymdownx.details
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.mark
@@ -47,7 +47,17 @@ markdown_extensions:
 # Page tree
 nav:
   - Home: index.md
-  - Getting started: getting-started.md
+  - Getting started: 
+    - "getting-started/index.md"
+    - Supported IDEs:
+      - "getting-started/supported-ides/clion/index.md"
+      - "getting-started/supported-ides/visual-studio/index.md"
+      - "getting-started/supported-ides/vscode/index.md"
+    - Required Tools:
+      - "getting-started/required-tools/cmake/index.md"
+      - "getting-started/required-tools/ninja/index.md"
+      - "getting-started/required-tools/visual-studio-2005/index.md"
+      - "getting-started/required-tools/git/index.md"
   - Features: features.md
   - User Interface:
     - "user-interface/creating-windows.md"
