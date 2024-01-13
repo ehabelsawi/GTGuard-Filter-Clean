@@ -1,13 +1,6 @@
 # CMake
 
-This project requires CMake. CMake will generate a Visual Studio Project, or 
-any other project file for the IDE of your choice.
-
-## Download
-
-Download the latest CMake installer from here: https://cmake.org/download/
-
-Choose either x86 or x64. Since it's already ~~2020~~ ~~2021~~ 2022, you ~~probably wanna~~ should go with x64.
+Download *Windows x64 Installer" from here: https://cmake.org/download/
 
 ## Installation
 
@@ -40,4 +33,3 @@ Ready to install? Let's go!
 Woohoo. You successfully completed the quest: *Install CMake*.
 
 ![cmake-7](cmake-7.png)
-
