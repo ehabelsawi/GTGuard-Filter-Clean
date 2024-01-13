@@ -1,13 +1,36 @@
-# Visual Studio (2020 and newer)
+# Visual Studio 2022
 
-This guide requires a CMake-capable Visual Studio. As of today, 2020 and newer.
+This guide requires a CMake-capable Visual Studio, e. g. Visual Studio 2022.
 
-## Setup
+## Prequisites
 
-1. Follow [this guide](../../required-tools/visual-studio-2005/index.md) to install Visual Studio 2005
-2. Install 2020 or newer and select C++ support.
+Follow [this guide](../../required-tools/visual-studio-2005/index.md) to install Visual Studio 2005.
 
-## Open Project
+## Install Visual Studio
+
+Download the Community Version installer for 2022.
+
+Select *Desktop development with C++* as workload. You may select other things if you like to do .NET or whatelse. Devkit only needs this one.
+
+![select c++ desktop development](vs-install-workloads.png)
+
+Wait until the setup is finished.
+
+## Initially open the project
+
+We want to directly download the project from Gitlab, so click on *Clone a repository*.
+
+![Click on clone](vs-initial-open-clone.png)
+
+Enter the url of the repository (`https://gitlab.com/florian0/sro_devkit`). Pick a target folder you like. Then click clone.
+
+![Clone it](vs-initial-open-repository.png)
+
+Visual Studio will now download the source code and all dependencies.
+
+![Cloning](vs-initial-open-cloning.png)
+
+## Open an existing project 
 
 1. On the welcome screen, press Open a local folder.
    ![open project](vs-open-project.png)
@@ -23,4 +46,3 @@ This guide requires a CMake-capable Visual Studio. As of today, 2020 and newer.
 5. Click Build -> Build Devkit_DLL
    ![build target](vs-build-target.png)
 
-"Build All" is currently broken and will never succeed. You always have to select DevKit_DLL as target, otherwise build fails.
