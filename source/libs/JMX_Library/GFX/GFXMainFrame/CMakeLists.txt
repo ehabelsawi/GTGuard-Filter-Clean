@@ -1,13 +1,12 @@
 add_library(GFXMainFrame STATIC)
 
 target_sources(GFXMainFrame PRIVATE
-        src/GFXMainFrame/EntityManager.h
-        src/GFXMainFrame/GFXMainFrame.cpp src/GFXMainFrame/GFXMainFrame.h
-        src/GFXMainFrame/GWnd.cpp src/GFXMainFrame/GWnd.h
-        src/GFXMainFrame/GWndBase.cpp src/GFXMainFrame/GWndBase.h
-        src/GFXMainFrame/Process.cpp src/GFXMainFrame/Process.h
-        src/GFXMainFrame/Camera.cpp src/GFXMainFrame/Camera.h
-        src/GFXMainFrame/Controler.cpp src/GFXMainFrame/Controler.h
+        src/GFXMainFrame/GFXMainFrame.cpp
+        src/GFXMainFrame/GWnd.cpp
+        src/GFXMainFrame/GWndBase.cpp
+        src/GFXMainFrame/Process.cpp
+        src/GFXMainFrame/Camera.cpp
+        src/GFXMainFrame/Controler.cpp
 )
 
 target_include_directories(GFXMainFrame

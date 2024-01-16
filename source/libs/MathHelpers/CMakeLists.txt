@@ -1,6 +1,6 @@
 add_library(MathHelpers STATIC)
 target_sources(MathHelpers PRIVATE
-        src/MathHelpers/hsl.cpp src/MathHelpers/hsl.h
+        src/MathHelpers/hsl.cpp
 )
 
 target_include_directories(MathHelpers

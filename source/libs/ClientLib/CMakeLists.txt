@@ -1,184 +1,92 @@
 add_library(ClientLib STATIC ${SOURCE_FILES})
 target_sources(ClientLib PRIVATE
-        src/BufRender.h
         src/CameraWorking.cpp
-        src/CameraWorking.h
-        src/Client.h
-        src/Data/ActionWndData.h
-        src/Data/CharacterData.h src/Data/CharacterData.cpp
-        src/Data/DropGoldData.h
-        src/Data/GachaItemSetData.h
-        src/Data/GachaNpcData.h
-        src/Data/GameGuideData.h
-        src/Data/ItemData.h src/Data/ItemData.cpp
-        src/Data/LevelData.h src/Data/LevelData.cpp
-        src/Data/LevelGoldData.h
-        src/Data/MagicOptionData.h
-        src/Data/MallItemMenuListData.h
-        src/Data/MessageTipData.h
-        src/Data/NPCChatData.h
-        src/Data/NPCPosData.h
-        src/Data/QuestData.h
-        src/Data/RefPackageItemData.h
-        src/Data/RefPricePolicyOfItem.h
-        src/Data/RefScrapOfPackageItemData.h
-        src/Data/RefShopdata.h
-        src/Data/RefShopTabData.h
-        src/Data/RefShopTabGroupData.h
-        src/Data/ShopItemStockPeriod.h
-        src/Data/ShopItemStockQuantity.h
-        src/Data/TeleportBuilding.h
-        src/Data/TeleportData.h
-        src/Data/TeleportLink.h
-        src/DxSound.h
-        src/EntityManagerClient.h
+        src/Data/CharacterData.cpp
+        src/Data/ItemData.cpp
+        src/Data/LevelData.cpp
         src/Game.cpp
-        src/Game.h
-        src/GEffSound.h
         src/GEffSoundBody.cpp
-        src/GEffSoundBody.h
         src/GInterface.cpp
-        src/GInterface.h
-        src/GlobalDataManager.cpp src/GlobalDataManager.h
-        src/GlobalHelpersThatHaveNoHomeYet.h
-        src/GObj.h
-        src/IDxSound.h
-        src/IFAction.h
-        src/IFApprenticeShip.h
-        src/IFApprenticeShipSlot.h
+        src/GlobalDataManager.cpp
         src/IFButton.cpp
-        src/IFButton.h
-        src/IFChatViewer.cpp src/IFChatViewer.h
         src/IFCloseButton.cpp
-        src/IFCloseButton.h
-        src/IFConsole.h
         src/IFDecoratedStatic.cpp
-        src/IFDecoratedStatic.h
         src/IFDragableArea.cpp
-        src/IFDragableArea.h
-        src/IFEdit.h
-        src/IFEquipment.h
-        src/IFFade.h src/IFFade.cpp
+        src/IFFade.cpp
         src/IFFrame.cpp
-        src/IFFrame.h
-        src/IFGauge.h
-        src/IFHelperBubbleWindow.h
-        src/IFInventory.cpp src/IFInventory.h
+        src/IFInventory.cpp
         src/IFMainFrame.cpp
-        src/IFMainFrame.h
-        src/IFMainPopup.cpp src/IFMainPopup.h
-        src/IFNPCTalk.h
-        src/IFNPCWindow.h
-        src/IFParty.h
-        src/IFPartySlot.h
-        src/IFPlayerInfo.h src/IFPlayerInfo.cpp
+        src/IFMainPopup.cpp
+        src/IFPlayerInfo.cpp
         src/IFPlayerMiniInfo.cpp
-        src/IFPlayerMiniInfo.h
-        src/IFPractice.h
-        src/IFQuest.h
-        src/IFQuickStateHalfWnd.h
-        src/IFQuickStateWnd.h
-        src/IFScrollManager.h
-        src/IFSelectableArea.h
-        src/IFSkill.h src/IFSkill.cpp
-        src/IFSkillBoard.h
-        src/IFSkillPracticeBox.h
-        src/IFSlotWithHelp.cpp src/IFSlotWithHelp.h
-        src/IFSpinButtonCtrl.h
+        src/IFSkill.cpp
+        src/IFSlotWithHelp.cpp
         src/IFStatic.cpp
-        src/IFStatic.h
-        src/IFStaticWithPictureClip.h
         src/IFSystemMessage.cpp
-        src/IFSystemMessage.h
-        src/IFStorageRoom.h
-        src/IFStoreForPackage.h
-        src/IFStretchWnd.cpp src/IFStretchWnd.h
-        src/IFSupporterChatWnd.h
-        src/IFTextBox.h
+        src/IFStretchWnd.cpp
         src/IFTileWnd.cpp
-        src/IFTileWnd.h
-        src/IFTimerWnd.h
         src/IFWnd.cpp
-        src/IFWnd.h
-        src/IObject.h src/IObject.cpp
+        src/IObject.cpp
         src/IRMManager.cpp
-        src/IRMManager.h
         src/is_this_important.cpp
-        src/is_this_important.h
-        src/MessageBoxManager.h
         src/NavigationDeadreckon.cpp
-        src/NavigationDeadreckon.h
         src/PSilkroad.cpp
-        src/PSilkroad.h
         src/PSOuterInterface.cpp
-        src/PSOuterInterface.h
-        src/PSVersionCheck.h
-        src/StringUtils.h
         src/TextBoard.cpp
-        src/TextBoard.h
         src/unsorted.cpp
-        src/unsorted.h
-        src/AlramGuideMgrWnd.cpp src/AlramGuideMgrWnd.h
-        src/IFConfirmReputationGuide.cpp src/IFConfirmReputationGuide.h
-        src/IFEventGuide.cpp src/IFEventGuide.h
-        src/IFQuestInfoGuide.cpp src/IFQuestInfoGuide.h
-        src/IFLetterAlarmGuide.h
-        src/IFServerEventGuide.cpp src/IFServerEventGuide.h
-        src/IFOpenMarketAlramGuide.cpp src/IFOpenMarketAlramGuide.h
-        src/IFEventGuideSecond.cpp src/IFEventGuideSecond.h
-        src/IFflorian0Guide.cpp src/IFflorian0Guide.h
+        src/AlramGuideMgrWnd.cpp
+        src/IFConfirmReputationGuide.cpp
+        src/IFEventGuide.cpp
+        src/IFQuestInfoGuide.cpp
+        src/IFServerEventGuide.cpp
+        src/IFOpenMarketAlramGuide.cpp
+        src/IFEventGuideSecond.cpp
+        src/IFflorian0Guide.cpp
         src/PSQuickStart.cpp
-        src/PSQuickStart.h
-        src/TextStringManager.cpp src/TextStringManager.h
-        src/IFNotify.cpp src/IFNotify.h
-        src/IFListCtrl.cpp src/IFListCtrl.h
-        src/LinkedScroll.cpp src/LinkedScroll.h
-        src/IFVerticalScroll.cpp src/IFVerticalScroll.h
-        src/IFScrollBar.h
-        src/IFTextBox.cpp src/IFTextBox.h
-        src/IFSelectableArea.cpp src/IFSelectableArea.h
-        src/IFChatModeViewer.cpp src/IFChatModeViewer.h
-        src/ICPlayer.h src/ICPlayer.cpp
-        src/SOItem.h src/SOItem.cpp
-        src/ICUser.cpp src/ICUser.h
-        src/IFEdit.cpp src/IFEdit.h
-        src/SRO_MSG_DEF.h
-        src/CharacterDependentData.cpp src/CharacterDependentData.h
-        src/ICharactor.cpp src/ICharactor.h
-        src/ClassLink.h
-        src/IGIDObject.cpp src/IGIDObject.h
-        src/IFNotify.cpp src/IFNotify.h
-        src/NetProcessIn.cpp src/NetProcessIn.h
-        src/NetProcessSecond.cpp src/NetProcessSecond.h
-        src/NetProcessThird.cpp src/NetProcessThird.h
-        src/PSMission.h
-        src/GameCfg.cpp src/GameCfg.h
-        src/LocalTime.cpp src/LocalTime.h
-        src/IFCheckBox.cpp src/IFCheckBox.h
-        src/IFChatOptionBoard.cpp src/IFChatOptionBoard.h
-        src/PSCharacterSelect.cpp src/PSCharacterSelect.h
-        src/CObjAnimation.h src/CObjAnimation.cpp
-        src/AnimationCallback.h
-        src/World.h src/World.cpp
-        src/CompSimple.cpp src/CompSimple.h
-        src/Keyframe.h src/Keyframe.cpp
-        src/UserGuildInfo.cpp src/UserGuildInfo.h
-        src/PartyData.h
-        src/PartyMemberData.h
-        src/IFWholeChat.cpp src/IFWholeChat.h
-        src/IFBuffViewer.cpp src/IFBuffViewer.h
-        src/IFTargetWindow.cpp src/IFTargetWindow.h
-        src/IFTargetWindowPlayer.cpp src/IFTargetWindowPlayer.h
-        src/IFTargetWindowJobPlayer.cpp src/IFTargetWindowJobPlayer.h
-        src/IFTargetWindowSpecialMob.cpp src/IFTargetWindowSpecialMob.h
-        src/IFTargetWindowCommonEnemy.cpp src/IFTargetWindowCommonEnemy.h
-        src/IFTargetWindowFortressStructure.cpp src/IFTargetWindowFortressStructure.h
-        src/IFExtQuickSlotSlot.cpp src/IFExtQuickSlotSlot.h
-        src/IFExtQuickSlot.cpp src/IFExtQuickSlot.h
-        src/IFExtQuickSlotOption.cpp src/IFExtQuickSlotOption.h
-        src/ICNonuser.cpp src/ICNonuser.h
-        src/ICMonster.cpp src/ICMonster.h
-        src/ICCos.cpp src/ICCos.h
+        src/TextStringManager.cpp
+        src/IFNotify.cpp
+        src/IFListCtrl.cpp
+        src/LinkedScroll.cpp
+        src/IFVerticalScroll.cpp
+        src/IFTextBox.cpp
+        src/IFSelectableArea.cpp
+        src/IFChatModeViewer.cpp
+        src/IFChatViewer.cpp
+        src/ICPlayer.cpp
+        src/SOItem.cpp
+        src/ICUser.cpp
+        src/IFEdit.cpp
+        src/CharacterDependentData.cpp
+        src/ICharactor.cpp
+        src/IGIDObject.cpp
+        src/IFNotify.cpp
+        src/NetProcessIn.cpp
+        src/NetProcessSecond.cpp
+        src/NetProcessThird.cpp
+        src/GameCfg.cpp
+        src/LocalTime.cpp
+        src/IFCheckBox.cpp
+        src/IFChatOptionBoard.cpp
+        src/PSCharacterSelect.cpp
+        src/CObjAnimation.cpp
+        src/World.cpp
+        src/CompSimple.cpp
+        src/Keyframe.cpp
+        src/UserGuildInfo.cpp
+        src/IFWholeChat.cpp
+        src/IFBuffViewer.cpp
+        src/IFTargetWindow.cpp
+        src/IFTargetWindowPlayer.cpp
+        src/IFTargetWindowJobPlayer.cpp
+        src/IFTargetWindowSpecialMob.cpp
+        src/IFTargetWindowCommonEnemy.cpp
+        src/IFTargetWindowFortressStructure.cpp
+        src/IFExtQuickSlotSlot.cpp
+        src/IFExtQuickSlot.cpp
+        src/IFExtQuickSlotOption.cpp
+        src/ICNonuser.cpp
+        src/ICMonster.cpp
+        src/ICCos.cpp
 )
 target_link_libraries(ClientLib SROInterfaceLIB GFXMainFrame GFX3DFunction GFXFileManagerLIB NavMesh ClientNet SimpleViewer TypeId abi-testing imgui remodel ghidra)
 target_include_directories(ClientLib PUBLIC src/)

@@ -1,17 +1,12 @@
 add_library(BSLib STATIC)
 
 target_sources(BSLib PRIVATE
-        src/BSLib/_internal/_BSDynamic.h
-        src/BSLib/_internal/_BSMsg.h
-        src/BSLib/_internal/custom_stl.h
         src/BSLib/_internal/MemPoolManager.cpp
-        src/BSLib/_internal/MemPoolManager.h
-        src/BSLib/BSLib.cpp src/BSLib/BSLib.h
-        src/BSLib/MsgHandler.cpp src/BSLib/MsgHandler.h
-        src/BSLib/multibyte.cpp src/BSLib/multibyte.h
-        src/BSLib/memory/MemPool.h
-        src/BSLib/StringCheck.cpp src/BSLib/StringCheck.h
-        src/BSLib/Debug.h src/BSLib/Debug.cpp
+        src/BSLib/BSLib.cpp
+        src/BSLib/MsgHandler.cpp
+        src/BSLib/multibyte.cpp
+        src/BSLib/StringCheck.cpp
+        src/BSLib/Debug.cpp
 )
 
 target_include_directories(BSLib PUBLIC src/)
