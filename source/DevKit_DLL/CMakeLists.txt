@@ -1,4 +1,5 @@
-set(SOURCE_FILES
+add_library(DevKit_DLL SHARED)
+target_sources(DevKit_DLL PRIVATE
         src/DllMain.cpp
         src/hooks/Hooks.cpp src/hooks/Hooks.h
         src/hooks/GFXVideo3d_Hook.cpp src/hooks/GFXVideo3d_Hook.h
@@ -25,8 +26,14 @@ set(SOURCE_FILES
         src/QuickStart.cpp src/QuickStart.h
         src/MathUtil.cpp src/MathUtil.h)
 
-add_library(DevKit_DLL SHARED ${SOURCE_FILES})
-target_link_libraries(DevKit_DLL BSLib SROInterfaceLIB ClientLib MathHelpers memory winmm)
+target_link_libraries(DevKit_DLL
+        BSLib
+        SROInterfaceLIB
+        ClientLib
+        MathHelpers
+        memory
+        winmm
+)
 
 set_target_properties(DevKit_DLL
         PROPERTIES

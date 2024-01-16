@@ -1,6 +1,9 @@
-set(SOURCE_FILES src/RTNavMeshTerrain.cpp)
+add_library(NavMesh STATIC)
 
-add_library(NavMesh STATIC ${SOURCE_FILES})
+target_sources(NavMesh PRIVATE
+        src/RTNavMeshTerrain.cpp
+)
+
 target_include_directories(NavMesh
         PUBLIC
         include/

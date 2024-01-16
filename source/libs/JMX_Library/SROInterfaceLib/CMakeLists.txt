@@ -1,4 +1,6 @@
-set(SOURCE_FILES
+add_library(SROInterfaceLIB STATIC)
+
+target_sources(SROInterfaceLIB PRIVATE
         src/SRIFLib/NInterfaceResource.cpp src/SRIFLib/NInterfaceResource.h
         src/SRIFLib/GNFontChar.h
         src/SRIFLib/NGFontTexture.cpp src/SRIFLib/NGFontTexture.h
@@ -12,9 +14,9 @@ set(SOURCE_FILES
         src/SRIFLib/NIFMainFrame.cpp src/SRIFLib/NIFMainFrame.h
         src/SRIFLib/NIFButton.h
         src/SRIFLib/NIFDragableArea.h
-        src/SRIFLib/IFSlotWithHelpEx.h)
+        src/SRIFLib/IFSlotWithHelpEx.h
+)
 
-add_library(SROInterfaceLIB STATIC ${SOURCE_FILES})
 target_include_directories(SROInterfaceLIB PUBLIC src/)
 target_link_libraries(SROInterfaceLIB
         BSLib
@@ -23,4 +25,4 @@ target_link_libraries(SROInterfaceLIB
         GFXFileManagerLIB
         GFX3DFunction
         abi-testing
-        )
+)

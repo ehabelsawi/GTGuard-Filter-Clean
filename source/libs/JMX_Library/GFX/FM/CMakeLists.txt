@@ -1,6 +1,9 @@
-set(SOURCE_FILES src/IFileManager.cpp)
+add_library(GFXFileManagerLIB STATIC)
 
-add_library(GFXFileManagerLIB STATIC ${SOURCE_FILES})
+target_sources(GFXFileManagerLIB PRIVATE
+        src/IFileManager.cpp
+)
+
 target_include_directories(GFXFileManagerLIB
         PUBLIC include/
         PRIVATE include/GFXFM)

@@ -1,5 +1,7 @@
+add_library(BSLib STATIC)
 
-set(SOURCE_FILES src/BSLib/_internal/_BSDynamic.h
+target_sources(BSLib PRIVATE
+        src/BSLib/_internal/_BSDynamic.h
         src/BSLib/_internal/_BSMsg.h
         src/BSLib/_internal/custom_stl.h
         src/BSLib/_internal/MemPoolManager.cpp
@@ -9,8 +11,11 @@ set(SOURCE_FILES src/BSLib/_internal/_BSDynamic.h
         src/BSLib/multibyte.cpp src/BSLib/multibyte.h
         src/BSLib/memory/MemPool.h
         src/BSLib/StringCheck.cpp src/BSLib/StringCheck.h
-        src/BSLib/Debug.h src/BSLib/Debug.cpp)
+        src/BSLib/Debug.h src/BSLib/Debug.cpp
+)
 
-add_library(BSLib STATIC ${SOURCE_FILES})
 target_include_directories(BSLib PUBLIC src/)
-target_link_libraries(BSLib ClientNet remodel)
+target_link_libraries(BSLib
+        ClientNet
+        remodel
+)

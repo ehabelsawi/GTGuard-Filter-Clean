@@ -1,4 +1,6 @@
-set(SOURCE_FILES
+add_library(GFX3DFunction STATIC)
+
+target_sources(GFX3DFunction PRIVATE
         src/GFX3DFunction/DrawingHelpers.cpp src/GFX3DFunction/DrawingHelpers.h
         src/GFX3DFunction/GFontTexture.cpp src/GFX3DFunction/GFontTexture.h
         src/GFX3DFunction/GFXVideo3d.cpp src/GFX3DFunction/GFXVideo3d.h
@@ -9,8 +11,9 @@ set(SOURCE_FILES
         src/GFX3DFunction/Common/dxutil.cpp src/GFX3DFunction/Common/dxutil.h
         src/GFX3DFunction/RStateMgr.cpp src/GFX3DFunction/RStateMgr.h
         src/GFX3DFunction/TextureRuntime.h
-        src/GFX3DFunction/RTLoading.cpp src/GFX3DFunction/RTLoading.h)
+        src/GFX3DFunction/RTLoading.cpp src/GFX3DFunction/RTLoading.h
+)
 
-add_library(GFX3DFunction STATIC ${SOURCE_FILES})
 target_link_libraries(GFX3DFunction GFXMainFrame d3d9 GFXFileManagerLIB)
+
 target_include_directories(GFX3DFunction PUBLIC src/)

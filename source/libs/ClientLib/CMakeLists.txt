@@ -1,5 +1,6 @@
-
-set(SOURCE_FILES src/BufRender.h
+add_library(ClientLib STATIC ${SOURCE_FILES})
+target_sources(ClientLib PRIVATE
+        src/BufRender.h
         src/CameraWorking.cpp
         src/CameraWorking.h
         src/Client.h
@@ -177,8 +178,7 @@ set(SOURCE_FILES src/BufRender.h
         src/IFExtQuickSlotOption.cpp src/IFExtQuickSlotOption.h
         src/ICNonuser.cpp src/ICNonuser.h
         src/ICMonster.cpp src/ICMonster.h
-        src/ICCos.cpp src/ICCos.h)
-
-add_library(ClientLib STATIC ${SOURCE_FILES})
+        src/ICCos.cpp src/ICCos.h
+)
 target_link_libraries(ClientLib SROInterfaceLIB GFXMainFrame GFX3DFunction GFXFileManagerLIB NavMesh ClientNet SimpleViewer TypeId abi-testing imgui remodel ghidra)
 target_include_directories(ClientLib PUBLIC src/)
