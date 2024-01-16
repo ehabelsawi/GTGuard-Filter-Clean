@@ -1,92 +1,92 @@
 add_library(ClientLib STATIC ${SOURCE_FILES})
 target_sources(ClientLib PRIVATE
+        src/AlramGuideMgrWnd.cpp
+        src/CObjAnimation.cpp
         src/CameraWorking.cpp
+        src/CharacterDependentData.cpp
+        src/CompSimple.cpp
         src/Data/CharacterData.cpp
         src/Data/ItemData.cpp
         src/Data/LevelData.cpp
-        src/Game.cpp
         src/GEffSoundBody.cpp
         src/GInterface.cpp
+        src/Game.cpp
+        src/GameCfg.cpp
         src/GlobalDataManager.cpp
+        src/ICCos.cpp
+        src/ICMonster.cpp
+        src/ICNonuser.cpp
+        src/ICPlayer.cpp
+        src/ICUser.cpp
+        src/ICharactor.cpp
+        src/IFBuffViewer.cpp
         src/IFButton.cpp
+        src/IFChatModeViewer.cpp
+        src/IFChatOptionBoard.cpp
+        src/IFChatViewer.cpp
+        src/IFCheckBox.cpp
         src/IFCloseButton.cpp
+        src/IFConfirmReputationGuide.cpp
         src/IFDecoratedStatic.cpp
         src/IFDragableArea.cpp
+        src/IFEdit.cpp
+        src/IFEventGuide.cpp
+        src/IFEventGuideSecond.cpp
+        src/IFExtQuickSlot.cpp
+        src/IFExtQuickSlotOption.cpp
+        src/IFExtQuickSlotSlot.cpp
         src/IFFade.cpp
         src/IFFrame.cpp
         src/IFInventory.cpp
+        src/IFListCtrl.cpp
         src/IFMainFrame.cpp
         src/IFMainPopup.cpp
+        src/IFNotify.cpp
+        src/IFNotify.cpp
+        src/IFOpenMarketAlramGuide.cpp
         src/IFPlayerInfo.cpp
         src/IFPlayerMiniInfo.cpp
+        src/IFQuestInfoGuide.cpp
+        src/IFSelectableArea.cpp
+        src/IFServerEventGuide.cpp
         src/IFSkill.cpp
         src/IFSlotWithHelp.cpp
         src/IFStatic.cpp
-        src/IFSystemMessage.cpp
         src/IFStretchWnd.cpp
+        src/IFSystemMessage.cpp
+        src/IFTargetWindow.cpp
+        src/IFTargetWindowCommonEnemy.cpp
+        src/IFTargetWindowFortressStructure.cpp
+        src/IFTargetWindowJobPlayer.cpp
+        src/IFTargetWindowPlayer.cpp
+        src/IFTargetWindowSpecialMob.cpp
+        src/IFTextBox.cpp
         src/IFTileWnd.cpp
+        src/IFVerticalScroll.cpp
+        src/IFWholeChat.cpp
         src/IFWnd.cpp
+        src/IFflorian0Guide.cpp
+        src/IGIDObject.cpp
         src/IObject.cpp
         src/IRMManager.cpp
-        src/is_this_important.cpp
-        src/NavigationDeadreckon.cpp
-        src/PSilkroad.cpp
-        src/PSOuterInterface.cpp
-        src/TextBoard.cpp
-        src/unsorted.cpp
-        src/AlramGuideMgrWnd.cpp
-        src/IFConfirmReputationGuide.cpp
-        src/IFEventGuide.cpp
-        src/IFQuestInfoGuide.cpp
-        src/IFServerEventGuide.cpp
-        src/IFOpenMarketAlramGuide.cpp
-        src/IFEventGuideSecond.cpp
-        src/IFflorian0Guide.cpp
-        src/PSQuickStart.cpp
-        src/TextStringManager.cpp
-        src/IFNotify.cpp
-        src/IFListCtrl.cpp
+        src/Keyframe.cpp
         src/LinkedScroll.cpp
-        src/IFVerticalScroll.cpp
-        src/IFTextBox.cpp
-        src/IFSelectableArea.cpp
-        src/IFChatModeViewer.cpp
-        src/IFChatViewer.cpp
-        src/ICPlayer.cpp
-        src/SOItem.cpp
-        src/ICUser.cpp
-        src/IFEdit.cpp
-        src/CharacterDependentData.cpp
-        src/ICharactor.cpp
-        src/IGIDObject.cpp
-        src/IFNotify.cpp
+        src/LocalTime.cpp
+        src/NavigationDeadreckon.cpp
         src/NetProcessIn.cpp
         src/NetProcessSecond.cpp
         src/NetProcessThird.cpp
-        src/GameCfg.cpp
-        src/LocalTime.cpp
-        src/IFCheckBox.cpp
-        src/IFChatOptionBoard.cpp
         src/PSCharacterSelect.cpp
-        src/CObjAnimation.cpp
-        src/World.cpp
-        src/CompSimple.cpp
-        src/Keyframe.cpp
+        src/PSOuterInterface.cpp
+        src/PSQuickStart.cpp
+        src/PSilkroad.cpp
+        src/SOItem.cpp
+        src/TextBoard.cpp
+        src/TextStringManager.cpp
         src/UserGuildInfo.cpp
-        src/IFWholeChat.cpp
-        src/IFBuffViewer.cpp
-        src/IFTargetWindow.cpp
-        src/IFTargetWindowPlayer.cpp
-        src/IFTargetWindowJobPlayer.cpp
-        src/IFTargetWindowSpecialMob.cpp
-        src/IFTargetWindowCommonEnemy.cpp
-        src/IFTargetWindowFortressStructure.cpp
-        src/IFExtQuickSlotSlot.cpp
-        src/IFExtQuickSlot.cpp
-        src/IFExtQuickSlotOption.cpp
-        src/ICNonuser.cpp
-        src/ICMonster.cpp
-        src/ICCos.cpp
+        src/World.cpp
+        src/is_this_important.cpp
+        src/unsorted.cpp
 )
 target_link_libraries(ClientLib SROInterfaceLIB GFXMainFrame GFX3DFunction GFXFileManagerLIB NavMesh ClientNet SimpleViewer TypeId abi-testing imgui remodel ghidra)
 target_include_directories(ClientLib PUBLIC src/)
