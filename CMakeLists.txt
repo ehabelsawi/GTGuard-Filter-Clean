@@ -3,11 +3,6 @@ project(SRO_DevKit)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-# I have no idea why this is required. MSVC is weird.
-link_directories($ENV{LIB})
-include_directories($ENV{INCLUDE})
-
-
 set(DirectX_ROOT ${CMAKE_SOURCE_DIR}/source/third-party/)
 find_package(DirectX)
 
@@ -15,24 +10,10 @@ if (NOT DirectX_FOUND)
     message(FATAL_ERROR "DirectX was NOT found. DevKit can not be used without it. Make sure you checked out all submodules.")
 endif ()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /X")
+include(DevKit)
 
-# Enforce static linking of the standard library because dynamic linking sucks
-set(CompilerFlags
-        CMAKE_CXX_FLAGS
-        CMAKE_CXX_FLAGS_DEBUG
-        CMAKE_CXX_FLAGS_RELEASE
-        CMAKE_CXX_FLAGS_RELWITHDEBINFO
-        CMAKE_CXX_FLAGS_MINSIZEREL
-        CMAKE_C_FLAGS
-        CMAKE_C_FLAGS_DEBUG
-        CMAKE_C_FLAGS_RELEASE
-        CMAKE_C_FLAGS_RELWITHDEBINFO
-        CMAKE_C_FLAGS_MINSIZEREL
-        )
-foreach (CompilerFlag ${CompilerFlags})
-    string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
-endforeach ()
+devkit_enforce_static_linking()
+devkit_enforce_include_path()
 
 find_package(CxxTest)
 if (CXXTEST_FOUND)
