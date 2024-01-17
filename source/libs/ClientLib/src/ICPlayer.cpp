@@ -9,15 +9,6 @@ bool CICPlayer::IsGameMaster() {
     return N000094A7 & 1;
 }
 
-// this func simply returned a copy of the players name ... ridiculous!
-std::n_wstring *CICPlayer::GetCharName(std::n_wstring *pWstr) {
-    // Let's allocate it.
-    new(pWstr) std::n_wstring;
-
-    *pWstr = m_wstrCharName;
-    return pWstr;
-}
-
 std::n_wstring CICPlayer::GetCharName() const {
     return m_wstrCharName;
 }

@@ -13,9 +13,6 @@ public:
 
     bool IsGameMaster();
 
-    /// \address 009D6580
-    std::n_wstring *GetCharName(std::n_wstring *pWstr);
-
     /// \address 009d6580
     std::n_wstring GetCharName() const;
 
