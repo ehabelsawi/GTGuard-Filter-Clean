@@ -1,4 +1,9 @@
-add_library(TypeId STATIC include/TypeId.h src/TypeIdRegistry.cpp)
+
+add_library(TypeId STATIC)
+
+target_sources(TypeId PRIVATE
+        src/TypeIdRegistry.cpp
+)
 
 target_include_directories(TypeId PUBLIC include/)
 

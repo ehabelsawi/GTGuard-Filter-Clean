@@ -1,5 +1,3 @@
-
-# JOYMAX libs
 add_subdirectory(libs/JMX_Library/BSLib)
 add_subdirectory(libs/JMX_Library/GFX/GFX3DFunction)
 add_subdirectory(libs/JMX_Library/GFX/FM)
