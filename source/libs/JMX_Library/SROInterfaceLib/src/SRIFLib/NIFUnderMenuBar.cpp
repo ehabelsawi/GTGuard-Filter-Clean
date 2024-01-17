@@ -26,7 +26,7 @@ void CNIFUnderMenuBar::Update() {
 
     // Retrieve LevelData for current Level
     // (this is one line of Media\server_dep\silkroad\textdata\leveldata.txt)
-    CLevelData *data = g_CGlobalDataManager->m_levelDataMap[g_pCICPlayer->m_level];
+    CLevelData *data = g_CGlobalDataManager->m_levelDataMap[g_pCICPlayer->m_btLevel];
 
     // Don't continue if level-data is invalid
     if (data == NULL) {
@@ -35,7 +35,7 @@ void CNIFUnderMenuBar::Update() {
 
     // Calculate EXP as percentage value
     const SLevelData &sData = data->GetData();
-    double exp_percentage = g_pCICPlayer->m_exp_current * 100.0 / sData.m_expC;
+    double exp_percentage = g_pCICPlayer->m_i64CurrentExp * 100.0 / sData.m_expC;
 
     // Limit maximum percentage to 99.99%
     if (exp_percentage > 99.99) {
@@ -65,13 +65,13 @@ void CNIFUnderMenuBar::Update() {
     gauges[barnum]->foreground_value = exp_remain;
 
     // Assign more texts
-    this->lbl_level->SetTextFormatted(L"Level: %d", g_pCICPlayer->m_exp_current);
+    this->lbl_level->SetTextFormatted(L"Level: %d", g_pCICPlayer->m_i64CurrentExp);
     this->lbl_percentage->SetTextFormatted(L"%.2lf %%", exp_percentage);
 
-    // Skillpoints
-    this->lbl_spcount->SetTextFormatted(L"%d", g_pCICPlayer->m_skillpoint);
-    this->gauge_skillexp->background_value = g_pCICPlayer->m_skillpoint_progress / 400.0f;
-    this->gauge_skillexp->foreground_value = g_pCICPlayer->m_skillpoint_progress / 400.0f;
+    // SkillPoints
+    this->lbl_spcount->SetTextFormatted(L"%d", g_pCICPlayer->m_nSkillPoint);
+    this->gauge_skillexp->background_value = g_pCICPlayer->m_nSkillPoint_Progress / 400.0f;
+    this->gauge_skillexp->foreground_value = g_pCICPlayer->m_nSkillPoint_Progress / 400.0f;
 
     // You can also draw text directly at the gauge. It will be centered automatically
     // this->gauge_skillexp->SetTextFormatted(L"%d", g_CICPlayer->skill_exp);

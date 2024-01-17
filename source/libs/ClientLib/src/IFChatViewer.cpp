@@ -1010,10 +1010,7 @@ void CIFChatViewer::SetWhisperTarget(std::n_wstring &targetName) {
         return;
     }
 
-    std::n_wstring name;
-    g_pCICPlayer->sub_9D6580(&name);
-
-    if (name == targetName) {
+    if (g_pCICPlayer->GetCharName() == targetName) {
         // Cannot whisper to myself
         return;
     }
