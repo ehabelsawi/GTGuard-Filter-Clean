@@ -343,7 +343,7 @@ int CIFChatViewer::OnChar(UINT nChar, UINT a2, UINT a3) {
     }
 
     // Ignore input if we don't have a player object (when does this happen???)
-    if (!g_pCICPlayer) {
+    if (!g_pMyPlayerObj) {
         return 0;
     }
 
@@ -385,7 +385,7 @@ int CIFChatViewer::OnChar(UINT nChar, UINT a2, UINT a3) {
                     N00009C5E = CHAT_Academy;
                     break;
                 default:
-                    if (g_pCICPlayer->IsGameMaster()) {
+                    if (g_pMyPlayerObj->IsGameMaster()) {
                         N00009C5E = CHAT_AllGM; // GM Chat
 
                     } else {
@@ -510,9 +510,9 @@ int CIFChatViewer::OnChar(UINT nChar, UINT a2, UINT a3) {
 
                 std::n_wstring chatMessageToBeSend(L"");
 
-                if (N00009C5E == CHAT_Union && g_pCICPlayer && g_CCharacterDependentData.sub_988A50()) {
+                if (N00009C5E == CHAT_Union && g_pMyPlayerObj && g_CCharacterDependentData.sub_988A50()) {
                     wchar_t buffer[256];
-                    swprintf_s(buffer, L"-%s): ", g_pCICPlayer->GetGuildName().c_str());
+                    swprintf_s(buffer, L"-%s): ", g_pMyPlayerObj->GetGuildName().c_str());
 
                     chatMessageToBeSend = buffer;
                 }
@@ -1006,11 +1006,11 @@ void CIFChatViewer::SetFocusToInputBox() {
 }
 
 void CIFChatViewer::SetWhisperTarget(std::n_wstring &targetName) {
-    if (!g_pCICPlayer) {
+    if (!g_pMyPlayerObj) {
         return;
     }
 
-    if (g_pCICPlayer->GetCharName() == targetName) {
+    if (g_pMyPlayerObj->GetCharName() == targetName) {
         // Cannot whisper to myself
         return;
     }

@@ -143,7 +143,7 @@ void CICUser::Func_15(int param_1, float *param_2) {
             guildString += L" * " + m_wstrGrantName;
         }
 
-        if (g_CGlobalDataManager->FUN_00939a60(g_pCICPlayer->FUN_009d68f0()) == 0 &&
+        if (g_CGlobalDataManager->FUN_00939a60(g_pMyPlayerObj->FUN_009d68f0()) == 0 &&
             g_CGlobalDataManager->FUN_0093a610(m_wstrGuildName) != 0) {
             if (!m_wstrFortressWarTitle.empty()) {
                 guildString += L"(" + m_wstrFortressWarTitle + L")";
@@ -275,7 +275,7 @@ void CICUser::Func_15(int param_1, float *param_2) {
 
 
 void CICUser::RenderFortressIcons(D3DVECTOR *dataOut, float *param_2) {
-    undefined4 fortressSomething = g_pCICPlayer->FUN_009d68f0();
+    undefined4 fortressSomething = g_pMyPlayerObj->FUN_009d68f0();
     int puVar4 = g_CCharacterDependentData.FUN_009870d0();
 
     if (m_pGuildInfo == NULL) {

@@ -94,24 +94,24 @@ bool CIFPlayerInfo::OnCreate(long ln) {
 }
 
 void CIFPlayerInfo::OnUpdate() {
-    if (((g_pCICPlayer != NULL) && (g_pCICPlayer->GetMaxHp() == 0)) ||
+    if (((g_pMyPlayerObj != NULL) && (g_pMyPlayerObj->GetMaxHp() == 0)) ||
         (IsVisible() == 0) ||
-        (g_pCICPlayer == NULL)) {
+        (g_pMyPlayerObj == NULL)) {
         return;
     }
 
-    m_IRM.GetResObj<CIFWnd>(1, 1)->SetText(g_pCICPlayer->GetCharName().c_str());
+    m_IRM.GetResObj<CIFWnd>(1, 1)->SetText(g_pMyPlayerObj->GetCharName().c_str());
 
-    m_pGDR_PI_TEXT_LEVEL->SetTextFormatted(TSM_GETTEXTPTR(L"UIIT_STT_LV_LEVEL"), g_pCICPlayer->GetCurrentLevel());
+    m_pGDR_PI_TEXT_LEVEL->SetTextFormatted(TSM_GETTEXTPTR(L"UIIT_STT_LV_LEVEL"), g_pMyPlayerObj->GetCurrentLevel());
 
-    m_pGDR_PI_TEXT_CURXP2->SetTextFormatted(L"%I64d", g_pCICPlayer->GetCurrentExp());
+    m_pGDR_PI_TEXT_CURXP2->SetTextFormatted(L"%I64d", g_pMyPlayerObj->GetCurrentExp());
 
-    m_pGDR_PI_TEXT_NEXTXP2->SetTextFormatted(L"%I64d", g_CGlobalDataManager->GetLevelData(g_pCICPlayer->GetCurrentLevel()).m_expC);
+    m_pGDR_PI_TEXT_NEXTXP2->SetTextFormatted(L"%I64d", g_CGlobalDataManager->GetLevelData(g_pMyPlayerObj->GetCurrentLevel()).m_expC);
 
-    m_pGDR_PI_TEXT_STAT2->SetTextFormatted(L"%d", g_pCICPlayer->GetStatPointAvailable());
+    m_pGDR_PI_TEXT_STAT2->SetTextFormatted(L"%d", g_pMyPlayerObj->GetStatPointAvailable());
 
     if (g_CCharacterDependentData.IsInTrainingCamp()) {
-        int points = g_CCharacterDependentData.FUN_00993120(g_pCICPlayer->GetCharName());
+        int points = g_CCharacterDependentData.FUN_00993120(g_pMyPlayerObj->GetCharName());
 
         if (points != 0) {
             m_pGDR_PI_HONOR_DATA->SetTextFormatted(L"%d", points);
@@ -122,29 +122,29 @@ void CIFPlayerInfo::OnUpdate() {
         m_pGDR_PI_TEXT_HONOR_STATIC->ShowGWnd(true);
     }
 
-    m_pGDR_PI_BTN_ADDMP->SetEnabledState(g_pCICPlayer->GetStatPointAvailable() != 0);
-    m_pGDR_PI_BTN_ADDHP->SetEnabledState(g_pCICPlayer->GetStatPointAvailable() != 0);
+    m_pGDR_PI_BTN_ADDMP->SetEnabledState(g_pMyPlayerObj->GetStatPointAvailable() != 0);
+    m_pGDR_PI_BTN_ADDHP->SetEnabledState(g_pMyPlayerObj->GetStatPointAvailable() != 0);
 
-    float maxHp = static_cast<float>(g_pCICPlayer->GetMaxHp());
-    float currentHp = static_cast<float>(min(g_pCICPlayer->FUN_009c7880(), g_pCICPlayer->GetMaxHp()));
+    float maxHp = static_cast<float>(g_pMyPlayerObj->GetMaxHp());
+    float currentHp = static_cast<float>(min(g_pMyPlayerObj->FUN_009c7880(), g_pMyPlayerObj->GetMaxHp()));
     m_pGDR_PI_GAUGE_HPGAUGE->m_valueFg = currentHp / maxHp;
     m_pGDR_PI_GAUGE_HPGAUGE->m_valueBg = currentHp / maxHp;
 
-    float currentMp = static_cast<float>(min(g_pCICPlayer->GetCurrentMp(), g_pCICPlayer->GetMaxMp()));
-    float maxMp = static_cast<float>(g_pCICPlayer->GetMaxMp());
+    float currentMp = static_cast<float>(min(g_pMyPlayerObj->GetCurrentMp(), g_pMyPlayerObj->GetMaxMp()));
+    float maxMp = static_cast<float>(g_pMyPlayerObj->GetMaxMp());
     m_pGDR_PI_GAUGE_MPGAUGE->m_valueFg = currentMp / maxMp;
     m_pGDR_PI_GAUGE_MPGAUGE->m_valueBg = currentMp / maxMp;
 
-    m_pGDR_PI_TEXT_LEVEL->Func_50(TSM_GETTEXTPTR(L"UIIT_STT_LV_LEVEL"), g_pCICPlayer->GetCurrentLevel());
+    m_pGDR_PI_TEXT_LEVEL->Func_50(TSM_GETTEXTPTR(L"UIIT_STT_LV_LEVEL"), g_pMyPlayerObj->GetCurrentLevel());
 
-    m_pGDR_PI_TEXT_CURXP2->Func_50(L"%I64d", g_pCICPlayer->GetCurrentExp());
+    m_pGDR_PI_TEXT_CURXP2->Func_50(L"%I64d", g_pMyPlayerObj->GetCurrentExp());
 
-    m_pGDR_PI_TEXT_NEXTXP2->Func_50(L"%I64d", g_CGlobalDataManager->GetLevelData(g_pCICPlayer->GetCurrentLevel()).m_expC);
+    m_pGDR_PI_TEXT_NEXTXP2->Func_50(L"%I64d", g_CGlobalDataManager->GetLevelData(g_pMyPlayerObj->GetCurrentLevel()).m_expC);
 
-    m_pGDR_PI_TEXT_STAT2->Func_50(L"%d", g_pCICPlayer->GetStatPointAvailable());
+    m_pGDR_PI_TEXT_STAT2->Func_50(L"%d", g_pMyPlayerObj->GetStatPointAvailable());
 
     if (g_CCharacterDependentData.IsInTrainingCamp()) {
-        int points = g_CCharacterDependentData.FUN_00993120(g_pCICPlayer->GetCharName());
+        int points = g_CCharacterDependentData.FUN_00993120(g_pMyPlayerObj->GetCharName());
 
         if (points != 0) {
             m_pGDR_PI_HONOR_DATA->Func_50(L"%d", points);
@@ -153,16 +153,16 @@ void CIFPlayerInfo::OnUpdate() {
     }
 
     m_pGDR_PI_TEXT_HP_DAT->Func_50(L"%d / %d",
-                                   min(g_pCICPlayer->FUN_009c7880(), g_pCICPlayer->GetMaxHp()),
-                                   g_pCICPlayer->GetMaxHp());
+                                   min(g_pMyPlayerObj->FUN_009c7880(), g_pMyPlayerObj->GetMaxHp()),
+                                   g_pMyPlayerObj->GetMaxHp());
 
     m_pGDR_PI_TEXT_MP_DAT->Func_50(L"%d / %d",
-                                   min(g_pCICPlayer->GetCurrentMp(), g_pCICPlayer->GetMaxMp()),
-                                   g_pCICPlayer->GetMaxMp());
+                                   min(g_pMyPlayerObj->GetCurrentMp(), g_pMyPlayerObj->GetMaxMp()),
+                                   g_pMyPlayerObj->GetMaxMp());
 
 
-    m_pGDR_PI_TEXT_STRENGTH_DAT->Func_50(L"%d", g_pCICPlayer->GetStrength());
-    m_pGDR_PI_TEXT_INTELLECT_DAT->Func_50(L"%d", g_pCICPlayer->GetIntelligence());
+    m_pGDR_PI_TEXT_STRENGTH_DAT->Func_50(L"%d", g_pMyPlayerObj->GetStrength());
+    m_pGDR_PI_TEXT_INTELLECT_DAT->Func_50(L"%d", g_pMyPlayerObj->GetIntelligence());
 
 
     m_pGDR_PI_TEXT_PHYATT_DAT->Func_50(L"%d ~ %d",
@@ -173,9 +173,9 @@ void CIFPlayerInfo::OnUpdate() {
                                        g_CCharacterDependentData.FUN_00987090().field_10);
 
     {
-        int value1 = (g_pCICPlayer->GetCurrentLevel() * 2 + g_pCICPlayer->GetStrength() + 14) * 100;
-        // was float value2 = ((g_pCICPlayer->GetCurrentLevel() - 1) * 7 + 56) * 0.857142865657806;
-        int value2 = (g_pCICPlayer->GetCurrentLevel() + 7) * 6;
+        int value1 = (g_pMyPlayerObj->GetCurrentLevel() * 2 + g_pMyPlayerObj->GetStrength() + 14) * 100;
+        // was float value2 = ((g_pMyPlayerObj->GetCurrentLevel() - 1) * 7 + 56) * 0.857142865657806;
+        int value2 = (g_pMyPlayerObj->GetCurrentLevel() + 7) * 6;
 
         // Cap at 120 %
         int value3 = min(120, value1 / value2);
@@ -194,8 +194,8 @@ void CIFPlayerInfo::OnUpdate() {
                                        g_CCharacterDependentData.FUN_00987090().field_12);
 
     {
-        float value1 = g_pCICPlayer->GetIntelligence() * 100.0f;
-        float value2 = (g_pCICPlayer->GetCurrentLevel() + 7) * 4.0f;
+        float value1 = g_pMyPlayerObj->GetIntelligence() * 100.0f;
+        float value2 = (g_pMyPlayerObj->GetCurrentLevel() + 7) * 4.0f;
 
         // Cap at 120 %
         float value3 = min(120, value1 / value2);
@@ -206,7 +206,7 @@ void CIFPlayerInfo::OnUpdate() {
                                       g_CCharacterDependentData.FUN_00987090().field_16);
 
 
-    const std::n_wstring &jobAlias = g_pCICPlayer->GetJobAlias();
+    const std::n_wstring &jobAlias = g_pMyPlayerObj->GetJobAlias();
 
     if (jobAlias.length() == 0) {
         m_pGDR_PI_JOB_ALIAS->SetTextFormatted(L"<%s>", TSM_GETTEXT(L"UIIT_STT_NONE"));
@@ -215,7 +215,7 @@ void CIFPlayerInfo::OnUpdate() {
     }
 
 
-    undefined1 jobType = g_pCICPlayer->FUN_009db0d0();
+    undefined1 jobType = g_pMyPlayerObj->FUN_009db0d0();
     if (jobType == 0) {
         m_pGDR_PI_JOB_ICON->TB_Func_13("", 0, 0);
         m_pGDR_PI_JOB_TITLE->SetTextFormatted(L"<%s>", TSM_GETTEXTPTR(L"UIIT_STT_NONE"));
@@ -224,7 +224,7 @@ void CIFPlayerInfo::OnUpdate() {
         m_pGDR_PI_JOB_EXP_GAUGE->m_valueFg = 0.0f;
         m_pGDR_PI_JOB_EXP->SetText(L"0 %");
     } else {
-        int jobLevel = g_pCICPlayer->GetJobLevel();
+        int jobLevel = g_pMyPlayerObj->GetJobLevel();
         const SLevelData &levelData = g_CGlobalDataManager->GetLevelData(jobLevel);
 
         const wchar_t *title = NULL;
@@ -235,7 +235,7 @@ void CIFPlayerInfo::OnUpdate() {
 
             requiredExp = levelData.m_jobExpTrader;
 
-            if (g_pCICPlayer->Func_36().Country == 0) {
+            if (g_pMyPlayerObj->Func_36().Country == 0) {
                 title = L"UIIT_STT_CLASS_MERCHANT_%d";
             } else {
                 title = L"UIIT_STT_CLASS_EU_MERCHANT_%d";
@@ -245,7 +245,7 @@ void CIFPlayerInfo::OnUpdate() {
 
             requiredExp = levelData.m_jobExpRobber;
 
-            if (g_pCICPlayer->Func_36().Country == 0) {
+            if (g_pMyPlayerObj->Func_36().Country == 0) {
                 title = L"UIIT_STT_CLASS_THIEF_%d";
             } else {
                 title = L"UIIT_STT_CLASS_EU_THIEF_%d";
@@ -255,7 +255,7 @@ void CIFPlayerInfo::OnUpdate() {
 
             requiredExp = levelData.m_jobExpHunter;
 
-            if (g_pCICPlayer->Func_36().Country == 0) {
+            if (g_pMyPlayerObj->Func_36().Country == 0) {
                 title = L"UIIT_STT_CLASS_HUNTER_%d";
             } else {
                 title = L"UIIT_STT_CLASS_EU_HUNTER_%d";
@@ -268,7 +268,7 @@ void CIFPlayerInfo::OnUpdate() {
         m_pGDR_PI_JOB_GRADE->SetTextFormatted(L"%d %s", jobLevel, TSM_GETTEXTPTR(L"UIIT_STT_GRADE"));
 
         if (requiredExp != -1) {
-            int currentExperience = g_pCICPlayer->GetCurrentJobExperiencePoints();
+            int currentExperience = g_pMyPlayerObj->GetCurrentJobExperiencePoints();
 
             m_pGDR_PI_JOB_EXP_GAUGE->m_valueFg = static_cast<float>(currentExperience) / static_cast<float>(requiredExp);
             m_pGDR_PI_JOB_EXP_GAUGE->m_valueBg = m_pGDR_PI_JOB_EXP_GAUGE->m_valueFg;
@@ -286,10 +286,10 @@ void CIFPlayerInfo::OnUpdate() {
 }
 
 void CIFPlayerInfo::ShowGWnd(bool bVisible) {
-    if(((bVisible != false) && g_pCICPlayer != NULL) && (g_pCICPlayer->GetStrength() != 0)) {
-        m_pGDR_PI_GAUGE_HPGAUGE->m_valueBg = static_cast<float>(g_pCICPlayer->FUN_009c7880()) / g_pCICPlayer->GetStrength() * 10.0f;
+    if(((bVisible != false) && g_pMyPlayerObj != NULL) && (g_pMyPlayerObj->GetStrength() != 0)) {
+        m_pGDR_PI_GAUGE_HPGAUGE->m_valueBg = static_cast<float>(g_pMyPlayerObj->FUN_009c7880()) / g_pMyPlayerObj->GetStrength() * 10.0f;
         m_pGDR_PI_GAUGE_HPGAUGE->m_valueFg = m_pGDR_PI_GAUGE_HPGAUGE->m_valueBg;
-        m_pGDR_PI_GAUGE_MPGAUGE->m_valueBg = static_cast<float>(g_pCICPlayer->FUN_009c7880()) / g_pCICPlayer->GetIntelligence() * 10.0f;
+        m_pGDR_PI_GAUGE_MPGAUGE->m_valueBg = static_cast<float>(g_pMyPlayerObj->FUN_009c7880()) / g_pMyPlayerObj->GetIntelligence() * 10.0f;
         m_pGDR_PI_GAUGE_MPGAUGE->m_valueFg = m_pGDR_PI_GAUGE_MPGAUGE->m_valueBg;
     }
     CIFWnd::ShowGWnd(bVisible);
