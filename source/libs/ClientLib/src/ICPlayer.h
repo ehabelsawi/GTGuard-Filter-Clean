@@ -3,6 +3,10 @@
 #include "ICUser.h"
 #include "SOItem.h"
 
+
+#define g_pMyPlayerObj  (*reinterpret_cast<CICPlayer **>(0x00EEF5EC))
+
+
 class CICPlayer : public CICUser {
     GFX_DECLARE_DYNAMIC_EXISTING(CICPlayer, 0x00ef1b44)
 public:
@@ -94,5 +98,3 @@ private:
 
     RUN_FIXTURE(CICPlayer)
 };
-
-#define g_pCICPlayer (*((CICPlayer**)0x00EEF5EC))

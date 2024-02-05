@@ -576,7 +576,7 @@ void CNetProcessIn::OnChatReceive(CMsgStreamBuffer &msg) {
             messageW = acp_n_decode(messageA);
             senderW = acp_n_decode(senderA);
 
-            if (senderW == g_pCICPlayer->GetCharName())
+            if (senderW == g_pMyPlayerObj->GetCharName())
                 return;
 
             break;
@@ -588,10 +588,10 @@ void CNetProcessIn::OnChatReceive(CMsgStreamBuffer &msg) {
             senderW = acp_n_decode(senderA);
             messageW = acp_n_decode(messageA);
 
-            if (g_pCICPlayer->GetName() == senderW)
+            if (g_pMyPlayerObj->GetName() == senderW)
                 return;
 
-            if(g_pCICPlayer->GetJobType() != TRIJOB_NOJOB) {
+            if(g_pMyPlayerObj->GetJobType() != TRIJOB_NOJOB) {
                 senderW.insert(0, L"*");
             }
             break;
@@ -608,7 +608,7 @@ void CNetProcessIn::OnChatReceive(CMsgStreamBuffer &msg) {
                 senderW = acp_n_decode(senderA);
             }
 
-            if (g_pCICPlayer->GetCharName() == senderW) {
+            if (g_pMyPlayerObj->GetCharName() == senderW) {
                 bIsFromMyself = true;
             }
 
@@ -628,7 +628,7 @@ void CNetProcessIn::OnChatReceive(CMsgStreamBuffer &msg) {
             messageW = acp_n_decode(messageA);
             senderW = acp_n_decode(senderA);
 
-            if (g_pCICPlayer->GetName() == senderW)
+            if (g_pMyPlayerObj->GetName() == senderW)
                 return;
 
             break;
@@ -665,7 +665,7 @@ void CNetProcessIn::OnChatReceive(CMsgStreamBuffer &msg) {
             messageW = acp_n_decode(messageA);
             senderW = acp_n_decode(senderA);
 
-            if (g_pCICPlayer->GetCharName() == senderW)
+            if (g_pMyPlayerObj->GetCharName() == senderW)
                 return;
 
 
@@ -673,7 +673,7 @@ void CNetProcessIn::OnChatReceive(CMsgStreamBuffer &msg) {
 
     }
 
-    if (g_pCICPlayer == NULL)
+    if (g_pMyPlayerObj == NULL)
         return;
 
 
