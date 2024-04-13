@@ -1,6 +1,7 @@
 add_library(ClientLib STATIC ${SOURCE_FILES})
 target_sources(ClientLib PRIVATE
         src/AlramGuideMgrWnd.cpp
+        src/AutoPotion.cpp
         src/CObjAnimation.cpp
         src/CameraWorking.cpp
         src/CharacterDependentData.cpp

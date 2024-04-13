@@ -81,4 +81,12 @@ void CNIFUnderMenuBar::Update() {
 
     // This label is right in the middle of the EXP-Bar
     //this->lbl_360->SetText(L"lbl_360");
+}
+
+bool CNIFUnderMenuBar::IsPotionOrPillInQuickslot(int slot) {
+    return reinterpret_cast<bool(__thiscall*)(CNIFUnderMenuBar *, int)>(0x0060b1d0)(this, slot);
+}
+
+void CNIFUnderMenuBar::UseSlot(int slot) {
+    reinterpret_cast<void(__thiscall *)(CNIFUnderMenuBar *, int)>(0x0060b850)(this, slot);
 };

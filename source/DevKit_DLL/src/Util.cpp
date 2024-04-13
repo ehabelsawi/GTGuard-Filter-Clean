@@ -22,6 +22,7 @@
 #include <PSCharacterSelect.h>
 #include <ICUser.h>
 #include <GFX3DFunction/RStateMgr.h>
+#include <AutoPotion.h>
 
 std::vector<const CGfxRuntimeClass *> register_objects;
 std::vector<overrideFnPtr> override_objects;
@@ -63,6 +64,8 @@ void Setup() {
     replaceOffset(0x009ded0d, addr_from_this(&CRStateMgr::FUN_00470060));
 
     placeHook(0x0049d620, Put);
+
+    placeHook(0x0082ce90, addr_from_this(&CAutoPotion::UsePotion));
 
 #ifdef CONFIG_DEBUG_REDIRECT_PUTDUMP
     replaceAddr(0x00832927 + 1, (int) &DebugPrintCallback);
