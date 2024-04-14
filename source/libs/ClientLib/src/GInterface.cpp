@@ -170,6 +170,28 @@ bool CGInterface::OnCreateIMPL(long ln) {
     return b;
 }
 
+void CGInterface::OnTimerIMPL(int timerId) {
+    switch (timerId) {
+
+        case TIMER_AUTOPOTION_HP:
+            m_pAutoPotion->UseHPPotion();
+            break;
+
+        case TIMER_AUTOPOTION_MP:
+            m_pAutoPotion->UseMPPotion();
+            break;
+
+        case TIMER_AUTOPOTION_CURE_PILL:
+            m_pAutoPotion->UseCurePill();
+            break;
+
+        default:
+            reinterpret_cast<void(__thiscall *)(CGInterface *, int)>(0x00789820)(this, timerId);
+            break;
+    }
+}
+
+
 void CGInterface::BeforeOnCreate() {
 
 }

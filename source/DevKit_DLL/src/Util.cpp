@@ -42,6 +42,7 @@ void Setup() {
     vftableHook(0x00E0963C, 20, addr_from_this(&CGFXVideo3D_Hook::SetSizeHook));
 
     vftableHook(0x00db95a4, 10, addr_from_this(&CGInterface::OnCreateIMPL));
+    vftableHook(0x00db95a4, 5, addr_from_this(&CGInterface::OnTimerIMPL));
     vftableHook(0x00dd811c, 10, addr_from_this(&CPSCharacterSelect::OnCreateIMPL));
 
     vftableHook(0x00de2e7c, 15, addr_from_this(&CICUser::Func_15_impl));
@@ -64,10 +65,6 @@ void Setup() {
     replaceOffset(0x009ded0d, addr_from_this(&CRStateMgr::FUN_00470060));
 
     placeHook(0x0049d620, Put);
-
-    placeHook(0x0082d0e0, addr_from_this(&CAutoPotion::UseHPPotion));
-    placeHook(0x0082d160, addr_from_this(&CAutoPotion::UseMPPotion));
-    placeHook(0x0082d1d0, addr_from_this(&CAutoPotion::UseCurePill));
 
 #ifdef CONFIG_DEBUG_REDIRECT_PUTDUMP
     replaceAddr(0x00832927 + 1, (int) &DebugPrintCallback);
