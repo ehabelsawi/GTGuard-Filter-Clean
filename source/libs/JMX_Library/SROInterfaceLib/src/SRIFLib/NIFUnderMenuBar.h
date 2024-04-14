@@ -11,6 +11,12 @@ class CNIFUnderMenuBar : public CNIFWnd {
 public:
     void Update();
 
+    /// \address 0060b1d0
+    bool IsPotionOrPillInQuickslot(int slot);
+
+    /// \address 0060b850
+    void UseSlot(int slot);
+
 public:
     char padx[8];
     CNIFGauge *gauge_skillexp; //0x0350

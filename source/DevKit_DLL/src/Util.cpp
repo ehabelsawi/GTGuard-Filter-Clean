@@ -22,6 +22,7 @@
 #include <PSCharacterSelect.h>
 #include <ICUser.h>
 #include <GFX3DFunction/RStateMgr.h>
+#include <AutoPotion.h>
 
 std::vector<const CGfxRuntimeClass *> register_objects;
 std::vector<overrideFnPtr> override_objects;
@@ -41,6 +42,7 @@ void Setup() {
     vftableHook(0x00E0963C, 20, addr_from_this(&CGFXVideo3D_Hook::SetSizeHook));
 
     vftableHook(0x00db95a4, 10, addr_from_this(&CGInterface::OnCreateIMPL));
+    vftableHook(0x00db95a4, 5, addr_from_this(&CGInterface::OnTimerIMPL));
     vftableHook(0x00dd811c, 10, addr_from_this(&CPSCharacterSelect::OnCreateIMPL));
 
     vftableHook(0x00de2e7c, 15, addr_from_this(&CICUser::Func_15_impl));

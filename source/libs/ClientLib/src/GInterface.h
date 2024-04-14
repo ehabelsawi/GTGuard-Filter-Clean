@@ -14,6 +14,7 @@
 #include "IFSkillPracticeBox.h"
 #include "IFHelperBubbleWindow.h"
 #include "MessageBoxManager.h"
+#include "AutoPotion.h"
 
 #include "SRIFLib/NIFCommunityWnd.h"
 
@@ -59,13 +60,20 @@ struct SChatMetaData {
 };
 
 class CGInterface : public CIFWnd {
-
+public:
+    enum eTimerIds {
+        TIMER_AUTOPOTION_HP = 14,
+        TIMER_AUTOPOTION_MP = 15,
+        TIMER_AUTOPOTION_CURE_PILL = 16
+    };
 public:
     // int OnKeyDown(int keycode, int a3, char a4);
 
     // void ToggleHudVisibility();
 
     bool OnCreateIMPL(long ln);
+
+    void OnTimerIMPL(int timerId);
 
     void BeforeOnCreate();
 
@@ -265,7 +273,7 @@ private:
 public:
     CNavigationDeadreckon m_Nav; //0x06AC
 private:
-    class CAutoPotion *m_pCAutoPotion; //0x06FC
+    CAutoPotion *m_pAutoPotion; //0x06FC
     char pad_0x0700[0x20]; //0x0700
     CIFFade *m_screenCover; //0x0720
     CIF_NPCWindow *m_npcWindow; //0x0724

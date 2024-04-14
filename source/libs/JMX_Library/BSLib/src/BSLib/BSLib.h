@@ -140,7 +140,6 @@ public:
     ///          timeout occurs.
     int StartTimer(int timerId, int timeoutMs);
 
-protected:
     /// \brief Stop a timer in the current object
     /// \address 00B93170
     /// \param timerId Id of the timer
