@@ -61,7 +61,8 @@ struct SChatMetaData {
 class CGInterface : public CIFWnd {
 public:
     enum eTimerIds {
-        TIMER_AUTOPOTION_HP = 14
+        TIMER_AUTOPOTION_HP = 14,
+        TIMER_AUTOPOTION_MP = 15
     };
 public:
     // int OnKeyDown(int keycode, int a3, char a4);

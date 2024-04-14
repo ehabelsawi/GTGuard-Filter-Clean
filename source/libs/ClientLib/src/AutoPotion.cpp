@@ -48,6 +48,34 @@ void CAutoPotion::UseHPPotion() {
     }
 }
 
+void CAutoPotion::UseMPPotion() {
+    if (g_pMyPlayerObj == NULL) {
+        return;
+    }
+
+    if (!m_data_in_array[MP_POTION].bIsEnabled) {
+        return;
+    }
+
+    if (((g_pMyPlayerObj->m_characterState.stateH & 1) == 0) ||
+        (this->m_data_in_array[MP_POTION].ThresholdValue < g_pMyPlayerObj->GetCurrentMp())) {
+        this->m_data_in_array[MP_POTION].bTimerRunning = false;
+        g_pCGInterface->KillTimer(CGInterface::TIMER_AUTOPOTION_MP);
+    } else {
+        UsePotion(MP_POTION);
+
+        if (!this->m_data_in_array[MP_POTION].bTimerRunning) {
+            this->m_data_in_array[MP_POTION].bTimerRunning = true;
+            int interval = 500;
+            if (m_bUsePotionDelay) {
+                interval = GetPotionDelay();
+            }
+            g_pCGInterface->StartTimer(CGInterface::TIMER_AUTOPOTION_MP, interval);
+            return;
+        }
+    }
+}
+
 int CAutoPotion::GetPotionDelay() const {
     return m_nUseDelay;
 }

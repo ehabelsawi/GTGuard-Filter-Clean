@@ -48,6 +48,8 @@ public:
     /// \address 0082d0e0
     void UseHPPotion();
 
+    /// \address 0082d160
+    void UseMPPotion();
 
     /// \address 0082ce80
     void UsePotion(unsigned char byType);
