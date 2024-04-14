@@ -53,11 +53,11 @@ public:
 
     /// \address 0082d1d0
     void UseCurePill();
-
+    
+private:
     /// \address 0082ce80
     void UsePotion(unsigned char byType);
 
-private:
     /// \address 0082cd90
     int GetPotionDelay() const;
 
