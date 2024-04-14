@@ -1,6 +1,8 @@
 #include "AutoPotion.h"
 
 #include "BSLib/Debug.h"
+#include "GInterface.h"
+#include "ICPlayer.h"
 #include "SRIFLib/NIFUnderMenuBar.h"
 #include "SRIFLib/NInterfaceResource.h"
 
@@ -15,4 +17,37 @@ void CAutoPotion::UsePotion(unsigned char byType) {
             pMenuBar->UseSlot(m_data_in_array[byType].BeltAndSlotCombined);
         }
     }
+}
+
+void CAutoPotion::UseHPPotion() {
+    if (g_pMyPlayerObj == NULL) {
+        return;
+    }
+
+    if (!m_data_in_array[HP_POTION].bIsEnabled) {
+        return;
+    }
+
+    if (((g_pMyPlayerObj->m_characterState.stateH & 1) == 0) ||
+        (this->m_data_in_array[HP_POTION].ThresholdValue < g_pMyPlayerObj->GetCurrentHp())) {
+        this->m_data_in_array[HP_POTION].bTimerRunning = false;
+        g_pCGInterface->KillTimer(CGInterface::TIMER_AUTOPOTION_HP);
+    } else {
+        if ((g_pMyPlayerObj->m_abnormalState & ABNORMAL_STATE_ZOMBIE) == 0) {
+            UsePotion(HP_POTION);
+        }
+        if (!this->m_data_in_array[HP_POTION].bTimerRunning) {
+            this->m_data_in_array[HP_POTION].bTimerRunning = true;
+            int interval = 500;
+            if (m_bUsePotionDelay) {
+                interval = GetPotionDelay();
+            }
+            g_pCGInterface->StartTimer(CGInterface::TIMER_AUTOPOTION_HP, interval);
+            return;
+        }
+    }
+}
+
+int CAutoPotion::GetPotionDelay() const {
+    return m_nUseDelay;
 }

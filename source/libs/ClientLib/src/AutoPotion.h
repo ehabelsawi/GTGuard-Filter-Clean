@@ -19,11 +19,7 @@ private:
 
     struct Potion {
         bool bIsEnabled;
-
-    private:
-        unsigned char pad0;
-
-    public:
+        bool bTimerRunning;
         unsigned char ThresholdPercent;// threshold in percent
         unsigned int ThresholdValue;   // threshold value from HP or MP
         eInitState InitState;
@@ -37,6 +33,7 @@ private:
         BEGIN_FIXTURE()
         ENSURE_SIZE(0x10)
         ENSURE_OFFSET(bIsEnabled, 0x0000)
+        ENSURE_OFFSET(bTimerRunning, 0x0001)
         ENSURE_OFFSET(ThresholdPercent, 0x0002)
         ENSURE_OFFSET(ThresholdValue, 0x0004)
         ENSURE_OFFSET(InitState, 0x0008)
@@ -48,9 +45,16 @@ private:
 public:
     virtual ~CAutoPotion();
 
+    /// \address 0082d0e0
+    void UseHPPotion();
+
 
     /// \address 0082ce80
     void UsePotion(unsigned char byType);
+
+private:
+    /// \address 0082cd90
+    int GetPotionDelay() const;
 
 
 private:
