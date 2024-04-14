@@ -68,6 +68,7 @@ void Setup() {
     placeHook(0x0082ce90, addr_from_this(&CAutoPotion::UsePotion));
     placeHook(0x0082d0e0, addr_from_this(&CAutoPotion::UseHPPotion));
     placeHook(0x0082d160, addr_from_this(&CAutoPotion::UseMPPotion));
+    placeHook(0x0082d1d0, addr_from_this(&CAutoPotion::UseCurePill));
 
 #ifdef CONFIG_DEBUG_REDIRECT_PUTDUMP
     replaceAddr(0x00832927 + 1, (int) &DebugPrintCallback);

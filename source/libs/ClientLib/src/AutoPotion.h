@@ -51,6 +51,9 @@ public:
     /// \address 0082d160
     void UseMPPotion();
 
+    /// \address 0082d1d0
+    void UseCurePill();
+
     /// \address 0082ce80
     void UsePotion(unsigned char byType);
 

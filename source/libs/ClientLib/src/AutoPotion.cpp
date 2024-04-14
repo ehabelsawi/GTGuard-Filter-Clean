@@ -76,6 +76,34 @@ void CAutoPotion::UseMPPotion() {
     }
 }
 
+void CAutoPotion::UseCurePill() {
+    if (g_pMyPlayerObj == NULL) {
+        return;
+    }
+
+    if (!m_data_in_array[CURE_PILL].bIsEnabled) {
+        return;
+    }
+
+    if (((g_pMyPlayerObj->m_characterState.stateH & 1) == 0) || (g_pMyPlayerObj->m_abnormalState == 0)) {
+        m_data_in_array[CURE_PILL].bTimerRunning = false;
+        g_pCGInterface->KillTimer(CGInterface::TIMER_AUTOPOTION_CURE_PILL);
+    } else {
+        if ((g_pMyPlayerObj->m_abnormalState & 0x4000) == 0) {
+            UsePotion(CURE_PILL);
+        }
+
+        if (!m_data_in_array[CURE_PILL].bTimerRunning) {
+            m_data_in_array[CURE_PILL].bTimerRunning = true;
+            int interval = 500;
+            if (m_bUsePotionDelay) {
+                interval = GetPotionDelay();
+            }
+            g_pCGInterface->StartTimer(CGInterface::TIMER_AUTOPOTION_CURE_PILL, interval);
+        }
+    }
+}
+
 int CAutoPotion::GetPotionDelay() const {
     return m_nUseDelay;
 }
