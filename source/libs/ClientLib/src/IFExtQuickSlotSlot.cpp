@@ -32,7 +32,7 @@ void CIFExtQuickSlotSlot::RenderMyself() {
         pWnd->Func_24(this->GetPos().x, this->GetPos().y);
 }
 
-bool CIFExtQuickSlotSlot::Func_28(int a1, int a2, int a3) {
+bool CIFExtQuickSlotSlot::Func_28(CGWnd *a1, int a2, int a3) {
     CIFSlotWithHelp *pWnd = (CIFSlotWithHelp *) GetWndByGID(m_nMagicCubeSlotGID);
     if (pWnd != NULL)
         return pWnd->Func_28(a1, a2, a3);;

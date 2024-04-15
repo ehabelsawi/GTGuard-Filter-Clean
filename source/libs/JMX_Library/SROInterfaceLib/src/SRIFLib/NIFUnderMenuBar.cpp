@@ -4,9 +4,11 @@
 
 #include "ICPlayer.h"
 
-#include <stdio.h>
-#include "GlobalDataManager.h"
+#include "BSLib/Debug.h"
 #include "Data\LevelData.h"
+#include "GInterface.h"
+#include "GlobalDataManager.h"
+#include <stdio.h>
 
 #include <cmath>
 
@@ -88,5 +90,54 @@ bool CNIFUnderMenuBar::IsPotionOrPillInQuickslot(int slot) {
 }
 
 void CNIFUnderMenuBar::UseSlot(int slot) {
-    reinterpret_cast<void(__thiscall *)(CNIFUnderMenuBar *, int)>(0x0060b850)(this, slot);
+    CIFInventory *pInventory = g_pCGInterface->GetMainPopup()->GetInventory();
+    CIFEquipment *pEquipment = g_pCGInterface->GetMainPopup()->GetEquipment();
+
+    CIFSlotWithHelp *relatedSlot = m_pMySlots[slot]->m_pSlot;
+
+    if (!relatedSlot->GetBGFilename().empty()) {
+
+        switch (relatedSlot->GetItemSourceParentWindowId()) {
+            case 70: {
+                CIFSlotWithHelp *pSlot = this->m_pMySlots[slot]->m_pSlot;
+                if (pSlot->GetItem() == NULL) {
+                    return;
+                }
+
+                BS_WARNING("CNIFUnderMenuBar::UseSlot(%d) %p", slot, relatedSlot);
+
+                CSOItem *item = pInventory->GetItemBySlot(pSlot->GetInventorySlotIndex());
+                if ((item->m_blValid) &&
+                    (item->IsSameItemType(&m_pMySlots[slot]->m_pSlot->GetMyItem())) &&
+                    (CGWnd::GetDraggedGWnd() == NULL)) {
+
+                    if (item->GetItemData()->IsItemEtc()) {
+                        if (!item->GetItemData()->IsAmmo()) {
+                            pInventory->GetItemSlotBySlotId(m_pMySlots[slot]->m_pSlot->GetInventorySlotIndex())->UseItem();
+                            return;
+                        }
+                    }
+
+                    if (item->GetItemData()->IsItemCOS()) {
+                        pInventory->GetItemSlotBySlotId(m_pMySlots[slot]->m_pSlot->GetInventorySlotIndex())->UseItem();
+                        return;
+                    }
+
+                    CIFSlotWithHelp *inventorySlot = pInventory->GetItemSlotBySlotId(m_pMySlots[slot]->m_pSlot->GetInventorySlotIndex());
+                    if (g_pCGInterface->m_field_4fc.empty()) {
+                        CGWnd::SetDraggedGWnd(inventorySlot);
+                        pEquipment->Func_28(inventorySlot, 0, 0);
+                        CGWnd::SetDraggedGWnd(NULL);
+                        return;
+                    }
+                }
+            }
+                break;
+
+            default:
+                reinterpret_cast<void(__thiscall *)(CNIFUnderMenuBar *, int)>(0x0060b850)(this, slot);
+                break;
+        }
+
+    }
 };

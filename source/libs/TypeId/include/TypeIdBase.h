@@ -13,6 +13,14 @@ template<tid_t TID1, tid_t TID2, tid_t TID3, tid_t TID4>
 class TID {
 };
 
+template<tid_t TID1, tid_t TID2>
+class TID_2 {
+};
+
+template<tid_t TID1, tid_t TID2, tid_t TID3>
+class TID_3 {
+};
+
 
 class TypeId {
     enum {
@@ -46,6 +54,19 @@ public:
                ((m_type_id_value & TID2_MASK) == TID_ARG(TID2, TID2_OFFSET)) &&
                ((m_type_id_value & TID3_MASK) == TID_ARG(TID3, TID3_OFFSET)) &&
                ((m_type_id_value & TID4_MASK) == TID_ARG(TID4, TID4_OFFSET));
+    }
+
+    template<unsigned short TID1, unsigned short TID2>
+    bool Is(TID_2<TID1, TID2> tid) const {
+        return ((m_type_id_value & TID1_MASK) == TID_ARG(TID1, TID1_OFFSET)) &&
+               ((m_type_id_value & TID2_MASK) == TID_ARG(TID2, TID2_OFFSET));
+    }
+
+    template<unsigned short TID1, unsigned short TID2, unsigned short TID3>
+    bool Is(TID_3<TID1, TID2, TID3> tid) const {
+        return ((m_type_id_value & TID1_MASK) == TID_ARG(TID1, TID1_OFFSET)) &&
+               ((m_type_id_value & TID2_MASK) == TID_ARG(TID2, TID2_OFFSET)) &&
+               ((m_type_id_value & TID3_MASK) == TID_ARG(TID3, TID3_OFFSET));
     }
 
 private:

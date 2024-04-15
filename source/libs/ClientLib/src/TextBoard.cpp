@@ -241,3 +241,7 @@ void CTextBoard::SetFont(void *a2) {
 char CTextBoard::GetN00009BB9() const {
     return N00009BB9;
 }
+
+const std::n_string &CTextBoard::GetBGFilename() const {
+    return bg_filename_maybe;
+}

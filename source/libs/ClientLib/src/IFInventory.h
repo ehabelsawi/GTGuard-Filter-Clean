@@ -1,8 +1,9 @@
 #pragma once
 
-#include "IFWnd.h"
-#include "IFStoreForPackage.h"
+#include "IFSlotWithHelp.h"
 #include "IFStorageRoom.h"
+#include "IFStoreForPackage.h"
+#include "IFWnd.h"
 #include "SOItem.h"
 
 class CIFInventory : public CIFWnd
@@ -11,6 +12,9 @@ class CIFInventory : public CIFWnd
 public:
     /// \address 0006b3e50
     CSOItem* GetItemBySlot(int slotId);
+
+    /// \address 006b3ea0
+    CIFSlotWithHelp *GetItemSlotBySlotId(int slotId);
 
 public:
 	CIFStoreForPackage* m_storeWindow; //0x036C 

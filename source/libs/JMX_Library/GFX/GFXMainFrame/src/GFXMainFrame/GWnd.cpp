@@ -17,7 +17,7 @@ bool CGWnd::Func_27() {
     return true;
 }
 
-bool CGWnd::Func_28(int a1, int a2, int a3) {
+bool CGWnd::Func_28(CGWnd *a1, int a2, int a3) {
     return false;
 }
 
@@ -130,4 +130,12 @@ int CGWnd::GetCurrentEventMsgCtrlId() {
 
 void CGWnd::EraseWindowObj() {
     reinterpret_cast<void (__thiscall *)(CGWnd *)>(0x00ba0e40)(this);
+}
+
+CGWnd *CGWnd::GetDraggedGWnd() {
+    return *reinterpret_cast<CGWnd**>(0x0110f604);
+}
+
+void CGWnd::SetDraggedGWnd(CGWnd* wnd) {
+    reinterpret_cast<void (*)(CGWnd *)>(0x00b9db10)(wnd);
 }
