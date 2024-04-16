@@ -23,4 +23,11 @@ public:
 
 	void SetVisibleMode(DWORD dwMode);
 
+private:
+	BEGIN_FIXTURE()
+		ENSURE_SIZE(0x05A4)
+		ENSURE_OFFSET(m_CurVisibleMode, 0x03B8)
+	END_FIXTURE()
+
+	RUN_FIXTURE(CIFConsole)
 };
