@@ -42,3 +42,11 @@ void CIFConsole::SetVisibleMode(DWORD dwMode) {
         }
     }
 }
+
+BOOL CIFConsole::SetFocusOnInputBox() {
+    if (!IsVisible())
+        return FALSE;
+
+    m_pInputBox->SetFocus_MAYBE();
+    return TRUE;
+}

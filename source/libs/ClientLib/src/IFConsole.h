@@ -2,9 +2,14 @@
 
 #include "IFWnd.h"
 
+#include "IFEdit.h"
+
+/// \note If u are planing to change this key chackout "CIFConsole::SetVisibleMode"
+#define CHEAT_CONSOLE_TOGGLE_KEY	'~' // VK_F15
+
 class CIFConsole : public CIFWnd
 {
-private:
+public:
 	enum eVisibleMode : DWORD {
 		VISIBLE_MODE_INVISIBLE,
 
@@ -15,7 +20,9 @@ private:
 	};
 
 private:
-	char pad_036C[0x3b8 - 0x036c]; //0x036C
+	char pad_036C[4]; //0x036C
+	CIFEdit *m_pInputBox; //0x0370
+	char pad_0374[0x03B8 - 0x0374]; //0x0374
 	eVisibleMode m_CurVisibleMode; //0x03B8
 	char pad_03BC[0x05A4 - 0x03B8];
 public:
@@ -25,9 +32,13 @@ public:
     /// \address 00537c60
 	void SetVisibleMode(DWORD dwMode);
 
+	/// \address 00537ce0
+	BOOL SetFocusOnInputBox();
+
 private:
 	BEGIN_FIXTURE()
 		ENSURE_SIZE(0x05A4)
+		ENSURE_OFFSET(m_pInputBox, 0x0370)
 		ENSURE_OFFSET(m_CurVisibleMode, 0x03B8)
 	END_FIXTURE()
 
