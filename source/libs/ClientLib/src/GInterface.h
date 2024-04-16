@@ -305,6 +305,7 @@ private:
 
 BEGIN_FIXTURE()
         ENSURE_SIZE(0x854)
+        ENSURE_OFFSET(m_field_4fc, 0x04FC)
         ENSURE_OFFSET(m_pCSkillRunTimeManager, 0x780)
         ENSURE_OFFSET(field_0x7cd, 0x7cd)
         ENSURE_OFFSET(m_pCPreUseItem, 0x7f4)
