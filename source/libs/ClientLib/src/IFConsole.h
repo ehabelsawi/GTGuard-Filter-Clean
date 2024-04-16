@@ -19,8 +19,10 @@ private:
 	eVisibleMode m_CurVisibleMode; //0x03B8
 	char pad_03BC[0x05A4 - 0x03B8];
 public:
+    /// \address 00537bc0
 	BOOL IsConsolePermissioned();
 
+    /// \address 00537c60
 	void SetVisibleMode(DWORD dwMode);
 
 private:
