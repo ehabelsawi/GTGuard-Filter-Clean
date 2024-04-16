@@ -61,8 +61,6 @@ std::n_string GetKindredTextureFilePath(char param_1, int param_2);
 void __stdcall WriteToChatWindow(ChatType type, const std::n_wstring &strRecipient, int uniqueid,
                         const std::n_wstring &strMessage, char direction);
 
-GameCfg* Fun_GetCfgGame();
-
 void __stdcall FUN_00bbda70(undefined4 a1);
 
 

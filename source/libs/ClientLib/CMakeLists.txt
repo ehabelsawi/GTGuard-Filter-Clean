@@ -86,7 +86,6 @@ target_sources(ClientLib PRIVATE
         src/TextStringManager.cpp
         src/UserGuildInfo.cpp
         src/World.cpp
-        src/is_this_important.cpp
         src/unsorted.cpp
 )
 target_link_libraries(ClientLib SROInterfaceLIB GFXMainFrame GFX3DFunction GFXFileManagerLIB NavMesh ClientNet SimpleViewer TypeId abi-testing imgui remodel ghidra)
