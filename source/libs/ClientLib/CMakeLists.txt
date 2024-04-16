@@ -28,6 +28,7 @@ target_sources(ClientLib PRIVATE
         src/IFCheckBox.cpp
         src/IFCloseButton.cpp
         src/IFConfirmReputationGuide.cpp
+        src/IFConsole.cpp
         src/IFDecoratedStatic.cpp
         src/IFDragableArea.cpp
         src/IFEdit.cpp
