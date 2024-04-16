@@ -227,6 +227,9 @@ BOOL CGInterface::OnCharIMPL(UINT nChar, UINT nRepCnt, UINT nFlags) {
         return TRUE;
     }
 
+    if (nChar == VK_ESCAPE)
+        OnEscapePressed();
+
     return TRUE;
 }
 
