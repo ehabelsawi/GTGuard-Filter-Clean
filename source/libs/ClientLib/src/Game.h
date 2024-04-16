@@ -80,6 +80,10 @@ public:
     /// \address 00835240
     const ClientRes&GetRes() const;
 
+	/// \address 004f9d60
+	/// \return m_Console
+	static CIFConsole *GetCheatConsole();
+
 public:
 	void SetWindowPos();
 

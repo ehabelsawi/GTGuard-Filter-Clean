@@ -7,24 +7,24 @@
 /// \note If u are planing to change this key chackout "CIFConsole::SetVisibleMode"
 #define CHEAT_CONSOLE_TOGGLE_KEY	'~' // VK_F15
 
+enum eVisibleMode : DWORD {
+	VISIBLE_MODE_INVISIBLE,
+	
+	VISIBLE_MODE_OPENING, 
+	VISIBLE_MODE_CLOSING,
+
+	VISIBLE_MODE_VISIBLE
+};
+
 class CIFConsole : public CIFWnd
 {
 public:
-	enum eVisibleMode : DWORD {
-		VISIBLE_MODE_INVISIBLE,
-
-		VISIBLE_MODE_OPENING, 
-		VISIBLE_MODE_CLOSING,
-
-		VISIBLE_MODE_VISIBLE
-	};
-
 private:
 	char pad_036C[4]; //0x036C
 	CIFEdit *m_pInputBox; //0x0370
 	char pad_0374[0x03B8 - 0x0374]; //0x0374
 	eVisibleMode m_CurVisibleMode; //0x03B8
-	char pad_03BC[0x05A4 - 0x03B8];
+	char pad_03BC[0x05A4 - 0x03BC]; //0x03BC
 public:
     /// \address 00537bc0
 	BOOL IsConsolePermissioned();

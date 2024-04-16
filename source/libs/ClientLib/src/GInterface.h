@@ -66,8 +66,24 @@ public:
         TIMER_AUTOPOTION_MP = 15,
         TIMER_AUTOPOTION_CURE_PILL = 16
     };
+
+    enum eSuspendMode : DWORD {
+        SUSPEND_MODE_NONE,
+        SUSPEND_MODE_TELPORTIONG = 11,
+    };
+
 public:
     // int OnKeyDown(int keycode, int a3, char a4);
+
+    /// \details Ithink param_1 is an struct thats cotains nChar
+    BOOL OnCharIMPL(UINT, UINT, UINT);
+
+    BOOL OnCharInSusspendMode(UINT, UINT, UINT);
+
+    /// \details Iguess its getting MainpopUps hotkeys
+    UINT FUN_00778310(UINT &, UINT &);
+
+    void OnEscapePressed();
 
     // void ToggleHudVisibility();
 
@@ -78,7 +94,6 @@ public:
     void BeforeOnCreate();
 
     void AfterOnCreate();
-
 
     /// \brief Show a message in the warning area (green)
     ///
@@ -287,13 +302,15 @@ private:
     class CSkillCoolTimeManager *m_pCSkillCoolTimeManager; //0x0778
     class CItemReuseDelayManager *m_pCItemReuseDelayManager; //0x077C
     class CSkillRunTimeManager *m_pCSkillRunTimeManager; //0x0780
-    char pad_0784[0x48]; //0x0784
-    char pad_07cc[1]; // 0x7cc
+    char pad_0784[0x07BA - 0x0784]; //0x0784
+    bool m_bDisappeard; //0x07BA i hope it's called like zat
+    char pad_07bb[0x07CD - 0x7BB]; //0x07BB
 public:
     undefined1 field_0x7cd;
 private:
-    char pad_07d0[0x24];
-
+    char pad_07d0[0x07EC - 0x07D0]; //0x07D0
+    eSuspendMode m_SuspendMode; //0x07EC // kyuubi09: plz make more research about zat brOzaer becuase im lazy fox.
+    char pad_07F0[4]; //0x07F0
     class CPreUseItem *m_pCPreUseItem; //0x07F4
     char pad_07F8[92]; //0x07F8
 
@@ -301,7 +318,9 @@ private:
 BEGIN_FIXTURE()
         ENSURE_SIZE(0x854)
         ENSURE_OFFSET(m_pCSkillRunTimeManager, 0x780)
+        ENSURE_OFFSET(m_bDisappeard, 0x07BA)
         ENSURE_OFFSET(field_0x7cd, 0x7cd)
+        ENSURE_OFFSET(m_SuspendMode, 0x07EC)
         ENSURE_OFFSET(m_pCPreUseItem, 0x7f4)
     END_FIXTURE()
 

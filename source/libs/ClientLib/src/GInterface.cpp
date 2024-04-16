@@ -1,8 +1,12 @@
 #include "GInterface.h"
+
 #include "IFflorian0Guide.h"
 #include "IFNotify.h"
 #include "IFChatViewer.h"
 #include "IFNotify.h"
+
+#include "Game.h"
+
 #include "GlobalDataManager.h"
 
 #include <BSLib/multibyte.h>
@@ -191,6 +195,40 @@ void CGInterface::OnTimerIMPL(int timerId) {
     }
 }
 
+BOOL CGInterface::OnCharInSusspendMode(UINT nChar, UINT nRepCnt, UINT nFlags) {
+    return reinterpret_cast<BOOL (__thiscall *)(CGInterface *, UINT, UINT, UINT)>(0x0078ae00)(this, nChar, nRepCnt, nFlags);
+}
+
+UINT CGInterface::FUN_00778310(UINT &nChar, UINT &nFlags) {
+    return reinterpret_cast<UINT (__thiscall *)(CGInterface *, UINT &, UINT &)>(0x00778310)(this, nChar, nFlags);
+}
+
+void CGInterface::OnEscapePressed() {
+    reinterpret_cast<void (__thiscall *)(CGInterface *)>(0x0079d620)(this);
+}
+
+BOOL CGInterface::OnCharIMPL(UINT nChar, UINT nRepCnt, UINT nFlags) {
+    if (m_bDisappeard)
+        return TRUE;
+    
+    if (m_SuspendMode != SUSPEND_MODE_NONE)
+        return OnCharInSusspendMode(nChar, nRepCnt, nFlags);
+
+    if (nChar == CHEAT_CONSOLE_TOGGLE_KEY)
+        CGame::GetCheatConsole()->SetVisibleMode(VISIBLE_MODE_OPENING);
+
+    if (FUN_00778310(nChar, nFlags) != -1)
+        return TRUE;
+    
+    if (nChar == VK_RETURN) {
+        if (CGame::GetCheatConsole()->SetFocusOnInputBox() == FALSE)
+            m_IRM.GetResObj<CIFChatViewer>(GDR_CHAT_BOARD, 1)->SetFocusToInputBox();
+
+        return TRUE;
+    }
+
+    return TRUE;
+}
 
 void CGInterface::BeforeOnCreate() {
 
