@@ -106,20 +106,6 @@ bool CGWnd::On3DEvent_MAYBE(Event3D *a2) {
     return false;
 }
 
-void CGWnd::SetHoldingMouseSlot(CGWnd *pSlot) {
-    // Do We already holding the same slot?
-    if (g_pMouseHoldingSlot == pSlot)
-        return;
-    // OnClear?
-    if (g_pMouseHoldingSlot != (CGWnd *) NULL)
-        g_pMouseHoldingSlot->Func_26(0);
-
-    g_pMouseHoldingSlot = pSlot;
-
-    if (pSlot != NULL && !pSlot->Func_25(0))
-        g_pMouseHoldingSlot = NULL;
-}
-
 int CGWnd::GetCurrentEventMsgCtrlId() {
     if (g_pCurrentEventCtrl) {
         return g_pCurrentEventCtrl->UniqueID();
@@ -133,9 +119,19 @@ void CGWnd::EraseWindowObj() {
 }
 
 CGWnd *CGWnd::GetDraggedGWnd() {
-    return *reinterpret_cast<CGWnd**>(0x0110f604);
+    return g_pMouseHoldingSlot;
 }
 
-void CGWnd::SetDraggedGWnd(CGWnd* wnd) {
-    reinterpret_cast<void (*)(CGWnd *)>(0x00b9db10)(wnd);
+void CGWnd::SetDraggedGWnd(CGWnd *wnd) {
+    // Do We already holding the same slot?
+    if (g_pMouseHoldingSlot == wnd)
+        return;
+    // OnClear?
+    if (g_pMouseHoldingSlot != (CGWnd *) NULL)
+        g_pMouseHoldingSlot->Func_26(0);
+
+    g_pMouseHoldingSlot = wnd;
+
+    if (wnd != NULL && !wnd->Func_25(0))
+        g_pMouseHoldingSlot = NULL;
 }

@@ -102,9 +102,6 @@ public:
     bool On3DEvent_MAYBE(Event3D *a2) override;
 
 public:
-    /// \address 00b9db10
-    void SetHoldingMouseSlot(CGWnd *pSlot);
-
     /// \address 00b9dc60
     static int GetCurrentEventMsgCtrlId();
 
