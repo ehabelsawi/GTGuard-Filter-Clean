@@ -25,7 +25,7 @@ private:
     char pad_036C[4]; //0x036C
     int m_itemSourceParentWindowId; // 0x0370
     char pad_0374[4]; //0x0374
-    int m_inventorySlotIndex; //0x0374
+    int m_inventorySlotIndex; //0x0378
     char pad_037c[0x0390 - 0x037c]; //0x037c
     CSOItem* m_pItem; // 0x0390
     char pad_0394[4]; //0x0394
