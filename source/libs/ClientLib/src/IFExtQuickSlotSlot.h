@@ -40,7 +40,7 @@ public:
     bool Func_25(int a1) override;
 
     /// \address 0065fb50
-    bool Func_28(int a1, int a2, int a3) override;
+    bool Func_28(CGWnd *a1, int a2, int a3) override;
 
     /// \address 0065fc10
     int OnMouseRightDown(int a1, int x, int y) override;

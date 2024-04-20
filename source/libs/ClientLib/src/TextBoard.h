@@ -31,6 +31,8 @@ public:
 
 	char GetN00009BB9() const;
 
+    const std::n_string & GetBGFilename() const;
+
 protected:
 	void sub_655B00(const wchar_t *str);
 

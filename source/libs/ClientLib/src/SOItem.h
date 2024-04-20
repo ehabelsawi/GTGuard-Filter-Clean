@@ -25,9 +25,13 @@ public:
     /// \address 008ba460
     int GetQuantity() const;
 
+    /// Checks if given items are of same type by comparing RefObjId
+    /// \address 008bac80
+    bool IsSameItemType(const CSOItem *other) const;
+
 public:
     char pad_0000[0x28];//0x0000
-    undefined1 field_28;//0x0028
+    undefined1 m_blValid;//0x0028
     char pad_0029[0xB];//0x0025
     int m_refObjItemId;//0x0034
     char pad_0038[0x54]; //0x0038
@@ -63,7 +67,7 @@ public:
 
     BEGIN_FIXTURE()
         ENSURE_SIZE(464)// approved by CIFExchange::ctor
-        ENSURE_OFFSET(field_28, 0x28)
+        ENSURE_OFFSET(m_blValid, 0x28)
         ENSURE_OFFSET(m_refObjItemId, 0x34)
         ENSURE_OFFSET(m_OptLevel, 0x008C)
         ENSURE_OFFSET(m_CurrDurability, 0x0098)

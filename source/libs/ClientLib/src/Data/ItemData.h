@@ -10,6 +10,12 @@ struct SItemData : public SCommonData {
 
     bool IsGlobalMessageScroll() const;
 
+    bool IsItemEtc() const;
+
+    bool IsAmmo() const;
+
+    bool IsItemCOS() const;
+
     unsigned int m_maxStack;          //0x01C0
     unsigned int m_reqGender;         //0x01C4
     unsigned int n_reqStr;            //0x01C8

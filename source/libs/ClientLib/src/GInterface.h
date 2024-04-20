@@ -1,5 +1,7 @@
 #pragma once
 
+#include "BSLib/BSLib.h"
+
 #include "IFWnd.h"
 #include "IFSupporterChatWnd.h"
 #include "IFTimerWnd.h"
@@ -265,9 +267,12 @@ private:
     int m_silk_own; //0x04AC
     int m_silk_gift; //0x04B0
     int m_silk_point; //0x04B4
-    char pad_0x04B8[0x4C]; //0x04B8
-    DWORD N0000268B; //0x0504
-    char pad_0x0508[0x120]; //0x0508
+    char pad_04B8[68]; //0x04B8
+public:
+    // TODO: This is probably not <int, int>. It dont want to reverse it now because it is always empty.
+    std::n_map<int, int> m_field_4fc; //0x04FC
+public:
+    char pad_0508[288]; //0x0508
     int m_selectedObjectId; //0x0628
     char pad_0x062C[0x80]; //0x062C
 public:
@@ -300,6 +305,7 @@ private:
 
 BEGIN_FIXTURE()
         ENSURE_SIZE(0x854)
+        ENSURE_OFFSET(m_field_4fc, 0x04FC)
         ENSURE_OFFSET(m_pCSkillRunTimeManager, 0x780)
         ENSURE_OFFSET(field_0x7cd, 0x7cd)
         ENSURE_OFFSET(m_pCPreUseItem, 0x7f4)

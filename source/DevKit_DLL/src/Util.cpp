@@ -64,6 +64,8 @@ void Setup() {
 
     replaceOffset(0x009ded0d, addr_from_this(&CRStateMgr::FUN_00470060));
 
+    replaceOffset(0x0060bbbf, addr_from_this(&CNIFUnderMenuBar::UseSlot));
+
     placeHook(0x0049d620, Put);
 
 #ifdef CONFIG_DEBUG_REDIRECT_PUTDUMP

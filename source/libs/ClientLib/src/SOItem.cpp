@@ -15,3 +15,7 @@ const SItemData *CSOItem::GetItemData() const {
 int CSOItem::GetQuantity() const {
     return m_quantity;
 }
+
+bool CSOItem::IsSameItemType(const CSOItem *other) const {
+    return reinterpret_cast<bool(__thiscall *)(const CSOItem *, const CSOItem *)>(0x008bac80)(this, other);
+}

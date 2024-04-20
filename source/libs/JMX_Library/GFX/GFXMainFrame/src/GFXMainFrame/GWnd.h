@@ -31,7 +31,7 @@ public:
 
     virtual bool Func_27();
 
-    virtual bool Func_28(int a1, int a2, int a3);
+    virtual bool Func_28(CGWnd *a1, int a2, int a3);
 
     /// \brief Called when the left mouse button is released
     /// \param x Position X of the mouse
@@ -102,9 +102,6 @@ public:
     bool On3DEvent_MAYBE(Event3D *a2) override;
 
 public:
-    /// \address 00b9db10
-    void SetHoldingMouseSlot(CGWnd *pSlot);
-
     /// \address 00b9dc60
     static int GetCurrentEventMsgCtrlId();
 
@@ -134,6 +131,18 @@ public:
                                                    int)>(0x00BA20B0)(
                 pParent, &pType, &Rect, a4, a5);
     }
+
+    /// Get current dragged control
+    /// A dragged control is when something is sticky to the cursor position without pressing any button.
+    ///
+    /// So far we only discovered CIFSlotWithHelp to be draggable.
+    /// Dragging a window by its handlebar has no effect here.
+    static CGWnd* GetDraggedGWnd();
+
+    /// Set currently dragged control
+    /// \see GetDraggedGWnd for details on dragged controls
+    /// \address 00b9db10
+    static void SetDraggedGWnd(CGWnd* wnd);
 };
 
 #define g_pOnMouseDownClickCtrl (*((CGWnd**)0x0110f5fc))

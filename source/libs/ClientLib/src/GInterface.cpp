@@ -262,7 +262,7 @@ void CGInterface::WriteGlobalMessage(unsigned char nSlot, std::n_wstring message
 
     CSOItem *item = inventory->GetItemBySlot(nSlot);
 
-    if (item->field_28 == 0) {
+    if (item->m_blValid == 0) {
         return;
     }
 

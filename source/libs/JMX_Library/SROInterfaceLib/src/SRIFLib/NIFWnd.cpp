@@ -128,7 +128,7 @@ int CNIFWnd::OnWindowPosChanged(UINT lParam, UINT wParam) {
 bool CNIFWnd::Func_18(Event3D *pEventData) {
     // if there is a slot in our mouse and right click is down
     if (pEventData->Msg == WM_RBUTTONDOWN) {
-        SetHoldingMouseSlot(NULL);
+        SetDraggedGWnd(NULL);
         return true;
     }
 
@@ -147,7 +147,7 @@ bool CNIFWnd::Func_18(Event3D *pEventData) {
             pGWnd = (CGWnd *) pGWnd->GetParentControl();
         }
     }
-    SetHoldingMouseSlot(NULL);
+    SetDraggedGWnd(NULL);
     return true;
 }
 
@@ -164,7 +164,7 @@ bool CNIFWnd::On3DEvent_MAYBE(Event3D *pEventData) {
             if ((GetKeyState(VK_CONTROL) > -1) && (GetKeyState(VK_SHIFT) > -1) && (GetKeyState(VK_MENU) > -1) &&
                 this->IsDragable()) {
                 if (g_pOnMouseDownClickCtrl == NULL)
-                    SetHoldingMouseSlot(this);
+                    SetDraggedGWnd(this);
                 return true;
             }
             nReturn = this->OnMouseLeftUp(0, pEventData->lParam, pEventData->wParam);
