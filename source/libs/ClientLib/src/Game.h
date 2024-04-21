@@ -44,30 +44,30 @@ struct WhatIsThis {
 
 class CGame : public CGFXMainFrame {
 public:
-	int N0000051E; //0x0490
-	CGFontTexture* font; //0x0494
-	char pad_0498[40]; //0x0498
-	CDxSound* p_CDXSound; //0x04C0
-	IFileManager* pFM_Media; //0x04C4
-	IFileManager* pFM_Map; //0x04C8
-	IFileManager* pFM_Data; //0x04CC
-	IFileManager* pFM_AdditionalData; //0x04D0
-	IFileManager* pFM_Music; //0x04D4
-	IFileManager* pFM_Particles; //0x04D8
-	IFileManager* m_RTLoading_FMs[5]; //0x04DC
-	CGEffSoundBody* m_CGEffSoundBody; //0x04F0 4F0
-	CIFConsole* m_Console; //0x04F4
-	char pad_04F8[104]; //0x04F8
-	int N00000884; //0x0560
-	char pad_0564[8]; //0x0564
-	int N00000887; //0x056C
-	ClientRes N00000888; //0x0570
-	char pad_05A0[44]; //0x05A0
-	CRTLoading m_RTLoading; //0x05CC 5CC
-	char pad_062C[0x06F8 - 0x062C]; //0x062C
-	GameCfg m_GCfg; //0x06F8
-	CStringCheck * m_badWordFilter; //0x08E8
-	char pad_08EC[0x960 - 0x8EC]; //0x08EC
+    int N0000051E; //0x0490
+    CGFontTexture* font; //0x0494
+    char pad_0498[40]; //0x0498
+    CDxSound* p_CDXSound; //0x04C0
+    IFileManager* pFM_Media; //0x04C4
+    IFileManager* pFM_Map; //0x04C8
+    IFileManager* pFM_Data; //0x04CC
+    IFileManager* pFM_AdditionalData; //0x04D0
+    IFileManager* pFM_Music; //0x04D4
+    IFileManager* pFM_Particles; //0x04D8
+    IFileManager* m_RTLoading_FMs[5]; //0x04DC
+    CGEffSoundBody* m_CGEffSoundBody; //0x04F0 4F0
+    CIFConsole* m_Console; //0x04F4
+    char pad_04F8[104]; //0x04F8
+    int N00000884; //0x0560
+    char pad_0564[8]; //0x0564
+    int N00000887; //0x056C
+    ClientRes N00000888; //0x0570
+    char pad_05A0[44]; //0x05A0
+    CRTLoading m_RTLoading; //0x05CC 5CC
+    char pad_062C[0x06F8 - 0x062C]; //0x062C
+    GameCfg m_GCfg; //0x06F8
+    CStringCheck * m_badWordFilter; //0x08E8
+    char pad_08EC[0x960 - 0x8EC]; //0x08EC
 public:
     /// \address 004F9CD0
     static const ClientResolutonData &GetClientDimensionStuff();
@@ -80,49 +80,49 @@ public:
     /// \address 00835240
     const ClientRes&GetRes() const;
 
-	/// \address 004f9d60
-	/// \return m_Console
-	static CIFConsole *GetCheatConsole();
+    /// \address 004f9d60
+    /// \return m_Console
+    static CIFConsole *GetCheatConsole();
 
 public:
-	void SetWindowPos();
+    void SetWindowPos();
 
-	int sub_83580(int arg);
+    int sub_83580(int arg);
 
-	void LoadAndInitStuffIMPL(int a1);
+    void LoadAndInitStuffIMPL(int a1);
 
-	void InitGameAssets();
+    void InitGameAssets();
 
-	void LoadTextfiles();
+    void LoadTextfiles();
 
-	void ResizeMainWindow();
+    void ResizeMainWindow();
 
-	void ClientReadConfiguration();
+    void ClientReadConfiguration();
 
-	void LoadPK2s();
+    void LoadPK2s();
 
-	void LoadFileManager();
+    void LoadFileManager();
 
-	IFileManager* OpenPackFile(std::string pakfile, std::string passwd, int mode);
+    IFileManager* OpenPackFile(std::string pakfile, std::string passwd, int mode);
 
-	void SplitCommandline();
-	
-	void InitializeAfterTitle();
+    void SplitCommandline();
+    
+    void InitializeAfterTitle();
 
-	void sub_8371D0();
+    void sub_8371D0();
 
-	void sub_BA3FC0(int i, int i1);
+    void sub_BA3FC0(int i, int i1);
 
-	void *GetFont(int a2);
+    void *GetFont(int a2);
 
 private:
-	BEGIN_FIXTURE()
-		ENSURE_SIZE(0x0960)
-		ENSURE_OFFSET(m_GCfg, 0x06F8)
-		ENSURE_OFFSET(m_badWordFilter, 0x08E8)
-	END_FIXTURE()
+    BEGIN_FIXTURE()
+        ENSURE_SIZE(0x0960)
+        ENSURE_OFFSET(m_GCfg, 0x06F8)
+        ENSURE_OFFSET(m_badWordFilter, 0x08E8)
+    END_FIXTURE()
 
-	RUN_FIXTURE(CGame)
+    RUN_FIXTURE(CGame)
 };
 
 #define g_CGame ((CGame*)0x00EECE80)
