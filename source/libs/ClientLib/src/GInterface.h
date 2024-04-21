@@ -76,13 +76,16 @@ public:
     // int OnKeyDown(int keycode, int a3, char a4);
 
     /// \details Ithink param_1 is an struct thats cotains nChar
+    /// \address 0078b660
     BOOL OnCharIMPL(UINT, UINT, UINT);
 
+    /// \address 0078ae00
     BOOL OnCharInSusspendMode(UINT, UINT, UINT);
 
     /// \details Iguess its getting MainpopUps hotkeys
     UINT FUN_00778310(UINT &, UINT &);
 
+    /// \address 0079d620
     void OnEscapePressed();
 
     // void ToggleHudVisibility();
