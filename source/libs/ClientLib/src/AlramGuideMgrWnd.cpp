@@ -69,6 +69,10 @@ CIFWnd *CAlramGuideMgrWnd::GetGuide(DWORD dwID) {
     return NULL;
 }
 
+CAlramGuideMgrWnd::~CAlramGuideMgrWnd() {
+    RemoveAllGuides();
+}
+
 CIFWnd *CAlramGuideMgrWnd::CreateGuideIcon(int nWndID) {
     // Try to find the element in the list
     listGUIDES::iterator it = m_listGuides.begin();

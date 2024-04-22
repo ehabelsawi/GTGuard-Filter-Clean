@@ -20,7 +20,9 @@ public:
     bool IsAvailableGuide(DWORD dwID);
 
     CIFWnd *GetGuide(DWORD dwID);
-    
+
+    ~CAlramGuideMgrWnd();
+
     CIFWnd *CreateGuideIcon(int nWndID);
 
 private:
