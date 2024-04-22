@@ -43,6 +43,9 @@ void Setup() {
 
     vftableHook(0x00db95a4, 10, addr_from_this(&CGInterface::OnCreateIMPL));
     vftableHook(0x00db95a4, 5, addr_from_this(&CGInterface::OnTimerIMPL));
+
+    replaceAddr(0x00d71100 + 4, addr_from_this(&CGInterface::OnCharIMPL));
+
     vftableHook(0x00dd811c, 10, addr_from_this(&CPSCharacterSelect::OnCreateIMPL));
 
     vftableHook(0x00de2e7c, 15, addr_from_this(&CICUser::Func_15_impl));
@@ -82,6 +85,8 @@ void Setup() {
 
     placeHook(0x007a9bd0, addr_from_this(&CIFChatViewer::ShowHideControls));
 #endif // CONFIG_CHATVIEWER
+
+    replaceOffset(0x00558618, addr_from_this(&CIFConsole::SetVisibleMode));
 
     quickstart.Setup();
 }

@@ -6,6 +6,10 @@
 #define GFX_MSG_CALL
 #endif
 
+// VK_SHIFT check if it shifted or not by GetKeyState()
+// (GetKeyState(VK_SHIFT) & SHIFTED)
+#define SHIFTED 0x8000 
+
 /// Supported function signatures for message map handlers
 enum BSSig {
     /// Mark the end of the message map array

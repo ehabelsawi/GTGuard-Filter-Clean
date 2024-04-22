@@ -44,3 +44,11 @@ WhatIsThis &CGame::STA_FUN_004f9d00() {
 void CGame::sub_8371D0() {
     reinterpret_cast<void(__thiscall*)(CGame*)>(0x008371D0)(this);
 }
+
+CIFConsole *CGame::GetCheatConsole() {
+    return theApp.m_Console;
+}
+
+GameCfg *Fun_GetCfgGame() {
+    return &theApp.m_GCfg;
+}

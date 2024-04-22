@@ -12,7 +12,7 @@ void setQuickStartProcess(CGame *game);
 void setQuickStartProcess(CGame *game) {
     // Enable Quickstart
     BS_INFO("Enabling quickstart");
-    game->m_runtimeClass = reinterpret_cast<CGfxRuntimeClass *>(0x00EED974);
+    game->m_GCfg.m_runtimeClass = reinterpret_cast<CGfxRuntimeClass *>(0x00EED974);
 }
 
 void QuickStart::Setup() {

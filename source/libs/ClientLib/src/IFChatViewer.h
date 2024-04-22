@@ -174,11 +174,13 @@ private:
     /// \address 007ADF70
     char sub_7ADF70(const wchar_t *text);
 
+public:
     /// Activate the InputBox
     /// Keystrokes are then registered by the InputBox
     /// \address 007A9A70
     void SetFocusToInputBox();
 
+private:
     /// Sets the targetName-parameter as the Whisper-target
     /// \address 007AB470
     void SetWhisperTarget(std::n_wstring &targetName);
