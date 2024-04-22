@@ -17,6 +17,8 @@ public:
 
     void RemoveAllGuides();
 
+    bool IsAvailableGuide(DWORD dwID);
+
     CIFWnd *CreateGuideIcon(int nWndID);
 
 private:

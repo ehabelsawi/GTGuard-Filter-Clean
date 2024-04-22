@@ -53,6 +53,14 @@ void CAlramGuideMgrWnd::RemoveAllGuides() {
         (*it)->EraseWindowObj();
 }
 
+bool CAlramGuideMgrWnd::IsAvailableGuide(DWORD dwID) {
+    listGUIDES::iterator it = m_listGuides.begin();
+    for (; it != m_listGuides.end(); ++it)
+        if ((*it)->UniqueID() == dwID)
+            return true;
+    return false;
+}
+
 CIFWnd *CAlramGuideMgrWnd::CreateGuideIcon(int nWndID) {
     // Try to find the element in the list
     listGUIDES::iterator it = m_listGuides.begin();
