@@ -87,6 +87,13 @@ CObjChild::CObjChild() {
     // empty
 }
 
+CObjChild::~CObjChild() {
+    if (!m_list.empty()) {
+        m_list.clear();
+        m_pTimerLink->ReleaseTimers();
+    }
+}
+
 int CObjChild::StartTimer(int timerId, int timeoutMs) {
     return reinterpret_cast<int (__thiscall*)(CObjChild*, int, int)>(0x00b93320)(this, timerId, timeoutMs);
 }
@@ -94,6 +101,11 @@ int CObjChild::StartTimer(int timerId, int timeoutMs) {
 
 int CObjChild::KillTimer(int timerId) {
     return reinterpret_cast<int (__thiscall *)(CObjChild *, int)>(0x00B93170)(this, timerId);
+}
+
+
+void CTimerLink::ReleaseTimers() {
+    reinterpret_cast<void (__thiscall *)(CTimerLink *)>(0x00b924b0)(this);
 }
 
 # if 0
