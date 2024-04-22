@@ -20,13 +20,31 @@ GFX_IMPLEMENT_DYNAMIC_EXISTING(CAlramGuideMgrWnd, 0x00ee99a8)
 #define GUIDE_EVENTSECOND  30006
 
 #define ALRAM_GUIDE_ICON_SIZE 42
+#define ALRAM_GUIDE_MAX_ICONS_LINE 4
 
 CAlramGuideMgrWnd::CAlramGuideMgrWnd() {
     m_btGuidesCount = 0;
 }
 
 void CAlramGuideMgrWnd::PrepareGuides() {
-    reinterpret_cast<void(__thiscall*)(CAlramGuideMgrWnd*)>(0x0065c430)(this);
+    wnd_pos posMgr = GetPos();
+
+    listGUIDES::iterator it = m_listGuides.begin();
+    for (DWORD dwPosIndex = 1; it != m_listGuides.end(); ++it, dwPosIndex++) {
+        posMgr.x -= ALRAM_GUIDE_ICON_SIZE;
+        CIFWnd *pGuideIcon = (*it);
+
+        pGuideIcon->MoveGWnd(posMgr.x, posMgr.y);
+        pGuideIcon->ShowGWnd(true);
+
+        if (m_btGuidesCount != 0) {
+            // if we reached our max icons per line
+            if (!(dwPosIndex % ALRAM_GUIDE_MAX_ICONS_LINE)) {
+                posMgr.y += (ALRAM_GUIDE_ICON_SIZE + 2);
+                posMgr.x = GetPos().x;
+            }
+        }
+    }
 }
 
 CIFWnd *CAlramGuideMgrWnd::CreateGuideIcon(int nWndID) {
