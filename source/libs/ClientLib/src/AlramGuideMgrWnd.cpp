@@ -135,3 +135,15 @@ CIFWnd *CAlramGuideMgrWnd::CreateGuideIcon(int nWndID) {
     return pObj;
 }
 
+void CAlramGuideMgrWnd::RemoveGuide(DWORD dwID) {
+    listGUIDES::iterator it = m_listGuides.begin();
+    for (; it != m_listGuides.end(); ++it) {
+        if ((*it)->UniqueID() != dwID)
+            continue;
+
+        (*it)->EraseWindowObj();
+        m_listGuides.erase(it);
+        // Hmmm why this is not m_btGuidesCount minus too?
+        break;
+    }
+}

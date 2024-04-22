@@ -25,6 +25,8 @@ public:
 
     CIFWnd *CreateGuideIcon(int nWndID);
 
+    void RemoveGuide(DWORD dwID);
+
 private:
     BYTE m_btGuidesCount; //0x036C
     listGUIDES m_listGuides; //0x0370
