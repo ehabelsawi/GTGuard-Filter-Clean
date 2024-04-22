@@ -19,6 +19,8 @@ public:
 
     bool IsAvailableGuide(DWORD dwID);
 
+    CIFWnd *GetGuide(DWORD dwID);
+    
     CIFWnd *CreateGuideIcon(int nWndID);
 
 private:
