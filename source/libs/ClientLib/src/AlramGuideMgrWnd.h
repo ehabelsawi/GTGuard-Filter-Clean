@@ -15,6 +15,8 @@ public:
 
     void PrepareGuides();
 
+    void RemoveAllGuides();
+
     CIFWnd *CreateGuideIcon(int nWndID);
 
 private:
