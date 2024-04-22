@@ -4,7 +4,7 @@
 
 #define GDR_ALRAM_GUIDE_MGR_WND 158
 
-typedef std::n_list<CGWnd*> listGUIDES;
+typedef std::n_list<CIFWnd *> listGUIDES;
 
 class CAlramGuideMgrWnd : public CIFWnd {
 
@@ -13,7 +13,7 @@ GFX_DECLARE_DYNAMIC_EXISTING(CAlramGuideMgrWnd, 0x00ee99a8)
 public:
     CAlramGuideMgrWnd();
 
-    CGWnd *GetGuide(int windowId);
+    CIFWnd *CreateGuideIcon(int nWndID);
 
     void UpdatePositions();
 

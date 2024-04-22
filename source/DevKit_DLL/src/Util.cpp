@@ -55,7 +55,7 @@ void Setup() {
 
     replaceAddr(0x00831337 + 4, (int) &WndProcHook);
 
-    placeHook(0x0065c6f0, addr_from_this(&CAlramGuideMgrWnd::GetGuide));
+    placeHook(0x0065c6f0, addr_from_this(&CAlramGuideMgrWnd::CreateGuideIcon));
 
     replaceOffset(0x008491d1, addr_from_this(&CGame_Hook::LoadGameOption));
 
