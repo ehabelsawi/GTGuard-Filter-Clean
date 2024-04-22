@@ -13,9 +13,9 @@ GFX_DECLARE_DYNAMIC_EXISTING(CAlramGuideMgrWnd, 0x00ee99a8)
 public:
     CAlramGuideMgrWnd();
 
-    CIFWnd *CreateGuideIcon(int nWndID);
+    void PrepareGuides();
 
-    void UpdatePositions();
+    CIFWnd *CreateGuideIcon(int nWndID);
 
 private:
     BYTE m_btGuidesCount; //0x036C

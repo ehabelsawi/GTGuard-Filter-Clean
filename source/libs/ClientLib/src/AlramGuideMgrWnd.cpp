@@ -25,6 +25,10 @@ CAlramGuideMgrWnd::CAlramGuideMgrWnd() {
     m_btGuidesCount = 0;
 }
 
+void CAlramGuideMgrWnd::PrepareGuides() {
+    reinterpret_cast<void(__thiscall*)(CAlramGuideMgrWnd*)>(0x0065c430)(this);
+}
+
 CIFWnd *CAlramGuideMgrWnd::CreateGuideIcon(int nWndID) {
     // Try to find the element in the list
     listGUIDES::iterator it = m_listGuides.begin();
@@ -82,11 +86,8 @@ CIFWnd *CAlramGuideMgrWnd::CreateGuideIcon(int nWndID) {
     m_listGuides.push_back(pObj);
     m_btGuidesCount++;
 
-    UpdatePositions();
+    PrepareGuides();
 
     return pObj;
 }
 
-void CAlramGuideMgrWnd::UpdatePositions() {
-    reinterpret_cast<void(__thiscall*)(CAlramGuideMgrWnd*)>(0x0065c430)(this);
-}
