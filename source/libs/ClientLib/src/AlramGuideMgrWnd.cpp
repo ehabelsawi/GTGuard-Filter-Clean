@@ -19,15 +19,14 @@ GFX_IMPLEMENT_DYNAMIC_EXISTING(CAlramGuideMgrWnd, 0x00ee99a8)
 #define GUIDE_OPENMARKETALRAM  198
 #define GUIDE_EVENTSECOND  30006
 
-CAlramGuideMgrWnd::CAlramGuideMgrWnd() :
-        m_numberOfIcons(0) {
-
+CAlramGuideMgrWnd::CAlramGuideMgrWnd() {
+    m_btGuidesCount = 0;
 }
 
 CGWnd *CAlramGuideMgrWnd::GetGuide(int windowId) {
-
     // Try to find the element in the list
-    for (std::list<CGWnd *>::iterator it = m_list.begin(); it != m_list.end(); ++it) {
+    listGUIDES::iterator it = m_listGuides.begin();
+    for (; it != m_listGuides.end(); ++it) {
         if ((*it)->UniqueID() == windowId) {
             return *it;
         }
@@ -75,8 +74,8 @@ CGWnd *CAlramGuideMgrWnd::GetGuide(int windowId) {
             assert(false);
     }
 
-    m_list.push_back(pObj);
-    m_numberOfIcons++;
+    m_listGuides.push_back(pObj);
+    m_btGuidesCount++;
 
     UpdatePositions();
 
