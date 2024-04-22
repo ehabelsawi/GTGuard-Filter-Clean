@@ -90,7 +90,7 @@ CObjChild::CObjChild() {
 CObjChild::~CObjChild() {
     if (!m_list.empty()) {
         m_list.clear();
-        m_pTimerLink->ReleaseTimers();
+        m_TimerLink.ReleaseTimers();
     }
 }
 

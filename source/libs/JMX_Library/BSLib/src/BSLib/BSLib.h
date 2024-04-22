@@ -157,7 +157,7 @@ public:
     int KillTimer(int timerId);
 
 private:
-    CTimerLink *m_pTimerLink; //0x0004
+    CTimerLink m_TimerLink; //0x0004
     char pad_0008[12];
     std::n_list<CWhatever> m_list;
 };
