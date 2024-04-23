@@ -104,6 +104,14 @@ class CWhatever {
     int x[5];
 };
 
+// Ithink this how it should getting call
+class CTimerLink {
+public:
+    /// \address 00b924b0
+    void ReleaseTimers();
+
+};
+
 /// Some kind of intermediate base class. Contains message handling, networking
 /// and timers ...
 class CObjChild : public CObj {
@@ -132,6 +140,9 @@ public:
 
     CObjChild();
 
+    /// \address 00b92b80
+    ~CObjChild();
+
     /// \brief Start a timer in the current object
     /// \address 00b93320
     /// \param timerId Id of the timer
@@ -146,7 +157,8 @@ public:
     int KillTimer(int timerId);
 
 private:
-    char pad_0004[16];
+    CTimerLink m_TimerLink; //0x0004
+    char pad_0008[12];
     std::n_list<CWhatever> m_list;
 };
 
