@@ -29,7 +29,7 @@ add_compile_definitions(_CRT_SECURE_NO_DEPRECATE _CRT_NON_CONFORMING_SWPRINTFS)
 add_definitions(-DWINVER=0x0500)
 add_definitions(-D_WIN32_WINNT=0x0500)
 
-include(options.cmake)
+include(Options)
 
 # Set loglevel if supplied as parameter
 if (DEFINED PUT_LOGLEVEL)
