@@ -1,7 +1,7 @@
-#include <BSLib/Debug.h>
 #include "IFChatOptionBoard.h"
+#include "hook/MemberFunctionHook.h"
 #include "Game.h"
-#include <remodel/MemberFunctionHook.h>
+#include <BSLib/Debug.h>
 
 GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFChatOptionBoard, 0x00eec128)
 

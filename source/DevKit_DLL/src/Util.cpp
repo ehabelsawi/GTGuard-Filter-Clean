@@ -2,7 +2,7 @@
 
 #include <sys/stat.h>
 
-#include <memory/hook.h>
+#include <hook/hook.h>
 
 #include "hooks/Hooks.h"
 #include "hooks/GFXVideo3d_Hook.h"

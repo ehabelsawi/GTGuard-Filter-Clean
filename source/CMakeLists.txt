@@ -14,8 +14,7 @@ add_subdirectory(libs/TypeId)
 
 add_subdirectory(tests)
 
-add_subdirectory(third-party/remodel)
-add_subdirectory(third-party/memory)
+add_subdirectory(third-party/hook)
 add_subdirectory(third-party/imgui)
 add_subdirectory(third-party/abi-testing)
 add_subdirectory(third-party/ghidra)

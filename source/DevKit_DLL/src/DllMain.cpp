@@ -13,7 +13,7 @@
 #include "examples/IFflorian0.h"
 #include "examples/NIFKyuubi09.h"
 
-#include "memory/hook.h"
+#include "hook/hook.h"
 
 extern "C" _declspec(dllexport) BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdwReason, LPVOID lpReserved) {
     if (fdwReason == DLL_PROCESS_ATTACH) {

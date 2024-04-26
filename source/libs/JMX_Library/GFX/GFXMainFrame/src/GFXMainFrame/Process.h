@@ -1,8 +1,8 @@
 #pragma once
 
 #include "GWnd.h"
+#include "hook/GlobalVar.h"
 #include <ghidra/undefined.h>
-#include <remodel/GlobalVar.h>
 
 class CProcess : public CGWnd {
 GFX_DECLARE_DYNAMIC_EXISTING(CProcess, 0x0110FA70);

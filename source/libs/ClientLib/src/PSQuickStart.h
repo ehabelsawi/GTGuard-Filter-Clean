@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ClientNet/MsgStreamBuffer.h"
-#include "remodel/GlobalVar.h"
+#include "hook/GlobalVar.h"
 
 
 class CPSQuickStart {
