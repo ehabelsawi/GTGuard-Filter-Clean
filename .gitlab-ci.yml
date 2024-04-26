@@ -8,28 +8,6 @@ stages:
   - docs
   - publish
 
-docker_doxygen:
-  stage: build
-  variables:
-    name: doxygen
-  image: docker
-  services:
-    - docker:dind
-  script:
-    - docker info
-    - docker build -t "${CI_REGISTRY_IMAGE}/${name}:latest" docker/${name}/
-    - docker login ${CI_REGISTRY} -u gitlab-ci-token -p ${CI_BUILD_TOKEN}
-    - docker push "${CI_REGISTRY_IMAGE}/${name}:latest"
-  rules:
-    - changes:
-        - docker/doxygen/Dockerfile
-      when: always
-    - if: $CI_COMMIT_BRANCH =~ /^docker\//
-      when: always
-    - if: $build_docker == "true"
-      when: always
-    - when: never
-
 build:
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
