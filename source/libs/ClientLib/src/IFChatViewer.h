@@ -10,7 +10,7 @@
 #include "IFEdit.h"
 #include "unsorted.h"
 
-#include "Test/Test.h"
+#include "support/AbiTest.h"
 
 #define GDR_CHATVIEWER 1
 

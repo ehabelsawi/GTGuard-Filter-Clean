@@ -16,7 +16,6 @@ add_subdirectory(tests)
 
 add_subdirectory(support)
 add_subdirectory(third-party/imgui)
-add_subdirectory(third-party/abi-testing)
 add_subdirectory(third-party/ghidra)
 
 add_subdirectory(DevKit_DLL)

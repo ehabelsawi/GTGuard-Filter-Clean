@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GEffSound.h"
-#include <Test/Test.h>
+#include "support/AbiTest.h"
 
 class CGEffSoundBody : public CGEffSound // total size 368, local size 336
 {

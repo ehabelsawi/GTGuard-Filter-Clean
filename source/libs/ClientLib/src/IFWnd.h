@@ -1,9 +1,9 @@
 #pragma once
 
 #include "GFXMainFrame/GWnd.h"
-#include "TextBoard.h"
 #include "IRMManager.h"
-#include <Test/Test.h>
+#include "support/AbiTest.h"
+#include "TextBoard.h"
 #include <ghidra/undefined.h>
 
 class CIFWnd : public CGWnd, public CTextBoard {

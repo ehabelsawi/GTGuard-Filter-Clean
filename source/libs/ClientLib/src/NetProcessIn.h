@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GObj.h"
-#include "Test/Test.h"
+#include "support/AbiTest.h"
 
 class CNetProcessIn : public CGObj {
     // Note: This class is "broken" at the original code

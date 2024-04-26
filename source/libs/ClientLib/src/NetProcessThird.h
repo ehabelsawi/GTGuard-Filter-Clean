@@ -2,7 +2,7 @@
 
 #include <BSLib/BSLib.h>
 
-#include <Test/Test.h>
+#include "support/AbiTest.h"
 #include <ClientNet/MsgStreamBuffer.h>
 
 class CNetProcessThird : public CObjChild {

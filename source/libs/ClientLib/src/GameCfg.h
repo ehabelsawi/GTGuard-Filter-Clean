@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <Test/Test.h>
+#include "support/AbiTest.h"
 
 #include "BSLib/BSLib.h"
 
