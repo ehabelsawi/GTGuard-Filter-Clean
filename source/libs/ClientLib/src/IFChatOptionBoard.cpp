@@ -1,5 +1,5 @@
 #include "IFChatOptionBoard.h"
-#include "hook/MemberFunctionHook.h"
+#include "support/MemberFunctionHook.h"
 #include "Game.h"
 #include <BSLib/Debug.h>
 

@@ -7,7 +7,7 @@
 #include <new>
 #include <string>
 
-#include "hook/GlobalVar.h"
+#include "support/GlobalVar.h"
 #include <BSLib/_internal/custom_stl.h>
 #include <BSLib/memory/MemPool.h>
 #include <Test/Test.h>

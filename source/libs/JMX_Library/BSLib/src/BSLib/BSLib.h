@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 
-#include "hook/GlobalVar.h"
+#include "support/GlobalVar.h"
 #include <ClientNet/MsgStreamBuffer.h>
 
 // class CMsgStreamBuffer;

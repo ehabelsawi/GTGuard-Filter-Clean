@@ -7,7 +7,7 @@
 // DEV: 여전히 충돌하고 있습니다. 어떻게해야합니까?
 // BOSS: 문제를 해결하거나 해고하십시오!
 
-#include "hook/GlobalVar.h"
+#include "support/GlobalVar.h"
 
 #define CLASSLINK_LOOP_BEGIN(cls) \
     for (CClassLink<cls>::s->cursor = CClassLink<cls>::s->begin; CClassLink<cls>::s->cursor != 0; /* no auto increment */) { \

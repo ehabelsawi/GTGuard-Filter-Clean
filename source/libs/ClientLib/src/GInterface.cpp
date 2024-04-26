@@ -11,7 +11,7 @@
 
 #include <BSLib/multibyte.h>
 
-#include "hook/MemberFunctionHook.h"
+#include "support/MemberFunctionHook.h"
 
 HOOK_ORIGINAL_MEMBER(0x0079D5B0, &CGInterface::ToggleActionWnd);
 void CGInterface::ToggleActionWnd() {

@@ -32,7 +32,7 @@ target_link_libraries(DevKit_DLL
         SROInterfaceLIB
         ClientLib
         MathHelpers
-        hook
+        support
         winmm
 )
 

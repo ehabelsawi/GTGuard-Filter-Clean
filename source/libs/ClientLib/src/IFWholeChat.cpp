@@ -1,5 +1,5 @@
 #include "IFWholeChat.h"
-#include "hook/MemberFunctionHook.h"
+#include "support/MemberFunctionHook.h"
 #include "GInterface.h"
 #include "Game.h"
 #include "IFButton.h"

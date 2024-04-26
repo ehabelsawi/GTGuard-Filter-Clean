@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GWnd.h"
-#include "hook/GlobalVar.h"
+#include "support/GlobalVar.h"
 #include <ghidra/undefined.h>
 
 class CProcess : public CGWnd {

@@ -1,7 +1,7 @@
 #include "QuickStart.h"
 #include "Game.h"
 #include "Util.h"
-#include <hook/hook.h>
+#include "support/hook.h"
 #include "PSQuickStart.h"
 #include "hooks/Hooks.h"
 #include <BSLib/Debug.h>

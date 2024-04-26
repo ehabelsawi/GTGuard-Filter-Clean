@@ -1,5 +1,5 @@
 #include "PSCharacterSelect.h"
-#include "hook/MemberFunctionHook.h"
+#include "support/MemberFunctionHook.h"
 #include "Game.h"
 #include "IFButton.h"
 #include "IFFade.h"

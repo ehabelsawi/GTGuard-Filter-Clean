@@ -10,7 +10,7 @@
 ///******************************************************************************
 
 #include "IFExtQuickSlotOption.h"
-#include "hook/MemberFunctionHook.h"
+#include "support/MemberFunctionHook.h"
 #include "BSLib/Debug.h"
 #include "GInterface.h"
 

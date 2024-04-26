@@ -5,5 +5,5 @@ target_sources(ClientNet PRIVATE
         src/ClientNet/ClientNet.cpp
 )
 
-target_link_libraries(ClientNet PUBLIC BSLib abi-testing hook)
+target_link_libraries(ClientNet PUBLIC BSLib abi-testing support)
 target_include_directories(ClientNet PUBLIC src/)

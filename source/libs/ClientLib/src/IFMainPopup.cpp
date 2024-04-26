@@ -4,7 +4,7 @@
 #include "GInterface.h"
 #include "Game.h"
 
-#include "hook/MemberFunctionHook.h"
+#include "support/MemberFunctionHook.h"
 
 #define GDR_QUEST 76
 #define GDR_BTN_APPRENTICE 16
