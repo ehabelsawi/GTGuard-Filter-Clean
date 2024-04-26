@@ -1,6 +1,12 @@
 variables:
   DOCKER_DRIVER: overlay2
-  build_docker: "false"
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"' # or "push". See https://docs.gitlab.com/ee/ci/yaml/README.html#common-if-clauses-for-rules for other available values
+      when: never
+    - when: always
+
 
 stages:
   - build
