@@ -1,8 +1,8 @@
 #pragma once
 
-#include <string>
+#include "support/AbiTest.h"
 #include <BSLib/BSLib.h>
-#include <Test/Test.h>
+#include <string>
 
 // Resolve a circular dependency
 class CIFWnd;

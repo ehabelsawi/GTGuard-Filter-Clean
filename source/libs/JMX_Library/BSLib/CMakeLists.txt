@@ -12,5 +12,5 @@ target_sources(BSLib PRIVATE
 target_include_directories(BSLib PUBLIC src/)
 target_link_libraries(BSLib
         ClientNet
-        remodel
+        support
 )

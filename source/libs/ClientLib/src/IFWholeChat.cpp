@@ -1,9 +1,9 @@
 #include "IFWholeChat.h"
+#include "support/MemberFunctionHook.h"
 #include "GInterface.h"
 #include "Game.h"
 #include "IFButton.h"
 #include "TextStringManager.h"
-#include <remodel/MemberFunctionHook.h>
 
 GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFWholeChat, 0x00eec7a8)
 GFX_IMPLEMENT_DYNCREATE_FN(CIFWholeChat, CIFWnd)

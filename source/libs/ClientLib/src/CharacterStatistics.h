@@ -1,7 +1,7 @@
 #pragma once
 
+#include "support/AbiTest.h"
 #include "ghidra/undefined.h"
-#include <Test/Test.h>
 
 struct SCharacterStatistics {
     undefined4 field_0;

@@ -1,9 +1,9 @@
 #pragma once
 
+#include "BSLib/BSLib.h"
+#include "support/AbiTest.h"
 #include <Windows.h>
 #include <list>
-#include "BSLib/BSLib.h"
-#include <Test/Test.h>
 
 /// Holds data about events, mainly in the 3d-space. It's unknown if this structure is also used for the general
 /// messaging system.

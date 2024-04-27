@@ -10,9 +10,9 @@
 ///******************************************************************************
 
 #include "IFExtQuickSlotOption.h"
-#include "GInterface.h"
+#include "support/MemberFunctionHook.h"
 #include "BSLib/Debug.h"
-#include <remodel/MemberFunctionHook.h>
+#include "GInterface.h"
 
 GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFExtQuickSlotOption, 0x00ee9a48)
 

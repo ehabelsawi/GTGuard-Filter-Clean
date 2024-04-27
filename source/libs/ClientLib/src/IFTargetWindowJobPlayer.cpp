@@ -4,7 +4,7 @@
 #include "TextStringManager.h"
 #include "ICUser.h"
 
-#include <remodel/MemberFunctionHook.h>
+#include "support/MemberFunctionHook.h"
 
 GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFTargetWindowJobPlayer, 0x00eea5bc)
 

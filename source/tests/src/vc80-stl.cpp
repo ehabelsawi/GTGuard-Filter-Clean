@@ -1,6 +1,6 @@
 #include "vc80-stl.h"
 
-#include <Test/Test.h>
+#include "support/AbiTest.h"
 
 #include <BSLib/BSLib.h>
 

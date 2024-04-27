@@ -15,7 +15,7 @@
 
 #include <Game.h>
 
-#include <remodel/GlobalPtr.h>
+#include "support/GlobalPtr.h"
 
 bool TryCreateCompatibleDC() {
     g_hdc = CreateCompatibleDC(0);

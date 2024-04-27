@@ -7,10 +7,10 @@
 #include <new>
 #include <string>
 
-#include <Test/Test.h>
-#include <remodel/GlobalVar.h>
-#include <BSLib/memory/MemPool.h>
+#include "support/AbiTest.h"
+#include "support/GlobalVar.h"
 #include <BSLib/_internal/custom_stl.h>
+#include <BSLib/memory/MemPool.h>
 
 
 #define NEWMSG(msgid) \

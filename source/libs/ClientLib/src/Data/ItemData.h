@@ -1,7 +1,7 @@
 #pragma once
 
+#include "support/AbiTest.h"
 #include <string>
-#include <Test/Test.h>
 
 #include <TypeId.h>
 #include "CommonData.h"

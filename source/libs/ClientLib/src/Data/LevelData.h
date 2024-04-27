@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Test/Test.h>
+#include "support/AbiTest.h"
 
 struct SLevelData {
     unsigned __int8 m_level;// 0x0000

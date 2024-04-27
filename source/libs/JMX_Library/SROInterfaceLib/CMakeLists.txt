@@ -20,5 +20,5 @@ target_link_libraries(SROInterfaceLIB
         ClientLib
         GFXFileManagerLIB
         GFX3DFunction
-        abi-testing
+        support
 )

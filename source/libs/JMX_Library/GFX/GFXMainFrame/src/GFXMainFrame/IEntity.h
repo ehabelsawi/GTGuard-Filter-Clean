@@ -1,7 +1,7 @@
 #pragma once
 
+#include "support/AbiTest.h"
 #include <BSLib/BSLib.h>
-#include "Test/Test.h"
 
 class CIEntity : public CObjChild {
 

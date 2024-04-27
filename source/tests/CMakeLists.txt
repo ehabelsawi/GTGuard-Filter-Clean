@@ -4,4 +4,4 @@ set(SOURCE_FILES
         src/ClientLib.cpp)
 
 add_executable(tests ${SOURCE_FILES})
-target_link_libraries(tests BSLib abi-testing)
+target_link_libraries(tests BSLib)

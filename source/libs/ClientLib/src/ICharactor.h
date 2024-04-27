@@ -1,10 +1,10 @@
 #pragma once
 
-#include <ghidra/undefined.h>
-#include "IGIDObject.h"
 #include "ClassLink.h"
-#include "Test/Test.h"
 #include "Data/CharacterData.h"
+#include "IGIDObject.h"
+#include "support/AbiTest.h"
+#include <ghidra/undefined.h>
 
 enum TRIJOB_TYPE : char { /* Job Type of the Player */
     TRIJOB_HUNTER = 3,

@@ -1,4 +1,5 @@
 #include "PSCharacterSelect.h"
+#include "support/MemberFunctionHook.h"
 #include "Game.h"
 #include "IFButton.h"
 #include "IFFade.h"
@@ -8,7 +9,6 @@
 #include "Keyframe.h"
 #include "World.h"
 #include <BSLib/Debug.h>
-#include <remodel/MemberFunctionHook.h>
 
 GlobalVar<bool, 0x00EED9B8> g_bIsUnityServer;
 

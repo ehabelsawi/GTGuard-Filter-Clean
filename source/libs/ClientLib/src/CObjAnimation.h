@@ -1,8 +1,8 @@
 #pragma once
 
 #include "CompSimple.h"
+#include "support/AbiTest.h"
 #include <BSLib/BSLib.h>
-#include <Test/Test.h>
 #include <d3d9.h>
 #include <ghidra/undefined.h>
 

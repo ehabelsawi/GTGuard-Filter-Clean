@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Test/Test.h>
+#include "support/AbiTest.h"
 #include <ghidra/undefined.h>
 
 class CLocalTime_Sub {

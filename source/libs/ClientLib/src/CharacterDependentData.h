@@ -3,7 +3,7 @@
 #include "CharacterStatistics.h"
 #include "PartyData.h"
 #include "PartyMemberData.h"
-#include <Test/Test.h>
+#include "support/AbiTest.h"
 #include <ghidra/undefined.h>
 
 #define g_CCharacterDependentData (*reinterpret_cast<CCharacterDependentData*>(0x00eeebd8))

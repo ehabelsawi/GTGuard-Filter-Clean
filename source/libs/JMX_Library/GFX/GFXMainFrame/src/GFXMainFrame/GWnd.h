@@ -2,7 +2,7 @@
 
 #include "GWndBase.h"
 
-#include "remodel/GlobalPtr.h"
+#include "support/GlobalPtr.h"
 
 enum StyleOptions : DWORD {
     NONE = 0x00,
