@@ -1,12 +1,12 @@
 #pragma once
 
-class CharacterData {
+#include "BasicWindow.h"
 
-public:
-    void Render();
+namespace Devkit {
+    class CharacterData : public BasicWindow {
 
-    void MenuItem();
-
-private:
-    bool bShow;
-};
+    public:
+        CharacterData();
+        void Render();
+    };
+}

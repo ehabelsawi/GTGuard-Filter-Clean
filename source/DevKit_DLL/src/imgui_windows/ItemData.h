@@ -1,12 +1,14 @@
 #pragma once
 
-class ItemData {
+#include "BasicWindow.h"
 
-public:
-    void Render();
+namespace Devkit
+{
+    class ItemData : public BasicWindow {
 
-    void MenuItem();
+    public:
+        ItemData();
 
-private:
-    bool bShow;
-};
+        void Render();
+    };
+}

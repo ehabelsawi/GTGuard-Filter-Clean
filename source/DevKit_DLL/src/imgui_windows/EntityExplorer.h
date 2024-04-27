@@ -1,18 +1,24 @@
 #pragma once
 
-class EntityExplorer {
+#include "BasicWindow.h"
 
-    struct EntityListColumnHeader {
-        const char *label;
-        float size;
+namespace Devkit {
+    class EntityExplorer : public BasicWindow{
+
+        struct EntityListColumnHeader {
+            const char *label;
+            float size;
+        };
+
+
+    public:
+        EntityExplorer();
+
+        void Render();
+
+        void MenuItem();
+
+    private:
+        bool bShow;
     };
-
-
-public:
-    void Render();
-
-    void MenuItem();
-
-private:
-    bool bShow;
-};
+}// namespace Devkit

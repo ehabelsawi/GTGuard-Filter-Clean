@@ -6,19 +6,16 @@
 #include <IFSystemMessage.h>
 #include <imgui/imgui.h>
 
-PartyInfo::PartyInfo()
-        : bShow(false) {
-}
+using namespace Devkit;
 
-void PartyInfo::MenuItem() {
-    ImGui::MenuItem("PartyInfo", 0, &bShow);
+PartyInfo::PartyInfo() : BasicWindow("Party Info", false) {
 }
 
 void PartyInfo::Render() {
-    if (!bShow)
+    if (!m_bShow)
         return;
 
-    if (!ImGui::Begin("PartyInfo", &bShow)) {
+    if (!ImGui::Begin(getName().c_str(), &m_bShow)) {
         ImGui::End();
         return;
     }

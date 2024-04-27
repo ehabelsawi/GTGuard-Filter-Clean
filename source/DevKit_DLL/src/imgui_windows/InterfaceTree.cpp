@@ -5,19 +5,17 @@
 #include <GFX3DFunction/DrawingHelpers.h>
 #include <MathHelpers/hsl.h>
 
-InterfaceTree::InterfaceTree()
-        : bShow(false), lastNumberOfDraws(0), currentNumberOfDraws(0) {
-}
+using namespace Devkit;
 
-void InterfaceTree::MenuItem() {
-    ImGui::MenuItem("Interface Tree", 0, &bShow);
+InterfaceTree::InterfaceTree()
+        : BasicWindow("Interface Tree", false), lastNumberOfDraws(0), currentNumberOfDraws(0) {
 }
 
 void InterfaceTree::Render() {
-    if (!bShow)
+    if (!m_bShow)
         return;
 
-    if (!ImGui::Begin("Interface Tree", &bShow)) {
+    if (!ImGui::Begin(getName().c_str(), &m_bShow)) {
         ImGui::End();
         return;
     }

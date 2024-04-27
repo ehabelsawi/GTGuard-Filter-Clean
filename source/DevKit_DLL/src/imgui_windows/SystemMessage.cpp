@@ -5,8 +5,10 @@
 #include <GInterface.h>
 #include <BSLib/multibyte.h>
 
+using namespace Devkit;
+
 SystemMessage::SystemMessage()
-        : bShow(false) {
+        : BasicWindow("SystemMessage Tool", false) {
     m_color[0] = 0.0f;
     m_color[1] = 1.0f;
     m_color[2] = 0.0f;
@@ -14,15 +16,12 @@ SystemMessage::SystemMessage()
     strcpy(m_buffer, "Hello World");
 }
 
-void SystemMessage::MenuItem() {
-    ImGui::MenuItem("SystemMessage Tool", 0, &bShow);
-}
 
 void SystemMessage::Render() {
-    if (!bShow)
+    if (!m_bShow)
         return;
 
-    if (!ImGui::Begin("SystemMessage Tool", &bShow)) {
+    if (!ImGui::Begin(getName().c_str(), &m_bShow)) {
         ImGui::End();
         return;
     }

@@ -4,15 +4,15 @@
 #include <GlobalDataManager.h>
 #include <imgui/imgui.h>
 
-void ItemData::MenuItem() {
-    ImGui::MenuItem("Item Data", 0, &bShow);
-}
+using namespace Devkit;
+
+ItemData::ItemData() : BasicWindow("Item Data", false) {}
 
 void ItemData::Render() {
 
-    if (!bShow) return;
+    if (!m_bShow) return;
 
-    if (!ImGui::Begin("Item Data", &bShow)) {
+    if (!ImGui::Begin(getName().c_str(), &m_bShow)) {
         ImGui::End();
         return;
     }

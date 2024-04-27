@@ -1,13 +1,12 @@
 #pragma once
 
+#include "BasicWindow.h"
 
-class ErrorMessageTool {
-public:
-    void Render();
+namespace Devkit {
+    class ErrorMessageTool : public BasicWindow {
+    public:
+        ErrorMessageTool();
 
-    void MenuItem();
-
-private:
-    bool bShow;
-
-};
+        void Render();
+    };
+}// namespace Devkit

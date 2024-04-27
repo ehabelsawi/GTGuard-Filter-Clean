@@ -6,11 +6,15 @@
 #include <PSilkroad.h>
 #include <BSLib/multibyte.h>
 
+using namespace Devkit;
+
+ErrorMessageTool::ErrorMessageTool() : BasicWindow("Error Message Tool", false) {}
+
 void ErrorMessageTool::Render() {
 
-    if (!bShow) return;
+    if (!m_bShow) return;
 
-    if (!ImGui::Begin("Error Message Tool", &bShow)) {
+    if (!ImGui::Begin(getName().c_str(), &m_bShow)) {
         ImGui::End();
         return;
     }
@@ -28,8 +32,4 @@ void ErrorMessageTool::Render() {
     }
 
     ImGui::End();
-}
-
-void ErrorMessageTool::MenuItem() {
-    ImGui::MenuItem("Error Message Tool", 0, &bShow);
 }

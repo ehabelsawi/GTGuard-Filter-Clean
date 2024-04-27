@@ -7,15 +7,15 @@
 #include <BSLib/multibyte.h>
 #include <GInterface.h>
 
-void NotificationTool::MenuItem() {
-    ImGui::MenuItem("Notification Tool", 0, &bShow);
-}
+using namespace Devkit;
+
+NotificationTool::NotificationTool() : BasicWindow("Notification Tool", false) {}
 
 void NotificationTool::Render() {
 
-    if (!bShow) return;
+    if (!m_bShow) return;
 
-    if (!ImGui::Begin("Notification Tool", &bShow)) {
+    if (!ImGui::Begin(getName().c_str(), &m_bShow)) {
         ImGui::End();
         return;
     }

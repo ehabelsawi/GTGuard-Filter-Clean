@@ -8,12 +8,13 @@ target_sources(DevKit_DLL PRIVATE
         src/examples/IFflorian0.cpp
         src/examples/NIFKyuubi09.cpp
         src/imgui_windows/ImGui_Windows.cpp
+        src/imgui_windows/BasicWindow.cpp
         src/imgui_windows/InterfaceDebugger.cpp
         src/imgui_windows/SoundTool.cpp
         src/imgui_windows/NavMeshTool.cpp
         src/imgui_windows/EntityExplorer.cpp
         src/imgui_windows/NotificationTool.cpp
-        src/imgui_windows/About.cpp
+        src/imgui_windows/AboutWindow.cpp
         src/imgui_windows/SystemMessage.cpp
         src/imgui_windows/InterfaceTree.cpp
         src/imgui_windows/ProcessViewer.cpp

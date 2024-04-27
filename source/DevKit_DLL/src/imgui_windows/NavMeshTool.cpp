@@ -6,9 +6,11 @@
 #include <GFX3DFunction/DrawingHelpers.h>
 #include <unsorted.h>
 
+using namespace Devkit;
+
 void NavMeshTool::Render() {
 
-    if (!bShow) return;
+    if (!m_bShow) return;
 
     CGFXVideo3d *gfx = CGFXVideo3d::get();
 
@@ -16,7 +18,7 @@ void NavMeshTool::Render() {
         m_pNavmesh = g_CurrentNavMesh;
     }
 
-    ImGui::Begin("NavMesh Info", &bShow);
+    ImGui::Begin(getName().c_str(), &m_bShow);
 
     ImGui::Text("0x%p", m_pNavmesh);
     ImGui::Text("Region: 0x%04x", m_pNavmesh->m_Region);
@@ -80,11 +82,7 @@ void NavMeshTool::Render() {
     ImGui::End();
 }
 
-NavMeshTool::NavMeshTool() : m_pNavmesh(0), bShow(false), bFreeze(false), bCells(false), bEdgeInternal(false),
-                             bEdgeGlobal(false),
-                             bObjectOrigin(false), bObjectCells(false), bObjectInternalEdges(false),
-                             bObjectGlobalEdges(false), bObjectGrid(false), step(20) {
-
+NavMeshTool::NavMeshTool() : BasicWindow("Navmesh Explorer", false), m_pNavmesh(0), bFreeze(false), bCells(false), bEdgeInternal(false), bEdgeGlobal(false), bObjectOrigin(false), bObjectCells(false), bObjectInternalEdges(false), bObjectGlobalEdges(false), bObjectGrid(false), step(20) {
 }
 
 void NavMeshTool::RenderNavEdgeGlobal(const CRTNavMeshTerrain *pNavmesh) const {
@@ -331,8 +329,4 @@ void NavMeshTool::RenderObjectInternalEdges(const SNavMeshInst *pInst) const {
                        GetColorFromEdgeFlag(edge.btFlag), 1.0);
         }
     }
-}
-
-void NavMeshTool::MenuItem() {
-    ImGui::MenuItem("NavMesh Explorer", 0, &bShow);
 }

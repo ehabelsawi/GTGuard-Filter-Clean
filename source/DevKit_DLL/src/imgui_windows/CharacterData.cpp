@@ -4,15 +4,16 @@
 #include <GlobalDataManager.h>
 #include <imgui/imgui.h>
 
-void CharacterData::MenuItem() {
-    ImGui::MenuItem("Character Data", 0, &bShow);
+using namespace Devkit;
+
+CharacterData::CharacterData() : BasicWindow("Character Data", false) {
 }
 
 void CharacterData::Render() {
 
-    if (!bShow) return;
+    if (!m_bShow) return;
 
-    if (!ImGui::Begin("Character Data", &bShow)) {
+    if (!ImGui::Begin(getName().c_str(), &m_bShow)) {
         ImGui::End();
         return;
     }

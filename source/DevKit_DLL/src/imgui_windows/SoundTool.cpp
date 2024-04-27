@@ -5,21 +5,25 @@
 #include <BSLib/multibyte.h>
 #include <BSLib/Debug.h>
 
+using namespace Devkit;
+
 bool sound_item_getter(void *data, int idx, const char **outdata);
+
+SoundTool::SoundTool() : BasicWindow("Sound Tool", false) {}
 
 void SoundTool::Render() {
     static int current_item = 0;
     static std::vector<std::n_string> items;
     static bool inited = false;
 
-    if (!bShow) return;
+    if (!m_bShow) return;
 
     if (!inited) {
         ImGui_Window_SoundTool_Filter(&items, L"");
         inited = true;
     }
 
-    if (!ImGui::Begin("Sound Tool", &bShow)) {
+    if (!ImGui::Begin(getName().c_str(), &m_bShow)) {
         // Early out if the window is collapsed, as an optimization.
         ImGui::End();
         return;
@@ -103,8 +107,4 @@ bool SoundTool::ImGui_Window_SoundTool_FilterMatch(const std::n_wstring &input, 
 #endif
 
     return !(input.find(search) == std::n_wstring::npos);
-}
-
-void SoundTool::MenuItem() {
-    ImGui::MenuItem("Sound Tool", 0, &bShow);
 }
