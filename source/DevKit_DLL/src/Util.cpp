@@ -44,7 +44,7 @@ void Setup() {
     vftableHook(0x00db95a4, 10, addr_from_this(&CGInterface::OnCreateIMPL));
     vftableHook(0x00db95a4, 5, addr_from_this(&CGInterface::OnTimerIMPL));
 
-    replaceAddr(0x00d71100 + 4, addr_from_this(&CGInterface::OnCharIMPL));
+    replaceAddr(0x00d71100 + 1, addr_from_this(&CGInterface::OnCharIMPL));
 
     vftableHook(0x00dd811c, 10, addr_from_this(&CPSCharacterSelect::OnCreateIMPL));
 

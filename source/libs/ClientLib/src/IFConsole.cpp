@@ -27,7 +27,6 @@ void CIFConsole::SetVisibleMode(DWORD dwMode) {
                     break;
                 // let's show it
                 ShowGWnd(true);
-                break;
             // if we are in closing
             case VISIBLE_MODE_CLOSING:
                 // open it back
