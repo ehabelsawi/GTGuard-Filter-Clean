@@ -1,26 +1,42 @@
 #pragma once
 
-#include <cstdlib>
 #include <cstddef>
+#include <cstdlib>
 
 #define STRING(s) #s
 
-#define ENSURE_OFFSET(parameter, offset) \
-    int  __offset ## parameter [ offsetof(T, parameter) == offset ? 1 : -1 ];
 
+/// \brief Ensures that given member is at given offset.
+/// \param parameter Member to check
+/// \param offset Offset the member should be at
+#define ENSURE_OFFSET(parameter, offset)                   \
+    class parameter {};                                    \
+    enum { __offset##parameter = offsetof(T, parameter) }; \
+    template<typename Member, int Want, int Have>          \
+    class CheckHelper##parameter {                         \
+        char checker[Want == Have ? 1 : -1];               \
+    };                                                     \
+    CheckHelper##parameter<parameter, offset, __offset##parameter> __check##parameter;
+
+
+/// \brief Ensure that class is at given size in bytes
+/// \param size Expected size of class in bytes
 #define ENSURE_SIZE(size) \
-    int __sizeof [ sizeof (T) == size ? 1 : -1 ];
+    int __sizeof[sizeof(T) == size ? 1 : -1];
 
-#define BEGIN_FIXTURE() \
-private:                \
+
+#define BEGIN_FIXTURE()  \
+private:                 \
     template<typename T> \
     class TestFixture {
 
 
-#define END_FIXTURE() };
+#define END_FIXTURE() \
+    };
+
 
 #define RUN_FIXTURE(cls) \
-    static void _RunFixture() { static cls :: TestFixture < cls > testFixture; }
+    static void _RunFixture() { static cls ::TestFixture<cls> testFixture; }
 
 
 #define check_size(class_name, sz) \
