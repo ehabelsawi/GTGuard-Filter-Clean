@@ -19,70 +19,131 @@ GFX_IMPLEMENT_DYNAMIC_EXISTING(CAlramGuideMgrWnd, 0x00ee99a8)
 #define GUIDE_OPENMARKETALRAM  198
 #define GUIDE_EVENTSECOND  30006
 
-CAlramGuideMgrWnd::CAlramGuideMgrWnd() :
-        m_numberOfIcons(0) {
+#define ALRAM_GUIDE_ICON_SIZE 42
+#define ALRAM_GUIDE_MAX_ICONS_LINE 4
 
+CAlramGuideMgrWnd::CAlramGuideMgrWnd() {
+    m_btGuidesCount = 0;
 }
 
-CGWnd *CAlramGuideMgrWnd::GetGuide(int windowId) {
+void CAlramGuideMgrWnd::PrepareGuides() {
+    wnd_pos posMgr = GetPos();
 
+    listGUIDES::iterator it = m_listGuides.begin();
+    for (DWORD dwPosIndex = 1; it != m_listGuides.end(); ++it, dwPosIndex++) {
+        posMgr.x -= ALRAM_GUIDE_ICON_SIZE;
+        CIFWnd *pGuideIcon = (*it);
+
+        pGuideIcon->MoveGWnd(posMgr.x, posMgr.y);
+        pGuideIcon->ShowGWnd(true);
+
+        if (m_btGuidesCount != 0) {
+            // if we reached our max icons per line
+            if (!(dwPosIndex % ALRAM_GUIDE_MAX_ICONS_LINE)) {
+                posMgr.y += (ALRAM_GUIDE_ICON_SIZE + 2);
+                posMgr.x = GetPos().x;
+            }
+        }
+    }
+}
+
+void CAlramGuideMgrWnd::RemoveAllGuides() {
+    listGUIDES::iterator it = m_listGuides.begin();
+    for (; it != m_listGuides.end(); ++it)
+        (*it)->EraseWindowObj();
+}
+
+bool CAlramGuideMgrWnd::IsAvailableGuide(DWORD dwID) {
+    listGUIDES::iterator it = m_listGuides.begin();
+    for (; it != m_listGuides.end(); ++it)
+        if ((*it)->UniqueID() == dwID)
+            return true;
+    return false;
+}
+
+CIFWnd *CAlramGuideMgrWnd::GetGuide(DWORD dwID) {
+    listGUIDES::iterator it = m_listGuides.begin();
+    for (; it != m_listGuides.end(); ++it)
+        if ((*it)->UniqueID() == dwID)
+            return (*it);
+    return NULL;
+}
+
+CAlramGuideMgrWnd::~CAlramGuideMgrWnd() {
+    RemoveAllGuides();
+}
+
+CIFWnd *CAlramGuideMgrWnd::CreateGuideIcon(int nWndID) {
     // Try to find the element in the list
-    for (std::list<CGWnd *>::iterator it = m_list.begin(); it != m_list.end(); ++it) {
-        if ((*it)->UniqueID() == windowId) {
+    listGUIDES::iterator it = m_listGuides.begin();
+    for (; it != m_listGuides.end(); ++it) {
+        if ((*it)->UniqueID() == nWndID) {
             return *it;
         }
     }
 
     // List did not contain the element, try to create it
-    RECT rect = {0,0, 0x28,0x28};
+    RECT rect = {0,
+                 0,
+                 ALRAM_GUIDE_ICON_SIZE, 
+                 ALRAM_GUIDE_ICON_SIZE};
 
-    CGWnd* pObj = 0;
+    CIFWnd* pObj = 0;
 
-    switch(windowId) {
+    switch(nWndID) {
         case GUIDE_CONFIRMREPUTATION:
-            pObj = CGWnd::CreateInstance(this, GFX_RUNTIME_CLASS(CIFConfirmReputationGuide), rect, GUIDE_CONFIRMREPUTATION, 0);
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFConfirmReputationGuide), rect, GUIDE_CONFIRMREPUTATION, 0);
             break;
 
         case GUIDE_EVENT:
-            pObj = CreateInstance(this, GFX_RUNTIME_CLASS(CIFEventGuide), rect, GUIDE_EVENT, 0);
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFEventGuide), rect, GUIDE_EVENT, 0);
             break;
 
         case GUIDE_QUESTINFO:
-            pObj = CreateInstance(this, GFX_RUNTIME_CLASS(CIFQuestInfoGuide), rect, GUIDE_QUESTINFO, 0);
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFQuestInfoGuide), rect, GUIDE_QUESTINFO, 0);
             break;
 
         case GUIDE_LETTERALARM:
-            pObj = CreateInstance(this, GFX_RUNTIME_CLASS(CIFLetterAlarmGuide), rect, GUIDE_LETTERALARM, 0);
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFLetterAlarmGuide), rect, GUIDE_LETTERALARM, 0);
             break;
 
         case GUIDE_SERVEREVENT:
-            pObj = CreateInstance(this, GFX_RUNTIME_CLASS(CIFServerEventGuide), rect, GUIDE_SERVEREVENT, 0);
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFServerEventGuide), rect, GUIDE_SERVEREVENT, 0);
             break;
 
         case GUIDE_OPENMARKETALRAM:
-            pObj = CreateInstance(this, GFX_RUNTIME_CLASS(CIFOpenMarketAlramGuide), rect, GUIDE_OPENMARKETALRAM, 0);
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFOpenMarketAlramGuide), rect, GUIDE_OPENMARKETALRAM, 0);
             break;
 
         case GUIDE_EVENTSECOND:
-            pObj = CreateInstance(this, GFX_RUNTIME_CLASS(CIFEventGuideSecond), rect, GUIDE_EVENTSECOND, 0);
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFEventGuideSecond), rect, GUIDE_EVENTSECOND, 0);
             break;
 
         case GUIDE_FLORIAN0:
-            pObj = CreateInstance(this, GFX_RUNTIME_CLASS(CIFflorian0Guide), rect, GUIDE_FLORIAN0, 0);
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFflorian0Guide), rect, GUIDE_FLORIAN0, 0);
             break;
 
         default:
             assert(false);
     }
 
-    m_list.push_back(pObj);
-    m_numberOfIcons++;
+    m_listGuides.push_back(pObj);
+    m_btGuidesCount++;
 
-    UpdatePositions();
+    PrepareGuides();
 
     return pObj;
 }
 
-void CAlramGuideMgrWnd::UpdatePositions() {
-    reinterpret_cast<void(__thiscall*)(CAlramGuideMgrWnd*)>(0x0065c430)(this);
+void CAlramGuideMgrWnd::RemoveGuide(DWORD dwID) {
+    listGUIDES::iterator it = m_listGuides.begin();
+    for (; it != m_listGuides.end(); ++it) {
+        if ((*it)->UniqueID() != dwID)
+            continue;
+
+        (*it)->EraseWindowObj();
+        m_listGuides.erase(it);
+        // Hmmm why this is not m_btGuidesCount minus too?
+        break;
+    }
 }
