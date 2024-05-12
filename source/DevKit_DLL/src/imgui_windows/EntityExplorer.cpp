@@ -7,11 +7,15 @@
 #include <GFX3DFunction/DrawingHelpers.h>
 #include <GInterface.h>
 
+using namespace Devkit;
+
+EntityExplorer::EntityExplorer() : BasicWindow("Entity Explorer", false) {}
+
 void EntityExplorer::Render() {
 
     if (!bShow) return;
 
-    if (!ImGui::Begin("EntityManager", &bShow)) {
+    if (!ImGui::Begin(getName().c_str(), &bShow)) {
         ImGui::End();
         return;
     }

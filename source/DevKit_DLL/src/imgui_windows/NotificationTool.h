@@ -1,11 +1,13 @@
 #pragma once
 
-class NotificationTool {
-public:
-    void Render();
+#include "BasicWindow.h"
 
-    void MenuItem();
-
-private:
-    bool bShow;
-};
+namespace Devkit
+{
+    class NotificationTool : public BasicWindow {
+    public:
+        NotificationTool();
+        
+        void Render();
+    };
+}

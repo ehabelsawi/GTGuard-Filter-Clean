@@ -4,21 +4,19 @@
 
 #include <GInterface.h>
 
-Inventory::Inventory() : bShow(false) {
+using namespace Devkit;
 
-}
+Inventory::Inventory() : BasicWindow("Inventory", false) {
 
-void Inventory::MenuItem() {
-    ImGui::MenuItem("Inventory", 0, &bShow);
 }
 
 void Inventory::Render() {
 
-    if (!bShow)
+    if (!m_bShow)
         return;
 
 
-    if (!ImGui::Begin("Inventory", &bShow)) {
+    if (!ImGui::Begin(getName().c_str(), &m_bShow)) {
         ImGui::End();
         return;
     }

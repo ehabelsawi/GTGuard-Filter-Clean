@@ -5,11 +5,13 @@
 #include <GFXMainFrame/GWndBase.h>
 #include <GFX3DFunction/DrawingHelpers.h>
 
+using namespace Devkit;
+
 void InterfaceDebugger::Render() {
-    if (!bShow)
+    if (!m_bShow)
         return;
 
-    if (!ImGui::Begin("Interface", &bShow)) {
+    if (!ImGui::Begin(getName().c_str(), &m_bShow)) {
         // Early out if the window is collapsed, as an optimization.
         ImGui::End();
         return;
@@ -68,10 +70,6 @@ void InterfaceDebugger::Render() {
     ImGui::End();
 }
 
-void InterfaceDebugger::MenuItem() {
-    ImGui::MenuItem("Interface Tool", 0, &bShow);
-}
-
-InterfaceDebugger::InterfaceDebugger() : bShow(false), interface_draw_marker(false), interface_draw_outline(false) {
+InterfaceDebugger::InterfaceDebugger() : BasicWindow("Interface Tool", false), interface_draw_marker(false), interface_draw_outline(false) {
 
 }

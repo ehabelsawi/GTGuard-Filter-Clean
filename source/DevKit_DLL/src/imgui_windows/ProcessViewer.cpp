@@ -3,15 +3,15 @@
 #include <Game.h>
 #include <imgui/imgui.h>
 
-void ProcessViewer::MenuItem() {
-    ImGui::MenuItem("Process Viewer", 0, &bShow);
-}
+using namespace Devkit;
+
+ProcessViewer::ProcessViewer() : BasicWindow("Process Viewer", false) {}
 
 void ProcessViewer::Render() {
 
-    if (!bShow) return;
+    if (!m_bShow) return;
 
-    if (!ImGui::Begin("Process Viewer", &bShow)) {
+    if (!ImGui::Begin(getName().c_str(), &m_bShow)) {
         ImGui::End();
         return;
     }

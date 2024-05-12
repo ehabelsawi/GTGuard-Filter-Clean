@@ -1,17 +1,15 @@
 #pragma once
 
-class InterfaceDebugger {
-public:
+#include "BasicWindow.h"
+namespace Devkit {
+    class InterfaceDebugger : public BasicWindow {
+    public:
+        InterfaceDebugger();
 
-    InterfaceDebugger();
+        void Render();
 
-    void Render();
-
-    void MenuItem();
-
-private:
-    bool bShow;
-
-    bool interface_draw_outline;
-    bool interface_draw_marker;
-};
+    private:
+        bool interface_draw_outline;
+        bool interface_draw_marker;
+    };
+}// namespace Devkit

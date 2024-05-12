@@ -12,43 +12,43 @@
 
 #include "../MathUtil.h"
 #include "../hooks/Hooks.h"
-#include "About.h"
+#include "AboutWindow.h"
+#include "CharacterData.h"
 #include "EntityExplorer.h"
 #include "ErrorMessageTool.h"
 #include "IFSystemMessage.h"
 #include "InterfaceDebugger.h"
 #include "InterfaceTree.h"
+#include "Inventory.h"
+#include "ItemData.h"
 #include "NavMeshTool.h"
 #include "NotificationTool.h"
 #include "PartyInfo.h"
 #include "ProcessViewer.h"
 #include "SoundTool.h"
-#include "NotificationTool.h"
-#include "About.h"
 #include "SystemMessage.h"
-#include "CharacterData.h"
-#include "Inventory.h"
-#include "ItemData.h"
 #include <BSLib/Debug.h>
 #include <BSLib/multibyte.h>
 
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-InterfaceDebugger interfaceDebugger;
-NavMeshTool navmeshExplorer;
-EntityExplorer entityExplorer;
-SoundTool soundTool;
-NotificationTool notificationTool;
-About aboutWnd;
-SystemMessage systemMessage;
-ErrorMessageTool errorMessageTool;
-InterfaceTree interfaceTree;
-ProcessViewer processViewer;
-Inventory inventory;
-PartyInfo partyInfo;
-CharacterData characterData;
-ItemData itemData;
+using namespace Devkit;
+
+static InterfaceDebugger interfaceDebugger;
+static NavMeshTool navmeshExplorer;
+static EntityExplorer entityExplorer;
+static SoundTool soundTool;
+static NotificationTool notificationTool;
+static AboutWindow aboutWnd;
+static SystemMessage systemMessage;
+static ErrorMessageTool errorMessageTool;
+static InterfaceTree interfaceTree;
+static ProcessViewer processViewer;
+static Inventory inventory;
+static PartyInfo partyInfo;
+static CharacterData characterData;
+static ItemData itemData;
 
 void ImGui_OnCreate(HWND hWindow, void *msghandler, int a3) {
     BS_DEBUG("ImGui_OnCreate");
@@ -72,6 +72,7 @@ void ImGui_OnEndScene() {
 
     // Menu
     if (ImGui::BeginMainMenuBar()) {
+
         if (ImGui::BeginMenu("File")) {
             ImGui::MenuItem("Debug Mode", NULL, reinterpret_cast<bool *>(0x00EED6A7));
 
@@ -83,36 +84,6 @@ void ImGui_OnEndScene() {
             if (ImGui::MenuItem("Exit"))
                 SendRestartRequest(1);
 
-            ImGui::EndMenu();
-        }
-
-        if (ImGui::BeginMenu("Edit")) {
-            ImGui::MenuItem("Cut", 0, false, false);
-            ImGui::MenuItem("Copy", 0, false, false);
-            ImGui::MenuItem("Paste", 0, false, false);
-            ImGui::EndMenu();
-        }
-
-        if (ImGui::BeginMenu("Options")) {
-            ImGui::MenuItem("Fullscreen", 0, false, false);
-
-            if (ImGui::BeginMenu("Resolution")) {
-                ImGui::MenuItem("640x480 (4:3)", 0, false, false);
-                ImGui::MenuItem("800x600 (4:3)", 0, false, false);
-                ImGui::Separator();
-                ImGui::MenuItem("Enter custom resolution", 0, false, false);
-
-                ImGui::EndMenu();
-            }
-
-            if (ImGui::BeginMenu("Camera")) {
-                ImGui::MenuItem("Fixed behind character", 0, false, false);
-                ImGui::MenuItem("Fixed height", 0, false, false);
-                ImGui::MenuItem("Free visual point", 0, false, false);
-                ImGui::MenuItem("Free (Fly)", 0, false, false);
-
-                ImGui::EndMenu();
-            }
             ImGui::EndMenu();
         }
 
@@ -138,10 +109,6 @@ void ImGui_OnEndScene() {
             partyInfo.MenuItem();
             characterData.MenuItem();
             itemData.MenuItem();
-            ImGui::EndMenu();
-        }
-
-        if (ImGui::BeginMenu("Windows")) {
             ImGui::EndMenu();
         }
 

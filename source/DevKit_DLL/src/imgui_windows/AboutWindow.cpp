@@ -1,28 +1,27 @@
-#include "About.h"
+#include "AboutWindow.h"
 
-#include <imgui/imgui.h>
 #include <GInterface.h>
+#include <imgui/imgui.h>
 
-#include "SRIFLib/NInterfaceResource.h"
 #include "SRIFLib/NIFWnd.h"
+#include "SRIFLib/NInterfaceResource.h"
 
 #include "Game.h"
 
-void About::MenuItem() {
-    ImGui::MenuItem("About", 0, &bShow);
+using namespace Devkit;
+
+
+AboutWindow::AboutWindow() : BasicWindow("About", true), m_bButtonFloNotFound(false), m_bButtonQbiNotFound(false) {
 }
 
-About::About() : bShow(true), m_bButtonFloNotFound(false), m_bButtonQbiNotFound(false) {
-}
-
-void About::Render() {
+void AboutWindow::Render() {
 
     const ImVec2 vec(370.0f, 270.0f);
 
-    if (!bShow)
+    if (!m_bShow)
         return;
 
-    if (!ImGui::Begin("About", &bShow, vec)) {
+    if (!ImGui::Begin(getName().c_str(), &m_bShow, vec)) {
         ImGui::End();
         return;
     }

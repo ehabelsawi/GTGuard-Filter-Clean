@@ -2,22 +2,23 @@
 
 #include <GFXMainFrame/Process.h>
 
-class ProcessViewer {
-    struct ColumnHeader {
-        const char *label;
-        float width;
+#include "BasicWindow.h"
+
+namespace Devkit {
+    class ProcessViewer : public BasicWindow {
+        struct ColumnHeader {
+            const char *label;
+            float width;
+        };
+
+    public:
+        ProcessViewer();
+
+        void Render();
+
+    private:
+        void RenderThreadlist(const CProcess *proc) const;
+
+        void RenderSomeMap(const CProcess *proc) const;
     };
-
-public:
-    void Render();
-
-    void MenuItem();
-
-private:
-    void RenderThreadlist(const CProcess *proc) const;
-
-    void RenderSomeMap(const CProcess *proc) const;
-
-private:
-    bool bShow;
-};
+}

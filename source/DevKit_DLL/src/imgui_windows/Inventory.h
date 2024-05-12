@@ -1,15 +1,13 @@
 #pragma once
 
-class Inventory {
-public:
-    Inventory();
+#include "BasicWindow.h"
 
-    /// \brief Create the window
-    void Render();
+namespace Devkit {
+    class Inventory : public BasicWindow {
+    public:
+        Inventory();
 
-    /// \brief Create the menu item for this window
-    void MenuItem();
-
-private:
-    bool bShow;
-};
+        /// \brief Create the window
+        void Render();
+    };
+}// namespace Devkit
