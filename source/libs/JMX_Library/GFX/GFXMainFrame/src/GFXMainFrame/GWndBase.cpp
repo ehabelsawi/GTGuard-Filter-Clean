@@ -52,7 +52,7 @@ void CGWndBase::Render() {
     CGWndBase::RenderMyself();
 }
 
-bool CGWndBase::On3DEvent_MAYBE(Event3D *a2) {
+bool CGWndBase::OnMouseEvent(Event3D *a2) {
     return reinterpret_cast<bool (__thiscall *)(CGWndBase *, Event3D *)>(0x00B91440)(this, a2);
 }
 

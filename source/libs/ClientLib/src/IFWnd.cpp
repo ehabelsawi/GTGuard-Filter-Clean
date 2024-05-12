@@ -89,7 +89,7 @@ bool CIFWnd::Func_18(Event3D *a1) {
 }
 
 // CIFWnd::On3DEventMAYBE(void) .text 00652540 000000FE 0000000C 00000004 R . . . . . .
-bool CIFWnd::On3DEvent_MAYBE(Event3D *a2) {
+bool CIFWnd::OnMouseEvent(Event3D *a2) {
     BS_DEBUG_LOW(__FUNCTION__ " (%p)", a2);
     BS_DEBUG_LOW("> %d %8x %8x", a2->Msg, a2->lParam, a2->wParam);
 

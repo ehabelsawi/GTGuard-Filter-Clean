@@ -41,7 +41,7 @@ public:
     void RenderMyself() override;
 
     /// \address 0046c8e0
-    bool On3DEvent_MAYBE(Event3D *a2) override;
+    bool OnMouseEvent(Event3D *a2) override;
 
     /// \address 0046c850
     bool Func_18(Event3D *a1) override;

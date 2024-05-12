@@ -12,7 +12,7 @@ int CProcess::Func_39() {
     return 1;
 }
 
-bool CProcess::On3DEvent_MAYBE(Event3D *a2) {
+bool CProcess::OnMouseEvent(Event3D *a2) {
     return true;
 }
 

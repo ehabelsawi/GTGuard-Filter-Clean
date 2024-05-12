@@ -17,10 +17,10 @@ public:
     /// \address 007a95f0
     bool OnCreate(long ln) override;
 
-    /// \copybrief CGWndBase::On3DEvent_MAYBE
-    /// \copydetails CGWndBase::On3DEvent_MAYBE
+    /// \copybrief CGWndBase::OnMouseEvent
+    /// \copydetails CGWndBase::OnMouseEvent
     /// \address 007a9450
-    bool On3DEvent_MAYBE(Event3D *) override;
+    bool OnMouseEvent(Event3D *) override;
 
 public:
     /// \brief Tell, if the gain (acquisition) option is checked

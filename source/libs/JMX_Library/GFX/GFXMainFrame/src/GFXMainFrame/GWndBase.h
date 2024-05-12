@@ -92,7 +92,7 @@ public:
 
     virtual void Render();
 
-    virtual bool On3DEvent_MAYBE(Event3D *a2);
+    virtual bool OnMouseEvent(Event3D *a2);
 
     virtual bool Func_18(Event3D *a1);
 

@@ -151,7 +151,7 @@ bool CNIFWnd::Func_18(Event3D *pEventData) {
     return true;
 }
 
-bool CNIFWnd::On3DEvent_MAYBE(Event3D *pEventData) {
+bool CNIFWnd::OnMouseEvent(Event3D *pEventData) {
     int nReturn = FALSE;
     switch (pEventData->Msg) {
         case WM_MOUSEMOVE:

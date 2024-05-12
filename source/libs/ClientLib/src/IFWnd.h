@@ -24,7 +24,7 @@ public:
 
     bool Func_18(Event3D *a1) override;
 
-    bool On3DEvent_MAYBE(Event3D *a2) override;
+    bool OnMouseEvent(Event3D *a2) override;
 
     void BringToFront() override;
 
