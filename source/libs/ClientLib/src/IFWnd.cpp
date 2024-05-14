@@ -144,7 +144,7 @@ void CIFWnd::ShowGWnd(bool bVisible) {
 }
 
 // CIFWnd::OnWndMessage(void) .text 00652FB0 0000008D 00000000 00000004 R . . . . . .
-void CIFWnd::OnWndMessage(Event3D *a1) {
+void CIFWnd::OnGfxMessage(Event3D *a1) {
     reinterpret_cast<void (__thiscall *)(CIFWnd *, Event3D *)>(0x00652FB0)(this, a1);
 }
 

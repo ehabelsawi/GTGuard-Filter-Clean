@@ -16,7 +16,7 @@ public:
 
     void RenderMyself() override;
 
-    void OnWndMessage(Event3D *pMsgData) override;
+    void OnGfxMessage(Event3D *pMsgData) override;
 
     void UpdateFontCoordinates() override;
 

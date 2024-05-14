@@ -60,7 +60,7 @@ bool CGWndBase::Func_18(Event3D *a1) {
     return false;
 }
 
-void CGWndBase::OnWndMessage(Event3D *a1) {
+void CGWndBase::OnGfxMessage(Event3D *a1) {
     return;
 }
 

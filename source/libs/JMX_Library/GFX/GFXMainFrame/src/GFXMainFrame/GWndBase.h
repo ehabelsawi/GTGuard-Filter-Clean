@@ -96,7 +96,7 @@ public:
 
     virtual bool Func_18(Event3D *a1);
 
-    virtual void OnWndMessage(Event3D *a1);
+    virtual void OnGfxMessage(Event3D *a1);
 
     virtual void BringToFront();
 

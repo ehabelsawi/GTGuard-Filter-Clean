@@ -322,7 +322,7 @@ void CNIFWnd::EnableToolTipsCtrl() {
 #endif // if 0
 }
 
-void CNIFWnd::OnWndMessage(Event3D *pEventData) {
+void CNIFWnd::OnGfxMessage(Event3D *pEventData) {
     if ((pEventData->Msg == GFX_WM_MOUSEHOVER_DOWN) && IsStyleThingyShift(TOOLTIP_S)) {
         EnableToolTipsCtrl();
         return;
@@ -334,7 +334,7 @@ void CNIFWnd::OnWndMessage(Event3D *pEventData) {
         return;
     }
 
-    GetParentControl()->OnWndMessage(pEventData);
+    GetParentControl()->OnGfxMessage(pEventData);
 }
 
 void CNIFWnd::Func_22(int nX, int nY) {

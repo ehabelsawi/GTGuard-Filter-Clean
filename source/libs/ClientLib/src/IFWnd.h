@@ -44,7 +44,7 @@ public:
 
     void ShowGWnd(bool bVisible) override;
 
-    void OnWndMessage(Event3D *a1) override;
+    void OnGfxMessage(Event3D *a1) override;
 
     void RenderMyself() override;
 
