@@ -44,7 +44,7 @@ public:
     bool OnMouseEvent(Event3D *a2) override;
 
     /// \address 0046c850
-    bool Func_18(Event3D *a1) override;
+    bool OnWndMessage(Event3D *a1) override;
 
     /// \address 0046cee0
     void OnGfxMessage(Event3D *a1) override;

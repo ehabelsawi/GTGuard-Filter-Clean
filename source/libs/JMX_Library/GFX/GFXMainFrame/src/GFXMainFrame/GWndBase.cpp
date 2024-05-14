@@ -56,7 +56,7 @@ bool CGWndBase::OnMouseEvent(Event3D *a2) {
     return reinterpret_cast<bool (__thiscall *)(CGWndBase *, Event3D *)>(0x00B91440)(this, a2);
 }
 
-bool CGWndBase::Func_18(Event3D *a1) {
+bool CGWndBase::OnWndMessage(Event3D *a1) {
     return false;
 }
 

@@ -83,7 +83,7 @@ bool CIFWnd::OnRelease() {
 }
 
 // CIFWnd::Func_18(void) .text 006523D0 000000F9 00000008 00000004 R . . . . . .
-bool CIFWnd::Func_18(Event3D *a1) {
+bool CIFWnd::OnWndMessage(Event3D *a1) {
     assert(FALSE);
     return false;
 }

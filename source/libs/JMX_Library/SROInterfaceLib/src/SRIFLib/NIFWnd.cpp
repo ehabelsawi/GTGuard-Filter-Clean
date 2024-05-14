@@ -125,7 +125,7 @@ int CNIFWnd::OnWindowPosChanged(UINT lParam, UINT wParam) {
     return 1;
 }
 
-bool CNIFWnd::Func_18(Event3D *pEventData) {
+bool CNIFWnd::OnWndMessage(Event3D *pEventData) {
     // if there is a slot in our mouse and right click is down
     if (pEventData->Msg == WM_RBUTTONDOWN) {
         SetDraggedGWnd(NULL);

@@ -94,7 +94,7 @@ public:
 
     virtual bool OnMouseEvent(Event3D *a2);
 
-    virtual bool Func_18(Event3D *a1);
+    virtual bool OnWndMessage(Event3D *a1);
 
     virtual void OnGfxMessage(Event3D *a1);
 

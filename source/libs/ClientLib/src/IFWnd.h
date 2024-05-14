@@ -22,7 +22,7 @@ public:
 
     bool OnRelease() override;
 
-    bool Func_18(Event3D *a1) override;
+    bool OnWndMessage(Event3D *a1) override;
 
     bool OnMouseEvent(Event3D *a2) override;
 
