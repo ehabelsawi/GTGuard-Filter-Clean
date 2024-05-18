@@ -102,7 +102,7 @@ void CGWnd::Func_15() {
     // empty
 }
 
-bool CGWnd::OnMouseEvent(Event3D *a2) {
+bool CGWnd::OnMouseEvent(Event3D *pEvent) {
     return false;
 }
 

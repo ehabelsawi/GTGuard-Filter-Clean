@@ -125,7 +125,7 @@ int CNIFWnd::OnWindowPosChanged(UINT lParam, UINT wParam) {
     return 1;
 }
 
-bool CNIFWnd::OnWndMessage(Event3D *pEventData) {
+bool CNIFWnd::OnWndMessage(const Event3D *pEventData) {
     // if there is a slot in our mouse and right click is down
     if (pEventData->Msg == WM_RBUTTONDOWN) {
         SetDraggedGWnd(NULL);
@@ -322,11 +322,11 @@ void CNIFWnd::EnableToolTipsCtrl() {
 #endif // if 0
 }
 
-void CNIFWnd::OnGfxMessage(Event3D *pEventData) {
-    if ((pEventData->Msg == GFX_WM_MOUSEHOVER_DOWN) && IsStyleThingyShift(TOOLTIP_S)) {
+void CNIFWnd::OnGfxMessage(Event3D *pEvent) {
+    if ((pEvent->Msg == GFX_WM_MOUSEHOVER_DOWN) && IsStyleThingyShift(TOOLTIP_S)) {
         EnableToolTipsCtrl();
         return;
-    } else if ((pEventData->Msg == GFX_WM_MOUSEHOVER_UP) && IsStyleThingyShift(TOOLTIP_S)) {
+    } else if ((pEvent->Msg == GFX_WM_MOUSEHOVER_UP) && IsStyleThingyShift(TOOLTIP_S)) {
         if (g_pNewInterfaceToolTips == NULL)
             return;
 
@@ -334,7 +334,7 @@ void CNIFWnd::OnGfxMessage(Event3D *pEventData) {
         return;
     }
 
-    GetParentControl()->OnGfxMessage(pEventData);
+    GetParentControl()->OnGfxMessage(pEvent);
 }
 
 void CNIFWnd::Func_22(int nX, int nY) {

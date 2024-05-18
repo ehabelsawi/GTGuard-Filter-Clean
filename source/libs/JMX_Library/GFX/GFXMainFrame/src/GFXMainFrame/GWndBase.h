@@ -92,11 +92,11 @@ public:
 
     virtual void Render();
 
-    virtual bool OnMouseEvent(Event3D *a2);
+    virtual bool OnMouseEvent(Event3D *pEvent);
 
-    virtual bool OnWndMessage(Event3D *a1);
+    virtual bool OnWndMessage(const Event3D *pEvent);
 
-    virtual void OnGfxMessage(Event3D *a1);
+    virtual void OnGfxMessage(Event3D *pEvent);
 
     virtual void BringToFront();
 

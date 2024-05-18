@@ -15,7 +15,7 @@ public:
 
     bool SetText(const wchar_t *src) override;
 
-    void OnGfxMessage(Event3D *a1) override;
+    void OnGfxMessage(Event3D *pEvent) override;
 
     void RenderMyself() override;
 

@@ -99,7 +99,7 @@ public:
     void Func_15() override;
 
     /// \address 00B9D890
-    bool OnMouseEvent(Event3D *a2) override;
+    bool OnMouseEvent(Event3D *pEvent) override;
 
 public:
     /// \address 00b9dc60

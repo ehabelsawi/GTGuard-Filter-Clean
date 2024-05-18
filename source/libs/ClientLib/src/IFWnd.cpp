@@ -83,17 +83,17 @@ bool CIFWnd::OnRelease() {
 }
 
 // CIFWnd::Func_18(void) .text 006523D0 000000F9 00000008 00000004 R . . . . . .
-bool CIFWnd::OnWndMessage(Event3D *a1) {
+bool CIFWnd::OnWndMessage(const Event3D *pEvent) {
     assert(FALSE);
     return false;
 }
 
 // CIFWnd::On3DEventMAYBE(void) .text 00652540 000000FE 0000000C 00000004 R . . . . . .
-bool CIFWnd::OnMouseEvent(Event3D *a2) {
-    BS_DEBUG_LOW(__FUNCTION__ " (%p)", a2);
-    BS_DEBUG_LOW("> %d %8x %8x", a2->Msg, a2->lParam, a2->wParam);
+bool CIFWnd::OnMouseEvent(Event3D *pEvent) {
+    BS_DEBUG_LOW(__FUNCTION__ " (%p)", pEvent);
+    BS_DEBUG_LOW("> %d %8x %8x", pEvent->Msg, pEvent->lParam, pEvent->wParam);
 
-    return reinterpret_cast<bool (__thiscall *)(CIFWnd *, Event3D *)>(0x00652540)(this, a2);
+    return reinterpret_cast<bool (__thiscall *)(CIFWnd *, Event3D *)>(0x00652540)(this, pEvent);
 }
 
 // CIFWnd::Func_20(void) .text 00652BC0 00000011   R . . . . . .
@@ -144,8 +144,8 @@ void CIFWnd::ShowGWnd(bool bVisible) {
 }
 
 // CIFWnd::OnWndMessage(void) .text 00652FB0 0000008D 00000000 00000004 R . . . . . .
-void CIFWnd::OnGfxMessage(Event3D *a1) {
-    reinterpret_cast<void (__thiscall *)(CIFWnd *, Event3D *)>(0x00652FB0)(this, a1);
+void CIFWnd::OnGfxMessage(Event3D *pEvent) {
+    reinterpret_cast<void (__thiscall *)(CIFWnd *, Event3D *)>(0x00652FB0)(this, pEvent);
 }
 
 // CIFWnd::RenderMyself(void) .text 006550C0 00000043 00000004 00000000 R . . . . . .
