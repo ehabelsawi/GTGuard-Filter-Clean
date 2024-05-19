@@ -1,5 +1,9 @@
 #include "IFListCtrl.h"
 
+void CIFListCtrl::SetBottomAligned(bool bottomAligned) {
+    m_bottomAligned = bottomAligned;
+}
+
 void CIFListCtrl::SetRespondToMouseMove(bool respondToMouseMove) {
     m_respondToMouseMove = respondToMouseMove;
 }
@@ -35,4 +39,3 @@ int CIFListCtrl::GetNumberOfItems() const {
 void CIFListCtrl::SetLineHeight(int height) {
     m_LineHeight = height;
 }
-

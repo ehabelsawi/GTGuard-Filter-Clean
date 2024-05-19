@@ -5,8 +5,6 @@
 class CIFTextBox : public CIFListCtrl {
 // TODO: Add Runtime Class Info
 public:
-    /// \address 00638B50
-    void sub_638B50(int a2);
 
     /// \address 0064E380
     void sub_64E380(int a2);

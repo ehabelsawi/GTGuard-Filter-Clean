@@ -200,7 +200,7 @@ bool CIFChatViewer::OnCreate(long ln) {
         m_ChatLists[i]->m_HeightInLines = 4 * this->m_chatSize;
 
         m_ChatLists[i]->SetLineHeight(14);
-        m_ChatLists[i]->sub_638B50(1);
+        m_ChatLists[i]->SetBottomAligned(true);
         m_ChatLists[i]->sub_64E380(1);
         m_ChatLists[i]->SetRespondToMouseMove(true);
         m_ChatLists[i]->SetHightlineLine(true);

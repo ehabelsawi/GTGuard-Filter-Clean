@@ -14,6 +14,8 @@ public:
     };
 
 public:
+    /// \address 00638B50
+    void SetBottomAligned(bool bottomAligned);
 
     /// \address 00638C70
     void SetRespondToMouseMove(bool respondToMouseMove);
@@ -66,7 +68,7 @@ public:
     int m_HeightInLines; //0x03A4
 
 private:
-    char N00009DA8; //0x03A8
+    bool m_bottomAligned; //0x03A8
     char pad_03A9[1]; //0x03A9
     bool m_respondToMouseMove; //0x03AA
     char pad_03AB[29-8]; //0x03AB
@@ -79,6 +81,7 @@ private:
     BEGIN_FIXTURE()
         ENSURE_OFFSET(field_0x385, 0x385)
         ENSURE_OFFSET(field_0x388, 0x388)
+        ENSURE_OFFSET(m_bottomAligned, 0x3a8)
         ENSURE_OFFSET(m_respondToMouseMove, 0x3aa)
         ENSURE_OFFSET(m_numberOfItems, 0x3c0)
         ENSURE_OFFSET(m_OtherColor, 0x3c4)

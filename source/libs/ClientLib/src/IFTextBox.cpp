@@ -1,9 +1,5 @@
 #include "IFTextBox.h"
 
-void CIFTextBox::sub_638B50(int a2) {
-    reinterpret_cast<void (__thiscall *)(CIFTextBox *, int)>(0x638B50)(this, a2);
-}
-
 void CIFTextBox::sub_64E380(int a2) {
     reinterpret_cast<void (__thiscall *)(CIFTextBox *, int)>(0x64E380)(this, a2);
 }
