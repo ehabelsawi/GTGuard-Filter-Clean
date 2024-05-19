@@ -41,13 +41,13 @@ public:
     void RenderMyself() override;
 
     /// \address 0046c8e0
-    bool On3DEvent_MAYBE(Event3D *a2) override;
+    bool OnMouseEvent(Event3D *pEvent) override;
 
     /// \address 0046c850
-    bool Func_18(Event3D *a1) override;
+    bool OnWndMessage(const Event3D *pEvent) override;
 
     /// \address 0046cee0
-    void OnWndMessage(Event3D *a1) override;
+    void OnGfxMessage(Event3D *pEvent) override;
 
     /// \address 0046cd60
     void BringToFront() override;
@@ -268,7 +268,7 @@ public: // non client stuff
         UpdateTexturesCoordinates();
         Event3D sEventMsg;
         sEventMsg.Msg = GFX_WM_STYLE_CHANGE;
-        OnWndMessage(&sEventMsg);
+        OnGfxMessage(&sEventMsg);
     }
 
 private:

@@ -92,11 +92,14 @@ public:
 
     virtual void Render();
 
-    virtual bool On3DEvent_MAYBE(Event3D *a2);
+    /// \address 00B91440
+    virtual bool OnMouseEvent(Event3D *pEvent);
 
-    virtual bool Func_18(Event3D *a1);
+    /// \address 00b8f380
+    virtual bool OnWndMessage(const Event3D *pEvent);
 
-    virtual void OnWndMessage(Event3D *a1);
+    /// \address 00b8f3c0
+    virtual void OnGfxMessage(Event3D *pEvent);
 
     virtual void BringToFront();
 

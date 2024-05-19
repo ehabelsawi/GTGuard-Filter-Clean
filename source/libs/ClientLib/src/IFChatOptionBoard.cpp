@@ -46,7 +46,7 @@ bool CIFChatOptionBoard::IsGameChecked() const {
     return m_pGDR_COB_CB_GAME->GetCheckedState_MAYBE();
 }
 
-bool CIFChatOptionBoard::On3DEvent_MAYBE(Event3D *) {
+bool CIFChatOptionBoard::OnMouseEvent(Event3D *) {
     return true;
 }
 

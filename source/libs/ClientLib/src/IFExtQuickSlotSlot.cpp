@@ -40,8 +40,8 @@ bool CIFExtQuickSlotSlot::Func_28(CGWnd *a1, int a2, int a3) {
     return this->Func_28(a1, a2, a3);
 }
 
-void CIFExtQuickSlotSlot::OnWndMessage(Event3D *a1) {
-    reinterpret_cast<void (__thiscall *)(CIFExtQuickSlotSlot *, Event3D *)>(0x0065fb90)(this, a1);
+void CIFExtQuickSlotSlot::OnGfxMessage(Event3D *pEvent) {
+    reinterpret_cast<void (__thiscall *)(CIFExtQuickSlotSlot *, Event3D *)>(0x0065fb90)(this, pEvent);
 }
 
 bool CIFExtQuickSlotSlot::Func_25(int a1) {

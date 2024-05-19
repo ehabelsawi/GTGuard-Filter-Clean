@@ -22,9 +22,9 @@ public:
 
     bool OnRelease() override;
 
-    bool Func_18(Event3D *a1) override;
+    bool OnWndMessage(const Event3D *pEvent) override;
 
-    bool On3DEvent_MAYBE(Event3D *a2) override;
+    bool OnMouseEvent(Event3D *pEvent) override;
 
     void BringToFront() override;
 
@@ -44,7 +44,7 @@ public:
 
     void ShowGWnd(bool bVisible) override;
 
-    void OnWndMessage(Event3D *a1) override;
+    void OnGfxMessage(Event3D *pEvent) override;
 
     void RenderMyself() override;
 

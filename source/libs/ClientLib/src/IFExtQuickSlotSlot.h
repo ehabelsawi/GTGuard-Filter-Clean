@@ -34,7 +34,7 @@ public:
     void RenderMyself() override;
 
     /// \address 0065fb90
-    void OnWndMessage(Event3D *a1) override;
+    void OnGfxMessage(Event3D *pEvent) override;
 
     /// \address 0065fbf0
     bool Func_25(int a1) override;

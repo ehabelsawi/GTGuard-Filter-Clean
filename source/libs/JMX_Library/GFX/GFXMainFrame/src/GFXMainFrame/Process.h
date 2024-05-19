@@ -15,7 +15,7 @@ public:
     virtual int Func_39();
 
     /// \address 0084a180
-    bool On3DEvent_MAYBE(Event3D *a2) override;
+    bool OnMouseEvent(Event3D *pEvent) override;
 
     CProcess *GetChildProcess() const;
 
