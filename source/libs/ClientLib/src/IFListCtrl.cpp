@@ -8,6 +8,10 @@ void CIFListCtrl::SetHightlineLine(bool a2) {
     m_bHighlighLine = a2;
 }
 
+void CIFListCtrl::sub_638D50(undefined1 param_1) {
+    field_0x388 = param_1;
+}
+
 bool CIFListCtrl::OnCreate(long ln) {
     return true;
 }

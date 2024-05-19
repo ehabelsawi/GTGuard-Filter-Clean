@@ -14,9 +14,6 @@ public:
     /// \address 00638C70
     void sub_638C70(int a2);
 
-    /// \address 00638D50
-    void sub_638D50(int a2);
-
     /// \address 00638D40
     void sub_638D40(int a2);
 

@@ -12,10 +12,6 @@ void CIFTextBox::sub_638C70(int a2) {
     reinterpret_cast<void (__thiscall *)(CIFTextBox *, int)>(0x638C70)(this, a2);
 }
 
-void CIFTextBox::sub_638D50(int a2) {
-    reinterpret_cast<void (__thiscall *)(CIFTextBox *, int)>(0x638D50)(this, a2);
-}
-
 void CIFTextBox::sub_638D40(int a2) {
     reinterpret_cast<void (__thiscall *)(CIFTextBox *, int)>(0x638D40)(this, a2);
 }
