@@ -14,9 +14,6 @@ public:
     /// \address 00638C70
     void sub_638C70(int a2);
 
-    /// \address 00638D40
-    void sub_638D40(int a2);
-
     /// \address 0064F8A0
     void sub_64F8A0(std::n_wstring &str, int a3, int a4, int a5, int a6, int a7, int a8);
 

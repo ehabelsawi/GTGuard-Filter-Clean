@@ -22,6 +22,9 @@ public:
     /// \address 00638D00
     void SetHightlineLine(bool a2);
 
+    /// \address 00638D40
+    void sub_638D40(undefined1 param_1);
+
     /// \address 00638D50
     void sub_638D50(undefined1 param_1);
 
@@ -41,7 +44,8 @@ public:
     int GetNumberOfItems() const override;
 
 private:
-    char pad_0384[2]; //0x0384
+    char pad_0384[1]; //0x0384
+    undefined1 field_0x385; //0x0385
     char m_bHighlighLine; //0x0386
     char pad_0387[1]; //0x0387
     undefined1 field_0x388; //0x0388
@@ -69,6 +73,7 @@ private:
 
 
     BEGIN_FIXTURE()
+        ENSURE_OFFSET(field_0x385, 0x385)
         ENSURE_OFFSET(field_0x388, 0x388)
         ENSURE_OFFSET(m_numberOfItems, 0x3c0)
         ENSURE_OFFSET(m_OtherColor, 0x3c4)
