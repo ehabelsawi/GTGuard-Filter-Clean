@@ -1,5 +1,9 @@
 #include "IFListCtrl.h"
 
+void CIFListCtrl::SetRespondToMouseMove(bool respondToMouseMove) {
+    m_respondToMouseMove = respondToMouseMove;
+}
+
 void CIFListCtrl::SetHighlightColor(D3DCOLOR color) {
     m_BackgroundColor = color;
 }
@@ -31,3 +35,4 @@ int CIFListCtrl::GetNumberOfItems() const {
 void CIFListCtrl::SetLineHeight(int height) {
     m_LineHeight = height;
 }
+

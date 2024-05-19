@@ -202,7 +202,7 @@ bool CIFChatViewer::OnCreate(long ln) {
         m_ChatLists[i]->SetLineHeight(14);
         m_ChatLists[i]->sub_638B50(1);
         m_ChatLists[i]->sub_64E380(1);
-        m_ChatLists[i]->sub_638C70(1);
+        m_ChatLists[i]->SetRespondToMouseMove(true);
         m_ChatLists[i]->SetHightlineLine(true);
         m_ChatLists[i]->sub_638D50(1);
         m_ChatLists[i]->SetHighlightColor(D3DCOLOR_RGBA(255, 255, 255, 102));
