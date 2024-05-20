@@ -40,15 +40,46 @@ void CIFStatic::Func_42() {
     reinterpret_cast<void(__thiscall *)(CIFStatic *)>(0x0064D9B0)(this);
 }
 
-// CIFStatic::Func_49(void) .text 0064D780 0000008E 00002008 00000009 R . . . . T .
 bool CIFStatic::SetTextFormatted(const wchar_t *format, ...) {
-    assert(FALSE);
-    return false;
+    if (format == NULL) {
+        return false;
+    }
+
+    wchar_t buffer[0x1000];
+
+    va_list args;
+    va_start(args, format);
+    vswprintf(buffer, 0x1000, format, args);
+    va_end(args);
+
+    // Note: SetText also returns a boolean telling if setting the text was successful. However
+    //       the original code does ignore that value here.
+    SetText(buffer);
+
+    Func_42();
+
+    return true;
 }
 
 bool CIFStatic::Func_50(const wchar_t *format, ...) {
-    assert(FALSE);
-    return false;
+    if (format == NULL) {
+        return false;
+    }
+
+    wchar_t buffer[0x1000];
+
+    va_list args;
+    va_start(args, format);
+    vswprintf(buffer, 0x1000, format, args);
+    va_end(args);
+
+    // Note: SetText also returns a boolean telling if setting the text was successful. However
+    //       the original code does ignore that value here.
+    SetText(buffer);
+
+    Func_42();
+
+    return true;
 }
 
 bool CIFStatic::Func_51(const wchar_t *src) {

@@ -28,6 +28,7 @@ public:
     /// \address 0064D9B0
     void Func_42() override;
 
+    /// \address 0064D780
     virtual bool SetTextFormatted(const wchar_t *format, ...);
 
     /// \address 0064D6C0
