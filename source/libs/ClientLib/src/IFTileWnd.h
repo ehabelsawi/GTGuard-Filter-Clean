@@ -39,6 +39,10 @@ protected:
 	void ReleaseTextures();
 
 private:
+    /// \address 0081ace0
+    void FUN_0081ace0();
+
+private:
 	bool N00009B9D; //0x036C
 	char pad_036D[35]; //0x036D
 	std::n_string N00009BAF[4]; //0x0390

@@ -22,8 +22,8 @@ void CIFTileWnd::TB_Func_13(std::n_string str, int a3, int a4)
 
 bool CIFTileWnd::OnCreate(long ln)
 {
-	assert(FALSE);
-	return false;
+    FUN_0081ace0();
+	return true;
 }
 
 void CIFTileWnd::RenderMyself()
@@ -59,4 +59,9 @@ void CIFTileWnd::set_N00009B9D(bool a2)
 void CIFTileWnd::ReleaseTextures()
 {
 	reinterpret_cast<void(__thiscall*)(CIFTileWnd*)>(0x0081AE00)(this);
+}
+
+void CIFTileWnd::FUN_0081ace0() {
+    /// \todo Implement this function
+    reinterpret_cast<void(__thiscall*)(CIFTileWnd*)>(0x0081ace0)(this);
 }
