@@ -1,4 +1,5 @@
 #include "IFTileWnd.h"
+#include "GFX3DFunction/RTLoading.h"
 #include <BSLib/Debug.h>
 
 GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFTileWnd, 0x00EECBD4)
@@ -48,8 +49,19 @@ void CIFTileWnd::set_N00009B9D(bool a2) {
 }
 
 void CIFTileWnd::ReleaseTextures() {
-    /// \todo Implement this function
-    reinterpret_cast<void(__thiscall *)(CIFTileWnd *)>(0x0081AE00)(this);
+    for (int i = 0; i < 4; i++) {
+        someTextureInstance[0 + i] = NULL;
+        someTextureInstance[4 + i] = NULL;
+
+        if (!someStringsOfTextures[i].empty()) {
+            Fun_CacheTexture_Release(&someStringsOfTextures[i]);
+            someStringsOfTextures[i].clear();
+        }
+        if (!someStringsOfTextures[i + 4].empty()) {
+            Fun_CacheTexture_Release(&someStringsOfTextures[i + 4]);
+            someStringsOfTextures[i + 4].clear();
+        }
+    }
 }
 
 void CIFTileWnd::FUN_0081ace0() {

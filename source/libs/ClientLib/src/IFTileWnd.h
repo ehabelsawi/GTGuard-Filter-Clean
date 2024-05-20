@@ -44,14 +44,15 @@ private:
 
 private:
 	bool N00009B9D; //0x036C
-	char pad_036D[35]; //0x036D
-	std::n_string N00009BAF[4]; //0x0390
-	std::n_string N00009BB0[4]; //0x0400
+    pointer someTextureInstance[8]; // 0x0370
+	std::n_string someStringsOfTextures[8]; //0x0390
 	char pad_0470[832]; //0x0470
 
     BEGIN_FIXTURE()
         ENSURE_SIZE(0x7b0)
         ENSURE_OFFSET(N00009B9D, 0x36c)
+        ENSURE_OFFSET(someTextureInstance, 0x370)
+        ENSURE_OFFSET(someStringsOfTextures, 0x0390)
     END_FIXTURE()
 
     RUN_FIXTURE(CIFTileWnd)
