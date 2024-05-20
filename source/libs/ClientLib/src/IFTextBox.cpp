@@ -1,23 +1,7 @@
 #include "IFTextBox.h"
 
-void CIFTextBox::sub_638B50(int a2) {
-    reinterpret_cast<void (__thiscall *)(CIFTextBox *, int)>(0x638B50)(this, a2);
-}
-
-void CIFTextBox::sub_64E380(int a2) {
-    reinterpret_cast<void (__thiscall *)(CIFTextBox *, int)>(0x64E380)(this, a2);
-}
-
-void CIFTextBox::sub_638C70(int a2) {
-    reinterpret_cast<void (__thiscall *)(CIFTextBox *, int)>(0x638C70)(this, a2);
-}
-
-void CIFTextBox::sub_638D50(int a2) {
-    reinterpret_cast<void (__thiscall *)(CIFTextBox *, int)>(0x638D50)(this, a2);
-}
-
-void CIFTextBox::sub_638D40(int a2) {
-    reinterpret_cast<void (__thiscall *)(CIFTextBox *, int)>(0x638D40)(this, a2);
+void CIFTextBox::SetIndentAfterBreak(bool indentAfterBreak) {
+    m_identAfterBreak = indentAfterBreak;
 }
 
 void CIFTextBox::sub_64F8A0(std::n_wstring &str, int a3, int a4, int a5, int a6, int a7, int a8) {

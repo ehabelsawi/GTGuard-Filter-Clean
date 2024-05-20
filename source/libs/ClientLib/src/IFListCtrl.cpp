@@ -1,11 +1,27 @@
 #include "IFListCtrl.h"
 
+void CIFListCtrl::SetBottomAligned(bool bottomAligned) {
+    m_bottomAligned = bottomAligned;
+}
+
+void CIFListCtrl::SetRespondToMouseMove(bool respondToMouseMove) {
+    m_respondToMouseMove = respondToMouseMove;
+}
+
 void CIFListCtrl::SetHighlightColor(D3DCOLOR color) {
     m_BackgroundColor = color;
 }
 
 void CIFListCtrl::SetHightlineLine(bool a2) {
     m_bHighlighLine = a2;
+}
+
+void CIFListCtrl::sub_638D40(undefined1 param_1) {
+    field_0x385 = param_1;
+}
+
+void CIFListCtrl::sub_638D50(undefined1 param_1) {
+    field_0x388 = param_1;
 }
 
 bool CIFListCtrl::OnCreate(long ln) {

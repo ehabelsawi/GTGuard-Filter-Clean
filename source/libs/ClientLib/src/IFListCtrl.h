@@ -14,6 +14,12 @@ public:
     };
 
 public:
+    /// \address 00638B50
+    void SetBottomAligned(bool bottomAligned);
+
+    /// \address 00638C70
+    void SetRespondToMouseMove(bool respondToMouseMove);
+
     /// \brief Set the color of the line highlighting (usually background color)
     /// \address 00638CF0
     void SetHighlightColor(D3DCOLOR a2);
@@ -22,6 +28,13 @@ public:
     /// \address 00638D00
     void SetHightlineLine(bool a2);
 
+    /// \address 00638D40
+    void sub_638D40(undefined1 param_1);
+
+    /// \address 00638D50
+    void sub_638D50(undefined1 param_1);
+
+    /// \address 00638c20
     void SetLineHeight(int height);
 
     /// \copybrief CIFWnd::OnCreate
@@ -37,10 +50,11 @@ public:
     int GetNumberOfItems() const override;
 
 private:
-    char pad_0384[2]; //0x0384
+    char pad_0384[1]; //0x0384
+    undefined1 field_0x385; //0x0385
     char m_bHighlighLine; //0x0386
     char pad_0387[1]; //0x0387
-    char N00009DA0; //0x0388
+    undefined1 field_0x388; //0x0388
     char pad_0389[19]; //0x0389
 
 public:
@@ -54,14 +68,27 @@ public:
     int m_HeightInLines; //0x03A4
 
 private:
-    char N00009DA8; //0x03A8
+    bool m_bottomAligned; //0x03A8
     char pad_03A9[1]; //0x03A9
-    char N00009F32; //0x03AA
+    bool m_respondToMouseMove; //0x03AA
     char pad_03AB[29-8]; //0x03AB
     /// Number of items in the list
     int m_numberOfItems; // 0x3C0
     D3DCOLOR m_OtherColor; // 0x3C4
     D3DCOLOR m_BackgroundColor; //0x03C8
+
+
+    BEGIN_FIXTURE()
+        ENSURE_OFFSET(field_0x385, 0x385)
+        ENSURE_OFFSET(field_0x388, 0x388)
+        ENSURE_OFFSET(m_bottomAligned, 0x3a8)
+        ENSURE_OFFSET(m_respondToMouseMove, 0x3aa)
+        ENSURE_OFFSET(m_numberOfItems, 0x3c0)
+        ENSURE_OFFSET(m_OtherColor, 0x3c4)
+        ENSURE_OFFSET(m_BackgroundColor, 0x3c8)
+    END_FIXTURE()
+
+    RUN_FIXTURE(CIFListCtrl)
 
 };
 
