@@ -6,7 +6,7 @@ GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFTileWnd, 0x00EECBD4)
 CIFTileWnd::CIFTileWnd()
 {
 	BS_DEBUG_LOW(">" __FUNCTION__);
-	this->set_N00009B9D(1);
+	set_N00009B9D(0);
 }
 
 CIFTileWnd::~CIFTileWnd()
