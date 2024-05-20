@@ -49,6 +49,7 @@ target_sources(ClientLib PRIVATE
         src/IFPlayerInfo.cpp
         src/IFPlayerMiniInfo.cpp
         src/IFQuestInfoGuide.cpp
+        src/IFScrollBar.cpp
         src/IFSelectableArea.cpp
         src/IFServerEventGuide.cpp
         src/IFSkill.cpp
