@@ -11,7 +11,7 @@ CIFTileWnd::CIFTileWnd()
 
 CIFTileWnd::~CIFTileWnd()
 {
-	sub_81AE00();
+    ReleaseTextures();
 }
 
 void CIFTileWnd::TB_Func_13(std::n_string str, int a3, int a4)
@@ -56,7 +56,7 @@ void CIFTileWnd::set_N00009B9D(bool a2)
 	N00009B9D = a2;
 }
 
-void CIFTileWnd::sub_81AE00()
+void CIFTileWnd::ReleaseTextures()
 {
 	reinterpret_cast<void(__thiscall*)(CIFTileWnd*)>(0x0081AE00)(this);
 }

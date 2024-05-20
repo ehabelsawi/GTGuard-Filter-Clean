@@ -36,7 +36,7 @@ protected:
 	void set_N00009B9D(bool a2);
 
     /// \address 0081AE00
-	void sub_81AE00();
+	void ReleaseTextures();
 
 private:
 	bool N00009B9D; //0x036C
