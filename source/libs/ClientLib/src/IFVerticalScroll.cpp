@@ -1,7 +1,19 @@
 #include "IFVerticalScroll.h"
 
 void CIFVerticalScroll::sub_65A390(RECT a2) {
-    reinterpret_cast<void(__thiscall *)(CIFVerticalScroll *, RECT)>(0x65A390)(this, a2);
+    m_field_0x3a8 = 0;
+
+    FUN_006590e0(a2.left);
+
+    FUN_006592a0(a2.top, a2.right, a2.bottom);
+
+    wnd_rect rectThis = GetBounds();
+    wnd_rect scrollRect = m_scrollButton->GetBounds();
+    m_scrollButton->MoveGWnd(scrollRect.pos.x, rectThis.pos.y);
+
+    m_field_0x37c = rectThis.pos.y;
+    m_arrowDownButton->MoveGWnd(rectThis.pos.x, a2.left + 16 + rectThis.pos.y);
+    OnCIFReady();
 }
 
 void CIFVerticalScroll::sub_65A500(short a2) {

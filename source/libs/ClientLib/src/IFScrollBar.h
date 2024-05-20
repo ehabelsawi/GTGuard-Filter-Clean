@@ -11,6 +11,9 @@ protected:
     /// \address 00659150
     void FUN_00659150(int a2);
 
+    /// \address 006592a0
+    void FUN_006592a0(int a2, int a3, int a4);
+
 private:
     char pad_36c[0x10]; // 0x036c
 protected:
