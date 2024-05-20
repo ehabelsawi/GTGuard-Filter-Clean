@@ -43,6 +43,7 @@ void CIFTileWnd::Func_40()
 
 void CIFTileWnd::OnCIFReady()
 {
+    /// \todo Implement this function
 	reinterpret_cast<void(__thiscall*)(CIFTileWnd*)>(0x0081A740)(this);
 }
 
@@ -58,6 +59,7 @@ void CIFTileWnd::set_N00009B9D(bool a2)
 
 void CIFTileWnd::ReleaseTextures()
 {
+    /// \todo Implement this function
 	reinterpret_cast<void(__thiscall*)(CIFTileWnd*)>(0x0081AE00)(this);
 }
 
