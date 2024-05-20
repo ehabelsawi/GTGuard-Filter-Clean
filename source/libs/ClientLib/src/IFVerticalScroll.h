@@ -22,4 +22,13 @@ private:
     CIFButton *m_arrowDownButton;//0x03B0
     CIFButton *m_scrollButton;   //0x03B4
     char pad_0x03B8[0x4];        //0x03B8
+
+    BEGIN_FIXTURE()
+        ENSURE_SIZE(0x3bc)
+        ENSURE_OFFSET(m_arrowUpButton, 0x03AC)
+        ENSURE_OFFSET(m_arrowDownButton, 0x03B0)
+        ENSURE_OFFSET(m_scrollButton, 0x03B4)
+    END_FIXTURE()
+
+    RUN_FIXTURE(CIFVerticalScroll)
 };
