@@ -33,7 +33,7 @@ void CIFTileWnd::RenderMyself()
 
 void CIFTileWnd::SetGWndSize(int width, int height)
 {
-	assert(FALSE);
+	CIFWnd::SetGWndSize(width, height);
 }
 
 void CIFTileWnd::Func_40()
