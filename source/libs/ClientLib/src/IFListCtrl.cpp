@@ -1,5 +1,7 @@
 #include "IFListCtrl.h"
 
+GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFListCtrl, 0x00ee9580)
+
 void CIFListCtrl::SetBottomAligned(bool bottomAligned) {
     m_bottomAligned = bottomAligned;
 }

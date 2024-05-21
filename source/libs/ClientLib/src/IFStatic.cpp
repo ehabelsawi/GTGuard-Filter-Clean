@@ -1,5 +1,7 @@
 #include "IFStatic.h"
 
+#include "IFListCtrl.h"
+
 GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFStatic, 0x00EE9720)
 
 CIFStatic::CIFStatic() {
@@ -29,7 +31,11 @@ bool CIFStatic::SetText(const wchar_t *src) {
 }
 
 void CIFStatic::OnGfxMessage(Event3D *pEvent) {
-    reinterpret_cast<void(__thiscall *)(CIFStatic *, Event3D *)>(0x0064D850)(this, pEvent);
+    if (GetParentControl()->IsKindOf(GFX_RUNTIME_CLASS(CIFListCtrl))) {
+        GetParentControl()->OnGfxMessage(pEvent);
+        return;
+    }
+    CIFWnd::OnGfxMessage(pEvent);
 }
 
 void CIFStatic::RenderMyself() {

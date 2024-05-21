@@ -4,7 +4,7 @@
 #include "LinkedScroll.h"
 
 class CIFListCtrl : public CIFWnd, public CLinkedScroll {
-
+    GFX_DECLARE_DYNAMIC_EXISTING(CIFListCtrl, 0x00ee9580)
 public:
     struct SLineOfText {
     private:
