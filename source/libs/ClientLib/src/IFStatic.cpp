@@ -42,7 +42,7 @@ void CIFStatic::RenderMyself() {
     CIFWnd::RenderMyself();
 
     if (m_FontTexture.HasCharacters()) {
-        m_FontTexture.RenderTheText((DWORD)m_fTextRenderPosX, (DWORD)m_fTextRenderPosY, TB_Func_8());
+        m_FontTexture.RenderTheText(static_cast<DWORD>(m_fTextRenderPosX), static_cast<DWORD>(m_fTextRenderPosY), TB_Func_8());
         ResetTextureAlphaState();
     }
 
