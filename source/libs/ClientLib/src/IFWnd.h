@@ -92,6 +92,10 @@ public:
     /// \address 006526E0
     void sub_6526E0(char n00009771, unsigned char opacity, float time, float a4, char a5);
 
+protected:
+    /// \address 00654d10
+    void FUN_00654d10(undefined4 a2);
+
 private:
     int OnCreatedInstance(UINT lParam, UINT wParam);
 

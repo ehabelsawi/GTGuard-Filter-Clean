@@ -22,6 +22,10 @@ public:
     /// \address 0064D850
     void OnGfxMessage(Event3D *pEvent) override;
 
+    void RenderMyself_IMPL() {
+        CIFStatic::RenderMyself();
+    }
+
     /// \address 0064D940
     void RenderMyself() override;
 
@@ -38,6 +42,17 @@ public:
     virtual bool Func_51(const wchar_t *text);
 
 private:
-    int N000096E4;    //0x036C
-    char pad_0370[16];//0x0370
+    int m_field_0x36c;  //0x036C
+    float m_field_0x370;//0x0370
+    float m_field_0x374;//0x0374
+    char pad_0370[0x8]; //0x0370
+
+
+    BEGIN_FIXTURE()
+    ENSURE_SIZE(0x380)
+    ENSURE_OFFSET(m_field_0x370, 0x0370)
+    ENSURE_OFFSET(m_field_0x374, 0x0374)
+    END_FIXTURE()
+
+    RUN_FIXTURE(CIFStatic)
 };

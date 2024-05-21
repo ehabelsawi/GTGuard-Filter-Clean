@@ -13,13 +13,17 @@ public:
         short height;
     };
 
+    struct RenderableCharacter {
+        undefined1 pad[0xc];
+    };
+
 public:
 	CGFontTexture();
 	CGFontTexture(int a2);
 	virtual ~CGFontTexture();
 
 
-	int get_N000007BC();
+	bool HasCharacters() const;
 
 	bool SetSomething(void* a2);
 
@@ -49,8 +53,12 @@ public:
     /// \address 008b3bd0
     void FUN_008b3bd0(const std::n_wstring &param_1);
 
+    /// \address 008b48b0
+    void RenderTheText(float a2, float a3, undefined4 a4);
+
     /// \address 008b4d90
     void FUN_008b4d90(float* param_1, undefined4 param_2);
+
 
 private:
 	char pad_0004[12-4]; //0x0004
@@ -61,9 +69,20 @@ private:
 	int m_textspacing; //0x0030
 	char pad_0034[8]; //0x0034
 	float m_scaling; //0x003C
-	char pad_0040[8]; //0x0040
-	int N000007BC; //0x0048
+	std::n_list<RenderableCharacter> m_characters;
     TextureDimensions m_dimensions; //0x004C
     char pad_0050[24]; //0x0050
+
+    BEGIN_FIXTURE()
+        ENSURE_SIZE(0x68)
+        ENSURE_OFFSET(m_color_bg, 0x0c)
+        ENSURE_OFFSET(m_color_fg, 0x10)
+        ENSURE_OFFSET(m_textmode, 0x2c)
+        ENSURE_OFFSET(m_textspacing, 0x30)
+        ENSURE_OFFSET(m_scaling, 0x3c)
+        ENSURE_OFFSET(m_dimensions, 0x4c)
+    END_FIXTURE()
+
+    RUN_FIXTURE(CGFontTexture)
 };
 

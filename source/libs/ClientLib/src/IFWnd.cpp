@@ -217,6 +217,10 @@ void CIFWnd::EnableTooltip() {
     assert(FALSE);
 }
 
+void CIFWnd::FUN_00654d10(undefined4 a2) {
+    reinterpret_cast<void (__thiscall *)(CIFWnd *, undefined4)>(0x00654d10)(this, a2);
+}
+
 // CIFWnd::On4001(int,int) .text 00652390 00000012 00000000 00000000 R . . . . . .
 int CIFWnd::OnCreatedInstance(UINT lParam, UINT wParam) {
     return reinterpret_cast<int (__thiscall *)(CIFWnd *, UINT, UINT)>(0x00652390)(this, lParam, wParam);

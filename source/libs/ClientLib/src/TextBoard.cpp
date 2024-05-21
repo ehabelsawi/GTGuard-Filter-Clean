@@ -84,7 +84,7 @@ void CTextBoard::TB_Func_2()
 			CGFXVideo3d::UpdateTextureStageState<D3DTSS_COLORARG1>(2);
 		}
 	}
-	if ( this->m_FontTexture.get_N000007BC() )
+	if (this->m_FontTexture.HasCharacters())
 		TB_Func_4();
 
 	this->sub_6554C0();

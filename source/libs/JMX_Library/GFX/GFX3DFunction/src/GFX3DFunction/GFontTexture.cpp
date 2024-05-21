@@ -25,9 +25,9 @@ CGFontTexture::~CGFontTexture(void)
 }
 
 // Non-client function
-int CGFontTexture::get_N000007BC()
+bool CGFontTexture::HasCharacters() const
 {
-	return N000007BC;
+	return !m_characters.empty();
 }
 
 // CGFontTexture::SetSomething(int) .text 008B2B50 0000000C 00000000 00000004 R . . . . . .
@@ -85,6 +85,10 @@ CGFontTexture::TextureDimensions CGFontTexture::GetDimensions() const{
 
 void CGFontTexture::FUN_008b3bd0(const std::n_wstring &param_1) {
     return reinterpret_cast<void (__thiscall *)(CGFontTexture *, const std::n_wstring &)>(0x008b3bd0)(this, param_1);
+}
+
+void CGFontTexture::RenderTheText(float a2, float a3, undefined4 a4) {
+    return reinterpret_cast<void (__thiscall *)(CGFontTexture *, float, float, undefined4)>(0x008b48b0)(this, a2, a3, a4);
 }
 
 void CGFontTexture::FUN_008b4d90(float* param_1, undefined4 param_2) {
