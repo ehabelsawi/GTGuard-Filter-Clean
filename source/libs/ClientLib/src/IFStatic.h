@@ -35,7 +35,7 @@ public:
     virtual bool Func_50(const wchar_t *format, ...);
 
     /// \address 0064D750
-    virtual bool Func_51(const wchar_t *src);
+    virtual bool Func_51(const wchar_t *text);
 
 private:
     int N000096E4;    //0x036C

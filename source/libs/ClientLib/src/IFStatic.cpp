@@ -82,7 +82,14 @@ bool CIFStatic::Func_50(const wchar_t *format, ...) {
     return true;
 }
 
-bool CIFStatic::Func_51(const wchar_t *src) {
-    assert(FALSE);
-    return false;
+bool CIFStatic::Func_51(const wchar_t *text) {
+    if (text == NULL) {
+        return false;
+    }
+
+    CIFWnd::SetText(text);
+
+    Func_42();
+
+    return true;
 }
