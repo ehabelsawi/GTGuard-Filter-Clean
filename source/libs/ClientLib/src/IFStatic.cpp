@@ -6,7 +6,7 @@ GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFStatic, 0x00EE9720)
 
 CIFStatic::CIFStatic() {
     N00000609 = 0;
-    m_field_0x36c = 0;
+    m_dwTextFGColor = 0;
 
     m_FontTexture.SetColor(D3DCOLOR_RGBA(255, 255, 255, 255));
     m_FontTexture.sub_8B2BA0(3, D3DCOLOR_RGBA(0xB4, 0xB4, 0xB4, 255));
@@ -40,13 +40,14 @@ void CIFStatic::OnGfxMessage(Event3D *pEvent) {
 
 void CIFStatic::RenderMyself() {
     CIFWnd::RenderMyself();
-    if (m_FontTexture.HasCharacters()) {
 
-        m_FontTexture.RenderTheText(m_field_0x370,m_field_0x374, TB_Func_8());
-        sub_6554C0();
+    if (m_FontTexture.HasCharacters()) {
+        m_FontTexture.RenderTheText((DWORD)m_fTextRenderPosX, (DWORD)m_fTextRenderPosY, TB_Func_8());
+        ResetTextureAlphaState();
     }
-    if (m_field_0x36c != 0) {
-        CIFWnd::FUN_00654d10(m_field_0x36c);
+
+    if (m_dwTextFGColor != 0) {
+        RenderTextureColor(m_dwTextFGColor);
     }
 }
 

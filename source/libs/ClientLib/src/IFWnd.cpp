@@ -217,8 +217,8 @@ void CIFWnd::EnableTooltip() {
     assert(FALSE);
 }
 
-void CIFWnd::FUN_00654d10(undefined4 a2) {
-    reinterpret_cast<void (__thiscall *)(CIFWnd *, undefined4)>(0x00654d10)(this, a2);
+void CIFWnd::RenderTextureColor(DWORD dwColor) {
+    reinterpret_cast<void (__thiscall *)(CIFWnd *, DWORD)>(0x00654d10)(this, dwColor);
 }
 
 // CIFWnd::On4001(int,int) .text 00652390 00000012 00000000 00000000 R . . . . . .

@@ -42,16 +42,15 @@ public:
     virtual bool Func_51(const wchar_t *text);
 
 private:
-    int m_field_0x36c;  //0x036C
-    float m_field_0x370;//0x0370
-    float m_field_0x374;//0x0374
-    char pad_0370[0x8]; //0x0370
-
-
+    DWORD m_dwTextFGColor;  //0x036C
+    float m_fTextRenderPosX;//0x0370
+    float m_fTextRenderPosY;//0x0374
+    char pad_0370[0x8];     //0x0370
+private:
     BEGIN_FIXTURE()
     ENSURE_SIZE(0x380)
-    ENSURE_OFFSET(m_field_0x370, 0x0370)
-    ENSURE_OFFSET(m_field_0x374, 0x0374)
+    ENSURE_OFFSET(m_fTextRenderPosX, 0x0370)
+    ENSURE_OFFSET(m_fTextRenderPosY, 0x0374)
     END_FIXTURE()
 
     RUN_FIXTURE(CIFStatic)

@@ -94,7 +94,7 @@ public:
 
 protected:
     /// \address 00654d10
-    void FUN_00654d10(undefined4 a2);
+    void RenderTextureColor(DWORD dwColor);
 
 private:
     int OnCreatedInstance(UINT lParam, UINT wParam);

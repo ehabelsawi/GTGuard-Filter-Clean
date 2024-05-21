@@ -41,7 +41,8 @@ protected:
 
 	void sub_655CA0(int a2);
 	void sub_6553A0(float a2);
-	void sub_6554C0();
+
+    void ResetTextureAlphaState();
 
 private:
 	char N000096C1; //0x0004

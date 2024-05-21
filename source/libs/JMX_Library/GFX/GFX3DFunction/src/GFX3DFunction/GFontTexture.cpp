@@ -87,8 +87,8 @@ void CGFontTexture::FUN_008b3bd0(const std::n_wstring &param_1) {
     return reinterpret_cast<void (__thiscall *)(CGFontTexture *, const std::n_wstring &)>(0x008b3bd0)(this, param_1);
 }
 
-void CGFontTexture::RenderTheText(float a2, float a3, undefined4 a4) {
-    return reinterpret_cast<void (__thiscall *)(CGFontTexture *, float, float, undefined4)>(0x008b48b0)(this, a2, a3, a4);
+void CGFontTexture::RenderTheText(DWORD a2, DWORD a3, undefined4 a4) {
+    reinterpret_cast<void(__thiscall *)(CGFontTexture *, DWORD, DWORD, undefined4)>(0x008b48b0)(this, a2, a3, a4);
 }
 
 void CGFontTexture::FUN_008b4d90(float* param_1, undefined4 param_2) {

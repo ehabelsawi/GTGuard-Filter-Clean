@@ -54,7 +54,7 @@ public:
     void FUN_008b3bd0(const std::n_wstring &param_1);
 
     /// \address 008b48b0
-    void RenderTheText(float a2, float a3, undefined4 a4);
+    void RenderTheText(DWORD a2, DWORD a3, undefined4 a4);
 
     /// \address 008b4d90
     void FUN_008b4d90(float* param_1, undefined4 param_2);
@@ -69,7 +69,7 @@ private:
 	int m_textspacing; //0x0030
 	char pad_0034[8]; //0x0034
 	float m_scaling; //0x003C
-	std::n_list<RenderableCharacter> m_characters;
+	std::n_list<RenderableCharacter> m_characters; //0x0040
     TextureDimensions m_dimensions; //0x004C
     char pad_0050[24]; //0x0050
 
@@ -80,6 +80,7 @@ private:
         ENSURE_OFFSET(m_textmode, 0x2c)
         ENSURE_OFFSET(m_textspacing, 0x30)
         ENSURE_OFFSET(m_scaling, 0x3c)
+        ENSURE_OFFSET(m_characters, 0x40)
         ENSURE_OFFSET(m_dimensions, 0x4c)
     END_FIXTURE()
 

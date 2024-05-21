@@ -87,7 +87,7 @@ void CTextBoard::TB_Func_2()
 	if (this->m_FontTexture.HasCharacters())
 		TB_Func_4();
 
-	this->sub_6554C0();
+	this->ResetTextureAlphaState();
 }
 
 // CTextBoard::Func_3(void) .text 004F4CC0 00000001   R . . . . . .
@@ -229,8 +229,7 @@ void CTextBoard::sub_6553A0(float a2)
 }
 
 // CTextBoard__sub_6554C0 .text 006554C0 0000004E 00000004 00000000 R . . . . . .
-void CTextBoard::sub_6554C0()
-{
+void CTextBoard::ResetTextureAlphaState() {
 	reinterpret_cast<void(__thiscall*)(CTextBoard*)>(0x006554C0)(this);
 }
 
