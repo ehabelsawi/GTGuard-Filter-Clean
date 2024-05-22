@@ -45,15 +45,20 @@ bool CObj::IsKindOf(const CGfxRuntimeClass &rtclass) const {
     return reinterpret_cast<bool (__thiscall *)(const CObj *, const CGfxRuntimeClass &)>(0x00b94b90)(this, rtclass);
 }
 
+bool CObj::IsDerivedFrom(const CGfxRuntimeClass &rtclass) const {
+    if (this == NULL)
+        return false;
+
+    return GetRuntimeClass()->IsDerivedFrom(rtclass);
+}
+
 const GFX_MSGMAP CObjChild::messageMapCObjChild = {
         0,
         GetThisMessageEntries()
 };
 
-// CGfxRuntimeClass::IsDerivedFrom(CRuntimeClass *) .text 00B94B60 00000008 00000000 00000000 R . . . . . .
-BOOL CGfxRuntimeClass::IsDerivedFrom(const CGfxRuntimeClass *pBaseClass) const {
-    assert(FALSE);
-    return FALSE;
+bool CGfxRuntimeClass::IsDerivedFrom(const CGfxRuntimeClass &pBaseClass) const {
+    return reinterpret_cast<bool(__thiscall *)(const CGfxRuntimeClass *, const CGfxRuntimeClass &)>(0x00b94b60)(this, pBaseClass);
 }
 
 const GFX_MSGMAP *CObjChild::GetMessageMap() const {
@@ -98,11 +103,9 @@ int CObjChild::StartTimer(int timerId, int timeoutMs) {
     return reinterpret_cast<int (__thiscall*)(CObjChild*, int, int)>(0x00b93320)(this, timerId, timeoutMs);
 }
 
-
 int CObjChild::KillTimer(int timerId) {
     return reinterpret_cast<int (__thiscall *)(CObjChild *, int)>(0x00B93170)(this, timerId);
 }
-
 
 void CTimerLink::ReleaseTimers() {
     reinterpret_cast<void (__thiscall *)(CTimerLink *)>(0x00b924b0)(this);
