@@ -277,6 +277,10 @@ void CIFWnd::SetSomeRect(const RECT &rect) {
     m_someRECT = rect;
 }
 
+void CIFWnd::GetSomeRECT(RECT &rect) {
+    reinterpret_cast<void (__thiscall*)(CIFWnd*, RECT*)>(0x00652800)(this, &rect);
+}
+
 void CIFWnd::SetTooltip(const std::n_wstring &wstrText) {
     m_wstrTooltip = wstrText;
 

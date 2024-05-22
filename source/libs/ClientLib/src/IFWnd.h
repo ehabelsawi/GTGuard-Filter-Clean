@@ -75,6 +75,9 @@ public:
     /// \address 006527D0
     void SetSomeRect(const RECT &rect);
 
+    /// \address 00652800
+    void GetSomeRECT(RECT &rect);
+
     /// \brief Set the tooltip text (mouse hover)
     /// \address 00653DC0
     void SetTooltip(const std::n_wstring &wstrText);

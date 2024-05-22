@@ -20,10 +20,10 @@ CTextBoard::CTextBoard(void)
 
   this->sub_655B00(L"");
 
-  this->N000096C1 = 1;
+  this->m_somethingAboutX = 1;
   TB_Func_3();
 
-  this->N000096C2 = 1;
+  this->m_somethingAboutY = 1;
   TB_Func_3();
   this->N00009757 = 0;
   this->N00009768 = 0;
@@ -105,14 +105,14 @@ void CTextBoard::TB_Func_4()
 // CTextBoard::Func_5(void) .text 004F4CE0 00000011 00000000 00000004 R . . . . . .
 void CTextBoard::TB_Func_5(int a2)
 {
-	this->N000096C1 = a2;
+	this->m_somethingAboutX = a2;
 	TB_Func_3();
 }
 
 // CTextBoard::Func_6(void) .text 004F4D00 00000011 00000000 00000004 R . . . . . .
 void CTextBoard::TB_Func_6(int a2)
 {
-	this->N000096C2 = a2;
+	this->m_somethingAboutY = a2;
 	TB_Func_3();
 }
 

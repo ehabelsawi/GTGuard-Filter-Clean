@@ -32,6 +32,10 @@ public:
     /// \address 0064D9B0
     void Func_42() override;
 
+    void Func_42_IMPL() {
+        CIFStatic::Func_42();
+    }
+
     /// \address 0064D780
     virtual bool SetTextFormatted(const wchar_t *format, ...);
 
@@ -42,15 +46,18 @@ public:
     virtual bool Func_51(const wchar_t *text);
 
 private:
-    DWORD m_dwTextFGColor;  //0x036C
-    float m_fTextRenderPosX;//0x0370
-    float m_fTextRenderPosY;//0x0374
-    char pad_0370[0x8];     //0x0370
+    DWORD m_dwTextFGColor;       //0x036C
+    float m_fTextRenderPosStartX;//0x0370
+    float m_fTextRenderPosStartY;//0x0374
+    float m_fTextRenderPosEndX;  //0x0378
+    float m_fTextRenderPosEndY;  //0x037c
 private:
     BEGIN_FIXTURE()
     ENSURE_SIZE(0x380)
-    ENSURE_OFFSET(m_fTextRenderPosX, 0x0370)
-    ENSURE_OFFSET(m_fTextRenderPosY, 0x0374)
+    ENSURE_OFFSET(m_fTextRenderPosStartX, 0x0370)
+    ENSURE_OFFSET(m_fTextRenderPosStartY, 0x0374)
+    ENSURE_OFFSET(m_fTextRenderPosEndX, 0x0378)
+    ENSURE_OFFSET(m_fTextRenderPosEndY, 0x037c)
     END_FIXTURE()
 
     RUN_FIXTURE(CIFStatic)

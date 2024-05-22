@@ -42,7 +42,7 @@ void CIFStatic::RenderMyself() {
     CIFWnd::RenderMyself();
 
     if (m_FontTexture.HasCharacters()) {
-        m_FontTexture.RenderTheText(static_cast<DWORD>(m_fTextRenderPosX), static_cast<DWORD>(m_fTextRenderPosY), TB_Func_8());
+        m_FontTexture.RenderTheText(static_cast<DWORD>(m_fTextRenderPosStartX), static_cast<DWORD>(m_fTextRenderPosStartY), TB_Func_8());
         ResetTextureAlphaState();
     }
 
@@ -52,7 +52,45 @@ void CIFStatic::RenderMyself() {
 }
 
 void CIFStatic::Func_42() {
-    reinterpret_cast<void(__thiscall *)(CIFStatic *)>(0x0064D9B0)(this);
+    if (m_FontTexture.HasCharacters()) {
+        RECT local_10;
+        GetSomeRECT(local_10);
+        const float startX = static_cast<float>(local_10.left);
+        m_fTextRenderPosStartX = startX;
+        const float startY = static_cast<float>(local_10.top);
+        m_fTextRenderPosStartY = startY;
+        const float endX = static_cast<float>(local_10.left + local_10.right);
+        m_fTextRenderPosEndX = endX;
+        const float endY = static_cast<float>(local_10.top + local_10.bottom);
+        m_fTextRenderPosEndY = endY;
+
+        const float bgHeight = static_cast<float>(m_FontTexture.GetDimensions().height);
+        const float bgWidth = static_cast<float>(m_FontTexture.GetDimensions().width);
+
+        const int somethingAboutX = m_somethingAboutX;
+        if (somethingAboutX == 0) {
+            m_fTextRenderPosEndX = bgWidth + startX;
+        } else if (somethingAboutX == 1) {
+            const float newX = ((endX - startX) - bgWidth) * 0.5f + startX;
+            m_fTextRenderPosStartX = newX;
+            m_fTextRenderPosEndX = newX + bgWidth;
+        } else if (somethingAboutX == 2) {
+            m_fTextRenderPosStartX = endX - bgWidth;
+        }
+
+        const int somethingAboutY = m_somethingAboutY;
+        if (somethingAboutY == 0) {
+            m_fTextRenderPosEndY = bgHeight + startY;
+        } else if (somethingAboutY == 1) {
+            float newY = ((endY + startY) - bgHeight) * 0.5f;
+            m_fTextRenderPosStartY = newY;
+            m_fTextRenderPosEndY = newY + bgHeight;
+        } else if (somethingAboutY == 2) {
+            m_fTextRenderPosStartY =
+                endY - bgHeight;
+            return;
+        }
+    }
 }
 
 bool CIFStatic::SetTextFormatted(const wchar_t *format, ...) {

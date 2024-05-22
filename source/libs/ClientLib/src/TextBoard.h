@@ -44,10 +44,9 @@ protected:
 
     void ResetTextureAlphaState();
 
-private:
-	char N000096C1; //0x0004
-	char pad_0005[3]; //0x0005
-	int N000096C2; //0x0008
+protected:
+	int m_somethingAboutX; //0x0004
+	int m_somethingAboutY; //0x0008
 public: /* see usage of 8B4400, public seems correct */
 	CGFontTexture m_FontTexture; //0x000C
 protected:
@@ -73,5 +72,12 @@ private:
 	char N00009769; //0x00FC
 	char pad_00FD[3]; //0x00FD
 
+
+    BEGIN_FIXTURE()
+        ENSURE_OFFSET(m_somethingAboutX, 0x04)
+        ENSURE_OFFSET(m_somethingAboutY, 0x08)
+    END_FIXTURE()
+
+    RUN_FIXTURE(CTextBoard)
 };
 
