@@ -77,7 +77,7 @@ public:
 
     /// \brief Set the tooltip text (mouse hover)
     /// \address 00653DC0
-    void SetTooltipText(const std::n_wstring &wstrText);
+    void SetTooltip(const std::n_wstring &wstrText);
 
     /// \brief Set Style for interface
     /// \See StyleOptions

@@ -77,25 +77,25 @@ bool CIFMainPopup::OnCreate(long ln) {
     m_pBtnQuest->FUN_00655fa0(8);
     m_pSkillWindow->FUN_006a6e60(1);
 
-    m_pBtnInventory->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_INVENTORY"));
+    m_pBtnInventory->SetTooltip(TSM_GETTEXT(L"UIIT_STT_TOGGLE_INVENTORY"));
     m_pBtnInventory->SetStyleThingy(TOOLTIP);
 
-    m_pBtnCharacter->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_CHARACTER"));
+    m_pBtnCharacter->SetTooltip(TSM_GETTEXT(L"UIIT_STT_TOGGLE_CHARACTER"));
     m_pBtnCharacter->SetStyleThingy(TOOLTIP);
 
-    m_pBtnSkill->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_SKILL"));
+    m_pBtnSkill->SetTooltip(TSM_GETTEXT(L"UIIT_STT_TOGGLE_SKILL"));
     m_pBtnSkill->SetStyleThingy(TOOLTIP);
 
-    m_pBtnAction->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_ACTION"));
+    m_pBtnAction->SetTooltip(TSM_GETTEXT(L"UIIT_STT_TOGGLE_ACTION"));
     m_pBtnAction->SetStyleThingy(TOOLTIP);
 
-    m_pBtnParty->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_PARTY"));
+    m_pBtnParty->SetTooltip(TSM_GETTEXT(L"UIIT_STT_TOGGLE_PARTY"));
     m_pBtnParty->SetStyleThingy(TOOLTIP);
 
-    m_pBtnQuest->SetTooltipText(TSM_GETTEXT(L"UIIT_STT_TOGGLE_QUEST"));
+    m_pBtnQuest->SetTooltip(TSM_GETTEXT(L"UIIT_STT_TOGGLE_QUEST"));
     m_pBtnQuest->SetStyleThingy(TOOLTIP);
 
-    m_pBtnApprentice->SetTooltipText(TSM_GETTEXT(L"UIIT_CTL_TC_SHORTKEY_L"));
+    m_pBtnApprentice->SetTooltip(TSM_GETTEXT(L"UIIT_CTL_TC_SHORTKEY_L"));
     m_pBtnApprentice->SetStyleThingy(TOOLTIP);
 
 #ifndef CONFIG_OLD_MAINPOPUP

@@ -273,7 +273,7 @@ void CIFWnd::SetSomeRect(const RECT &rect) {
     m_someRECT = rect;
 }
 
-void CIFWnd::SetTooltipText(const std::n_wstring &wstrText) {
+void CIFWnd::SetTooltip(const std::n_wstring &wstrText) {
     m_wstrTooltip = wstrText;
 
     if (IsParentOf(g_CurrentIfUnderCursor) && IsStyleThingy(TOOLTIP))
