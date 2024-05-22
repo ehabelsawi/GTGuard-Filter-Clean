@@ -405,3 +405,7 @@ void CICUser::Func_15_impl(int param_1, float *param_2) {
 bool CICUser::GetBeginnerState() const {
     return reinterpret_cast<bool (__thiscall *)(const CICUser *)>(0x009dad40)(this);
 }
+
+void CICUser::ShowMessageAboveEntity(const std::n_wstring &message, D3DCOLOR color) {
+    reinterpret_cast<void(__thiscall *)(CICharactor *, const std::n_wstring *, D3DCOLOR)>(0x009c77c0)(this, &message, color);
+}

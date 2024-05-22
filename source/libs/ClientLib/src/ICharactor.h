@@ -77,13 +77,7 @@ public:
 
     virtual void Func_54();
 
-
-    /// \brief Display the given text message above the entity for a certain amount of time.
-    /// \address 009c77c0
-    /// \param message The message to be displayed
-    /// \param color Color of the letters being displayed
-    void ShowMessageAboveEntity(const std::n_wstring &message, D3DCOLOR color);
-
+public:
     unsigned int GetCurrentHp() const;
 
     unsigned int GetMaxHp() const;
