@@ -70,14 +70,14 @@ public:
 
     virtual void Func_47(int);
 
-    virtual void Func_48();
+    virtual void EnableTooltip();
 
     /// \address 006527D0
     void SetSomeRect(const RECT &rect);
 
     /// \brief Set the tooltip text (mouse hover)
     /// \address 00653DC0
-    void SetTooltipText(const std::n_wstring *str);
+    void SetTooltipText(const std::n_wstring &wstrText);
 
     /// \brief Set Style for interface
     /// \See StyleOptions
@@ -126,7 +126,7 @@ private:
     char N0000061A; //0x0208
     char pad_0209[3]; //0x0209
     int N0000061B; //0x020C
-    std::n_wstring N0000061C; //0x0210
+    std::n_wstring m_wstrTooltip; //0x0210
     float N0000061D; //0x022C
     float N0000061E; //0x0230
     float N00000627; //0x0234
