@@ -3,6 +3,8 @@
 #include "ICharactor.h"
 #include "UserGuildInfo.h"
 
+#define USER_TIMER_IDX_MESSAGE_ABOVE 10
+
 class CICUser : public CICharactor {
     GFX_DECLARE_DYNAMIC_EXISTING(CICUser, 0x00ef1bc0)
 public:
@@ -37,16 +39,18 @@ private:
     void RenderFortressIcons(D3DVECTOR *dataOut, float *param_2);
 
 private:
-    char pad_078C[56]; //0x078C
+    undefined4 field_078c; //0x078C CObjAnimation ptr?
+    char pad_0790[52]; //0x0790
     UserGuildInfo *m_pGuildInfo; //0x07C4
     std::n_wstring m_wstrGrantName; //0x07C8
     std::n_wstring m_wstrGuildName; //0x07E4
     std::n_wstring m_wstrFortressWarTitle; //0x0800
     undefined1 field_81c; //0x081C
     char pad_081D[15]; //0x081D
-
+private:
     BEGIN_FIXTURE()
         ENSURE_SIZE(2092)
+        ENSURE_OFFSET(field_078c, 0x078c)
         ENSURE_OFFSET(m_pGuildInfo, 0x07C4)
         ENSURE_OFFSET(m_wstrGrantName, 0x07C8)
         ENSURE_OFFSET(m_wstrGuildName, 0x07E4)

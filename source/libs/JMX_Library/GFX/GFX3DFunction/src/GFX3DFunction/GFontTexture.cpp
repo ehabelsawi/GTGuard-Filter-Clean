@@ -83,8 +83,8 @@ CGFontTexture::TextureDimensions CGFontTexture::GetDimensions() const{
     return m_dimensions;
 }
 
-void CGFontTexture::FUN_008b3bd0(std::n_wstring *param_1) {
-    return reinterpret_cast<void (__thiscall *)(CGFontTexture *, std::n_wstring *)>(0x008b3bd0)(this, param_1);
+void CGFontTexture::FUN_008b3bd0(const std::n_wstring &param_1) {
+    return reinterpret_cast<void (__thiscall *)(CGFontTexture *, const std::n_wstring &)>(0x008b3bd0)(this, param_1);
 }
 
 void CGFontTexture::FUN_008b4d90(float* param_1, undefined4 param_2) {

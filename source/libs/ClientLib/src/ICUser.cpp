@@ -11,6 +11,7 @@
 
 #define g_RuntimeTextureSomething (*reinterpret_cast<std::n_map<int, const IDirect3DBaseTexture9*> *>(0x0110af70))
 
+#define MESSAGE_ABOE_TIME_MS 10000
 
 GFX_IMPLEMENT_DYNAMIC_EXISTING(CICUser, 0x00ef1bc0)
 
@@ -151,7 +152,7 @@ void CICUser::Func_15(int param_1, float *param_2) {
         }
 
         guildString += L"]";
-        m_pGuildInfo->m_pFontTexture->FUN_008b3bd0(&guildString);
+        m_pGuildInfo->m_pFontTexture->FUN_008b3bd0(guildString);
         m_pGuildInfo->m_pFontTexture->FUN_008b4d90(&m_renderY, 0xff);
 
         // Probably GuildIcon
@@ -407,5 +408,14 @@ bool CICUser::GetBeginnerState() const {
 }
 
 void CICUser::ShowMessageAboveEntity(const std::n_wstring &message, D3DCOLOR color) {
-    reinterpret_cast<void(__thiscall *)(CICharactor *, const std::n_wstring *, D3DCOLOR)>(0x009c77c0)(this, &message, color);
+    if (IsDerivedFrom(GFX_RUNTIME_CLASS(CICUser)) && field_078c != 0)
+        return;
+
+    m_colorMessageAbove = color;
+
+    m_textureMessageAbove.SetColor(color);
+    m_textureMessageAbove.FUN_008b3bd0(message);
+
+    KillTimer(USER_TIMER_IDX_MESSAGE_ABOVE);
+    StartTimer(USER_TIMER_IDX_MESSAGE_ABOVE, MESSAGE_ABOE_TIME_MS);
 }

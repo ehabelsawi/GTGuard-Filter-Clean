@@ -47,7 +47,7 @@ public:
     TextureDimensions GetDimensions() const;
 
     /// \address 008b3bd0
-    void FUN_008b3bd0(std::n_wstring* param_1);
+    void FUN_008b3bd0(const std::n_wstring &param_1);
 
     /// \address 008b4d90
     void FUN_008b4d90(float* param_1, undefined4 param_2);
