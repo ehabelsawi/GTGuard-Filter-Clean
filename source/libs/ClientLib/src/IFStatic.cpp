@@ -64,7 +64,7 @@ bool CIFStatic::SetTextFormatted(const wchar_t *format, ...) {
 
     va_list args;
     va_start(args, format);
-    vswprintf(buffer, 0x1000, format, args);
+    vswprintf_s(buffer, 0x1000, format, args);
     va_end(args);
 
     // Note: SetText also returns a boolean telling if setting the text was successful. However
@@ -85,7 +85,7 @@ bool CIFStatic::Func_50(const wchar_t *format, ...) {
 
     va_list args;
     va_start(args, format);
-    vswprintf(buffer, 0x1000, format, args);
+    vswprintf_s(buffer, 0x1000, format, args);
     va_end(args);
 
     // Note: SetText also returns a boolean telling if setting the text was successful. However
