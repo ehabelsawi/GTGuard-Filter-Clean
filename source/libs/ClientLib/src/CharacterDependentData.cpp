@@ -1,7 +1,7 @@
 #include "CharacterDependentData.h"
 
 bool CCharacterDependentData::IsGuildInAnAlliance() const {
-    return reinterpret_cast<bool (__thiscall *)(const CCharacterDependentData *)>(0x988A50)(this);
+    return !(GetGuildData().setAlliance.empty());
 }
 
 bool CCharacterDependentData::IsInParty() const {
