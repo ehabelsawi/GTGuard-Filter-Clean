@@ -33,6 +33,7 @@
 #define GDR_EXCHANGE 26
 #define GDR_WORLDMAP 28
 #define GDR_NPCWINDOW 30
+#define GDR_GAMEGUIDE 32
 #define GDR_WARNING_WND 35
 #define GDR_UPDATE_QUEST_INFO 42
 #define GDR_SYSTEM_MESSAGE_VIEW 68
@@ -172,6 +173,9 @@ public:
 
     /// \address 0079F690
     void ToggleGameGuide();
+
+    /// \address 0079b140
+    void ToggleGameGuide(bool bVisible);
 
     /// \address 0079B020
     void ToggleInventoryWnd();

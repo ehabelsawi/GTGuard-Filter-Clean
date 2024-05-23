@@ -62,6 +62,35 @@ void CGInterface::ToggleGameGuide() {
     return reinterpret_cast<void (__thiscall *)(void *)>(0x0079F690)(this);
 }
 
+void CGInterface::ToggleGameGuide(bool bVisible) {
+    CIFWnd *pGGuide = m_IRM.GetResObj(GDR_GAMEGUIDE, true);
+    if (!bVisible) {
+        if (pGGuide == NULL)
+            return;
+
+        SaveGWndPostion(GDR_GAMEGUIDE, pGGuide->GetPos());
+
+        pGGuide->ShowGWnd(false);
+        pGGuide->GetParentControl()->SetFocus_MAYBE();
+        FUN_0079a7e0(pGGuide);
+
+        m_IRM.DeleteCreatedSection("GameGuide");
+        return;
+    }
+
+    if (pGGuide != NULL) {
+        pGGuide->ShowGWnd(true);
+        return;
+    }
+
+    m_IRM.CreateInterfaceSection("GameGuide", this);
+
+    pGGuide = m_IRM.GetResObj(GDR_GAMEGUIDE, true);
+    pGGuide->MoveGWnd(230, 80); // why do i saving the pos if im setting it by my self? lol
+    pGGuide->ShowGWnd(true);
+    FUN_0079a7e0(pGGuide);
+}
+
 HOOK_ORIGINAL_MEMBER(0x0079B020, &CGInterface::ToggleInventoryWnd);
 void CGInterface::ToggleInventoryWnd() {
     // If MainPopup is visible and page 'inventory' is active
