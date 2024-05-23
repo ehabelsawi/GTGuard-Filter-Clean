@@ -417,3 +417,20 @@ void CGInterface::SetOnMiddleOfScreen(DWORD dwNInterfaceID) {
 void CGInterface::SaveGWndPostion(DWORD dwID, CGWnd::wnd_pos sWndPos) {
     reinterpret_cast<void(__thiscall *)(CGInterface *, DWORD, CGWnd::wnd_pos)>(0x0079a840)(this, dwID, sWndPos);
 }
+
+void CGInterface::SaveGWndPosOnMiddleOfScreen(DWORD dwID, CGWnd *pParent) {
+    CGWnd *pParentWnd = pParent;
+    if (pParentWnd == NULL)
+        pParentWnd = g_pCGInterface;
+
+    CIFWnd *pWnd = (CIFWnd *) pParentWnd->GetChildControl(dwID);
+    if (pWnd == NULL)
+        return;
+
+    wnd_pos sNewPos = {(theApp.GetClientDimensionStuff().width / 2) - (pWnd->GetBounds().size.width / 2),
+                       (theApp.GetClientDimensionStuff().height / 2) - (pWnd->GetBounds().size.height / 2)};
+    pWnd->MoveGWnd(sNewPos.x, sNewPos. y);
+
+    SaveGWndPostion(dwID, sNewPos);
+}
+

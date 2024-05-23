@@ -278,6 +278,9 @@ private:
     /// \address 00798c50
     void SetOnMiddleOfScreen(DWORD dwNInterfaceID);
 
+    /// \address 0079ac50
+    void SaveGWndPosOnMiddleOfScreen(DWORD dwID, CGWnd *pParent);
+
 private:
 public:
     CIRMManager m_IRM; //0x036C
