@@ -108,7 +108,7 @@ bool CIFChatViewer::OnCreate(long ln) {
 
     m_IRM.CreateInterfaceSection("Create", this);
 
-    m_WhisperList = m_IRM.GetResObj<CIFWhisperList>(GDR_WHISPERLIST, 1);
+    m_pWhisperList = m_IRM.GetResObj<CIFWhisperList>(GDR_WHISPERLIST, 1);
 
     m_pTabs = new CIFSelectableArea *[numberOfTabs];
 
@@ -601,7 +601,7 @@ void CIFChatViewer::OnToggleHide() {
 }
 
 void CIFChatViewer::OnWhisperList() {
-    m_WhisperList->ShowGWnd(!m_WhisperList->IsVisible());
+    m_pWhisperList->ShowGWnd(!m_pWhisperList->IsVisible());
 }
 
 void CIFChatViewer::OnChatTabSize() {
@@ -790,7 +790,7 @@ void CIFChatViewer::UpdateChatSize() {
         m_Scroll->ShowGWnd(false);
         m_Button_WhisperList->ShowGWnd(false);
         m_Button_ChatTabHide->ShowGWnd(false);
-        m_WhisperList->ShowGWnd(false);
+        m_pWhisperList->ShowGWnd(false);
 
         m_IRM.GetResObj(5, 1)->ShowGWnd(false);
         m_IRM.GetResObj(6, 1)->ShowGWnd(false);
@@ -1171,7 +1171,7 @@ void CIFChatViewer::ShowHideControls(bool bShow) {
     m_Button_ChatMode->ShowGWnd(bShow);
 
     if (!bShow) {
-        m_WhisperList->ShowGWnd(0);
+        m_pWhisperList->ShowGWnd(0);
         m_ChatModeView_Wnd->ShowGWnd(0);
     }
 
@@ -1226,6 +1226,6 @@ void CIFChatViewer::AddWhisperTargetToList(std::n_wstring &wstrName) {
     if (g_pMyPlayerObj->GetCharName() == wstrName)
         return;
 
-    m_WhisperList->AddToList(wstrName);
+    m_pWhisperList->AddToList(wstrName);
     SetLastWhisperedWith(wstrName);
 }

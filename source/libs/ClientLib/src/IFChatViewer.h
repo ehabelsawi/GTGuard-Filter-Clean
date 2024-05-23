@@ -239,7 +239,7 @@ private:
 
     CIFWnd *m_Button_ChatMode; //0x0490
     CIFChatModeViewer *m_ChatModeView_Wnd; //0x0494
-    CIFWhisperList *m_WhisperList; //0x0498
+    CIFWhisperList *m_pWhisperList; //0x0498
     CIFVerticalScroll *m_Scroll; //0x049C
     CIFEdit *m_InputBox; //0x04A0
     CIFSelectableArea **m_pTabs; //0x04A4 is a pointer, type unknown
@@ -268,7 +268,7 @@ public:
         ENSURE_OFFSET(m_Lamp_Apprentice, 0x0488);
         ENSURE_OFFSET(m_Button_ChatMode, 0x0490);
         ENSURE_OFFSET(m_ChatModeView_Wnd, 0x0494);
-        ENSURE_OFFSET(m_WhisperList, 0x0498);
+        ENSURE_OFFSET(m_pWhisperList, 0x0498);
         ENSURE_OFFSET(m_Scroll, 0x049C);
         ENSURE_OFFSET(m_InputBox, 0x04A0);
         ENSURE_OFFSET(m_pTabs, 0x04A4);
