@@ -51,3 +51,7 @@ const SCharacterStatistics &CCharacterDependentData::FUN_00987090() const {
 const SGuildData &CCharacterDependentData::GetGuildData() const {
     return m_sGuildData;
 }
+
+const STrainingCampData &CCharacterDependentData::GetTrainingCampData() const {
+    return m_sTrainingCampData;
+}

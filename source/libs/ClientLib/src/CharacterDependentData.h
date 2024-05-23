@@ -56,14 +56,20 @@ public:
     /// <returns>SGuildData pointer</returns>
     const SGuildData &GetGuildData() const;
 
+    /// \address 00987130
+    const STrainingCampData &GetTrainingCampData() const;
+
 private:
     SPartyData m_partyData; //0x0020
     char pad_0034[276]; //0x0034
     SGuildData m_sGuildData; //0x0148
+    char pad_01e8[96]; //0x01E8
+    STrainingCampData m_sTrainingCampData; //0x0248
 private:
 BEGIN_FIXTURE()
         ENSURE_OFFSET(m_partyData, 0x0020)
         ENSURE_OFFSET(m_sGuildData, 0x0148)
+        ENSURE_OFFSET(m_sTrainingCampData, 0x0248)
     END_FIXTURE()
 
     RUN_FIXTURE(CCharacterDependentData)
