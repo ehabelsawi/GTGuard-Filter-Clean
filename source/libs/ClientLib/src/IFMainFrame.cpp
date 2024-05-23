@@ -51,18 +51,18 @@ bool CIFMainFrame::OnCreate(long ln) {
 
     m_pTitleText->SetSomeRect(rect);
     m_pTitleText->SetFont(theApp.GetFont(0));
-    m_pTitleText->TB_Func_5(1);
-    m_pTitleText->TB_Func_6(0);
+    m_pTitleText->JustifyHorizontal(JUSTIFY_CENTER);
+    m_pTitleText->JustifyVertical(JUSTIFY_TOP);
 
     m_pHandleBar->SetSomeRect(rect);
     m_pHandleBar->SetFont(theApp.GetFont(0));
-    m_pHandleBar->TB_Func_5(1);
-    m_pHandleBar->TB_Func_6(0);
+    m_pHandleBar->JustifyHorizontal(JUSTIFY_CENTER);
+    m_pHandleBar->JustifyVertical(JUSTIFY_TOP);
 
     m_pCloseBtn->SetSomeRect(rect);
     m_pCloseBtn->SetFont(theApp.GetFont(0));
-    m_pCloseBtn->TB_Func_5(1);
-    m_pCloseBtn->TB_Func_6(0);
+    m_pCloseBtn->JustifyHorizontal(JUSTIFY_CENTER);
+    m_pCloseBtn->JustifyVertical(JUSTIFY_TOP);
 
     return true;
 }

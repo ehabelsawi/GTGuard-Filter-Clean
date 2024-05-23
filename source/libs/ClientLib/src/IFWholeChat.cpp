@@ -50,8 +50,8 @@ bool CIFWholeChat::OnCreate(long ln) {
     RECT someRect = {0, 0, 0, 0};
     m_pCreatedStatic->SetSomeRect(someRect);
     m_pCreatedStatic->SetFont(theApp.GetFont(0));
-    m_pCreatedStatic->TB_Func_5(1);
-    m_pCreatedStatic->TB_Func_6(0);
+    m_pCreatedStatic->JustifyHorizontal(JUSTIFY_CENTER);
+    m_pCreatedStatic->JustifyVertical(JUSTIFY_TOP);
     m_pCreatedStatic->SetText(TSM_GETTEXTPTR(L"UIIT_STT_WHOLECHAT"));
 
     wnd_rect rect3 = rect2;
@@ -60,8 +60,8 @@ bool CIFWholeChat::OnCreate(long ln) {
 
     m_pDragableArea->SetSomeRect(someRect);
     m_pDragableArea->SetFont(theApp.GetFont(0));
-    m_pDragableArea->TB_Func_5(1);
-    m_pDragableArea->TB_Func_6(0);
+    m_pDragableArea->JustifyHorizontal(JUSTIFY_CENTER);
+    m_pDragableArea->JustifyVertical(JUSTIFY_TOP);
 
     m_pEdit = m_IRM.GetResObj<CIFEdit>(GDR_WHOLE_CHAT_EDITBOX_INPUT, 1);
     m_pEdit->AddValue_404(2);

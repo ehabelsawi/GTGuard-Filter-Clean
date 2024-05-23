@@ -5,6 +5,19 @@
 class CTextBoard
 {
 public:
+    enum eJustifyHorizontal : int {
+        JUSTIFY_LEFT = 0,
+        JUSTIFY_CENTER = 1,
+        JUSTIFY_RIGHT = 2,
+    };
+
+    enum eJustifyVertical : int {
+        JUSTIFY_TOP = 0,
+        JUSTIFY_MIDDLE = 1,
+        JUSTIFY_BOTTOM = 2,
+    };
+
+public:
 	CTextBoard(void);
 	virtual ~CTextBoard(void);
 
@@ -12,8 +25,13 @@ public:
 	virtual void TB_Func_2();
 	virtual void TB_Func_3();
 	virtual void TB_Func_4();
-	virtual void TB_Func_5(int a2);
-	virtual void TB_Func_6(int a2);
+
+    /// \address 004F4CE0
+	virtual void JustifyHorizontal(eJustifyHorizontal justify);
+
+    /// \address 004F4D00
+	virtual void JustifyVertical(eJustifyVertical justify);
+
 	virtual void TB_Func_7();
 	virtual char TB_Func_8();
 	virtual void TB_Func_9(char a2);
@@ -45,8 +63,8 @@ protected:
     void ResetTextureAlphaState();
 
 protected:
-	int m_somethingAboutX; //0x0004
-	int m_somethingAboutY; //0x0008
+    eJustifyHorizontal m_justificationHorizontal; //0x0004
+    eJustifyVertical m_justificationVertical; //0x0008
 public: /* see usage of 8B4400, public seems correct */
 	CGFontTexture m_FontTexture; //0x000C
 protected:
@@ -74,8 +92,8 @@ private:
 
 
     BEGIN_FIXTURE()
-        ENSURE_OFFSET(m_somethingAboutX, 0x04)
-        ENSURE_OFFSET(m_somethingAboutY, 0x08)
+        ENSURE_OFFSET(m_justificationHorizontal, 0x04)
+        ENSURE_OFFSET(m_justificationVertical, 0x08)
     END_FIXTURE()
 
     RUN_FIXTURE(CTextBoard)

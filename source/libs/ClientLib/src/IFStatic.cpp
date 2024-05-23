@@ -67,28 +67,31 @@ void CIFStatic::Func_42() {
         const float bgHeight = static_cast<float>(m_FontTexture.GetDimensions().height);
         const float bgWidth = static_cast<float>(m_FontTexture.GetDimensions().width);
 
-        const int somethingAboutX = m_somethingAboutX;
-        if (somethingAboutX == 0) {
-            m_fTextRenderPosEndX = bgWidth + startX;
-        } else if (somethingAboutX == 1) {
-            const float newX = ((endX - startX) - bgWidth) * 0.5f + startX;
-            m_fTextRenderPosStartX = newX;
-            m_fTextRenderPosEndX = newX + bgWidth;
-        } else if (somethingAboutX == 2) {
-            m_fTextRenderPosStartX = endX - bgWidth;
+        switch (m_justificationHorizontal) {
+            case CTextBoard::JUSTIFY_LEFT:
+                m_fTextRenderPosEndX = bgWidth + startX;
+                break;
+            case CTextBoard::JUSTIFY_CENTER: {
+                const float newX = ((endX - startX) - bgWidth) * 0.5f + startX;
+                m_fTextRenderPosStartX = newX;
+                m_fTextRenderPosEndX = newX + bgWidth;
+            } break;
+            case CTextBoard::JUSTIFY_RIGHT:
+                m_fTextRenderPosStartX = endX - bgWidth;
         }
 
-        const int somethingAboutY = m_somethingAboutY;
-        if (somethingAboutY == 0) {
-            m_fTextRenderPosEndY = bgHeight + startY;
-        } else if (somethingAboutY == 1) {
-            float newY = ((endY + startY) - bgHeight) * 0.5f;
-            m_fTextRenderPosStartY = newY;
-            m_fTextRenderPosEndY = newY + bgHeight;
-        } else if (somethingAboutY == 2) {
-            m_fTextRenderPosStartY =
-                endY - bgHeight;
-            return;
+        switch (m_justificationVertical) {
+            case CTextBoard::JUSTIFY_TOP:
+                m_fTextRenderPosEndY = bgHeight + startY;
+                break;
+            case CTextBoard::JUSTIFY_MIDDLE: {
+                float newY = ((endY + startY) - bgHeight) * 0.5f;
+                m_fTextRenderPosStartY = newY;
+                m_fTextRenderPosEndY = newY + bgHeight;
+            } break;
+            case CTextBoard::JUSTIFY_BOTTOM:
+                m_fTextRenderPosStartY = endY - bgHeight;
+                break;
         }
     }
 }
