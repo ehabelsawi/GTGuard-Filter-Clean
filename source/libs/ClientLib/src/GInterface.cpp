@@ -410,7 +410,7 @@ void CGInterface::FUN_00777c30(ChatType type, const wchar_t *message, D3DCOLOR c
     chatViewer->FUN_007aca30(type, color, message, 0, a5);
 }
 
-void CGInterface::FUN_00778a10(int a2, const wchar_t *message, D3DCOLOR color) {
+void CGInterface::WriteInMarketChatMsg(int a2, const wchar_t *message, D3DCOLOR color) {
     reinterpret_cast<
             void (__thiscall *)(CGInterface *, int, const wchar_t *, D3DCOLOR)
             >(0x00778a10)(this, a2, message, color);

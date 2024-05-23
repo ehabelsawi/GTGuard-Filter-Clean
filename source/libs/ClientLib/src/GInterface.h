@@ -240,7 +240,7 @@ public:
     void FUN_00777c30(ChatType type, const wchar_t *message, D3DCOLOR color, int a5);
 
     /// \address 00778a10
-    void FUN_00778a10(int a2, const wchar_t *message, D3DCOLOR color);
+    void WriteInMarketChatMsg(int a2, const wchar_t *message, D3DCOLOR color);
 
     /// \address 00777cf0
     void FUN_00777cf0(const std::n_wstring &recipient);
