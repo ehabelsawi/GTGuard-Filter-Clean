@@ -264,6 +264,9 @@ public:
     /// \address 00799920
     CNIFWorldMap *GetWorldMap();
 
+    /// \address 0079a840
+    void SaveGWndPostion(DWORD dwID, wnd_pos sWndPos);
+
 private:
     /// \address 0079a7e0
     void FUN_0079a7e0(CGWndBase *pGWnd) const;
