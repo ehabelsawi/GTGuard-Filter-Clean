@@ -197,7 +197,7 @@ public:
     void ToggleWorldMap();
 
     /// \address 0079C750
-    void Render_GDR_AUTO_POTION(bool visible);
+    void ToggleAutoPotion(bool bVisible);
 
     /// \address 00778B70
     int Get_SelectedObjectId();

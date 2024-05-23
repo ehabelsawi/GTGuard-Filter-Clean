@@ -160,8 +160,8 @@ void CGInterface::ToggleWorldMap() {
     SetOnMiddleOfScreen(GDR_WORLDMAP);
 }
 
-void CGInterface::Render_GDR_AUTO_POTION(bool visible) {
-    return reinterpret_cast<void (__thiscall *)(void *, bool)>(0x0079C750)(this, visible);
+void CGInterface::ToggleAutoPotion(bool bVisible) {
+    return reinterpret_cast<void (__thiscall *)(void *, bool)>(0x0079C750)(this, bVisible);
 }
 
 void CGInterface::CreateFlorian0Event() {
