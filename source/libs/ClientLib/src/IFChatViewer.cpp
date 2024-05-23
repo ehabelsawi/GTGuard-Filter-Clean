@@ -510,7 +510,7 @@ int CIFChatViewer::OnChar(UINT nChar, UINT a2, UINT a3) {
 
                 std::n_wstring chatMessageToBeSend(L"");
 
-                if (N00009C5E == CHAT_Union && g_pMyPlayerObj && g_CCharacterDependentData.sub_988A50()) {
+                if (N00009C5E == CHAT_Union && g_pMyPlayerObj && g_CCharacterDependentData.IsGuildInAnAlliance()) {
                     wchar_t buffer[256];
                     swprintf_s(buffer, L"-%s): ", g_pMyPlayerObj->GetGuildName().c_str());
 

@@ -24,7 +24,7 @@ public:
     bool IsInTrainingCamp() const;
 
     /// \address 00988A50
-    bool sub_988A50() const;
+    bool IsGuildInAnAlliance() const;
 
     /// \address 00993120
     int FUN_00993120(const std::n_wstring &characterName) const;

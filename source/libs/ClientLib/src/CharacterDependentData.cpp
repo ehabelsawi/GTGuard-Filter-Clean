@@ -1,6 +1,6 @@
 #include "CharacterDependentData.h"
 
-bool CCharacterDependentData::sub_988A50() const {
+bool CCharacterDependentData::IsGuildInAnAlliance() const {
     return reinterpret_cast<bool (__thiscall *)(const CCharacterDependentData *)>(0x988A50)(this);
 }
 
