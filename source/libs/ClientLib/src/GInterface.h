@@ -20,6 +20,7 @@
 #include "AutoPotion.h"
 
 #include "SRIFLib/NInterfaceResource.h"
+#include "SRIFLib/NIFGuildWnd.h"
 #include "SRIFLib/NIFCommunityWnd.h"
 #include "SRIFLib/NIFWorldMap.h"
 
@@ -41,6 +42,7 @@
 #define GDR_GUILDSTORAGEROOM 145
 #define GDR_EXT_QUICK_SLOT 133
 #define GDR_AUTO_POTION 135
+#define GDR_GUILD_WND 176
 
 #define g_pCGInterface (*(CGInterface**)0x0110F80C)
 
