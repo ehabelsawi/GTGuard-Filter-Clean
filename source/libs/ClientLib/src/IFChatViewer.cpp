@@ -1208,3 +1208,13 @@ void inline CIFChatViewer::BlockChatIf(int msgLimit, int timeLimitMs, int timeou
         }
     }
 }
+
+void CIFChatViewer::SetLastWhisperedWith(std::n_wstring &wstrName) {
+    if (g_pMyPlayerObj == NULL)
+        return;
+
+    if (g_pMyPlayerObj->GetCharName() == wstrName)
+        return;
+
+    N00009C82 = wstrName;
+}

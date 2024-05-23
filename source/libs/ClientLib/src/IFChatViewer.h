@@ -180,6 +180,9 @@ public:
     /// \address 007A9A70
     void SetFocusToInputBox();
 
+    /// \address 007ab5c0
+    void SetLastWhisperedWith(std::n_wstring &wstrName);
+
 private:
     /// Sets the targetName-parameter as the Whisper-target
     /// \address 007AB470
@@ -238,7 +241,7 @@ private:
     int N00009C80; //0x04A8
     char N00009C81; //0x04AC
 
-    std::wstring N00009C82; //0x04B0
+    std::n_wstring N00009C82; //0x04B0
 
 public:
     BEGIN_FIXTURE()
