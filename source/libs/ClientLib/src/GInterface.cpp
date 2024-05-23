@@ -147,8 +147,17 @@ void CGInterface::ToggleMainPopup() {
     FUN_0079a7e0(m_mainPopup);
 }
 
+HOOK_ORIGINAL_MEMBER(0x0079abe0, &CGInterface::ToggleWorldMap);
 void CGInterface::ToggleWorldMap() {
-    return reinterpret_cast<void (__thiscall *)(void *)>(0x0079ABE0)(this);
+    if (GetWorldMap() == NULL) {
+        g_sNewInterfaceMgr.InstantiateDimensional("res_ui\\worldmapguide.2dt", this, false);
+        SetOnMiddleOfScreen(GDR_WORLDMAP);
+        return;
+    }
+
+    g_sNewInterfaceMgr.GetInterfaceObj(GDR_WORLDMAP)->OnGWndShow();
+    FUN_0079ab80(g_sNewInterfaceMgr.GetInterfaceObj(GDR_WORLDMAP));
+    SetOnMiddleOfScreen(GDR_WORLDMAP);
 }
 
 void CGInterface::Render_GDR_AUTO_POTION(bool visible) {
@@ -357,6 +366,10 @@ CIFSystemMessage *CGInterface::GetSystemMessageView() {
 
 void CGInterface::FUN_0079a7e0(CGWndBase *pGWnd) const {
     reinterpret_cast<void (__thiscall *)(const CGInterface *, CGWndBase *)>(0x0079a7e0)(this, pGWnd);
+}
+
+void CGInterface::FUN_0079ab80(CNIFWnd *pWnd) {
+    reinterpret_cast<void(__thiscall *)(const CGInterface *, CNIFWnd *)>(0x0079ab80)(this, pWnd);
 }
 
 void CGInterface::FUN_0079b8a0(undefined1 a1, undefined4 a2) {

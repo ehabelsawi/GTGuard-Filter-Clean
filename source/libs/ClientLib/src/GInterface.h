@@ -268,6 +268,10 @@ private:
     /// \address 0079a7e0
     void FUN_0079a7e0(CGWndBase *pGWnd) const;
 
+    /// \address 0079ab80
+    /// same but difffffffreeeent
+    void FUN_0079ab80(CNIFWnd *pWnd);
+
     /// \address 00798c50
     void SetOnMiddleOfScreen(DWORD dwNInterfaceID);
 
