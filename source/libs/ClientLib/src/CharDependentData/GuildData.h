@@ -4,7 +4,7 @@
 
 #include "BSLib/BSLib.h"
 
-class CGuildData {
+struct SGuildData {
 	// Constructor 0099bd90
 private:
     char pad_0004[4]; //0x0004
