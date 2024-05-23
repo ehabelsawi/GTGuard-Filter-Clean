@@ -414,7 +414,7 @@ void CGInterface::WriteInMarketChatMsg(BYTE btChatType, LPCWSTR lpszMsg, D3DCOLO
     m_pMarketChatModule[btChatType]->WriteChatMessage(lpszMsg, dwColor);
 }
 
-void CGInterface::FUN_00777cf0(const std::n_wstring &recipient) {
+void CGInterface::AddTargetToWhisperList(const std::n_wstring &recipient) {
     reinterpret_cast<void (__thiscall *)(CGInterface *, const std::n_wstring *)>(0x00777cf0)(this, &recipient);
 }
 

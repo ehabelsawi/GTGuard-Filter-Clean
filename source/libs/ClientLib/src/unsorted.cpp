@@ -259,12 +259,11 @@ void __stdcall WriteToChatWindow(ChatType type, const std::n_wstring &strRecipie
         return;
     }
 
-
     std::n_wstring local_80 = strRecipientCopy + local_64 + strMessageCopy;
     g_pCGInterface->FUN_00777c30(type, local_80.c_str(), color, 1);
 
     if (type == CHAT_PM) {
-        g_pCGInterface->FUN_00777cf0(strRecipient);
+        g_pCGInterface->AddTargetToWhisperList(strRecipient);
         return;
     } else {
         if ((type == CHAT_All) || (type == CHAT_AllGM) || (type == CHAT_Global) || (type == CHAT_NPC)) {
