@@ -202,3 +202,18 @@ void CGWndBase::UnLockList(BYTE btLockType) {
 
     m_lnListLockWrite--;
 }
+
+CGWndBase *CGWndBase::GetChildControl(DWORD dwID) {
+    LockList(LIST_LOCK_READ);
+
+    GWND_LIST::const_iterator it = N00000707.begin();
+    for (; it != N00000707.end(); it++) {
+        if ((*it)->m_UniqueID == dwID) {
+            UnLockList(LIST_LOCK_READ);
+            return (*it);
+        }
+    }
+    
+    UnLockList(LIST_LOCK_READ);
+    return NULL;
+}

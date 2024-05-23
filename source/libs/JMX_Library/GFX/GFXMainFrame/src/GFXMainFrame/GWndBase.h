@@ -15,8 +15,12 @@ struct Event3D {
     int wParam; //0x0018
 }; //Size: 0x001C
 
+class CGWndBase;
+
 #define LIST_LOCK_READ 1
 #define LIST_LOCK_WRITE 2
+
+typedef std::n_list<CGWndBase *> GWND_LIST;
 
 /**
  * This class acts as a parent for any control and provides a container for child-controls
@@ -189,6 +193,9 @@ public:
     /// \address 00b8f300
     void UnLockList(BYTE btLockType);
 
+    /// \address 00b90b00
+    CGWndBase *GetChildControl(DWORD dwID);
+
 protected:
     /// \address 00B8F440
     void sub_B8F440(const RECT &rect);
@@ -222,11 +229,8 @@ private:
     short N00000705; //0x0070
     char pad_0072[6]; //0x0072
 public:
-    std::n_list<CGWndBase *> N00000707; //0x0078
-
-
-
-
+    GWND_LIST N00000707;//0x0078
+private:
 BEGIN_FIXTURE()
         ENSURE_SIZE(132)
     END_FIXTURE()
