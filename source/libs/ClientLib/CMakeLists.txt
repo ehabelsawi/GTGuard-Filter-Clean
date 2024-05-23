@@ -23,6 +23,7 @@ target_sources(ClientLib PRIVATE
         src/IFBuffViewer.cpp
         src/IFButton.cpp
         src/IFChatModeViewer.cpp
+        src/IFChatModule.cpp
         src/IFChatOptionBoard.cpp
         src/IFChatViewer.cpp
         src/IFCheckBox.cpp

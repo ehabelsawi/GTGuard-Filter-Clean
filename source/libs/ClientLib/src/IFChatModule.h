@@ -7,6 +7,10 @@
 #include "IFTextBox.h"
 
 class CIFChatModule : public CIFFrame {
+public:
+    /// \address 0065b370
+    void WriteChatMessage(LPCWSTR lpszMsg, D3DCOLOR colorText);
+
 private:
     char pad_07b0[4]; //0x07B0
     CIFVerticalScroll *m_pVScroll; //0x07B4
