@@ -1,17 +1,17 @@
 #pragma once
 
-#include "CharacterStatistics.h"
-#include "PartyData.h"
-#include "PartyMemberData.h"
 #include "support/AbiTest.h"
 #include <ghidra/undefined.h>
 
+#include "CharacterStatistics.h"
+
+#include "PartyData.h"
+#include "PartyMemberData.h"
+
 #define g_CCharacterDependentData (*reinterpret_cast<CCharacterDependentData*>(0x00eeebd8))
 
-class CCharacterDependentData {
-
+class CCharacterDependentData : public CObjChild {
 public:
-
     /// \address 00987070
     bool IsInParty() const;
 
@@ -49,12 +49,9 @@ public:
     undefined4 FUN_00992940(std::n_wstring *param_1);
 
 private:
-
-    char pad[0x20];
     SPartyData m_partyData; // 0x0020
-
 private:
-    BEGIN_FIXTURE()
+BEGIN_FIXTURE()
         ENSURE_OFFSET(m_partyData, 0x0020)
     END_FIXTURE()
 
