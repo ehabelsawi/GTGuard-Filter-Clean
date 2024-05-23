@@ -38,6 +38,7 @@
 #define GDR_SYSTEM_MESSAGE_VIEW 68
 #define GDR_GUILDSTORAGEROOM 145
 #define GDR_EXT_QUICK_SLOT 133
+#define GDR_AUTO_POTION 135
 
 #define g_pCGInterface (*(CGInterface**)0x0110F80C)
 

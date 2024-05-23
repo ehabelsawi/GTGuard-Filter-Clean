@@ -160,8 +160,31 @@ void CGInterface::ToggleWorldMap() {
     SetOnMiddleOfScreen(GDR_WORLDMAP);
 }
 
+HOOK_ORIGINAL_MEMBER(0x0079c750, &CGInterface::ToggleAutoPotion);
 void CGInterface::ToggleAutoPotion(bool bVisible) {
-    return reinterpret_cast<void (__thiscall *)(void *, bool)>(0x0079C750)(this, bVisible);
+    CIFWnd *pAutoPotion = m_IRM.GetResObj(GDR_AUTO_POTION, true);
+
+    if (!bVisible) {
+        if (pAutoPotion == NULL)
+            return;
+
+        SaveGWndPostion(GDR_AUTO_POTION, pAutoPotion->GetPos());
+
+        pAutoPotion->ShowGWnd(false);
+        m_IRM.DeleteCreatedSection("AutoPotion");
+        return;
+    }
+
+    if (pAutoPotion != NULL)
+        return;
+
+    m_IRM.CreateInterfaceSection("AutoPotion", this);
+
+    pAutoPotion = m_IRM.GetResObj(GDR_AUTO_POTION, true);
+    SaveGWndPosOnMiddleOfScreen(GDR_AUTO_POTION, NULL);
+    pAutoPotion->ShowGWnd(true);
+
+    FUN_0079a7e0(pAutoPotion);
 }
 
 void CGInterface::CreateFlorian0Event() {
