@@ -35,7 +35,7 @@ CIFWnd::CIFWnd(void) {
 
     this->m_FontTexture.SetColor(D3DCOLOR_RGBA(255, 255, 255, 255));
     this->N0000061B = 0;
-    this->N0000061C = L"";
+    this->m_wstrTooltip= L"";
     this->N00000615 = 1.0;
     this->N00000608 = 0;
     this->N00000617 = 1.0;
@@ -213,7 +213,7 @@ void CIFWnd::Func_47(int) {
 }
 
 // CIFWnd::Func_48(void) .text 006528C0 0000008D 0000001C 00000000 R . . . . . .
-void CIFWnd::Func_48() {
+void CIFWnd::EnableTooltip() {
     assert(FALSE);
 }
 
@@ -273,8 +273,11 @@ void CIFWnd::SetSomeRect(const RECT &rect) {
     m_someRECT = rect;
 }
 
-void CIFWnd::SetTooltipText(const std::n_wstring *str) {
-    reinterpret_cast<void (__thiscall *)(CIFWnd *, const std::n_wstring *)>(0x653DC0)(this, str);
+void CIFWnd::SetTooltip(const std::n_wstring &wstrText) {
+    m_wstrTooltip = wstrText;
+
+    if (IsParentOf(g_CurrentIfUnderCursor) && IsStyleThingy(TOOLTIP))
+        EnableTooltip();
 }
 
 void CIFWnd::SetStyleThingy(StyleOptions option) {
