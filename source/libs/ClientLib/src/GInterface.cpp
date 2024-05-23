@@ -461,9 +461,9 @@ void CGInterface::SetOnMiddleOfScreen(DWORD dwNInterfaceID) {
     if (pWnd == NULL)
         return;
 
-    pWnd->MoveGWnd(
-        (theApp.GetClientDimensionStuff().width / 2) - (pWnd->GetBounds().size.width / 2),
-        (theApp.GetClientDimensionStuff().height / 2) - (pWnd->GetBounds().size.height / 2));
+    wnd_pos sNewPos = {(theApp.GetClientDimensionStuff().width / 2) - (pWnd->GetBounds().size.width / 2),
+                       (theApp.GetClientDimensionStuff().height / 2) - (pWnd->GetBounds().size.height / 2)};
+    pWnd->MoveGWnd2(sNewPos);
 }
 
 void CGInterface::SaveGWndPostion(DWORD dwID, CGWnd::wnd_pos sWndPos) {
@@ -481,7 +481,7 @@ void CGInterface::SaveGWndPosOnMiddleOfScreen(DWORD dwID, CGWnd *pParent) {
 
     wnd_pos sNewPos = {(theApp.GetClientDimensionStuff().width / 2) - (pWnd->GetBounds().size.width / 2),
                        (theApp.GetClientDimensionStuff().height / 2) - (pWnd->GetBounds().size.height / 2)};
-    pWnd->MoveGWnd(sNewPos.x, sNewPos. y);
+    pWnd->MoveGWnd2(sNewPos);
 
     SaveGWndPostion(dwID, sNewPos);
 }
