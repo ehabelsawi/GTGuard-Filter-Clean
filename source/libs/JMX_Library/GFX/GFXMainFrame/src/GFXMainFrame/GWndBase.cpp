@@ -169,3 +169,20 @@ bool CGWndBase::SendMessageToParentDispatcher(DWORD dwMSG, DWORD lParam, DWORD w
 void CGWndBase::SetPosition(int nX, int nY) {
     reinterpret_cast<void (__thiscall *)(CGWndBase *, int, int)>(0x00b90d90)(this, nX, nY);
 }
+
+void CGWndBase::LockList(BYTE btLockType) {
+    if (btLockType & LIST_LOCK_READ) {
+        BS_ASSERT(m_lnListLockWrite == 0);
+
+        m_lnListLockRead++;
+        return;
+    }
+
+    if (!(btLockType & LIST_LOCK_WRITE))
+        return;
+
+    BS_ASSERT(m_lnListLockWrite == 0);
+    BS_ASSERT(m_lnListLockRead == 0);
+
+    m_lnListLockWrite++;
+}
