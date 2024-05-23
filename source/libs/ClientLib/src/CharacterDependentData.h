@@ -26,15 +26,6 @@ public:
     /// \address 00988A50
     bool sub_988A50() const;
 
-    /// \address 00986f50
-    const SPartyData &GetPartyData() const;
-
-    /// \address 00992400
-    const SPartyMemberData &GetPartyMemberData(int memberId) const;
-
-    /// \address 00987090
-    const SCharacterStatistics &FUN_00987090() const;
-
     /// \address 00993120
     int FUN_00993120(const std::n_wstring &characterName) const;
 
@@ -50,11 +41,28 @@ public:
     /// \address 00992940
     undefined4 FUN_00992940(std::n_wstring *param_1);
 
+public:
+    /// \address 00986f50
+    const SPartyData &GetPartyData() const;
+
+    /// \address 00992400
+    const SPartyMemberData &GetPartyMemberData(int memberId) const;
+
+    /// \address 00987090
+    const SCharacterStatistics &FUN_00987090() const;
+
+    /// \address 009870d0
+    /// <returns>SGuildData pointer</returns>
+    const SGuildData &GetGuildData() const;
+
 private:
-    SPartyData m_partyData; // 0x0020
+    SPartyData m_partyData; //0x0020
+    char pad_0034[276]; //0x0034
+    SGuildData m_sGuildData; //0x0148
 private:
 BEGIN_FIXTURE()
         ENSURE_OFFSET(m_partyData, 0x0020)
+        ENSURE_OFFSET(m_sGuildData, 0x0148)
     END_FIXTURE()
 
     RUN_FIXTURE(CCharacterDependentData)
