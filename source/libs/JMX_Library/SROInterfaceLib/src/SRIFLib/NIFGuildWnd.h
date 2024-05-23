@@ -13,7 +13,7 @@ private:
     char pad_07a8[0x0840 - 0x07a8]; //0x07A8
 private:
 BEGIN_FIXTURE()
-        ENSURE_SIZE(0x0B40)
+        ENSURE_SIZE(0x0840)
         ENSURE_OFFSET(m_pCommunity, 0x07A4)
     END_FIXTURE()
 
