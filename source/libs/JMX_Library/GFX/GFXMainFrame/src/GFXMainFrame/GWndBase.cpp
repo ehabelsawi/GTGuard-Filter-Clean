@@ -186,3 +186,19 @@ void CGWndBase::LockList(BYTE btLockType) {
 
     m_lnListLockWrite++;
 }
+
+void CGWndBase::UnLockList(BYTE btLockType) {
+    if (btLockType & LIST_LOCK_READ) {
+        BS_ASSERT(m_lnListLockRead);
+
+        m_lnListLockRead--;
+        return;
+    }
+
+    if (!(btLockType & LIST_LOCK_WRITE))
+        return;
+
+    BS_ASSERT(m_lnListLockWrite);
+
+    m_lnListLockWrite--;
+}

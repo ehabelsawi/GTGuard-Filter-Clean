@@ -186,6 +186,9 @@ public:
     /// \address 00b9daf0
     void LockList(BYTE btLockType);
 
+    /// \address 00b8f300
+    void UnLockList(BYTE btLockType);
+
 protected:
     /// \address 00B8F440
     void sub_B8F440(const RECT &rect);
