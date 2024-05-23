@@ -5,7 +5,7 @@ bool CCharacterDependentData::sub_988A50() const {
 }
 
 bool CCharacterDependentData::IsInParty() const {
-    return reinterpret_cast<bool (__thiscall *)(const CCharacterDependentData *)>(0x00987070)(this);
+    return GetPartyData().bInParty;
 }
 
 bool CCharacterDependentData::IsInGuild() const {
