@@ -175,7 +175,7 @@ public:
     void ToggleGameGuide();
 
     /// \address 0079b140
-    void ToggleGameGuide(bool bVisible);
+    void ToggleGGuide(bool bVisible);
 
     /// \address 0079B020
     void ToggleInventoryWnd();

@@ -58,11 +58,19 @@ void CGInterface::TogglePlayerInfoWnd() {
     }
 }
 
+HOOK_ORIGINAL_MEMBER(0x0079f690, &CGInterface::ToggleGameGuide);
 void CGInterface::ToggleGameGuide() {
-    return reinterpret_cast<void (__thiscall *)(void *)>(0x0079F690)(this);
+    if (m_IRM.GetResObj(GDR_GAMEGUIDE, true) == NULL) {
+        ToggleGGuide(true);
+        FUN_0079a7e0(m_IRM.GetResObj(GDR_GAMEGUIDE, true));
+        return;
+    }
+
+    ToggleGGuide(false);
+    FUN_0079a7e0(m_IRM.GetResObj(GDR_GAMEGUIDE, true));
 }
 
-void CGInterface::ToggleGameGuide(bool bVisible) {
+void CGInterface::ToggleGGuide(bool bVisible) {
     CIFWnd *pGGuide = m_IRM.GetResObj(GDR_GAMEGUIDE, true);
     if (!bVisible) {
         if (pGGuide == NULL)
