@@ -191,7 +191,7 @@ public:
     void ToggleMainPopup();
 
     /// \address 0079ABE0
-    void RenderToggle_WORLDMAP_GUIDE();
+    void ToggleWorldMap();
 
     /// \address 0079C750
     void Render_GDR_AUTO_POTION(bool visible);

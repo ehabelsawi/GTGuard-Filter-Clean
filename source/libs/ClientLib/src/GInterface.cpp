@@ -147,7 +147,7 @@ void CGInterface::ToggleMainPopup() {
     FUN_0079a7e0(m_mainPopup);
 }
 
-void CGInterface::RenderToggle_WORLDMAP_GUIDE() {
+void CGInterface::ToggleWorldMap() {
     return reinterpret_cast<void (__thiscall *)(void *)>(0x0079ABE0)(this);
 }
 
