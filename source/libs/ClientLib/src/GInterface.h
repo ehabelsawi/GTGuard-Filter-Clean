@@ -171,7 +171,7 @@ public:
     void TogglePlayerInfoWnd();
 
     /// \address 0079F690
-    void RenderToggle_GDR_GAMEGUIDE();
+    void ToggleGameGuide();
 
     /// \address 0079B020
     void ToggleInventoryWnd();

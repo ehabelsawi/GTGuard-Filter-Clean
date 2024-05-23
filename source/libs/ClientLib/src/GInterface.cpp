@@ -58,7 +58,7 @@ void CGInterface::TogglePlayerInfoWnd() {
     }
 }
 
-void CGInterface::RenderToggle_GDR_GAMEGUIDE() {
+void CGInterface::ToggleGameGuide() {
     return reinterpret_cast<void (__thiscall *)(void *)>(0x0079F690)(this);
 }
 
