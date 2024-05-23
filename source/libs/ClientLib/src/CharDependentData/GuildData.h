@@ -20,5 +20,5 @@ BEGIN_FIXTURE()
 		ENSURE_OFFSET(m_setAlliance, 0x0094)
     END_FIXTURE()
 
-	RUN_FIXTURE(CGuildData)
+	RUN_FIXTURE(SGuildData)
 };
