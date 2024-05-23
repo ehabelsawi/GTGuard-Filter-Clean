@@ -268,6 +268,9 @@ private:
     /// \address 0079a7e0
     void FUN_0079a7e0(CGWndBase *pGWnd) const;
 
+    /// \address 00798c50
+    void SetOnMiddleOfScreen(DWORD dwNInterfaceID);
+
 private:
 public:
     CIRMManager m_IRM; //0x036C

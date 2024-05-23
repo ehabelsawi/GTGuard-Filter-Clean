@@ -389,4 +389,14 @@ void CGInterface::FUN_00777a70(undefined4 param_1, undefined4 param_2) {
 
 CNIFWorldMap *CGInterface::GetWorldMap() {
     return g_sNewInterfaceMgr.GetInterfaceObj<CNIFWorldMap>(GDR_WORLDMAP);
+} 
+
+void CGInterface::SetOnMiddleOfScreen(DWORD dwNInterfaceID) {
+    CNIFWnd *pWnd = g_sNewInterfaceMgr.GetInterfaceObj(dwNInterfaceID);
+    if (pWnd == NULL)
+        return;
+
+    pWnd->MoveGWnd(
+        (theApp.GetClientDimensionStuff().width / 2) - (pWnd->GetBounds().size.width / 2),
+        (theApp.GetClientDimensionStuff().height / 2) - (pWnd->GetBounds().size.height / 2));
 }
