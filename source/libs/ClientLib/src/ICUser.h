@@ -3,12 +3,14 @@
 #include "ICharactor.h"
 #include "UserGuildInfo.h"
 
-#define USER_TIMER_IDX_MESSAGE_ABOVE 10
-
 class CICUser : public CICharactor {
     GFX_DECLARE_DYNAMIC_EXISTING(CICUser, 0x00ef1bc0)
 public:
+    enum eUserTimer : int {
+        TIMER_MESSAGE_ABOVE = 10,
+    };
 
+public:
     /// \address 009dea30
     void Func_15(int param_1, float *param_2) override;
     void Func_15_impl(int param_1, float *param_2);

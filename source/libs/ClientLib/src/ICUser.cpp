@@ -416,6 +416,6 @@ void CICUser::ShowMessageAboveEntity(const std::n_wstring &message, D3DCOLOR col
     m_textureMessageAbove.SetColor(color);
     m_textureMessageAbove.FUN_008b3bd0(message);
 
-    KillTimer(USER_TIMER_IDX_MESSAGE_ABOVE);
-    StartTimer(USER_TIMER_IDX_MESSAGE_ABOVE, MESSAGE_ABOE_TIME_MS);
+    KillTimer(TIMER_MESSAGE_ABOVE);
+    StartTimer(TIMER_MESSAGE_ABOVE, MESSAGE_ABOE_TIME_MS);
 }
