@@ -18,7 +18,9 @@
 #include "MessageBoxManager.h"
 #include "AutoPotion.h"
 
+#include "SRIFLib/NInterfaceResource.h"
 #include "SRIFLib/NIFCommunityWnd.h"
+#include "SRIFLib/NIFWorldMap.h"
 
 #include "unsorted.h"
 #include "IFSystemMessage.h"
@@ -29,6 +31,7 @@
 #define GDR_NOTICE 20
 #define GDR_MAINPOPUP 25
 #define GDR_EXCHANGE 26
+#define GDR_WORLDMAP 28
 #define GDR_NPCWINDOW 30
 #define GDR_WARNING_WND 35
 #define GDR_UPDATE_QUEST_INFO 42
@@ -257,6 +260,9 @@ public:
 
     /// \address 00799840
     CIFExtQuickSlot *GetExtQuickSlot();
+
+    /// \address 00799920
+    CNIFWorldMap *GetWorldMap();
 
 private:
     /// \address 0079a7e0

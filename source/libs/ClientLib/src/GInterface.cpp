@@ -386,3 +386,7 @@ CIFExtQuickSlot *CGInterface::GetExtQuickSlot() {
 void CGInterface::FUN_00777a70(undefined4 param_1, undefined4 param_2) {
     reinterpret_cast<void(__thiscall *)(CGInterface *, undefined4, undefined4)>(0x00777a70)(this, param_1, param_2);
 }
+
+CNIFWorldMap *CGInterface::GetWorldMap() {
+    return g_sNewInterfaceMgr.GetInterfaceObj<CNIFWorldMap>(GDR_WORLDMAP);
+}
