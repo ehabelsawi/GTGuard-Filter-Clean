@@ -414,8 +414,8 @@ void CGInterface::WriteInMarketChatMsg(BYTE btChatType, LPCWSTR lpszMsg, D3DCOLO
     m_pMarketChatModule[btChatType]->WriteChatMessage(lpszMsg, dwColor);
 }
 
-void CGInterface::AddTargetToWhisperList(const std::n_wstring &recipient) {
-    reinterpret_cast<void (__thiscall *)(CGInterface *, const std::n_wstring *)>(0x00777cf0)(this, &recipient);
+void CGInterface::AddTargetToWhisperList(std::n_wstring &recipient) {
+    m_IRM.GetResObj<CIFChatViewer>(GDR_CHAT_BOARD, true)->AddWhisperTargetToList(recipient);
 }
 
 CIFSystemMessage *CGInterface::GetSystemMessageView() {

@@ -253,7 +253,7 @@ public:
     void WriteInMarketChatMsg(BYTE btChatType, LPCWSTR lpszMsg, D3DCOLOR dwColor);
 
     /// \address 00777cf0
-    void AddTargetToWhisperList(const std::n_wstring &recipient);
+    void AddTargetToWhisperList(std::n_wstring &recipient);
 
     /// \address 00778190
     void WriteErrorMessage(byte errorType, unsigned __int16 errorCode, int colorARGB, int a5, int a6);
