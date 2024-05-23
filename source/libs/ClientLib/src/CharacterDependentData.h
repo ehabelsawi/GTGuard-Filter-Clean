@@ -8,6 +8,8 @@
 #include "PartyData.h"
 #include "PartyMemberData.h"
 
+#include "CharDependentData/GuildData.h"
+
 #define g_CCharacterDependentData (*reinterpret_cast<CCharacterDependentData*>(0x00eeebd8))
 
 class CCharacterDependentData : public CObjChild {
