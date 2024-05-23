@@ -255,7 +255,7 @@ void __stdcall WriteToChatWindow(ChatType type, const std::n_wstring &strRecipie
 
     if (type == CHAT_Stall) {
         std::n_wstring local_80 = strRecipientCopy + local_64 + strMessageCopy;
-        g_pCGInterface->FUN_00778a10(1, local_80.c_str(), color);
+        g_pCGInterface->WriteInMarketChatMsg(STALL_CHAT, local_80.c_str(), color);
         return;
     }
 

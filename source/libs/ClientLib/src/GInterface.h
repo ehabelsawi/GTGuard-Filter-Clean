@@ -15,6 +15,7 @@
 #include "IFMainPopup.h"
 #include "IFSkillPracticeBox.h"
 #include "IFHelperBubbleWindow.h"
+#include "IFChatModule.h"
 #include "MessageBoxManager.h"
 #include "AutoPotion.h"
 
@@ -47,6 +48,13 @@ enum eLogType : int {
     SYSLOG_NONE = 0,
     SYSLOG_ERR = 4,
     SYSLOG_GUIDE = 6
+};
+
+enum eMarketChatType : BYTE {
+    UNKNOWN_CHAT, // what deal windows has chat inside it?
+    STALL_CHAT,
+
+    MARKET_CHAT_NUM
 };
 
 struct SChatMetaData {
@@ -240,7 +248,7 @@ public:
     void FUN_00777c30(ChatType type, const wchar_t *message, D3DCOLOR color, int a5);
 
     /// \address 00778a10
-    void WriteInMarketChatMsg(int a2, const wchar_t *message, D3DCOLOR color);
+    void WriteInMarketChatMsg(BYTE btChatType, LPCWSTR lpszMsg, D3DCOLOR dwColor);
 
     /// \address 00777cf0
     void FUN_00777cf0(const std::n_wstring &recipient);
@@ -328,7 +336,8 @@ private:
     CIFSkillPracticeBox *m_skillUpWindow; //0x072C
     CIFHelperBubbleWindow *m_helperWindow; //0x0730
     CIFHelperBubbleWindow *N00002717; //0x0734
-    char pad_0x0738[0x10]; //0x0738
+    char pad_0738[8]; //0x0738
+    CIFChatModule *m_pMarketChatModule[MARKET_CHAT_NUM]; //0x0740
     CMessageBoxManager m_messageBoxManager; //0x0748
     class CMessageTipManager *m_pCMessageTipManager; //0x0774 774
     class CSkillCoolTimeManager *m_pCSkillCoolTimeManager; //0x0778
@@ -350,6 +359,7 @@ private:
 BEGIN_FIXTURE()
         ENSURE_SIZE(0x854)
         ENSURE_OFFSET(m_field_4fc, 0x04FC)
+        ENSURE_OFFSET(m_pMarketChatModule, 0x740)
         ENSURE_OFFSET(m_pCSkillRunTimeManager, 0x780)
         ENSURE_OFFSET(m_bDisappeard, 0x07BA)
         ENSURE_OFFSET(field_0x7cd, 0x7cd)
