@@ -13,7 +13,7 @@ bool CCharacterDependentData::IsInGuild() const {
 }
 
 bool CCharacterDependentData::IsInTrainingCamp() const {
-    return reinterpret_cast<bool (__thiscall *)(const CCharacterDependentData *)>(0x00987140)(this);
+    return GetTrainingCampData().bIsAcademyRegistered;
 }
 
 int CCharacterDependentData::FUN_00993120(const std::n_wstring &characterName) const {
