@@ -9,6 +9,7 @@
 #include "PartyMemberData.h"
 
 #include "CharDependentData/GuildData.h"
+#include "CharDependentData/TrainingCampData.h"
 
 #define g_CCharacterDependentData (*reinterpret_cast<CCharacterDependentData*>(0x00eeebd8))
 
