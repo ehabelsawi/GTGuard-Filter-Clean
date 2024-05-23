@@ -77,13 +77,7 @@ public:
 
     virtual void Func_54();
 
-
-    /// \brief Display the given text message above the entity for a certain amount of time.
-    /// \address 009c77c0
-    /// \param message The message to be displayed
-    /// \param color Color of the letters being displayed
-    void ShowMessageAboveEntity(const std::n_wstring &message, D3DCOLOR color);
-
+public:
     unsigned int GetCurrentHp() const;
 
     unsigned int GetMaxHp() const;
@@ -110,9 +104,12 @@ private:
     unsigned int m_hpCurrent; //0x0460
     char pad_0464[4]; //0x0464
     unsigned int N00000A38; //0x0468
-    char pad_046C[16]; //0x046C
-    class CGFontTexture m_textureMessageAbove; //0x047C
-    char pad_04E4[12]; //0x04E4
+    char pad_046C[8]; //0x046C
+protected:
+    class CGFontTexture m_textureMessageAbove; //0x0474
+    D3DCOLOR m_colorMessageAbove; //0x04DC
+private:
+    char pad_04e0[16]; //0x04E0
 protected:
     float m_renderY; //0x04F0
     float m_renderX; //0x04F4
@@ -125,8 +122,7 @@ public:
     uCharacterState m_characterState; // 0x065C
 private:
     char pad_0x660[0x78c - 0x0660];
-
-
+private:
     BEGIN_FIXTURE()
         ENSURE_SIZE(0x78c)
         ENSURE_OFFSET(classLink, 0x274)
@@ -136,7 +132,8 @@ private:
         ENSURE_OFFSET(m_hpMax, 0x0458)
         ENSURE_OFFSET(m_mpMax, 0x045C)
         ENSURE_OFFSET(m_hpCurrent, 0x0460)
-        ENSURE_OFFSET(m_textureMessageAbove, 0x47C)
+        ENSURE_OFFSET(m_textureMessageAbove, 0x474)
+        ENSURE_OFFSET(m_colorMessageAbove, 0x4DC)
         ENSURE_OFFSET(m_renderY, 0x4F0)
         ENSURE_OFFSET(m_renderX, 0x4F4)
         ENSURE_OFFSET(m_renderDepth, 0x4F8)

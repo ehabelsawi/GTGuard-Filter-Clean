@@ -51,6 +51,9 @@ public:
     /// \address 00b94b90
     bool IsKindOf(const CGfxRuntimeClass &rtclass) const;
 
+    /// \address 00b94bb0
+    bool IsDerivedFrom(const CGfxRuntimeClass &rtclass) const;
+
 public:
     virtual ~CObj();
 
@@ -86,7 +89,7 @@ struct CGfxRuntimeClass {
     void (__cdecl *m_pfnDeleteObject)(CObj *);
 
     /// Evaluate if the current class is derived from the given class
-    BOOL IsDerivedFrom(const CGfxRuntimeClass *pBaseClass) const;
+    bool IsDerivedFrom(const CGfxRuntimeClass &pBaseClass) const;
 
     /// Initialize a new instance of this class.
     /// This was probably the constructor.

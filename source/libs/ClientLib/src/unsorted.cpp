@@ -7,7 +7,8 @@
 #include "GInterface.h"
 #include <BSLib/BSLib.h>
 #include <GFX3DFunction/DrawingHelpers.h>
-#include <ICharactor.h>
+
+#include <ICUser.h>
 
 #include "SRIFLib/NIFCommunityWnd.h"
 
@@ -259,7 +260,6 @@ void __stdcall WriteToChatWindow(ChatType type, const std::n_wstring &strRecipie
         return;
     }
 
-
     std::n_wstring local_80 = strRecipientCopy + local_64 + strMessageCopy;
     g_pCGInterface->FUN_00777c30(type, local_80.c_str(), color, 1);
 
@@ -268,23 +268,23 @@ void __stdcall WriteToChatWindow(ChatType type, const std::n_wstring &strRecipie
         return;
     } else {
         if ((type == CHAT_All) || (type == CHAT_AllGM) || (type == CHAT_Global) || (type == CHAT_NPC)) {
-            CICharactor *entity = 0;
+            CICUser *pUser = 0;
             if (uniqueid == 0) {
                 // We don't have an entity-id.
                 // Try getting the entity by looking for the name ...
                 CLASSLINK_LOOP_BEGIN(CICharactor)
                     if (obj->GetName() == strRecipientCopy) {
-                        entity = obj;
+                        pUser = (CICUser *) obj;
                         break;
                     }
                 CLASSLINK_LOOP_END(CICharactor)
             } else {
-                entity = GetCharacterObjectByID_MAYBE(uniqueid);
+                pUser = (CICUser *) GetCharacterObjectByID_MAYBE(uniqueid);
             }
 
             // If we have an entity, display the message above it
-            if (entity != 0) {
-                entity->ShowMessageAboveEntity(strMessageCopy, color);
+            if (pUser != 0) {
+                pUser->ShowMessageAboveEntity(strMessageCopy, color);
             }
         }
     }
