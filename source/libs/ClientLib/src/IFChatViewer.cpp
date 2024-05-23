@@ -108,7 +108,7 @@ bool CIFChatViewer::OnCreate(long ln) {
 
     m_IRM.CreateInterfaceSection("Create", this);
 
-    m_WhisperList = m_IRM.GetResObj(GDR_WHISPERLIST, 1);
+    m_WhisperList = m_IRM.GetResObj<CIFWhisperList>(GDR_WHISPERLIST, 1);
 
     m_pTabs = new CIFSelectableArea *[numberOfTabs];
 
@@ -1217,4 +1217,15 @@ void CIFChatViewer::SetLastWhisperedWith(std::n_wstring &wstrName) {
         return;
 
     N00009C82 = wstrName;
+}
+
+void CIFChatViewer::AddWhisperTargetToList(std::n_wstring &wstrName) {
+    if (g_pMyPlayerObj == NULL)
+        return;
+
+    if (g_pMyPlayerObj->GetCharName() == wstrName)
+        return;
+
+    m_WhisperList->AddToList(wstrName);
+    SetLastWhisperedWith(wstrName);
 }
