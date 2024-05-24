@@ -7,6 +7,9 @@ public:
     /// \address 007B89E0
     void WriteMessage(int a1, D3DCOLOR color, const wchar_t *msg, int a2, int a3);
 
+    /// \address 007b8b40
+    void WriteErrorMessage(BYTE btType, WORD wErrorCode, DWORD dwColor, int a5, int a6);
+
 private:
     char pad_036c[32]; //0x036C
 private:
