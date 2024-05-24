@@ -356,9 +356,11 @@ CIFStorageRoom *CGInterface::Get_GDR_GUILDSTORAGEROOM() {
 }
 
 void CGInterface::WriteErrorMessage(byte errorType, unsigned __int16 errorCode, int colorARGB, int a5, int a6) {
-    return reinterpret_cast<
-            void (__thiscall *)(void *, byte, unsigned __int16, int, int, int)
-            >(0x00778190)(this, errorType, errorCode, colorARGB, a5, a6);
+    CIFSystemMessage *pSystemMsg = m_IRM.GetResObj<CIFSystemMessage>(GDR_SYSTEM_MESSAGE_VIEW, 1);
+    if (pSystemMsg == NULL)
+        return;
+
+    pSystemMsg->WriteErrorMessage(errorType, errorCode, colorARGB, a5, a6);
 }
 
 void CGInterface::WriteSystemMessage(eLogType level, const wchar_t *str) {
