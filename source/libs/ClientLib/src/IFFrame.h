@@ -16,13 +16,13 @@ public:
 
     /// \address 00815230
     bool OnCreate(long ln) override;
-
+    
     /// \address 00815490
     void RenderMyself() override;
 
     /// \address 00815300
-    void Func_49(std::n_string str) override;
-
+    void SetFrameTexture(std::n_string str) override;
+    
 private:
     // No members
 

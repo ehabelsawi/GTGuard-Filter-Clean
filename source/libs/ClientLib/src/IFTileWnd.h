@@ -1,5 +1,17 @@
 #pragma once
-#include "ifwnd.h"
+
+#include "IFWnd.h"
+
+#define CORNER_LEFT_UP 0
+#define CORNER_RIGHT_UP 1
+#define CORNER_RIGHT_DOWN 2
+#define CORNER_LEFT_DOWN 3
+
+#define EDGE_LEFT_SIDE 0
+#define EDGE_MID_UP 1
+#define EDGE_RIGHT_SIDE 2
+#define EDGE_MID_DOWN 3
+
 class CIFTileWnd : public CIFWnd {
     GFX_DECLARE_DYNAMIC_EXISTING(CIFTileWnd, 0x00EECBD4)
 
@@ -29,32 +41,48 @@ public:
     void OnCIFReady() override;
 
     /// \address 0081B540
-    virtual void Func_49(std::n_string str);
+    virtual void SetFrameTexture(std::n_string strTexture);
 
 protected:
     /// \addresss 0081A910
-    void set_N00009B9D(bool a2);
+    void Set_field_036C(bool a2);
 
     /// \address 0081AE00
     void ReleaseTextures();
 
 private:
     /// \address 0081ace0
-    void FUN_0081ace0();
+    void InitializeFrameTextures();
+
+protected:
+    /// \address 0081a930
+    void OptimizeEdgesVerticesPos();
+
+    /// \address 0081aa20
+    void OptimizeCornersVerticesPos();
+
+    /// \address 0081ae80
+    void SetCornersTexture(std::n_string strCorners[4]);
+
+    /// \address 0081b1b0
+    void SetEdgesTexture(std::n_string strEdges[4]);
 
 private:
-    bool N00009B9D; //0x036C
-    pointer someTextureInstance[8]; // 0x0370
-    std::n_string someStringsOfTextures[8]; //0x0390
-    char pad_0470[832]; //0x0470
-
+    bool field_036C;                            //0x036C
+    IDirect3DBaseTexture9 *m_pCornersTexture[4];//0x0370
+    IDirect3DBaseTexture9 *m_pEdgesTexture[4];  //0x0380
+    std::n_string m_strCornersTexture[4];       //0x0390
+    std::n_string m_strEdgesTexture[4];         //0x0400
+    D3DVECTOR m_vecCornersRenderBuff[4][8];     //0x0470
+    D3DVECTOR m_vecEdgesRenderBuff[4][8];       //0x05F0
+    wnd_size m_sCornersSize[4];                 //0x0770
+    wnd_size m_sEdgesSize[4];                   //0x0790
+private:
     BEGIN_FIXTURE()
         ENSURE_SIZE(0x7b0)
-        ENSURE_OFFSET(N00009B9D, 0x36c)
-        ENSURE_OFFSET(someTextureInstance, 0x370)
-        ENSURE_OFFSET(someStringsOfTextures, 0x0390)
+        ENSURE_OFFSET(m_vecCornersRenderBuff, 0x0470)
+        ENSURE_OFFSET(m_vecEdgesRenderBuff, 0x05f0)
     END_FIXTURE()
 
     RUN_FIXTURE(CIFTileWnd)
 };
-
