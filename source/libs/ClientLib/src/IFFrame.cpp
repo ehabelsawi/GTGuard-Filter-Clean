@@ -11,6 +11,7 @@ bool CIFFrame::OnCreate(long ln) {
 }
 
 void CIFFrame::RenderMyself() {
+    // todo : implement me
     reinterpret_cast<void (__thiscall *)(CIFFrame *)>(0x00815490)(this);
 }
 
