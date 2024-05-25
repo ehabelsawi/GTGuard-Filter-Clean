@@ -4,7 +4,10 @@
 GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFFrame, 0x00EECB14)
 
 bool CIFFrame::OnCreate(long ln) {
-    return reinterpret_cast<bool(__thiscall*)(CIFFrame*, long)>(0x00815230)(this, ln);
+    CIFTileWnd::OnCreate(ln);
+
+    Set_field_036C(false);
+    return true;
 }
 
 void CIFFrame::RenderMyself() {
