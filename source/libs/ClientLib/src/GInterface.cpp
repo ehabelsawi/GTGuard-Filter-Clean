@@ -404,6 +404,7 @@ void CGInterface::sub_787C10(SChatMetaData &meta) {
 }
 
 int CGInterface::TryParseChatCommands(const wchar_t *text, RECT &r, std::vector<void *> &v) {
+    /// \todo implement me.
     return reinterpret_cast<
             int (__thiscall *)(CGInterface *, const wchar_t *, RECT *, std::vector<void *> *)
             >(0x0078BEA0)(this, text, &r, &v);
