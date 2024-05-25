@@ -46,24 +46,6 @@
 
 #define g_pCGInterface (*(CGInterface**)0x0110F80C)
 
-enum eLogType : int {
-    SYSLOG_NONE,
-
-    SYSLOG_DEBUG = 0,
-
-    SYSLOG_GAIN,
-    SYSLOG_COMBAT,
-    SYSLOG_STATUS,
-    SYSLOG_PARTY,
-    
-    SYSLOG_ERR = 4,
-
-    SYSLOG_GAME,
-    SYSLOG_GUIDE,
-
-    SYSLOG_7_UNK,
-};
-
 enum eMarketChatType : BYTE {
     UNKNOWN_CHAT, // what deal windows has chat inside it?
     STALL_CHAT,

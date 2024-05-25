@@ -2,6 +2,24 @@
 
 #include "IFWnd.h"
 
+enum eLogType : BYTE {
+    SYSLOG_NONE,
+
+    SYSLOG_DEBUG = 0,
+
+    SYSLOG_GAIN,
+    SYSLOG_COMBAT,
+    SYSLOG_STATUS,
+    SYSLOG_PARTY,
+
+    SYSLOG_ERR = 4,
+
+    SYSLOG_GAME,
+    SYSLOG_GUIDE,
+
+    SYSLOG_7_UNK,
+};
+
 class CIFSystemMessage : public CIFWnd {
 public:
     /// \address 007B89E0
