@@ -2,18 +2,27 @@
 
 #include "IFWnd.h"
 
-#define CORNER_LEFT_UP 0
-#define CORNER_RIGHT_UP 1
-#define CORNER_RIGHT_DOWN 2
-#define CORNER_LEFT_DOWN 3
-
-#define EDGE_LEFT_SIDE 0
-#define EDGE_MID_UP 1
-#define EDGE_RIGHT_SIDE 2
-#define EDGE_MID_DOWN 3
-
 class CIFTileWnd : public CIFWnd {
     GFX_DECLARE_DYNAMIC_EXISTING(CIFTileWnd, 0x00EECBD4)
+
+protected:
+    enum eCorners {
+        CORNER_LEFT_UP,
+        CORNER_RIGHT_UP,
+        CORNER_RIGHT_DOWN,
+        CORNER_LEFT_DOWN,
+
+        CORNER_COUNT
+    };
+
+    enum eEdges {
+        EDGE_LEFT_SIDE,
+        EDGE_MID_UP,
+        EDGE_RIGHT_SIDE,
+        EDGE_MID_DOWN,
+
+        EDGE_COUNT
+    };
 
 public:
     /// \address 0081AB10
@@ -68,17 +77,17 @@ protected:
     void SetEdgesTexture(std::n_string strEdges[4]);
 
 private:
-    bool field_036C;                            //0x036C
-    IDirect3DBaseTexture9 *m_pCornersTexture[4];//0x0370
-    IDirect3DBaseTexture9 *m_pEdgesTexture[4];  //0x0380
-    std::n_string m_strCornersTexture[4];       //0x0390
-    std::n_string m_strEdgesTexture[4];         //0x0400
-    D3DVECTOR m_vecCornersRenderBuff[4][8];     //0x0470
-    D3DVECTOR m_vecEdgesRenderBuff[4][8];       //0x05F0
-    wnd_size m_sCornersSize[4];                 //0x0770
-    wnd_size m_sEdgesSize[4];                   //0x0790
+    bool field_036C;                                       //0x036C
+    IDirect3DBaseTexture9 *m_pCornersTexture[CORNER_COUNT];//0x0370
+    IDirect3DBaseTexture9 *m_pEdgesTexture[EDGE_COUNT];    //0x0380
+    std::n_string m_strCornersTexture[CORNER_COUNT];       //0x0390
+    std::n_string m_strEdgesTexture[EDGE_COUNT];           //0x0400
+    D3DVECTOR m_vecCornersRenderBuff[CORNER_COUNT][8];     //0x0470
+    D3DVECTOR m_vecEdgesRenderBuff[EDGE_COUNT][8];         //0x05F0
+    wnd_size m_sCornersSize[CORNER_COUNT];                 //0x0770
+    wnd_size m_sEdgesSize[EDGE_COUNT];                     //0x0790
 private:
-    BEGIN_FIXTURE()
+BEGIN_FIXTURE()
         ENSURE_SIZE(0x7b0)
         ENSURE_OFFSET(m_vecCornersRenderBuff, 0x0470)
         ENSURE_OFFSET(m_vecEdgesRenderBuff, 0x05f0)
