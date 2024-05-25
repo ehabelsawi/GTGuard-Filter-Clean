@@ -30,7 +30,7 @@ public:
     /// \address 007b8b40
     void WriteErrorMessage(BYTE btType, WORD wErrorCode, DWORD dwColor, int a5, int a6);
 
-private:
+public:
     /// \address 007b85f0
     bool IsLogAble(BYTE btLogType);
 
