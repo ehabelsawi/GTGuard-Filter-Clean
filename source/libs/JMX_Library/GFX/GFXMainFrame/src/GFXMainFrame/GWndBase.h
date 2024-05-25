@@ -17,8 +17,7 @@ struct Event3D {
 
 class CGWndBase;
 
-#define LIST_LOCK_READ 1
-#define LIST_LOCK_WRITE 2
+
 
 typedef std::n_list<CGWndBase *> GWND_LIST;
 
@@ -31,6 +30,11 @@ typedef std::n_list<CGWndBase *> GWND_LIST;
 class CGWndBase : public CObjChild { // size 32 + 100 = 132
 GFX_DECLARE_DYNAMIC_EXISTING(CGWndBase, 0x0110F630)
 
+private:
+    enum eListLockType : BYTE {
+        LIST_LOCK_READ = 1,
+        LIST_LOCK_WRITE = 2
+    };
 
 public:
     struct wnd_size {
