@@ -333,7 +333,7 @@ int CIFChatViewer::OnChar(UINT nChar, UINT a2, UINT a3) {
         m_InputBox->SetText(L"");
         wchar_t buffer[64];
         swprintf_s(buffer, TSM_GETTEXTPTR(L"UIIT_MSG_CANT_CHATTING"));
-        g_pCGInterface->WriteSystemMessage(SYSLOG_ERR, buffer);
+        g_pCGInterface->WriteSystemMessage(SYSLOG_NONE, buffer);
         return 0;
     }
 
