@@ -6,7 +6,7 @@ void CIFSystemMessage::WriteMessage(int a1, D3DCOLOR color, const wchar_t *msg, 
 }
 
 void CIFSystemMessage::WriteErrorMessage(BYTE btType, WORD wErrorCode, DWORD dwColor, int a5, int a6) {
-    // todo : implement me... im very big btw
+    /// \todo implement me.
     reinterpret_cast<void(__thiscall *)(CIFSystemMessage *, BYTE, WORD, DWORD, int, int)>(0x007b8b40)(this, btType, wErrorCode, dwColor, a5, a6);
 }
 
