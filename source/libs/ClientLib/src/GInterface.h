@@ -155,7 +155,7 @@ public:
     void ShowMessage_Quest(const std::n_wstring &msg);
 
     /// \address 007781B0
-    void WriteSystemMessage(eLogType level, const wchar_t *str);
+    void WriteSystemMessage(eLogType btLevel, LPCWSTR lpszText);
 
     /// \brief Send given message as global by using item at given slot
     /// \address 007901c0

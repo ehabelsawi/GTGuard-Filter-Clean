@@ -363,8 +363,18 @@ void CGInterface::WriteErrorMessage(byte errorType, unsigned __int16 errorCode, 
     pSystemMsg->WriteErrorMessage(errorType, errorCode, colorARGB, a5, a6);
 }
 
-void CGInterface::WriteSystemMessage(eLogType level, const wchar_t *str) {
-    reinterpret_cast<void (__thiscall *)(CGInterface *, eLogType, const wchar_t *)>(0x007781B0)(this, level, str);
+void CGInterface::WriteSystemMessage(eLogType btLevel, LPCWSTR lpszText) {
+    CIFSystemMessage *pSystemMsg = m_IRM.GetResObj<CIFSystemMessage>(GDR_SYSTEM_MESSAGE_VIEW, 1);
+    if (!pSystemMsg->IsLogAble(btLevel))
+        return;
+
+    D3DCOLOR dwColor;
+    if (btLevel == SYSLOG_COMBAT || btLevel == SYSLOG_GUIDE)
+        dwColor = D3DCOLOR_ARGB(255, 186, 207, 242);
+    else
+        dwColor = D3DCOLOR_ARGB(255, 220, 201, 155);
+
+    pSystemMsg->WriteMessage(255, dwColor, lpszText, 0, 1);
 }
 
 HOOK_ORIGINAL_MEMBER(0x007901c0, &CGInterface::WriteGlobalMessage)
