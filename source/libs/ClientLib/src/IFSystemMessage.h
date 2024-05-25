@@ -2,6 +2,8 @@
 
 #include "IFWnd.h"
 
+#include "IFChatOptionBoard.h"
+
 enum eLogType : BYTE {
     SYSLOG_NONE,
 
@@ -29,10 +31,17 @@ public:
     void WriteErrorMessage(BYTE btType, WORD wErrorCode, DWORD dwColor, int a5, int a6);
 
 private:
-    char pad_036c[32]; //0x036C
+    /// \address 007b85f0
+    bool IsLogAble(BYTE btLogType);
+
+private:
+    char pad_036c[20]; //0x036C
+    CIFChatOptionBoard *m_pOptionBoard; //0x0380
+    char pad_0384[8]; //0x0384
 private:
 BEGIN_FIXTURE()
         ENSURE_SIZE(0x038C)
+        ENSURE_OFFSET(m_pOptionBoard, 0x0380)
     END_FIXTURE()
     
     RUN_FIXTURE(CIFSystemMessage)

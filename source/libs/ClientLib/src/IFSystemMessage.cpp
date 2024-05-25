@@ -9,3 +9,24 @@ void CIFSystemMessage::WriteErrorMessage(BYTE btType, WORD wErrorCode, DWORD dwC
     // todo : implement me... im very big btw
     reinterpret_cast<void(__thiscall *)(CIFSystemMessage *, BYTE, WORD, DWORD, int, int)>(0x007b8b40)(this, btType, wErrorCode, dwColor, a5, a6);
 }
+
+bool CIFSystemMessage::IsLogAble(BYTE btLogType) {
+    switch (btLogType) {
+        case SYSLOG_NONE:
+        case SYSLOG_GUIDE:
+            return true;
+        case SYSLOG_GAIN:
+            return m_pOptionBoard->IsGainChecked();
+        case SYSLOG_COMBAT:
+            return m_pOptionBoard->IsFightChecked();
+        case SYSLOG_STATUS:
+           return m_pOptionBoard->IsStatusChecked();
+        case SYSLOG_PARTY:
+            return m_pOptionBoard->IsPartyChecked();
+        case SYSLOG_GAME:
+        case SYSLOG_7_UNK:
+            return m_pOptionBoard->IsGameChecked();
+        default:
+            return false;
+    }
+}
