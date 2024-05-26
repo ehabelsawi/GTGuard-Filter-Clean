@@ -170,7 +170,7 @@ enum eGinterfaceID {
     // Devkit Examples.....
 
     GDR_FLORIAN0_GUIDE = 13378,         // CIFflorian0Guide // Nice ID
-
+    GDR_FLORIAN0 = 1338,                // CIFflorian0
 
 };
 
