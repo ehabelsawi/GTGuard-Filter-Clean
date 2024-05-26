@@ -113,8 +113,8 @@ CIFWnd *CAlramGuideMgrWnd::CreateGuideIcon(int nWndID) {
             pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFEventGuideSecond), rect, GDR_EVENTGUIDE_SECOND, 0);
             break;
 
-        case GUIDE_FLORIAN0:
-            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFflorian0Guide), rect, GUIDE_FLORIAN0, 0);
+        case GDR_FLORIAN0_GUIDE:
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFflorian0Guide), rect, GDR_FLORIAN0_GUIDE, 0);
             break;
 
         default:

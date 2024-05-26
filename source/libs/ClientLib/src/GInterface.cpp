@@ -231,7 +231,7 @@ void CGInterface::ToggleAutoPotion(bool bVisible) {
 }
 
 void CGInterface::CreateFlorian0Event() {
-    GetAlarmManager()->CreateGuideIcon(GUIDE_FLORIAN0);
+    GetAlarmManager()->CreateGuideIcon(GDR_FLORIAN0_GUIDE);
 }
 
 CAlramGuideMgrWnd *CGInterface::GetAlarmManager() {

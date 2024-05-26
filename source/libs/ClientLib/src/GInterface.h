@@ -166,6 +166,12 @@ enum eGinterfaceID {
     GDR_QUICK_STATE_HARF = 421,         // CIFQuickStateHalfWnd
 
     GDR_EVENTGUIDE_SECOND = 30006,      // CIFEventGuideSecond
+
+    // Devkit Examples.....
+
+    GDR_FLORIAN0_GUIDE = 13378,         // CIFflorian0Guide // Nice ID
+
+
 };
 
 enum eMarketChatType : BYTE {
