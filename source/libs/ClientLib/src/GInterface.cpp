@@ -186,15 +186,17 @@ void CGInterface::ToggleMainPopup() {
 
 HOOK_ORIGINAL_MEMBER(0x0079abe0, &CGInterface::ToggleWorldMap);
 void CGInterface::ToggleWorldMap() {
+    // Don't we have the window?
     if (GetWorldMap() == NULL) {
         g_sNewInterfaceMgr.InstantiateDimensional("res_ui\\worldmapguide.2dt", this, false);
         SetOnMiddleOfScreen(GDR_WORLDMAP);
         return;
+    // Window is created, so let's un/visible it
+    } else {
+        g_sNewInterfaceMgr.GetInterfaceObj(GDR_WORLDMAP)->OnGWndShow();
+        FUN_0079ab80(g_sNewInterfaceMgr.GetInterfaceObj(GDR_WORLDMAP));
+        SetOnMiddleOfScreen(GDR_WORLDMAP);
     }
-
-    g_sNewInterfaceMgr.GetInterfaceObj(GDR_WORLDMAP)->OnGWndShow();
-    FUN_0079ab80(g_sNewInterfaceMgr.GetInterfaceObj(GDR_WORLDMAP));
-    SetOnMiddleOfScreen(GDR_WORLDMAP);
 }
 
 HOOK_ORIGINAL_MEMBER(0x0079c750, &CGInterface::ToggleAutoPotion);
