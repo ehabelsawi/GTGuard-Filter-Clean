@@ -67,7 +67,7 @@ void CGInterface::ToggleGameGuide() {
     }
 
     ToggleGGuide(false);
-    FUN_0079a7e0(m_IRM.GetResObj(GDR_GAMEGUIDE, true));
+    FUN_0079a7e0(m_IRM.GetResObj(GDR_SYSTEM, true));
 }
 
 void CGInterface::ToggleGGuide(bool bVisible) {
