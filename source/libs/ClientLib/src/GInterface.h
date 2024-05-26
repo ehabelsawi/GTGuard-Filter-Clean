@@ -171,6 +171,7 @@ enum eGinterfaceID {
 
     GDR_FLORIAN0_GUIDE = 13378,         // CIFflorian0Guide // Nice ID
     GDR_FLORIAN0 = 1338,                // CIFflorian0
+    GDR_KYUUBI09 = 125051,              // CNIFKyuubi09 // Sorry about this id ;-;
 
 };
 

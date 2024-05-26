@@ -57,10 +57,10 @@ void AboutWindow::Render() {
     }
 
     if (ImGui::Button("Show Demo CNIF Window")) {
-        if (g_sNewInterfaceMgr.GetInterfaceObj(125051) == NULL && !m_bButtonQbiNotFound)
+        if (g_sNewInterfaceMgr.GetInterfaceObj(GDR_KYUUBI09) == NULL && !m_bButtonQbiNotFound)
             g_sNewInterfaceMgr.InstantiateDimensional("res_ui\\nifkyuubi09.2dt", theApp.GetCurrentProcess(), 0);
 
-        CNIFWnd *demoWnd = g_sNewInterfaceMgr.GetInterfaceObj(125051);
+        CNIFWnd *demoWnd = g_sNewInterfaceMgr.GetInterfaceObj(GDR_KYUUBI09);
         m_bButtonQbiNotFound = demoWnd == 0;
 
         if (demoWnd != NULL) {
