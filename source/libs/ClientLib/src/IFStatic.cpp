@@ -78,6 +78,7 @@ void CIFStatic::Func_42() {
             } break;
             case CTextBoard::JUSTIFY_RIGHT:
                 m_fTextRenderPosStartX = endX - bgWidth;
+                break;
         }
 
         switch (m_justificationVertical) {
