@@ -1,7 +1,5 @@
 #include "IFChatModule.h"
 
-#define GDR_CHAT_CHATMESSAGE 2
-
 void CIFChatModule::WriteChatMessage(LPCWSTR lpszMsg, D3DCOLOR colorText) {
     CIFTextBox *pChatBox = m_IRM.GetResObj<CIFTextBox>(GDR_CHAT_CHATMESSAGE, true);
     std::n_wstring wstrText = lpszMsg;

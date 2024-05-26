@@ -7,6 +7,12 @@
 #include "IFTextBox.h"
 
 class CIFChatModule : public CIFFrame {
+private:
+    enum {
+        GDR_CHAT_CHATMESSAGE = 2,
+        // ....
+    };
+
 public:
     /// \address 0065b370
     void WriteChatMessage(LPCWSTR lpszMsg, D3DCOLOR colorText);
