@@ -23,6 +23,7 @@ target_sources(ClientLib PRIVATE
         src/IFBuffViewer.cpp
         src/IFButton.cpp
         src/IFChatModeViewer.cpp
+        src/IFChatModule.cpp
         src/IFChatOptionBoard.cpp
         src/IFChatViewer.cpp
         src/IFCheckBox.cpp
@@ -66,6 +67,7 @@ target_sources(ClientLib PRIVATE
         src/IFTextBox.cpp
         src/IFTileWnd.cpp
         src/IFVerticalScroll.cpp
+        src/IFWhisperList.cpp
         src/IFWholeChat.cpp
         src/IFWnd.cpp
         src/IFflorian0Guide.cpp

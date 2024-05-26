@@ -108,7 +108,7 @@ bool CIFChatViewer::OnCreate(long ln) {
 
     m_IRM.CreateInterfaceSection("Create", this);
 
-    m_WhisperList = m_IRM.GetResObj(GDR_WHISPERLIST, 1);
+    m_pWhisperList = m_IRM.GetResObj<CIFWhisperList>(GDR_WHISPERLIST, 1);
 
     m_pTabs = new CIFSelectableArea *[numberOfTabs];
 
@@ -330,7 +330,7 @@ int CIFChatViewer::OnChar(UINT nChar, UINT a2, UINT a3) {
         m_InputBox->SetText(L"");
         wchar_t buffer[64];
         swprintf_s(buffer, TSM_GETTEXTPTR(L"UIIT_MSG_CANT_CHATTING"));
-        g_pCGInterface->WriteSystemMessage(SYSLOG_ERR, buffer);
+        g_pCGInterface->WriteSystemMessage(SYSLOG_NONE, buffer);
         return 0;
     }
 
@@ -598,7 +598,7 @@ void CIFChatViewer::OnToggleHide() {
 }
 
 void CIFChatViewer::OnWhisperList() {
-    m_WhisperList->ShowGWnd(!m_WhisperList->IsVisible());
+    m_pWhisperList->ShowGWnd(!m_pWhisperList->IsVisible());
 }
 
 void CIFChatViewer::OnChatTabSize() {
@@ -787,7 +787,7 @@ void CIFChatViewer::UpdateChatSize() {
         m_Scroll->ShowGWnd(false);
         m_Button_WhisperList->ShowGWnd(false);
         m_Button_ChatTabHide->ShowGWnd(false);
-        m_WhisperList->ShowGWnd(false);
+        m_pWhisperList->ShowGWnd(false);
 
         m_IRM.GetResObj(5, 1)->ShowGWnd(false);
         m_IRM.GetResObj(6, 1)->ShowGWnd(false);
@@ -1168,7 +1168,7 @@ void CIFChatViewer::ShowHideControls(bool bShow) {
     m_Button_ChatMode->ShowGWnd(bShow);
 
     if (!bShow) {
-        m_WhisperList->ShowGWnd(0);
+        m_pWhisperList->ShowGWnd(0);
         m_ChatModeView_Wnd->ShowGWnd(0);
     }
 
@@ -1204,4 +1204,25 @@ void inline CIFChatViewer::BlockChatIf(int msgLimit, int timeLimitMs, int timeou
             SetChatBlocked(timeoutSec);
         }
     }
+}
+
+void CIFChatViewer::SetLastWhisperedWith(std::n_wstring &wstrName) {
+    if (g_pMyPlayerObj == NULL)
+        return;
+
+    if (g_pMyPlayerObj->GetCharName() == wstrName)
+        return;
+
+    N00009C82 = wstrName;
+}
+
+void CIFChatViewer::AddWhisperTargetToList(std::n_wstring &wstrName) {
+    if (g_pMyPlayerObj == NULL)
+        return;
+
+    if (g_pMyPlayerObj->GetCharName() == wstrName)
+        return;
+
+    m_pWhisperList->AddToList(wstrName);
+    SetLastWhisperedWith(wstrName);
 }

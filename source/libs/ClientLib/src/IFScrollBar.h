@@ -8,9 +8,11 @@ protected:
     /// \address 006590e0
     void FUN_006590e0(short a2);
 
+public:
     /// \address 00659150
     void FUN_00659150(int a2);
 
+protected:
     /// \address 006592a0
     void FUN_006592a0(int a2, int a3, int a4);
 

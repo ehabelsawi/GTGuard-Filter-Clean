@@ -15,10 +15,14 @@
 #include "IFMainPopup.h"
 #include "IFSkillPracticeBox.h"
 #include "IFHelperBubbleWindow.h"
+#include "IFChatModule.h"
 #include "MessageBoxManager.h"
 #include "AutoPotion.h"
 
+#include "SRIFLib/NInterfaceResource.h"
+#include "SRIFLib/NIFGuildWnd.h"
 #include "SRIFLib/NIFCommunityWnd.h"
+#include "SRIFLib/NIFWorldMap.h"
 
 #include "unsorted.h"
 #include "IFSystemMessage.h"
@@ -29,19 +33,25 @@
 #define GDR_NOTICE 20
 #define GDR_MAINPOPUP 25
 #define GDR_EXCHANGE 26
+#define GDR_WORLDMAP 28
 #define GDR_NPCWINDOW 30
+#define GDR_GAMEGUIDE 32
 #define GDR_WARNING_WND 35
 #define GDR_UPDATE_QUEST_INFO 42
 #define GDR_SYSTEM_MESSAGE_VIEW 68
+#define GDR_SYSTEM 98
 #define GDR_GUILDSTORAGEROOM 145
 #define GDR_EXT_QUICK_SLOT 133
+#define GDR_AUTO_POTION 135
+#define GDR_GUILD_WND 176
 
 #define g_pCGInterface (*(CGInterface**)0x0110F80C)
 
-enum eLogType : int {
-    SYSLOG_NONE = 0,
-    SYSLOG_ERR = 4,
-    SYSLOG_GUIDE = 6
+enum eMarketChatType : BYTE {
+    UNKNOWN_CHAT, // what deal windows has chat inside it?
+    STALL_CHAT,
+
+    MARKET_CHAT_NUM
 };
 
 struct SChatMetaData {
@@ -146,7 +156,7 @@ public:
     void ShowMessage_Quest(const std::n_wstring &msg);
 
     /// \address 007781B0
-    void WriteSystemMessage(eLogType level, const wchar_t *str);
+    void WriteSystemMessage(eLogType btLevel, LPCWSTR lpszText);
 
     /// \brief Send given message as global by using item at given slot
     /// \address 007901c0
@@ -167,7 +177,10 @@ public:
     void TogglePlayerInfoWnd();
 
     /// \address 0079F690
-    void RenderToggle_GDR_GAMEGUIDE();
+    void ToggleGameGuide();
+
+    /// \address 0079b140
+    void ToggleGGuide(bool bVisible);
 
     /// \address 0079B020
     void ToggleInventoryWnd();
@@ -191,10 +204,10 @@ public:
     void ToggleMainPopup();
 
     /// \address 0079ABE0
-    void RenderToggle_WORLDMAP_GUIDE();
+    void ToggleWorldMap();
 
     /// \address 0079C750
-    void Render_GDR_AUTO_POTION(bool visible);
+    void ToggleAutoPotion(bool bVisible);
 
     /// \address 00778B70
     int Get_SelectedObjectId();
@@ -232,10 +245,10 @@ public:
     void FUN_00777c30(ChatType type, const wchar_t *message, D3DCOLOR color, int a5);
 
     /// \address 00778a10
-    void FUN_00778a10(int a2, const wchar_t *message, D3DCOLOR color);
+    void WriteInMarketChatMsg(BYTE btChatType, LPCWSTR lpszMsg, D3DCOLOR dwColor);
 
     /// \address 00777cf0
-    void FUN_00777cf0(const std::n_wstring &recipient);
+    void AddTargetToWhisperList(std::n_wstring &recipient);
 
     /// \address 00778190
     void WriteErrorMessage(byte errorType, unsigned __int16 errorCode, int colorARGB, int a5, int a6);
@@ -258,9 +271,25 @@ public:
     /// \address 00799840
     CIFExtQuickSlot *GetExtQuickSlot();
 
+    /// \address 00799920
+    CNIFWorldMap *GetWorldMap();
+
+    /// \address 0079a840
+    void SaveGWndPostion(DWORD dwID, wnd_pos sWndPos);
+
 private:
     /// \address 0079a7e0
     void FUN_0079a7e0(CGWndBase *pGWnd) const;
+
+    /// \address 0079ab80
+    /// same but difffffffreeeent
+    void FUN_0079ab80(CNIFWnd *pWnd);
+
+    /// \address 00798c50
+    void SetOnMiddleOfScreen(DWORD dwNInterfaceID);
+
+    /// \address 0079ac50
+    void SaveGWndPosOnMiddleOfScreen(DWORD dwID, CGWnd *pParent);
 
 private:
 public:
@@ -304,7 +333,8 @@ private:
     CIFSkillPracticeBox *m_skillUpWindow; //0x072C
     CIFHelperBubbleWindow *m_helperWindow; //0x0730
     CIFHelperBubbleWindow *N00002717; //0x0734
-    char pad_0x0738[0x10]; //0x0738
+    char pad_0738[8]; //0x0738
+    CIFChatModule *m_pMarketChatModule[MARKET_CHAT_NUM]; //0x0740
     CMessageBoxManager m_messageBoxManager; //0x0748
     class CMessageTipManager *m_pCMessageTipManager; //0x0774 774
     class CSkillCoolTimeManager *m_pCSkillCoolTimeManager; //0x0778
@@ -326,6 +356,7 @@ private:
 BEGIN_FIXTURE()
         ENSURE_SIZE(0x854)
         ENSURE_OFFSET(m_field_4fc, 0x04FC)
+        ENSURE_OFFSET(m_pMarketChatModule, 0x740)
         ENSURE_OFFSET(m_pCSkillRunTimeManager, 0x780)
         ENSURE_OFFSET(m_bDisappeard, 0x07BA)
         ENSURE_OFFSET(field_0x7cd, 0x7cd)

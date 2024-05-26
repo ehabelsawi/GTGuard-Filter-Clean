@@ -15,6 +15,12 @@ struct Event3D {
     int wParam; //0x0018
 }; //Size: 0x001C
 
+class CGWndBase;
+
+
+
+typedef std::n_list<CGWndBase *> GWND_LIST;
+
 /**
  * This class acts as a parent for any control and provides a container for child-controls
  * \remark As of current state of knowledge, \ref CGWndBase::OnUpdate must be overwritten in any derived class to
@@ -24,6 +30,11 @@ struct Event3D {
 class CGWndBase : public CObjChild { // size 32 + 100 = 132
 GFX_DECLARE_DYNAMIC_EXISTING(CGWndBase, 0x0110F630)
 
+private:
+    enum eListLockType : BYTE {
+        LIST_LOCK_READ = 1,
+        LIST_LOCK_WRITE = 2
+    };
 
 public:
     struct wnd_size {
@@ -180,6 +191,15 @@ public:
     /// \address 00b9daf0
     void SetDragable(bool bState);
 
+    /// \address 00b9daf0
+    void LockList(BYTE btLockType);
+
+    /// \address 00b8f300
+    void UnLockList(BYTE btLockType);
+
+    /// \address 00b90b00
+    CGWndBase *GetChildControl(DWORD dwID);
+
 protected:
     /// \address 00B8F440
     void sub_B8F440(const RECT &rect);
@@ -188,8 +208,8 @@ public: // 0046c8b6 getting call by global ptr
     CGWndBase *GetParentControl() const;
 
 private:
-    int m_lnListLockRead; //0x0020
-    int m_lnListLockWrite; //0x0024
+    LONG m_lnListLockRead; //0x0020
+    LONG m_lnListLockWrite; //0x0024
     bool N000006F5; //0x0028
     char pad_0029[3]; //0x0029
     int m_hgWnd; //0x002C
@@ -213,11 +233,8 @@ private:
     short N00000705; //0x0070
     char pad_0072[6]; //0x0072
 public:
-    std::n_list<CGWndBase *> N00000707; //0x0078
-
-
-
-
+    GWND_LIST N00000707;//0x0078
+private:
 BEGIN_FIXTURE()
         ENSURE_SIZE(132)
     END_FIXTURE()

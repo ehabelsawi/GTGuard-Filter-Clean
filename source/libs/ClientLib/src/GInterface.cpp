@@ -58,8 +58,45 @@ void CGInterface::TogglePlayerInfoWnd() {
     }
 }
 
-void CGInterface::RenderToggle_GDR_GAMEGUIDE() {
-    return reinterpret_cast<void (__thiscall *)(void *)>(0x0079F690)(this);
+HOOK_ORIGINAL_MEMBER(0x0079f690, &CGInterface::ToggleGameGuide);
+void CGInterface::ToggleGameGuide() {
+    if (m_IRM.GetResObj(GDR_GAMEGUIDE, true) == NULL) {
+        ToggleGGuide(true);
+        FUN_0079a7e0(m_IRM.GetResObj(GDR_GAMEGUIDE, true));
+        return;
+    }
+
+    ToggleGGuide(false);
+    FUN_0079a7e0(m_IRM.GetResObj(GDR_SYSTEM, true));
+}
+
+void CGInterface::ToggleGGuide(bool bVisible) {
+    CIFWnd *pGGuide = m_IRM.GetResObj(GDR_GAMEGUIDE, true);
+    if (!bVisible) {
+        if (pGGuide == NULL)
+            return;
+
+        SaveGWndPostion(GDR_GAMEGUIDE, pGGuide->GetPos());
+
+        pGGuide->ShowGWnd(false);
+        pGGuide->GetParentControl()->SetFocus_MAYBE();
+        FUN_0079a7e0(pGGuide);
+
+        m_IRM.DeleteCreatedSection("GameGuide");
+        return;
+    }
+
+    if (pGGuide != NULL) {
+        pGGuide->ShowGWnd(true);
+        return;
+    }
+
+    m_IRM.CreateInterfaceSection("GameGuide", this);
+
+    pGGuide = m_IRM.GetResObj(GDR_GAMEGUIDE, true);
+    pGGuide->MoveGWnd(230, 80); // why do i saving the pos if im setting it by my self? lol
+    pGGuide->ShowGWnd(true);
+    FUN_0079a7e0(pGGuide);
 }
 
 HOOK_ORIGINAL_MEMBER(0x0079B020, &CGInterface::ToggleInventoryWnd);
@@ -147,12 +184,50 @@ void CGInterface::ToggleMainPopup() {
     FUN_0079a7e0(m_mainPopup);
 }
 
-void CGInterface::RenderToggle_WORLDMAP_GUIDE() {
-    return reinterpret_cast<void (__thiscall *)(void *)>(0x0079ABE0)(this);
+HOOK_ORIGINAL_MEMBER(0x0079abe0, &CGInterface::ToggleWorldMap);
+void CGInterface::ToggleWorldMap() {
+    // Don't we have the window?
+    if (GetWorldMap() == NULL) {
+        g_sNewInterfaceMgr.InstantiateDimensional("res_ui\\worldmapguide.2dt", this, false);
+        SetOnMiddleOfScreen(GDR_WORLDMAP);
+        return;
+    // Window is created, so let's un/visible it
+    } else {
+        g_sNewInterfaceMgr.GetInterfaceObj(GDR_WORLDMAP)->OnGWndShow();
+        FUN_0079ab80(g_sNewInterfaceMgr.GetInterfaceObj(GDR_WORLDMAP));
+        SetOnMiddleOfScreen(GDR_WORLDMAP);
+    }
 }
 
-void CGInterface::Render_GDR_AUTO_POTION(bool visible) {
-    return reinterpret_cast<void (__thiscall *)(void *, bool)>(0x0079C750)(this, visible);
+HOOK_ORIGINAL_MEMBER(0x0079c750, &CGInterface::ToggleAutoPotion);
+void CGInterface::ToggleAutoPotion(bool bVisible) {
+    CIFWnd *pAutoPotion = m_IRM.GetResObj(GDR_AUTO_POTION, true);
+
+    // If close it up 
+    if (!bVisible) {
+        // If the window is already not there
+        if (pAutoPotion == NULL)
+            return;
+
+        SaveGWndPostion(GDR_AUTO_POTION, pAutoPotion->GetPos());
+
+        pAutoPotion->ShowGWnd(false);
+        m_IRM.DeleteCreatedSection("AutoPotion");
+        return;
+    // Open it up
+    } else {
+        // Do we have it already opened before?
+        if (pAutoPotion != NULL)
+            return;
+
+        m_IRM.CreateInterfaceSection("AutoPotion", this);
+
+        pAutoPotion = m_IRM.GetResObj(GDR_AUTO_POTION, true);
+        SaveGWndPosOnMiddleOfScreen(GDR_AUTO_POTION, NULL);
+        pAutoPotion->ShowGWnd(true);
+
+        FUN_0079a7e0(pAutoPotion);
+    }
 }
 
 void CGInterface::CreateFlorian0Event() {
@@ -287,13 +362,26 @@ CIFStorageRoom *CGInterface::Get_GDR_GUILDSTORAGEROOM() {
 }
 
 void CGInterface::WriteErrorMessage(byte errorType, unsigned __int16 errorCode, int colorARGB, int a5, int a6) {
-    return reinterpret_cast<
-            void (__thiscall *)(void *, byte, unsigned __int16, int, int, int)
-            >(0x00778190)(this, errorType, errorCode, colorARGB, a5, a6);
+    CIFSystemMessage *pSystemMsg = m_IRM.GetResObj<CIFSystemMessage>(GDR_SYSTEM_MESSAGE_VIEW, 1);
+    if (pSystemMsg == NULL)
+        return;
+
+    pSystemMsg->WriteErrorMessage(errorType, errorCode, colorARGB, a5, a6);
 }
 
-void CGInterface::WriteSystemMessage(eLogType level, const wchar_t *str) {
-    reinterpret_cast<void (__thiscall *)(CGInterface *, eLogType, const wchar_t *)>(0x007781B0)(this, level, str);
+void CGInterface::WriteSystemMessage(eLogType btLevel, LPCWSTR lpszText) {
+    CIFSystemMessage *pSystemMsg = m_IRM.GetResObj<CIFSystemMessage>(GDR_SYSTEM_MESSAGE_VIEW, 1);
+    if (!pSystemMsg->IsLogAble(btLevel))
+        return;
+
+    D3DCOLOR dwColor;
+    if ((btLevel == SYSLOG_COMBAT) || (btLevel == SYSLOG_GUIDE)) {
+        dwColor = D3DCOLOR_ARGB(255, 186, 207, 242);
+    } else {
+        dwColor = D3DCOLOR_ARGB(255, 220, 201, 155);
+    }
+
+    pSystemMsg->WriteMessage(255, dwColor, lpszText, 0, 1);
 }
 
 HOOK_ORIGINAL_MEMBER(0x007901c0, &CGInterface::WriteGlobalMessage)
@@ -323,6 +411,7 @@ void CGInterface::sub_787C10(SChatMetaData &meta) {
 }
 
 int CGInterface::TryParseChatCommands(const wchar_t *text, RECT &r, std::vector<void *> &v) {
+    /// \todo implement me.
     return reinterpret_cast<
             int (__thiscall *)(CGInterface *, const wchar_t *, RECT *, std::vector<void *> *)
             >(0x0078BEA0)(this, text, &r, &v);
@@ -333,7 +422,7 @@ void CGInterface::ToggleQuestNew() {
 }
 
 CNIFCommunityWnd *CGInterface::GetCommunityWnd() {
-    return reinterpret_cast<CNIFCommunityWnd *(__thiscall *)(CGInterface *)>(0x007994f0)(this);
+    return g_sNewInterfaceMgr.GetInterfaceObj<CNIFGuildWnd>(GDR_GUILD_WND)->m_pCommunity;
 }
 
 void CGInterface::FUN_00777c30(ChatType type, const wchar_t *message, D3DCOLOR color, int a5) {
@@ -341,14 +430,12 @@ void CGInterface::FUN_00777c30(ChatType type, const wchar_t *message, D3DCOLOR c
     chatViewer->FUN_007aca30(type, color, message, 0, a5);
 }
 
-void CGInterface::FUN_00778a10(int a2, const wchar_t *message, D3DCOLOR color) {
-    reinterpret_cast<
-            void (__thiscall *)(CGInterface *, int, const wchar_t *, D3DCOLOR)
-            >(0x00778a10)(this, a2, message, color);
+void CGInterface::WriteInMarketChatMsg(BYTE btChatType, LPCWSTR lpszMsg, D3DCOLOR dwColor) {
+    m_pMarketChatModule[btChatType]->WriteChatMessage(lpszMsg, dwColor);
 }
 
-void CGInterface::FUN_00777cf0(const std::n_wstring &recipient) {
-    reinterpret_cast<void (__thiscall *)(CGInterface *, const std::n_wstring *)>(0x00777cf0)(this, &recipient);
+void CGInterface::AddTargetToWhisperList(std::n_wstring &recipient) {
+    m_IRM.GetResObj<CIFChatViewer>(GDR_CHAT_BOARD, true)->AddWhisperTargetToList(recipient);
 }
 
 CIFSystemMessage *CGInterface::GetSystemMessageView() {
@@ -357,6 +444,10 @@ CIFSystemMessage *CGInterface::GetSystemMessageView() {
 
 void CGInterface::FUN_0079a7e0(CGWndBase *pGWnd) const {
     reinterpret_cast<void (__thiscall *)(const CGInterface *, CGWndBase *)>(0x0079a7e0)(this, pGWnd);
+}
+
+void CGInterface::FUN_0079ab80(CNIFWnd *pWnd) {
+    reinterpret_cast<void(__thiscall *)(const CGInterface *, CNIFWnd *)>(0x0079ab80)(this, pWnd);
 }
 
 void CGInterface::FUN_0079b8a0(undefined1 a1, undefined4 a2) {
@@ -386,3 +477,38 @@ CIFExtQuickSlot *CGInterface::GetExtQuickSlot() {
 void CGInterface::FUN_00777a70(undefined4 param_1, undefined4 param_2) {
     reinterpret_cast<void(__thiscall *)(CGInterface *, undefined4, undefined4)>(0x00777a70)(this, param_1, param_2);
 }
+
+CNIFWorldMap *CGInterface::GetWorldMap() {
+    return g_sNewInterfaceMgr.GetInterfaceObj<CNIFWorldMap>(GDR_WORLDMAP);
+} 
+
+void CGInterface::SetOnMiddleOfScreen(DWORD dwNInterfaceID) {
+    CNIFWnd *pWnd = g_sNewInterfaceMgr.GetInterfaceObj(dwNInterfaceID);
+    if (pWnd == NULL)
+        return;
+
+    wnd_pos sNewPos = {(theApp.GetClientDimensionStuff().width / 2) - (pWnd->GetBounds().size.width / 2),
+                       (theApp.GetClientDimensionStuff().height / 2) - (pWnd->GetBounds().size.height / 2)};
+    pWnd->MoveGWnd2(sNewPos);
+}
+
+void CGInterface::SaveGWndPostion(DWORD dwID, CGWnd::wnd_pos sWndPos) {
+    reinterpret_cast<void(__thiscall *)(CGInterface *, DWORD, CGWnd::wnd_pos)>(0x0079a840)(this, dwID, sWndPos);
+}
+
+void CGInterface::SaveGWndPosOnMiddleOfScreen(DWORD dwID, CGWnd *pParent) {
+    CGWnd *pParentWnd = pParent;
+    if (pParentWnd == NULL)
+        pParentWnd = g_pCGInterface;
+
+    CIFWnd *pWnd = (CIFWnd *) pParentWnd->GetChildControl(dwID);
+    if (pWnd == NULL)
+        return;
+
+    wnd_pos sNewPos = {(theApp.GetClientDimensionStuff().width / 2) - (pWnd->GetBounds().size.width / 2),
+                       (theApp.GetClientDimensionStuff().height / 2) - (pWnd->GetBounds().size.height / 2)};
+    pWnd->MoveGWnd2(sNewPos);
+
+    SaveGWndPostion(dwID, sNewPos);
+}
+

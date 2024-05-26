@@ -10,6 +10,8 @@
 #include "IFEdit.h"
 #include "unsorted.h"
 
+#include "IFWhisperList.h"
+
 #include "support/AbiTest.h"
 
 #define GDR_CHATVIEWER 1
@@ -180,6 +182,12 @@ public:
     /// \address 007A9A70
     void SetFocusToInputBox();
 
+    /// \address 007ab5c0
+    void SetLastWhisperedWith(std::n_wstring &wstrName);
+
+    /// \address 007acfd0
+    void AddWhisperTargetToList(std::n_wstring &wstrName);
+
 private:
     /// Sets the targetName-parameter as the Whisper-target
     /// \address 007AB470
@@ -231,14 +239,14 @@ private:
 
     CIFWnd *m_Button_ChatMode; //0x0490
     CIFChatModeViewer *m_ChatModeView_Wnd; //0x0494
-    CIFWnd *m_WhisperList; //0x0498
+    CIFWhisperList *m_pWhisperList; //0x0498
     CIFVerticalScroll *m_Scroll; //0x049C
     CIFEdit *m_InputBox; //0x04A0
     CIFSelectableArea **m_pTabs; //0x04A4 is a pointer, type unknown
     int N00009C80; //0x04A8
     char N00009C81; //0x04AC
 
-    std::wstring N00009C82; //0x04B0
+    std::n_wstring N00009C82; //0x04B0
 
 public:
     BEGIN_FIXTURE()
@@ -260,7 +268,7 @@ public:
         ENSURE_OFFSET(m_Lamp_Apprentice, 0x0488);
         ENSURE_OFFSET(m_Button_ChatMode, 0x0490);
         ENSURE_OFFSET(m_ChatModeView_Wnd, 0x0494);
-        ENSURE_OFFSET(m_WhisperList, 0x0498);
+        ENSURE_OFFSET(m_pWhisperList, 0x0498);
         ENSURE_OFFSET(m_Scroll, 0x049C);
         ENSURE_OFFSET(m_InputBox, 0x04A0);
         ENSURE_OFFSET(m_pTabs, 0x04A4);
