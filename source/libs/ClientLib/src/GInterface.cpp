@@ -369,10 +369,11 @@ void CGInterface::WriteSystemMessage(eLogType btLevel, LPCWSTR lpszText) {
         return;
 
     D3DCOLOR dwColor;
-    if ((btLevel == SYSLOG_COMBAT) || (btLevel == SYSLOG_GUIDE))
+    if ((btLevel == SYSLOG_COMBAT) || (btLevel == SYSLOG_GUIDE)) {
         dwColor = D3DCOLOR_ARGB(255, 186, 207, 242);
-    else
+    } else {
         dwColor = D3DCOLOR_ARGB(255, 220, 201, 155);
+    }
 
     pSystemMsg->WriteMessage(255, dwColor, lpszText, 0, 1);
 }
