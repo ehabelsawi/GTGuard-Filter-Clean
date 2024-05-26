@@ -4,13 +4,13 @@
 #include "LinkedScroll.h"
 
 class CIFListCtrl : public CIFWnd, public CLinkedScroll {
-
+    GFX_DECLARE_DYNAMIC_EXISTING(CIFListCtrl, 0x00ee9580)
 public:
     struct SLineOfText {
     private:
-        char pad_0000[24]; //0x0000
+        char pad_0000[24];//0x0000
     public:
-        CGFontTexture* m_font; //0x0018
+        CGFontTexture *m_font;//0x0018
     };
 
 public:
@@ -43,52 +43,50 @@ public:
 
     /// \address 0063A940
     /// \remark This func seems to return the currently selected line of text in the list control.
-    CIFListCtrl::SLineOfText* sub_63A940();
+    CIFListCtrl::SLineOfText *sub_63A940();
 
     /// \copybrief CLinkedScroll::GetNumberOfItems
     /// \address 00638cd0
     int GetNumberOfItems() const override;
 
 private:
-    char pad_0384[1]; //0x0384
-    undefined1 field_0x385; //0x0385
-    char m_bHighlighLine; //0x0386
-    char pad_0387[1]; //0x0387
-    undefined1 field_0x388; //0x0388
-    char pad_0389[19]; //0x0389
+    char pad_0384[1];      //0x0384
+    undefined1 field_0x385;//0x0385
+    char m_bHighlighLine;  //0x0386
+    char pad_0387[1];      //0x0387
+    undefined1 field_0x388;//0x0388
+    char pad_0389[19];     //0x0389
 
 public:
     /// Number of pixels per line of text (breaking lines take twice the space, or more)
-    int m_LineHeight; //0x039C
+    int m_LineHeight;//0x039C
 
     /// Number if lines to keep in history
-    int m_LinesOfHistory; //0x03A0
+    int m_LinesOfHistory;//0x03A0
 
     // Number of lines shown by the control
-    int m_HeightInLines; //0x03A4
+    int m_HeightInLines;//0x03A4
 
 private:
-    bool m_bottomAligned; //0x03A8
-    char pad_03A9[1]; //0x03A9
-    bool m_respondToMouseMove; //0x03AA
-    char pad_03AB[29-8]; //0x03AB
+    bool m_bottomAligned;     //0x03A8
+    char pad_03A9[1];         //0x03A9
+    bool m_respondToMouseMove;//0x03AA
+    char pad_03AB[29 - 8];    //0x03AB
     /// Number of items in the list
-    int m_numberOfItems; // 0x3C0
-    D3DCOLOR m_OtherColor; // 0x3C4
-    D3DCOLOR m_BackgroundColor; //0x03C8
+    int m_numberOfItems;       // 0x3C0
+    D3DCOLOR m_OtherColor;     // 0x3C4
+    D3DCOLOR m_BackgroundColor;//0x03C8
 
 
     BEGIN_FIXTURE()
-        ENSURE_OFFSET(field_0x385, 0x385)
-        ENSURE_OFFSET(field_0x388, 0x388)
-        ENSURE_OFFSET(m_bottomAligned, 0x3a8)
-        ENSURE_OFFSET(m_respondToMouseMove, 0x3aa)
-        ENSURE_OFFSET(m_numberOfItems, 0x3c0)
-        ENSURE_OFFSET(m_OtherColor, 0x3c4)
-        ENSURE_OFFSET(m_BackgroundColor, 0x3c8)
+    ENSURE_OFFSET(field_0x385, 0x385)
+    ENSURE_OFFSET(field_0x388, 0x388)
+    ENSURE_OFFSET(m_bottomAligned, 0x3a8)
+    ENSURE_OFFSET(m_respondToMouseMove, 0x3aa)
+    ENSURE_OFFSET(m_numberOfItems, 0x3c0)
+    ENSURE_OFFSET(m_OtherColor, 0x3c4)
+    ENSURE_OFFSET(m_BackgroundColor, 0x3c8)
     END_FIXTURE()
 
     RUN_FIXTURE(CIFListCtrl)
-
 };
-

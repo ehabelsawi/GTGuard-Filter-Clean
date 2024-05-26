@@ -1,27 +1,25 @@
 #include "IFStatic.h"
 
+#include "IFListCtrl.h"
+
 GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFStatic, 0x00EE9720)
 
-// CIFStatic::CIFStatic(void) .text 0064D5F0 00000081 0000001C 00000000 R . . . . T .
-CIFStatic::CIFStatic(void) {
+CIFStatic::CIFStatic() {
     N00000609 = 0;
-    N000096E4 = 0;
+    m_dwTextFGColor = 0;
 
     m_FontTexture.SetColor(D3DCOLOR_RGBA(255, 255, 255, 255));
     m_FontTexture.sub_8B2BA0(3, D3DCOLOR_RGBA(0xB4, 0xB4, 0xB4, 255));
 }
 
-// CIFStatic::~CIFStatic(void) .text 0064D690 00000015 00000010 00000000 R . . . . . .
-CIFStatic::~CIFStatic(void) {
+CIFStatic::~CIFStatic() {
     // empty
 }
 
-// CIFStatic::OnCreate(int) .text 0064D6B0 00000005 00000000 00000000 R . L . . . .
 bool CIFStatic::OnCreate(long ln) {
     return true;
 }
 
-// CIFStatic::SetText(void *) .text 0064D810 00000029 00000004 00000004 R . . . . . .
 bool CIFStatic::SetText(const wchar_t *src) {
     if (src) {
         CIFWnd::SetText(src);
@@ -32,35 +30,123 @@ bool CIFStatic::SetText(const wchar_t *src) {
     return false;
 }
 
-// CIFStatic::OnWndMessage .text 0064D850 00000037 00000004 00000004 R . . . . . .
 void CIFStatic::OnGfxMessage(Event3D *pEvent) {
-    reinterpret_cast<void (__thiscall *)(CIFStatic *, Event3D *)>(0x0064D850)(this, pEvent);
+    if (GetParentControl()->IsKindOf(GFX_RUNTIME_CLASS(CIFListCtrl))) {
+        GetParentControl()->OnGfxMessage(pEvent);
+        return;
+    }
+    CIFWnd::OnGfxMessage(pEvent);
 }
 
-// CIFStatic::RenderMyself(void) .text 0064D940 00000065 00000004 00000000 R . . . . . .
 void CIFStatic::RenderMyself() {
-    reinterpret_cast<void (__thiscall *)(CIFStatic *)>(0x0064D940)(this);
+    CIFWnd::RenderMyself();
+
+    if (m_FontTexture.HasCharacters()) {
+        m_FontTexture.RenderTheText(static_cast<DWORD>(m_fTextRenderPosStartX), static_cast<DWORD>(m_fTextRenderPosStartY), TB_Func_8());
+        ResetTextureAlphaState();
+    }
+
+    if (m_dwTextFGColor != 0) {
+        RenderTextureColor(m_dwTextFGColor);
+    }
 }
 
-// CIFStatic::Func_42(void) .text 0064D9B0 0000019B 00000018 00000000 R . . . . . .
 void CIFStatic::Func_42() {
-    reinterpret_cast<void (__thiscall *)(CIFStatic *)>(0x0064D9B0)(this);
+    if (m_FontTexture.HasCharacters()) {
+        RECT local_10;
+        GetSomeRECT(local_10);
+        const float startX = static_cast<float>(local_10.left);
+        m_fTextRenderPosStartX = startX;
+        const float startY = static_cast<float>(local_10.top);
+        m_fTextRenderPosStartY = startY;
+        const float endX = static_cast<float>(local_10.left + local_10.right);
+        m_fTextRenderPosEndX = endX;
+        const float endY = static_cast<float>(local_10.top + local_10.bottom);
+        m_fTextRenderPosEndY = endY;
+
+        const float bgHeight = static_cast<float>(m_FontTexture.GetDimensions().height);
+        const float bgWidth = static_cast<float>(m_FontTexture.GetDimensions().width);
+
+        switch (m_justificationHorizontal) {
+            case CTextBoard::JUSTIFY_LEFT:
+                m_fTextRenderPosEndX = bgWidth + startX;
+                break;
+            case CTextBoard::JUSTIFY_CENTER: {
+                const float newX = ((endX - startX) - bgWidth) * 0.5f + startX;
+                m_fTextRenderPosStartX = newX;
+                m_fTextRenderPosEndX = newX + bgWidth;
+            } break;
+            case CTextBoard::JUSTIFY_RIGHT:
+                m_fTextRenderPosStartX = endX - bgWidth;
+                break;
+        }
+
+        switch (m_justificationVertical) {
+            case CTextBoard::JUSTIFY_TOP:
+                m_fTextRenderPosEndY = bgHeight + startY;
+                break;
+            case CTextBoard::JUSTIFY_MIDDLE: {
+                float newY = ((endY + startY) - bgHeight) * 0.5f;
+                m_fTextRenderPosStartY = newY;
+                m_fTextRenderPosEndY = newY + bgHeight;
+            } break;
+            case CTextBoard::JUSTIFY_BOTTOM:
+                m_fTextRenderPosStartY = endY - bgHeight;
+                break;
+        }
+    }
 }
 
-// CIFStatic::Func_49(void) .text 0064D780 0000008E 00002008 00000009 R . . . . T .
 bool CIFStatic::SetTextFormatted(const wchar_t *format, ...) {
-    assert(FALSE);
-    return false;
+    if (format == NULL) {
+        return false;
+    }
+
+    wchar_t buffer[0x1000];
+
+    va_list args;
+    va_start(args, format);
+    vswprintf_s(buffer, 0x1000, format, args);
+    va_end(args);
+
+    // Note: SetText also returns a boolean telling if setting the text was successful. However
+    //       the original code does ignore that value here.
+    SetText(buffer);
+
+    Func_42();
+
+    return true;
 }
 
-// CIFStatic::Func_50(void) .text 0064D6C0 0000008E 00002008 00000009 R . . . . T .
 bool CIFStatic::Func_50(const wchar_t *format, ...) {
-    assert(FALSE);
-    return false;
+    if (format == NULL) {
+        return false;
+    }
+
+    wchar_t buffer[0x1000];
+
+    va_list args;
+    va_start(args, format);
+    vswprintf_s(buffer, 0x1000, format, args);
+    va_end(args);
+
+    // Note: SetText also returns a boolean telling if setting the text was successful. However
+    //       the original code does ignore that value here.
+    SetText(buffer);
+
+    Func_42();
+
+    return true;
 }
 
-// CIFStatic::Func_51(void) .text 0064D750 00000029 00000004 00000004 R . . . . T .
-bool CIFStatic::Func_51(const wchar_t *src) {
-    assert(FALSE);
-    return false;
+bool CIFStatic::Func_51(const wchar_t *text) {
+    if (text == NULL) {
+        return false;
+    }
+
+    CIFWnd::SetText(text);
+
+    Func_42();
+
+    return true;
 }

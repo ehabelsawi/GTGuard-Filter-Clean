@@ -1,5 +1,7 @@
 #include "IFListCtrl.h"
 
+GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFListCtrl, 0x00ee9580)
+
 void CIFListCtrl::SetBottomAligned(bool bottomAligned) {
     m_bottomAligned = bottomAligned;
 }
@@ -28,8 +30,8 @@ bool CIFListCtrl::OnCreate(long ln) {
     return true;
 }
 
-CIFListCtrl::SLineOfText* CIFListCtrl::sub_63A940() {
-    return reinterpret_cast<CIFListCtrl::SLineOfText*(__thiscall*)(CIFListCtrl*)>(0x63A940)(this);
+CIFListCtrl::SLineOfText *CIFListCtrl::sub_63A940() {
+    return reinterpret_cast<CIFListCtrl::SLineOfText *(__thiscall *) (CIFListCtrl *)>(0x63A940)(this);
 }
 
 int CIFListCtrl::GetNumberOfItems() const {
