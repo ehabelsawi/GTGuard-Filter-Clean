@@ -6,7 +6,7 @@
 GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFMainFrame, 0x00EECB54)
 
 GFX_BEGIN_MESSAGE_MAP(CIFMainFrame, CIFWnd)
-                    ONG_COMMAND(2, &CIFMainFrame::OnClick_Exit)
+ONG_COMMAND(2, &CIFMainFrame::OnClick_Exit)
 GFX_END_MESSAGE_MAP()
 
 #define GDR_STA_TITLE 0
@@ -14,7 +14,7 @@ GFX_END_MESSAGE_MAP()
 #define GDR_BTN_CLOSE 2
 
 CIFMainFrame::CIFMainFrame()
-        : m_pTitleText(NULL), m_pHandleBar(NULL), m_pCloseBtn(NULL) {
+    : m_pTitleText(NULL), m_pHandleBar(NULL), m_pCloseBtn(NULL) {
 }
 
 bool CIFMainFrame::OnCreate(long ln) {
@@ -47,7 +47,7 @@ bool CIFMainFrame::OnCreate(long ln) {
     m_pCloseBtn = (CIFCloseButton *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFCloseButton), sz, GDR_BTN_CLOSE, 0);
     BS_DEBUG("Created close btn at %d|%d [%d|%d]", sz.pos.x, sz.pos.y, sz.size.width, sz.size.height);
 
-    RECT rect = { 0 };
+    RECT rect = {0};
 
     m_pTitleText->SetSomeRect(rect);
     m_pTitleText->SetFont(theApp.GetFont(0));

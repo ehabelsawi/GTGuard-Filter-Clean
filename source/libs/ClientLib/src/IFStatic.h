@@ -51,6 +51,7 @@ private:
     float m_fTextRenderPosStartY;//0x0374
     float m_fTextRenderPosEndX;  //0x0378
     float m_fTextRenderPosEndY;  //0x037c
+
 private:
     BEGIN_FIXTURE()
     ENSURE_SIZE(0x380)
