@@ -9,8 +9,6 @@
 
 #include "GlobalDataManager.h"
 
-#include <BSLib/multibyte.h>
-
 #include "support/MemberFunctionHook.h"
 
 HOOK_ORIGINAL_MEMBER(0x0079D5B0, &CGInterface::ToggleActionWnd);
@@ -331,7 +329,6 @@ void CGInterface::ShowMessage_Warning(const std::n_wstring &msg) {
     notify->ShowMessage(msg);
 }
 
-
 int CGInterface::Get_SelectedObjectId() {
     return this->m_selectedObjectId;
 }
@@ -384,28 +381,6 @@ void CGInterface::WriteSystemMessage(eLogType btLevel, LPCWSTR lpszText) {
     pSystemMsg->WriteMessage(255, dwColor, lpszText, 0, 1);
 }
 
-HOOK_ORIGINAL_MEMBER(0x007901c0, &CGInterface::WriteGlobalMessage)
-void CGInterface::WriteGlobalMessage(unsigned char nSlot, std::n_wstring message) {
-    CIFMainPopup *popup = GetMainPopup();
-    CIFInventory *inventory = popup->GetInventory();
-
-    CSOItem *item = inventory->GetItemBySlot(nSlot);
-
-    if (item->m_blValid == 0) {
-        return;
-    }
-
-    const SItemData *pItemData = item->GetItemData();
-
-    if (pItemData->IsGlobalMessageScroll()) {
-        NEWMSG(0x704c)
-
-        pReq << static_cast<unsigned char>(nSlot + 13u) << pItemData->m_typeId << acp_encode(message);
-
-        SENDMSG()
-    }
-}
-
 void CGInterface::sub_787C10(SChatMetaData &meta) {
     reinterpret_cast<void (__thiscall *)(CGInterface *, SChatMetaData *)>(0x787C10)(this, &meta);
 }
@@ -454,18 +429,6 @@ void CGInterface::FUN_0079b8a0(undefined1 a1, undefined4 a2) {
     reinterpret_cast<void(__thiscall *)(CGInterface *, undefined1, undefined4)>(0x0079b8a0)(this, a1, a2);
 }
 
-void CGInterface::RequestStatIncrement(undefined4 a1, undefined4 a2, undefined4 a3, undefined4 a4) {
-    if (a1 == 0x4b) {
-        if (a2 == 1) {
-            NEWMSG(0x7050)
-            SENDMSG()
-        } else if (a2 == 2) {
-            NEWMSG(0x7051)
-            SENDMSG()
-        }
-    }
-}
-
 CNIFUnderMenuBar *CGInterface::GetUnderMenuBar() {
     return reinterpret_cast<CNIFUnderMenuBar * (__thiscall *)(CGInterface *)>(0x007994e0)(this);
 }
@@ -511,4 +474,3 @@ void CGInterface::SaveGWndPosOnMiddleOfScreen(DWORD dwID, CGWnd *pParent) {
 
     SaveGWndPostion(dwID, sNewPos);
 }
-

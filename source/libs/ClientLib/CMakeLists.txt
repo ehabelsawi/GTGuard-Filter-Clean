@@ -11,6 +11,7 @@ target_sources(ClientLib PRIVATE
         src/Data/LevelData.cpp
         src/GEffSoundBody.cpp
         src/GInterface.cpp
+        src/GInterfaceSend.cpp
         src/Game.cpp
         src/GameCfg.cpp
         src/GlobalDataManager.cpp
@@ -91,6 +92,7 @@ target_sources(ClientLib PRIVATE
         src/UserGuildInfo.cpp
         src/World.cpp
         src/unsorted.cpp
-)
+        )
+
 target_link_libraries(ClientLib SROInterfaceLIB GFXMainFrame GFX3DFunction GFXFileManagerLIB NavMesh ClientNet SimpleViewer TypeId imgui support ghidra)
 target_include_directories(ClientLib PUBLIC src/)
