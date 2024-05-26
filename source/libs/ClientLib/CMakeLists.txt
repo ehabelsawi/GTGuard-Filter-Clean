@@ -12,6 +12,7 @@ target_sources(ClientLib PRIVATE
         src/GEffSoundBody.cpp
         src/GInterface.cpp
         src/GInterfaceSend.cpp
+        src/GInterfaceWndRelation.cpp
         src/Game.cpp
         src/GameCfg.cpp
         src/GlobalDataManager.cpp
