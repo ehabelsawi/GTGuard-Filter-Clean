@@ -43,7 +43,7 @@ void AboutWindow::Render() {
         ImGui::TextWrapped("Log in to show the cif demo window btn.");
     } else {
         if (ImGui::Button("Show Demo CIF Window")) {
-            CIFWnd *demoWnd = g_pCGInterface->m_IRM.GetResObj(1338, 1);
+            CIFWnd *demoWnd = g_pCGInterface->m_IRM.GetResObj(GDR_FLORIAN0, 1);
             m_bButtonFloNotFound = demoWnd == 0;
 
             if (demoWnd != NULL) {
