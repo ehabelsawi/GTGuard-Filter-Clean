@@ -9,15 +9,9 @@
 #include "IFEventGuideSecond.h"
 #include "IFflorian0Guide.h"
 
-GFX_IMPLEMENT_DYNAMIC_EXISTING(CAlramGuideMgrWnd, 0x00ee99a8)
+#include "GInterface.h"
 
-#define GUIDE_CONFIRMREPUTATION 165
-#define GUIDE_EVENT 41
-#define GUIDE_QUESTINFO 46
-#define GUIDE_LETTERALARM 55
-#define GUIDE_SERVEREVENT  179
-#define GUIDE_OPENMARKETALRAM  198
-#define GUIDE_EVENTSECOND  30006
+GFX_IMPLEMENT_DYNAMIC_EXISTING(CAlramGuideMgrWnd, 0x00ee99a8)
 
 #define ALRAM_GUIDE_ICON_SIZE 42
 #define ALRAM_GUIDE_MAX_ICONS_LINE 4
@@ -91,32 +85,32 @@ CIFWnd *CAlramGuideMgrWnd::CreateGuideIcon(int nWndID) {
     CIFWnd* pObj = 0;
 
     switch(nWndID) {
-        case GUIDE_CONFIRMREPUTATION:
-            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFConfirmReputationGuide), rect, GUIDE_CONFIRMREPUTATION, 0);
+        case GDR_CONFIRMREPUTATION_GUIDE:
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFConfirmReputationGuide), rect, GDR_CONFIRMREPUTATION_GUIDE, 0);
             break;
 
-        case GUIDE_EVENT:
-            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFEventGuide), rect, GUIDE_EVENT, 0);
+        case GDR_EVENTGUIDE:
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFEventGuide), rect, GDR_EVENTGUIDE, 0);
             break;
 
-        case GUIDE_QUESTINFO:
-            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFQuestInfoGuide), rect, GUIDE_QUESTINFO, 0);
+        case GDR_QUESTINFO_GUIDE:
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFQuestInfoGuide), rect, GDR_QUESTINFO_GUIDE, 0);
             break;
 
-        case GUIDE_LETTERALARM:
-            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFLetterAlarmGuide), rect, GUIDE_LETTERALARM, 0);
+        case GDR_LETTER_ALARM_GUIDE:
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFLetterAlarmGuide), rect, GDR_LETTER_ALARM_GUIDE, 0);
             break;
 
-        case GUIDE_SERVEREVENT:
-            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFServerEventGuide), rect, GUIDE_SERVEREVENT, 0);
+        case GDR_SERVEREVENT_GUIDE:
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFServerEventGuide), rect, GDR_SERVEREVENT_GUIDE, 0);
             break;
 
-        case GUIDE_OPENMARKETALRAM:
-            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFOpenMarketAlramGuide), rect, GUIDE_OPENMARKETALRAM, 0);
+        case GDR_OPENMARKETALRAM_GUIDE:
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFOpenMarketAlramGuide), rect, GDR_OPENMARKETALRAM_GUIDE, 0);
             break;
 
-        case GUIDE_EVENTSECOND:
-            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFEventGuideSecond), rect, GUIDE_EVENTSECOND, 0);
+        case GDR_EVENTGUIDE_SECOND:
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFEventGuideSecond), rect, GDR_EVENTGUIDE_SECOND, 0);
             break;
 
         case GUIDE_FLORIAN0:

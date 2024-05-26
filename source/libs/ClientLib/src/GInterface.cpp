@@ -422,7 +422,7 @@ void CGInterface::ToggleQuestNew() {
 }
 
 CNIFCommunityWnd *CGInterface::GetCommunityWnd() {
-    return g_sNewInterfaceMgr.GetInterfaceObj<CNIFGuildWnd>(GDR_GUILD_WND)->m_pCommunity;
+    return g_sNewInterfaceMgr.GetInterfaceObj<CNIFGuildWnd>(GDR_GUILD)->m_pCommunity;
 }
 
 void CGInterface::FUN_00777c30(ChatType type, const wchar_t *message, D3DCOLOR color, int a5) {
