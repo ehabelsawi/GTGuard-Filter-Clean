@@ -201,7 +201,9 @@ HOOK_ORIGINAL_MEMBER(0x0079c750, &CGInterface::ToggleAutoPotion);
 void CGInterface::ToggleAutoPotion(bool bVisible) {
     CIFWnd *pAutoPotion = m_IRM.GetResObj(GDR_AUTO_POTION, true);
 
+    // If close it up 
     if (!bVisible) {
+        // If the window is already not there
         if (pAutoPotion == NULL)
             return;
 
@@ -210,18 +212,20 @@ void CGInterface::ToggleAutoPotion(bool bVisible) {
         pAutoPotion->ShowGWnd(false);
         m_IRM.DeleteCreatedSection("AutoPotion");
         return;
+    // Open it up
+    } else {
+        // Do we have it already opened before?
+        if (pAutoPotion != NULL)
+            return;
+
+        m_IRM.CreateInterfaceSection("AutoPotion", this);
+
+        pAutoPotion = m_IRM.GetResObj(GDR_AUTO_POTION, true);
+        SaveGWndPosOnMiddleOfScreen(GDR_AUTO_POTION, NULL);
+        pAutoPotion->ShowGWnd(true);
+
+        FUN_0079a7e0(pAutoPotion);
     }
-
-    if (pAutoPotion != NULL)
-        return;
-
-    m_IRM.CreateInterfaceSection("AutoPotion", this);
-
-    pAutoPotion = m_IRM.GetResObj(GDR_AUTO_POTION, true);
-    SaveGWndPosOnMiddleOfScreen(GDR_AUTO_POTION, NULL);
-    pAutoPotion->ShowGWnd(true);
-
-    FUN_0079a7e0(pAutoPotion);
 }
 
 void CGInterface::CreateFlorian0Event() {
