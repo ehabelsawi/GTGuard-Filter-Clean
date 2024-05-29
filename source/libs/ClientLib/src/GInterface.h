@@ -24,28 +24,156 @@
 #include "SRIFLib/NIFCommunityWnd.h"
 #include "SRIFLib/NIFWorldMap.h"
 
-#include "unsorted.h"
 #include "IFSystemMessage.h"
 #include "IFExtQuickSlot.h"
 
-#define GDR_CHAT_BOARD 1
-#define GDR_STORAGEROOM 19
-#define GDR_NOTICE 20
-#define GDR_MAINPOPUP 25
-#define GDR_EXCHANGE 26
-#define GDR_WORLDMAP 28
-#define GDR_NPCWINDOW 30
-#define GDR_GAMEGUIDE 32
-#define GDR_WARNING_WND 35
-#define GDR_UPDATE_QUEST_INFO 42
-#define GDR_SYSTEM_MESSAGE_VIEW 68
-#define GDR_SYSTEM 98
-#define GDR_GUILDSTORAGEROOM 145
-#define GDR_EXT_QUICK_SLOT 133
-#define GDR_AUTO_POTION 135
-#define GDR_GUILD_WND 176
+#include "unsorted.h"
 
-#define g_pCGInterface (*(CGInterface**)0x0110F80C)
+#define g_pCGInterface (*(CGInterface **) 0x0110F80C)
+
+/// \todo Extract this hole enum.
+enum eGinterfaceID {
+    GDR_CHAT_BOARD = 1,                 // CIFChatViewer
+
+    GDR_MINIMAP = 10,                   // CIFMinimap
+    GDR_PLAYER_MINI_INFO = 11,          // CIFPlayerMiniInfo
+    GDR_UNDERBAR = 12,                  // CIFUnderBar - CNIFUnderBar
+
+    GDR_STORE = 15,                     // CIFStoreForPackage || CIFStore
+    GDR_TARGETWINDOW = 16,              // CIFTargetWindow
+
+    GDR_STORAGEROOM = 19,               // CIFStorageRoom
+    GDR_NOTICE = 20,                    // CIFNotify
+
+    GDR_MAGICSTATEBOARD = 22,           // CIFMagicStateBoard
+    GDR_COMMUNITY = 23,                 // CIFCommunity
+    GDR_QUICKPARTYBOARD = 24,           // CIFQuickPartyWnd
+    GDR_MAINPOPUP = 25,                 // CIFMainPopup
+    GDR_EXCHANGE = 26,                  // CIFExchange
+    GDR_LOADING = 27,                   // CIFLoading
+    GDR_WORLDMAP = 28,                  // CIFWorldMap
+    GDR_NPCWINDOW = 30,                 // CIF_NPCWindow
+    GDR_PRACTICEPOPUP = 31,             // CIFSkillPracticeBox
+    GDR_GAMEGUIDE = 32,                 // CIFGameGuide
+    GDR_STALL = 33,                     // CIFStall
+    GDR_EQUIP_DUR_ERROR_WND = 34,       // CIFDurabilityErr
+    GDR_WARNING_WND = 35,               // CIFNotify
+    GDR_COMPOSITE_ITEM = 36,            // CIFCompositeItemWnd
+
+    GDR_COS_MANAGER = 39,               // CIFCOSManager
+    GDR_DELAY_GAUGE_BOARD = 40,         // CIFDelayGaugeBoard
+    GDR_EVENTGUIDE = 41,                // CIFEventGuide
+    GDR_UPDATE_QUEST_INFO = 42,         // CIFNotify
+    GDR_SKILLWITHDRAWAL = 43,           // CIFSkillWithdrawal
+    GDR_ALCHEMYBOX = 44,                // CIFAlchemyBox
+    GDR_QUESTINFO = 45,                 // CIFQuestInfo
+    GDR_QUESTINFO_GUIDE = 46,           // CIFQuestInfoGuide
+    GDR_GUILD_NOTIFY_WRITE = 47,        // CIFGuildNotifyWrite
+
+    GDR_GUILD_LEVEL_UP = 49,            // CIFGuildLevelUp
+    GDR_ITEM_MALL = 50,                 // CIFItemMall
+    GDR_WHISPERLIST = 51,               // CIFWhisperList
+
+    GDR_CHANGE_PLAYER_MODEL = 54,       // CIFChangePlayerModel
+    GDR_LETTER_ALARM_GUIDE = 55,        // CIFLetterAlarmGuide
+    GDR_WHOLE_CHAT = 56,                // CIFWholeChat
+    GDR_GUILDMASTER_ELECTION = 57,      // CIFGuildMasterElection
+    GDR_GUILDMASTER_LEAVE = 58,         // CIFGuildMasterLeave
+    GDR_REQUEST_GUILDWAR = 59,          // CIFRequestGuildWar
+
+    GDR_CAS_REQUEST_SERVICE = 61,       // CIFCASRequestService
+    GDR_CAS_CHAT_VIEW = 62,             // CIFCASChatView
+    GDR_JOB_ALIAS = 63,                 // CIFJobAlias
+    GDR_JOB_RANK = 64,                  // CIFJobRank
+    GDR_JOB_CONTRIBUTION_RANK = 65,     // CIFJobContributionRank
+    GDR_PREV_JOB_INFO = 66,             // CIFPrevJobInfo
+    GDR_SPECIALTY_DEAL = 67,            // CIFSpecialtyDeal
+    GDR_SYSTEM_MESSAGE_VIEW = 68,       // CIFSystemMessage
+
+    GDR_INVENTORY = 70,                 // CIFInventory
+    GDR_EQUIPMENT = 71,                 // CIFEquipment
+    GDR_PARTY = 72,                     // CIFParty
+    GDR_SKILL = 73,                     // CIFSkill
+    GDR_ACTION = 74,                    // CIFAction
+    GDR_PLAYERINFO = 75,                // CIFPlayerInfo
+    GDR_QUEST = 76,                     // CIFQuest or maybe CNIF
+    GDR_APPRENTICESHIP = 77,            // CIFApprenticeShip
+
+    GDR_REGION_INFO_VIEW = 83,          // CIFRegionView
+
+    GDR_HELPBUBBLEWND = 97,             // CIFHelperBubbleWindow
+    GDR_SYSTEM = 98,                    // CIFSystemWnd
+    GDR_SELECTED_ITEM = 99,             // CIFDraggedStatic
+
+    GDR_CHECK_CONFIRM_WND = 101,        // CIFCheckConfirmWnd
+
+    GDR_HELPBUBBLEWNDEXT = 103,         // CIFHelperBubbleWindow
+
+    GDR_COS_WND = 120,                  // CIFCOS
+
+    GDR_PARTY_MATCH = 130,              // CIFPartyMatch
+    GDR_PARTY_MATCH_REQ_JOIN = 131,     // CIFPartyMatchReqJoin
+    GDR_GUILD_SUMMON_REQP = 132,        // CIFGuildSummonReq
+    GDR_EXT_QUICK_SLOT = 133,           // CIFExtQuickSlot
+    GDR_EXT_QUICK_SLOT_SECOND = 134,    // CIFExtQuickSlotSecond
+    GDR_AUTO_POTION = 135,              // CIFAutoPotion
+
+    GDR_GHACHA = 140,                   // CIFGhaCha
+
+    GDR_GUILDSTORAGEROOM = 145,         // CIFStorageRoom
+
+    GDR_STALL_NETWORK = 150,            // CIFStallNetwork
+    GDR_TIMER_SUMMONED_MOB = 151,       // CIFTimerSummonedMob
+    GDR_EVENT_FESTIVAL = 152,           // CIFEventGather
+    GDR_MENTOR_MATCH = 153,             // CIFMentorMatch
+    GDR_APPRENTICESHIP_HONOR_RANK = 154,// CIFApprenticeShipHonorRanking
+    GDR_APPRENTICESHIP_JUDGE = 155,     // CIFApprenticeShipJudge
+    GDR_GRANT_MAGIC_ATTRIBUTE = 156,    // CIFGrantMagicAttributeWnd
+    GDR_EQUIP_STATE_WND = 157,          // CEquipStateImg
+    GDR_ALRAM_GUIDE_MGR_WND = 158,      // CAlramGuideMgrWnd
+    GDR_TRADE_INFO_WND = 159,           // CIFTradeInfoWnd
+
+    GDR_SUPPORTERCHAT = 161,            // CIFSupporterChatWnd
+
+    GDR_CONFIRMREPUTATION_GUIDE = 165,  // CIFConfirmReputationGuide
+    GDR_CONFIRMREPUTATION = 166,        // CNIFConfirmReputation
+    GDR_RENEWAL_ITEM_MALL = 167,        // CIFNewItemMall
+
+    GDR_MINI_QUEST = 173,               // CNIFMiniQuestWnd
+    GDR_TARGET_MENU = 174,              // CNIFTargetMenu
+
+    GDR_GUILD = 176,                    // CNIFGuildWnd
+
+    GDR_SERVEREVENT_GUIDE = 179,        // CIFServerEventGuide
+
+    GDR_OPENMARKETALRAM_GUIDE = 198,    // CIFOpenMarketAlramGuide
+
+    GDR_STA_BATTERYREMAIN = 201,        // CIFStatic
+    GDR_STA_FIRSTNUM = 202,             // CIFStatic
+    GDR_STA_SECONDNUM = 203,            // CIFStatic
+
+    GDR_TAX_MANAGEMENT = 300,           // CIFTaxManagement
+    GDR_FORTRESS_MAP = 301,             // CIFFortressMap
+    GDR_FORTRESS_BUSINESS = 302,        // CIFFortressBusiness
+    GDR_FORTRESS_WAR_APPLY_WND = 303,   // CIFFortressWarApplyWnd
+    GDR_FORTRESS_MAKEITEM_WND = 304,    // CIFFortressMakeItemWnd
+
+    GDR_GNGWC_RANK = 400,               // CIFGNGWCRank
+
+    GDR_TIMER_WND = 410,                // CIFTimerWnd
+
+    GDR_QUICK_STATE = 420,              // CIFQuickStateWnd
+    GDR_QUICK_STATE_HARF = 421,         // CIFQuickStateHalfWnd
+
+    GDR_EVENTGUIDE_SECOND = 30006,      // CIFEventGuideSecond
+
+    // Devkit Examples.....
+
+    GDR_FLORIAN0_GUIDE = 13378,         // CIFflorian0Guide // Nice ID
+    GDR_FLORIAN0 = 1338,                // CIFflorian0
+    GDR_KYUUBI09 = 125051,              // CNIFKyuubi09 // Sorry about this id ;-;
+
+};
 
 enum eMarketChatType : BYTE {
     UNKNOWN_CHAT, // what deal windows has chat inside it?
@@ -55,7 +183,6 @@ enum eMarketChatType : BYTE {
 };
 
 struct SChatMetaData {
-
     SChatMetaData() {
         chatIndex = -1;
         chatType = 0;
@@ -219,7 +346,7 @@ public:
     CIFQuickStateHalfWnd *Get_QuickStateHalfWnd();
 
     /// \address 00777a70
-    void FUN_00777a70(undefined4 param_1,undefined4 param_2);
+    void FUN_00777a70(undefined4 param_1, undefined4 param_2);
 
     /// \address 00798D40
     CIF_NPCWindow *Get_GDR_NPCWINDOW();
@@ -293,13 +420,13 @@ private:
 
 private:
 public:
-    CIRMManager m_IRM; //0x036C
-    char pad_0x039C[0xC]; //0x039C
-    CIFSupporterChatWnd *m_academyChatWindow; //0x03A8
-    CIFTimerWnd *m_timerWindow; //0x03AC
-    CIFQuickStateWnd *N00002636; //0x03B0
-    CIFQuickStateHalfWnd *N00002637; //0x03B4
-    char pad_0x03B8[0xC]; //0x03B8
+    CIRMManager m_IRM;                       //0x036C
+    char pad_0x039C[0xC];                    //0x039C
+    CIFSupporterChatWnd *m_academyChatWindow;//0x03A8
+    CIFTimerWnd *m_timerWindow;              //0x03AC
+    CIFQuickStateWnd *N00002636;             //0x03B0
+    CIFQuickStateHalfWnd *N00002637;         //0x03B4
+    char pad_0x03B8[0xC];                    //0x03B8
 private:
     int last_mouse_x; //0x03C4 3C4
     int last_mouse_y; //0x03C8
@@ -323,7 +450,7 @@ public:
     int m_selectedObjectId; //0x0628
     char pad_0x062C[0x80]; //0x062C
 public:
-    CNavigationDeadreckon m_Nav; //0x06AC
+    CNavigationDeadreckon m_Nav;//0x06AC
 private:
     CAutoPotion *m_pAutoPotion; //0x06FC
     char pad_0x0700[0x20]; //0x0700
@@ -345,6 +472,7 @@ private:
     char pad_07bb[0x07CD - 0x7BB]; //0x07BB
 public:
     undefined1 field_0x7cd;
+
 private:
     char pad_07d0[0x07EC - 0x07D0]; //0x07D0
     eSuspendMode m_SuspendMode; //0x07EC // kyuubi09: plz make more research about zat brOzaer becuase im lazy fox.

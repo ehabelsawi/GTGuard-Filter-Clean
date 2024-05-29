@@ -6,7 +6,6 @@
 
 #include "support/MemberFunctionHook.h"
 
-#define GDR_QUEST 76
 #define GDR_BTN_APPRENTICE 16
 #define GDR_BTN_QUEST 15
 #define GDR_BTN_PARTY 14
