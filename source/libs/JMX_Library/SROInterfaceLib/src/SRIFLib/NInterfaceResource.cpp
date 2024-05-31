@@ -4,8 +4,8 @@
 
 #include "NInterfaceResource.h"
 
-void CNInterfaceManager::InstantiateDimensional(const char *p2DFilePath, CGWnd *pParent, bool b) {
-    reinterpret_cast<void (__thiscall *)(CNInterfaceManager *, const char *, CGWnd *, bool)>(0x00469140)(this,
+CNIFWnd *CNInterfaceManager::InstantiateDimensional(const char *p2DFilePath, CGWnd *pParent, bool b) {
+    reinterpret_cast<CNIFWnd *(__thiscall *)(CNInterfaceManager *, const char *, CGWnd *, bool)>(0x00469140)(this,
                                                                                                            p2DFilePath,
                                                                                                            pParent, b);
 }
