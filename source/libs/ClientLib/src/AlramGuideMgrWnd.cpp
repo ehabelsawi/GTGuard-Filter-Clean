@@ -137,7 +137,7 @@ void CAlramGuideMgrWnd::RemoveGuide(DWORD dwID) {
 
         (*it)->EraseWindowObj();
         m_listGuides.erase(it);
-        // Hmmm why this is not m_btGuidesCount minus too?
         break;
     }
+    PrepareGuides();
 }
