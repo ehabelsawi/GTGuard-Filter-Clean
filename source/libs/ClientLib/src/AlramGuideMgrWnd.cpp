@@ -20,7 +20,7 @@ CAlramGuideMgrWnd::CAlramGuideMgrWnd() {
     m_btGuidesCount = 0;
 }
 
-void CAlramGuideMgrWnd::PrepareGuides() {
+void CAlramGuideMgrWnd::UpdateGuidesPos() {
     wnd_pos posMgr = GetPos();
 
     listGUIDES::iterator it = m_listGuides.begin();
@@ -124,7 +124,7 @@ CIFWnd *CAlramGuideMgrWnd::CreateGuideIcon(int nWndID) {
     m_listGuides.push_back(pObj);
     m_btGuidesCount++;
 
-    PrepareGuides();
+    UpdateGuidesPos();
 
     return pObj;
 }
@@ -137,7 +137,7 @@ void CAlramGuideMgrWnd::RemoveGuide(DWORD dwID) {
 
         (*it)->EraseWindowObj();
         m_listGuides.erase(it);
-        // Hmmm why this is not m_btGuidesCount minus too?
         break;
     }
+    UpdateGuidesPos();
 }
