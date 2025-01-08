@@ -46,6 +46,12 @@ public:
     /// \address 00555db0
     void RegisterCommand(std::n_wstring wstrName, fnConsoleCommand fn);
 
+    /// \address 00558910
+    void InitializeCommandsList();
+
+private:
+    BOOL OnCheatKey_SRO_DevKit(vecCONSOLE_CHEATCODE &vecCheatCode);
+
 private:
     BEGIN_FIXTURE()
     ENSURE_SIZE(0x05A4)

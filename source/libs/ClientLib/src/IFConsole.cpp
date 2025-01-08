@@ -61,3 +61,20 @@ void CIFConsole::RegisterCommand(std::n_wstring wstrName, fnConsoleCommand fn) {
 
     m_hashCommands.insert(hashCONSOLE_COMMANDS::value_type(wstrCommand, fn));
 }
+
+void CIFConsole::InitializeCommandsList() {
+    // Note: all commands name should be in lowercase!
+    RegisterCommand(L"sro_devkit", &CIFConsole::OnCheatKey_SRO_DevKit);
+
+    reinterpret_cast<void(__thiscall *)(CIFConsole *)>(0x00558910)(this);
+}
+
+BOOL CIFConsole::OnCheatKey_SRO_DevKit(vecCONSOLE_CHEATCODE &vecCheatCode) {
+    // if there is an msg afer "/sro_devkit" || nothing after it
+    if (vecCheatCode.size() > 2 || vecCheatCode.size() == 1)
+        return FALSE;
+
+    // let's show notice with what after "/sro_devkit" command
+    g_pCGInterface->ShowMessage_Notice(vecCheatCode[1]);
+    return TRUE;
+}
