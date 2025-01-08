@@ -2,7 +2,10 @@
 
 #include "ICPlayer.h"
 
+#include "BSLib/Debug.h"
+
 #include "Game.h"
+#include <GInterface.h>
 
 BOOL CIFConsole::IsConsolePermissioned() {
     if (g_pMyPlayerObj != NULL && g_pMyPlayerObj->IsGameMaster())
@@ -48,4 +51,13 @@ BOOL CIFConsole::SetFocusOnInputBox() {
 
     m_pInputBox->SetFocus_MAYBE();
     return TRUE;
+}
+
+void CIFConsole::RegisterCommand(std::n_wstring wstrName, fnConsoleCommand fn) {
+    std::n_wstring wstrCommand(wstrName.begin(), wstrName.end());
+
+    hashCONSOLE_COMMANDS::iterator it = m_hashCommands.find(wstrCommand);
+    BS_ASSERT_MSG(it == m_hashCommands.end(), "0");
+
+    m_hashCommands.insert(hashCONSOLE_COMMANDS::value_type(wstrCommand, fn));
 }
