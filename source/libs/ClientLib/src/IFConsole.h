@@ -57,6 +57,14 @@ private:
     /// <returns></returns>
     BOOL OnCheatKey_SRO_DevKit(vecCONSOLE_CHEATCODE &vecCheatCode);
 
+    /// <summary>
+    /// An quick way to tp without warp and stuff
+    /// Usage: '/wp2 RegionID X Y Z WorldID'
+    /// </summary>
+    /// <param name="vecCheatCode"></param>
+    /// <returns></returns>
+    BOOL OnCheatKey_Wp2(vecCONSOLE_CHEATCODE &vecCheatCode);
+
 private:
     BEGIN_FIXTURE()
     ENSURE_SIZE(0x05A4)
