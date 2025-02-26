@@ -5,6 +5,7 @@
 #include "BSLib/Debug.h"
 
 #include "Game.h"
+#include <algorithm>
 #include <GInterface.h>
 
 BOOL CIFConsole::IsConsolePermissioned() {
@@ -54,7 +55,9 @@ BOOL CIFConsole::SetFocusOnInputBox() {
 }
 
 void CIFConsole::RegisterCommand(std::n_wstring wstrName, fnConsoleCommand fn) {
-    std::n_wstring wstrCommand(wstrName.begin(), wstrName.end());
+    std::n_wstring wstrCommand = wstrName;
+    // Convert it to lower case
+    std::transform(wstrCommand.begin(), wstrCommand.end(), wstrCommand.begin(), ::tolower);
 
     hashCONSOLE_COMMANDS::iterator it = m_hashCommands.find(wstrCommand);
     BS_ASSERT_MSG(it == m_hashCommands.end(), "0");
@@ -63,9 +66,9 @@ void CIFConsole::RegisterCommand(std::n_wstring wstrName, fnConsoleCommand fn) {
 }
 
 void CIFConsole::InitializeCommandsList() {
-    // Note: all commands name should be in lowercase!
-    RegisterCommand(L"sro_devkit", &CIFConsole::OnCheatKey_SRO_DevKit);
-
+    // SRO_Devkit
+    RegisterCommand(L"SRO_Devkit", &CIFConsole::OnCheatKey_SRO_DevKit);
+    
     reinterpret_cast<void(__thiscall *)(CIFConsole *)>(0x00558910)(this);
 }
 

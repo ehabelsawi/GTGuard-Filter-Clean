@@ -50,6 +50,11 @@ public:
     void InitializeCommandsList();
 
 private:
+    /// <summary>
+    /// An example command just show an local notice msg
+    /// </summary>
+    /// <param name="vecCheatCode"></param>
+    /// <returns></returns>
     BOOL OnCheatKey_SRO_DevKit(vecCONSOLE_CHEATCODE &vecCheatCode);
 
 private:
