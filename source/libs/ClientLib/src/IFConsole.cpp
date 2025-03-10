@@ -68,7 +68,7 @@ void CIFConsole::RegisterCommand(std::n_wstring wstrName, fnConsoleCommand fn) {
     hashCONSOLE_COMMANDS::iterator it = m_hashCommands.find(wstrCommand);
     BS_ASSERT_MSG(it == m_hashCommands.end(), "0");
 
-    m_hashCommands.insert(hashCONSOLE_COMMANDS::value_type(wstrCommand, fn));
+    m_hashCommands.insert(std::make_pair(wstrCommand, fn));
 }
 
 void CIFConsole::InitializeCommandsList() {
@@ -76,12 +76,13 @@ void CIFConsole::InitializeCommandsList() {
     RegisterCommand(L"SRO_Devkit", &CIFConsole::OnCheatKey_SRO_DevKit);
     // WP2
     RegisterCommand(L"Wp2", &CIFConsole::OnCheatKey_Wp2);
+
     reinterpret_cast<void(__thiscall *)(CIFConsole *)>(0x00558910)(this);
 }
 
 BOOL CIFConsole::OnCheatKey_SRO_DevKit(vecCONSOLE_CHEATCODE &vecCheatCode) {
     // if there is an msg afer "/sro_devkit" || nothing after it
-    if (vecCheatCode.size() > 2 || vecCheatCode.size() == 1)
+    if (vecCheatCode.size() != 2)
         return FALSE;
 
     // let's show notice with what after "/sro_devkit" command
@@ -96,11 +97,11 @@ BOOL CIFConsole::OnCheatKey_Wp2(vecCONSOLE_CHEATCODE &vecCheatCode) {
 
     NEWMSG(SR_SPECIAL_COMMAND_REQ);
     pReq << SR_SPECIAL_COMMAND_MOVE_TO_WP;
-    pReq << (WORD)(atoi(TO_NSTRING(vecCheatCode[1]).c_str()));
-    pReq << (FLOAT)(atof(TO_NSTRING(vecCheatCode[2]).c_str()));
-    pReq << (FLOAT)(atof(TO_NSTRING(vecCheatCode[3]).c_str()));
-    pReq << (FLOAT)(atof(TO_NSTRING(vecCheatCode[4]).c_str()));
-    pReq << (WORD)(atoi(TO_NSTRING(vecCheatCode[5]).c_str()));
+    pReq << (WORD) (atoi(TO_NSTRING(vecCheatCode[1]).c_str()));
+    pReq << (FLOAT) (atof(TO_NSTRING(vecCheatCode[2]).c_str()));
+    pReq << (FLOAT) (atof(TO_NSTRING(vecCheatCode[3]).c_str()));
+    pReq << (FLOAT) (atof(TO_NSTRING(vecCheatCode[4]).c_str()));
+    pReq << (WORD) (atoi(TO_NSTRING(vecCheatCode[5]).c_str()));
     SENDMSG();
 
     return TRUE;
