@@ -4,25 +4,25 @@
 
 #include "support/hook.h"
 
-#include "hooks/Hooks.h"
-#include "hooks/GFXVideo3d_Hook.h"
 #include "hooks/CGame_Hook.h"
+#include "hooks/GFXVideo3d_Hook.h"
+#include "hooks/Hooks.h"
 
 #include "hooks/WndProc_Hook.h"
 
+#include "ICMonster.h"
+#include "ICPlayer.h"
+#include "QuickStart.h"
+#include <AutoPotion.h>
+#include <BSLib/Debug.h>
+#include <GFX3DFunction/RStateMgr.h>
 #include <GInterface.h>
+#include <ICUser.h>
 #include <IFChatViewer.h>
 #include <NetProcessIn.h>
 #include <NetProcessSecond.h>
 #include <NetProcessThird.h>
-#include <BSLib/Debug.h>
-#include "QuickStart.h"
-#include "ICPlayer.h"
-#include "ICMonster.h"
 #include <PSCharacterSelect.h>
-#include <ICUser.h>
-#include <GFX3DFunction/RStateMgr.h>
-#include <AutoPotion.h>
 
 std::vector<const CGfxRuntimeClass *> register_objects;
 std::vector<overrideFnPtr> override_objects;
@@ -87,6 +87,7 @@ void Setup() {
 #endif // CONFIG_CHATVIEWER
 
     replaceOffset(0x00558618, addr_from_this(&CIFConsole::SetVisibleMode));
+    replaceOffset(0x0055a027, addr_from_this(&CIFConsole::InitializeCommandsList));
 
     quickstart.Setup();
 }
