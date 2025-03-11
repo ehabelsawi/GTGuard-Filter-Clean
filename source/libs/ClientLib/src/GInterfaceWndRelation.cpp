@@ -329,3 +329,30 @@ void CGInterface::SaveGWndPosOnMiddleOfScreen(DWORD dwID, CGWnd *pParent) {
 
     SaveGWndPostion(dwID, sNewPos);
 }
+
+bool CGInterface::GetSavedGWndPostion(DWORD dwID, OUT CGWnd::wnd_pos &sPos, BOOL bPosOnScreen) {
+    mapWndPos::iterator it = m_mapWindowPos.find(dwID);
+    if (it == m_mapWindowPos.end()) {
+        return false;
+    }
+
+    sPos = (*it).second;
+
+    if (bPosOnScreen) {
+        CIFWnd *pWnd = m_IRM.GetResObj(dwID, true);
+        if (pWnd != NULL) {
+            int nResolutionWidth = theApp.GetClientDimensionStuff().width;
+            int nResolutionHeight = theApp.GetClientDimensionStuff().height;
+            wnd_size sWndSize = pWnd->GetSize();
+
+            if (nResolutionWidth < (sPos.x + sWndSize.width)) {
+                sPos.x = (nResolutionWidth - sWndSize.width);
+            }
+
+            if (nResolutionHeight < (sPos.y + sWndSize.height)) {
+                sPos.y = (nResolutionHeight - sWndSize.height);
+            }
+        }
+    }
+    return true;
+}

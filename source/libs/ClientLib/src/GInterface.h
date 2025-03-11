@@ -390,6 +390,9 @@ private:
     /// \address 0079ac50
     void SaveGWndPosOnMiddleOfScreen(DWORD dwID, CGWnd *pParent);
 
+    /// \address 0079a8d0
+    bool GetSavedGWndPostion(DWORD dwID, OUT wnd_pos &sPos, BOOL bPosOnScreen);
+
 private:
 public:
     CIRMManager m_IRM;                       //0x036C
