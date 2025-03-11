@@ -46,6 +46,10 @@ void Setup() {
 
     replaceAddr(0x00d71100 + 1, addr_from_this(&CGInterface::OnCharIMPL));
 
+    replaceOffset(0x00788183, addr_from_this(&CGInterface::SaveGWndsPostionData));
+    replaceOffset(0x0079f010, addr_from_this(&CGInterface::SaveGWndsPostionData));
+    replaceOffset(0x0078ca06, addr_from_this(&CGInterface::LoadGWndsPostionData));
+
     vftableHook(0x00dd811c, 10, addr_from_this(&CPSCharacterSelect::OnCreateIMPL));
 
     vftableHook(0x00de2e7c, 15, addr_from_this(&CICUser::Func_15_impl));
