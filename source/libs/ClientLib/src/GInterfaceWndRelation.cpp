@@ -368,7 +368,7 @@ void CGInterface::SaveGWndsPostionData() {
     int nUnknown = 3;
     fwrite(&nUnknown, sizeof(int), 1, f);
 
-    int nCount = GWND_POSTIONS_COUNT; // If you planing for an change, plz notice me too..
+    int nCount = GWND_POSTIONS_COUNT;// If you planing for an change, plz notice me too..
     fwrite(&nCount, sizeof(int), 1, f);
 
     int nResolutionWidth = theApp.GetClientDimensionStuff().width;
@@ -468,6 +468,135 @@ void CGInterface::SaveGWndsPostionData() {
     }
     fwrite(&sPosData.x, sizeof(int), 1, f);
     fwrite(&sPosData.y, sizeof(int), 1, f);
+    //=======================================================
+
+    fclose(f);
+}
+
+void CGInterface::LoadGWndsPostionData() {
+    CHAR szBuffer[0x200];// PATH_MAX define iguess?
+    sprintf_s(szBuffer, "%s\\Setting\\wndpos.dat", theApp.GetWorkingDir());
+
+    FILE *f = fopen(szBuffer, "wb+");
+    if (f == NULL)
+        return;
+
+    int nUnknwon;
+    fread(&nUnknwon, sizeof(int), 1, f);
+
+    if (nUnknwon != 3) {
+        fclose(f);
+        SaveGWndsPostionData();
+        return;
+    }
+
+    int nCount;
+    int nResolutionWidth;
+    int nResolutionHeight;
+
+    fread(&nCount, sizeof(int), 1, f);
+    fread(&nResolutionWidth, sizeof(int), 1, f);
+    fread(&nResolutionHeight, sizeof(int), 1, f);
+
+    if (nResolutionWidth != theApp.GetClientDimensionStuff().width ||
+        nResolutionHeight != theApp.GetClientDimensionStuff().height) {
+        fclose(f);
+        SaveGWndsPostionData();
+        return;
+    }
+
+    wnd_pos sPosData;
+
+    //=======================================================
+    fread(&sPosData.x, sizeof(int), 1, f);
+    fread(&sPosData.y, sizeof(int), 1, f);
+
+    CIFWnd *pWnd = m_IRM.GetResObj(GDR_MAINPOPUP, true);
+    if (pWnd != NULL) {
+        pWnd->MoveGWnd(sPosData.x, sPosData.y);
+    }
+    SaveGWndPostion(GDR_MAINPOPUP, sPosData);
+    //=======================================================
+    fread(&sPosData.x, sizeof(int), 1, f);
+    fread(&sPosData.y, sizeof(int), 1, f);
+
+    pWnd = m_IRM.GetResObj(GDR_STORE, true);
+    if (pWnd != NULL) {
+        pWnd->MoveGWnd(sPosData.x, sPosData.y);
+    }
+    SaveGWndPostion(GDR_STORE, sPosData);
+    //=======================================================
+    fread(&sPosData.x, sizeof(int), 1, f);
+    fread(&sPosData.y, sizeof(int), 1, f);
+
+    pWnd = m_IRM.GetResObj(GDR_STORAGEROOM, true);
+    if (pWnd != NULL) {
+        pWnd->MoveGWnd(sPosData.x, sPosData.y);
+    }
+    SaveGWndPostion(GDR_STORAGEROOM, sPosData);
+    //=======================================================
+    fread(&sPosData.x, sizeof(int), 1, f);
+    fread(&sPosData.y, sizeof(int), 1, f);
+
+    pWnd = m_IRM.GetResObj(GDR_EXCHANGE, true);
+    if (pWnd != NULL) {
+        pWnd->MoveGWnd(sPosData.x, sPosData.y);
+    }
+    SaveGWndPostion(GDR_EXCHANGE, sPosData);
+    //=======================================================
+    fread(&sPosData.x, sizeof(int), 1, f);
+    fread(&sPosData.y, sizeof(int), 1, f);
+
+    pWnd = m_IRM.GetResObj(GDR_WORLDMAP, true);
+    if (pWnd != NULL) {
+        pWnd->MoveGWnd(sPosData.x, sPosData.y);
+    }
+    SaveGWndPostion(GDR_WORLDMAP, sPosData);
+    //=======================================================
+    fread(&sPosData.x, sizeof(int), 1, f);
+    fread(&sPosData.y, sizeof(int), 1, f);
+
+    pWnd = m_IRM.GetResObj(GDR_COS_WND, true);
+    if (pWnd != NULL) {
+        pWnd->MoveGWnd(sPosData.x, sPosData.y);
+    }
+    SaveGWndPostion(GDR_COS_WND, sPosData);
+    //=======================================================
+    fread(&sPosData.x, sizeof(int), 1, f);
+    fread(&sPosData.y, sizeof(int), 1, f);
+
+    pWnd = m_IRM.GetResObj(GDR_GAMEGUIDE, true);
+    if (pWnd != NULL) {
+        pWnd->MoveGWnd(sPosData.x, sPosData.y);
+    }
+    SaveGWndPostion(GDR_GAMEGUIDE, sPosData);
+    //=======================================================
+    fread(&sPosData.x, sizeof(int), 1, f);
+    fread(&sPosData.y, sizeof(int), 1, f);
+
+    pWnd = m_IRM.GetResObj(GDR_ALCHEMYBOX, true);
+    if (pWnd != NULL) {
+        pWnd->MoveGWnd(sPosData.x, sPosData.y);
+    }
+    SaveGWndPostion(GDR_ALCHEMYBOX, sPosData);
+    //=======================================================
+    fread(&sPosData.x, sizeof(int), 1, f);
+    fread(&sPosData.y, sizeof(int), 1, f);
+
+    pWnd = m_IRM.GetResObj(GDR_AUTO_POTION, true);
+    if (pWnd != NULL) {
+        pWnd->MoveGWnd(sPosData.x, sPosData.y);
+    }
+    SaveGWndPostion(GDR_AUTO_POTION, sPosData);
+    //=======================================================
+    fread(&sPosData.x, sizeof(int), 1, f);
+    fread(&sPosData.y, sizeof(int), 1, f);
+
+    pWnd = m_IRM.GetResObj(GDR_EXT_QUICK_SLOT, true);
+    if (pWnd != NULL) {
+        pWnd->MoveGWnd(sPosData.x, sPosData.y);
+    }
+    SaveGWndPostion(GDR_EXT_QUICK_SLOT, sPosData);
     //=======================================================
 
     fclose(f);

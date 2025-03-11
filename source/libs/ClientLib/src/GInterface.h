@@ -398,6 +398,9 @@ private:
     /// \address 0079eb20
     void SaveGWndsPostionData();
 
+    /// \address 0079eb20
+    void LoadGWndsPostionData();
+
 private:
 public:
     CIRMManager m_IRM;                       //0x036C
