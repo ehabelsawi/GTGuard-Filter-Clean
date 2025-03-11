@@ -356,3 +356,119 @@ bool CGInterface::GetSavedGWndPostion(DWORD dwID, OUT CGWnd::wnd_pos &sPos, BOOL
     }
     return true;
 }
+
+void CGInterface::SaveGWndsPostionData() {
+    CHAR szBuffer[0x200];// PATH_MAX define iguess?
+    sprintf_s(szBuffer, "%s\\Setting\\wndpos.dat", theApp.GetWorkingDir());
+
+    FILE *f = fopen(szBuffer, "wb+");
+    if (f == NULL)
+        return;
+
+    int nUnknown = 3;
+    fwrite(&nUnknown, sizeof(int), 1, f);
+
+    int nCount = GWND_POSTIONS_COUNT; // If you planing for an change, plz notice me too..
+    fwrite(&nCount, sizeof(int), 1, f);
+
+    int nResolutionWidth = theApp.GetClientDimensionStuff().width;
+    int nResolutionHeight = theApp.GetClientDimensionStuff().height;
+    fwrite(&nResolutionWidth, sizeof(int), 1, f);
+    fwrite(&nResolutionHeight, sizeof(int), 1, f);
+
+    wnd_pos sPosData;
+
+    //=======================================================
+    CIFWnd *pWnd = m_IRM.GetResObj(GDR_MAINPOPUP, true);
+    if (pWnd != NULL) {
+        sPosData = pWnd->GetPos();
+    } else {
+        GetSavedGWndPostion(GDR_MAINPOPUP, sPosData, TRUE);
+    }
+    fwrite(&sPosData.x, sizeof(int), 1, f);
+    fwrite(&sPosData.y, sizeof(int), 1, f);
+    //=======================================================
+    pWnd = m_IRM.GetResObj(GDR_STORE, true);
+    if (pWnd != NULL) {
+        sPosData = pWnd->GetPos();
+    } else {
+        GetSavedGWndPostion(GDR_STORE, sPosData, TRUE);
+    }
+    fwrite(&sPosData.x, sizeof(int), 1, f);
+    fwrite(&sPosData.y, sizeof(int), 1, f);
+    //=======================================================
+    pWnd = m_IRM.GetResObj(GDR_STORAGEROOM, true);
+    if (pWnd != NULL) {
+        sPosData = pWnd->GetPos();
+    } else {
+        GetSavedGWndPostion(GDR_STORAGEROOM, sPosData, TRUE);
+    }
+    fwrite(&sPosData.x, sizeof(int), 1, f);
+    fwrite(&sPosData.y, sizeof(int), 1, f);
+    //=======================================================
+    pWnd = m_IRM.GetResObj(GDR_EXCHANGE, true);
+    if (pWnd != NULL) {
+        sPosData = pWnd->GetPos();
+    } else {
+        GetSavedGWndPostion(GDR_EXCHANGE, sPosData, TRUE);
+    }
+    fwrite(&sPosData.x, sizeof(int), 1, f);
+    fwrite(&sPosData.y, sizeof(int), 1, f);
+    //=======================================================
+    pWnd = m_IRM.GetResObj(GDR_WORLDMAP, true);
+    if (pWnd != NULL) {
+        sPosData = pWnd->GetPos();
+    } else {
+        GetSavedGWndPostion(GDR_WORLDMAP, sPosData, TRUE);
+    }
+    fwrite(&sPosData.x, sizeof(int), 1, f);
+    fwrite(&sPosData.y, sizeof(int), 1, f);
+    //=======================================================
+    pWnd = m_IRM.GetResObj(GDR_COS_WND, true);
+    if (pWnd != NULL) {
+        sPosData = pWnd->GetPos();
+    } else {
+        GetSavedGWndPostion(GDR_COS_WND, sPosData, TRUE);
+    }
+    fwrite(&sPosData.x, sizeof(int), 1, f);
+    fwrite(&sPosData.y, sizeof(int), 1, f);
+    //=======================================================
+    pWnd = m_IRM.GetResObj(GDR_GAMEGUIDE, true);
+    if (pWnd != NULL) {
+        sPosData = pWnd->GetPos();
+    } else {
+        GetSavedGWndPostion(GDR_GAMEGUIDE, sPosData, TRUE);
+    }
+    fwrite(&sPosData.x, sizeof(int), 1, f);
+    fwrite(&sPosData.y, sizeof(int), 1, f);
+    //=======================================================
+    pWnd = m_IRM.GetResObj(GDR_ALCHEMYBOX, true);
+    if (pWnd != NULL) {
+        sPosData = pWnd->GetPos();
+    } else {
+        GetSavedGWndPostion(GDR_ALCHEMYBOX, sPosData, TRUE);
+    }
+    fwrite(&sPosData.x, sizeof(int), 1, f);
+    fwrite(&sPosData.y, sizeof(int), 1, f);
+    //=======================================================
+    pWnd = m_IRM.GetResObj(GDR_AUTO_POTION, true);
+    if (pWnd != NULL) {
+        sPosData = pWnd->GetPos();
+    } else {
+        GetSavedGWndPostion(GDR_AUTO_POTION, sPosData, TRUE);
+    }
+    fwrite(&sPosData.x, sizeof(int), 1, f);
+    fwrite(&sPosData.y, sizeof(int), 1, f);
+    //=======================================================
+    pWnd = m_IRM.GetResObj(GDR_EXT_QUICK_SLOT, true);
+    if (pWnd != NULL) {
+        sPosData = pWnd->GetPos();
+    } else {
+        GetSavedGWndPostion(GDR_EXT_QUICK_SLOT, sPosData, TRUE);
+    }
+    fwrite(&sPosData.x, sizeof(int), 1, f);
+    fwrite(&sPosData.y, sizeof(int), 1, f);
+    //=======================================================
+
+    fclose(f);
+}

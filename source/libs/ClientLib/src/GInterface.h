@@ -170,6 +170,8 @@ struct SChatMetaData {
 
 typedef std::n_map<DWORD, CGWnd::wnd_pos> mapWndPos;
 
+#define GWND_POSTIONS_COUNT 10
+
 class CGInterface : public CIFWnd {
 public:
     enum eTimerIds {
@@ -392,6 +394,9 @@ private:
 
     /// \address 0079a8d0
     bool GetSavedGWndPostion(DWORD dwID, OUT wnd_pos &sPos, BOOL bPosOnScreen);
+    
+    /// \address 0079eb20
+    void SaveGWndsPostionData();
 
 private:
 public:
