@@ -469,6 +469,30 @@ void CGInterface::SaveGWndsPostionData() {
     fwrite(&sPosData.x, sizeof(int), 1, f);
     fwrite(&sPosData.y, sizeof(int), 1, f);
     //=======================================================
+    // Our examples
+#if 0
+    // We can't apply that on Kyuubi's window, because its
+    // getting create on the process.
+    // for now....
+    CNIFWnd *pNWnd = g_sNewInterfaceMgr.GetInterfaceObj(GDR_KYUUBI09);
+    if (pNWnd != NULL) {
+        sPosData = pNWnd->GetPos();
+    } else {
+        GetSavedGWndPostion(GDR_EXT_QUICK_SLOT, sPosData, FALSE);
+    }
+    fwrite(&sPosData.x, sizeof(int), 1, f);
+    fwrite(&sPosData.y, sizeof(int), 1, f);
+#endif// if 0
+    //=======================================================
+    pWnd = m_IRM.GetResObj(GDR_FLORIAN0, true);
+    if (pWnd != NULL) {
+        sPosData = pWnd->GetPos();
+    } else {
+        GetSavedGWndPostion(GDR_FLORIAN0, sPosData, TRUE);
+    }
+    fwrite(&sPosData.x, sizeof(int), 1, f);
+    fwrite(&sPosData.y, sizeof(int), 1, f);
+    //=======================================================
 
     fclose(f);
 }
@@ -597,6 +621,30 @@ void CGInterface::LoadGWndsPostionData() {
         pWnd->MoveGWnd(sPosData.x, sPosData.y);
     }
     SaveGWndPostion(GDR_EXT_QUICK_SLOT, sPosData);
+    //=======================================================
+    // Our examples
+#if 0
+    // We can't apply that on Kyuubi's window, because its
+    // getting create on the process.
+    // for now....
+    fread(&sPosData.x, sizeof(int), 1, f);
+    fread(&sPosData.y, sizeof(int), 1, f);
+
+    CNIFWnd *pNWnd = g_sNewInterfaceMgr.GetInterfaceObj(GDR_KYUUBI09);
+    if (pNWnd != NULL) {
+        pNWnd->MoveGWnd(sPosData.x, sPosData.y);
+    }
+    SaveGWndPostion(GDR_KYUUBI09, sPosData);
+#endif// if 0
+    //=======================================================
+    fread(&sPosData.x, sizeof(int), 1, f);
+    fread(&sPosData.y, sizeof(int), 1, f);
+
+    pWnd = m_IRM.GetResObj(GDR_FLORIAN0, true);
+    if (pWnd != NULL) {
+        pWnd->MoveGWnd(sPosData.x, sPosData.y);
+    }
+    SaveGWndPostion(GDR_FLORIAN0, sPosData);
     //=======================================================
 
     fclose(f);

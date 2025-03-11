@@ -170,7 +170,7 @@ struct SChatMetaData {
 
 typedef std::n_map<DWORD, CGWnd::wnd_pos> mapWndPos;
 
-#define GWND_POSTIONS_COUNT 10
+#define GWND_POSTIONS_COUNT 10 + 1
 
 class CGInterface : public CIFWnd {
 public:
