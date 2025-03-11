@@ -305,7 +305,13 @@ void CGInterface::SetOnMiddleOfScreen(DWORD dwNInterfaceID) {
 }
 
 void CGInterface::SaveGWndPostion(DWORD dwID, CGWnd::wnd_pos sWndPos) {
-    reinterpret_cast<void(__thiscall *)(CGInterface *, DWORD, CGWnd::wnd_pos)>(0x0079a840)(this, dwID, sWndPos);
+    mapWndPos::iterator it = m_mapWindowPos.find(dwID);
+    if (it == m_mapWindowPos.end()) {
+        m_mapWindowPos.insert(mapWndPos::value_type(dwID, sWndPos));
+        return;
+    }
+
+    it->second = sWndPos;
 }
 
 void CGInterface::SaveGWndPosOnMiddleOfScreen(DWORD dwID, CGWnd *pParent) {
