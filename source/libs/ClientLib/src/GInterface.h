@@ -395,6 +395,7 @@ private:
     /// \address 0079a8d0
     bool GetSavedGWndPostion(DWORD dwID, OUT wnd_pos &sPos, BOOL bPosOnScreen);
     
+public:
     /// \address 0079eb20
     void SaveGWndsPostionData();
 
