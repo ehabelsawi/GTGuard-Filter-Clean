@@ -5,6 +5,17 @@
 #include <d3d9.h>
 #include <string>
 
+struct SGFontChar {
+private:
+    char pad_0000[0x003C];//0x0000
+private:
+    BEGIN_FIXTURE()
+    ENSURE_SIZE(0x003C)
+    END_FIXTURE()
+
+    RUN_FIXTURE(SGFontChar)
+};
+
 class CGFontTexture {
 public:
     struct TextureDimensions {
