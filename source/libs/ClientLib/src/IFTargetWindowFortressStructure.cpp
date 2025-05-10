@@ -20,10 +20,8 @@ GFX_BEGIN_MESSAGE_MAP(CIFTargetWindowFortressStructure, CIFWnd)
 GFX_END_MESSAGE_MAP()
 
 bool CIFTargetWindowFortressStructure::OnCreate(long ln) {
-    //printf("%s\n", __FUNCTION__);
-    //return reinterpret_cast<bool (__thiscall *)(const CIFTargetWindowFortressStructure *, long)>(0x00565480)(this, ln);
-
     m_IRM.LoadFromFile("resinfo\\iftw_fortressstructure.txt");
+
     m_IRM.CreateInterfaceSection("Create", this);
 
     m_pGDR_TWFS_TEXT_ID = m_IRM.GetResObj<CIFStatic>(GDR_TWFS_TEXT_ID, 1); // 0x370
@@ -39,6 +37,5 @@ bool CIFTargetWindowFortressStructure::OnCreate(long ln) {
 }
 
 void CIFTargetWindowFortressStructure::OnUpdate() {
-    //printf("%s\n", __FUNCTION__);
     reinterpret_cast<void (__thiscall *)(const CIFTargetWindowFortressStructure *)>(0x00564890)(this);
 }
