@@ -1,6 +1,7 @@
-#include "IFTargetWindowCommonEnemy.h"
-#include "IFStatic.h"
+
 #include "IFGauge.h"
+#include "IFStatic.h"
+#include "IFTargetWindowCommonEnemy.h"
 
 GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFTargetWindowCommonEnemy, 0x00eea59c)
 
@@ -25,7 +26,7 @@ bool CIFTargetWindowCommonEnemy::OnCreate(long ln) {
 
     m_pGDR_TWCE_TEXT_ID = m_IRM.GetResObj<CIFStatic>(GDR_TWCE_TEXT_ID, 1); // 0x370
     m_pGDR_TWCE_GAUGE_HPGAUGE = m_IRM.GetResObj<CIFGauge>(GDR_TWCE_GAUGE_HPGAUGE, 1); // 0x374
-    m_pGDR_TWCE_GAUGE_HPGAUGE->field_0x38c = 0.1;
+    m_pGDR_TWCE_GAUGE_HPGAUGE->field_0x38c = 0.1f;
     return true;
 }
 

@@ -1,7 +1,8 @@
-#include "IFTargetWindowFortressStructure.h"
-#include "IFStatic.h"
-#include "IFGauge.h"
+
 #include "IFButton.h"
+#include "IFGauge.h"
+#include "IFStatic.h"
+#include "IFTargetWindowFortressStructure.h"
 
 GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFTargetWindowFortressStructure, 0x00ee7b00)
 
@@ -29,7 +30,7 @@ bool CIFTargetWindowFortressStructure::OnCreate(long ln) {
     m_pGDR_TWFS_GAUGE_HPGAUGE = m_IRM.GetResObj<CIFGauge>(GDR_TWFS_GAUGE_HPGAUGE, 1); // 0x374
     m_pGDR_TWFS_D_BUTTON = m_IRM.GetResObj<CIFButton>(GDR_TWFS_D_BUTTON, 1); // 0x378
 
-    m_pGDR_TWFS_GAUGE_HPGAUGE->field_0x38c = 0.1;
+    m_pGDR_TWFS_GAUGE_HPGAUGE->field_0x38c = 0.1f;
     m_pGDR_TWFS_D_BUTTON->TB_Func_13("interface\\ifcommon\\com_d_windowclose.ddj", 0, 0);
     m_pGDR_TWFS_D_BUTTON->TB_Func_13("interface\\ifcommon\\com_d_windowclose.ddj", 0, 0);
     m_pGDR_TWFS_D_BUTTON->FUN_00656590("interface\\ifcommon\\com_d_windowclose_press.ddj");
