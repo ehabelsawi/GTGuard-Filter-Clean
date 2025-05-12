@@ -11,4 +11,4 @@ Describe the pros and cons of this feature.
 Why should we add it?
 
 # Sanity check
- [] I have checked previous requests and found no similar request. 
+- [ ] I have checked previous requests and found no similar request. 
