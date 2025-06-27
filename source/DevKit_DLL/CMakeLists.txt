@@ -35,6 +35,7 @@ target_link_libraries(DevKit_DLL
         MathHelpers
         support
         winmm
+        imgui
 )
 
 set_target_properties(DevKit_DLL

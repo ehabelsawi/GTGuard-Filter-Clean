@@ -1,6 +1,6 @@
 #include "Inventory.h"
 
-#include "imgui/imgui.h"
+#include "imgui.h"
 
 #include <GInterface.h>
 
