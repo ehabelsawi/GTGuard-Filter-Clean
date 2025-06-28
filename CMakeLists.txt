@@ -5,7 +5,12 @@ include(cmake/Options.cmake)
 include(cmake/CPM.cmake)
 
 message(STATUS "Downloading dependencies in the background ... please be patient ...")
-CPMAddPackage("https://gitlab.com/florian0/dxsdk9b-minimal.git@1")
+CPMAddPackage(
+    NAME dxsdk9b-minimal
+    URL "https://gitlab.com/florian0/dxsdk9b-minimal/-/archive/v1/dxsdk9b-minimal-v1.zip"
+    URL_HASH "SHA256=02cd5961f90b83b716e7238ae0133e6c22c59860efb770872c70f8683af43522"
+)
+
 if (dxsdk9b-minimal_ADDED)
     add_library(d3d9 INTERFACE)
     target_include_directories(d3d9 INTERFACE ${dxsdk9b-minimal_SOURCE_DIR}/Include)
@@ -19,7 +24,11 @@ if (dxsdk9b-minimal_ADDED)
 endif ()
 
 if (CONFIG_IMGUI)
-    CPMAddPackage("https://github.com/ocornut/imgui.git@1.67")
+    CPMAddPackage(
+        NAME imgui
+        URL "https://github.com/ocornut/imgui/archive/refs/tags/v1.67.zip"
+        URL_HASH "SHA256=556712944dee7b3489706e19635acabc0b0192c8c99b936359af7fddd17b2c44"
+    )
     if(imgui_ADDED)
         add_library(imgui STATIC)
         target_sources(imgui
@@ -55,7 +64,11 @@ endif ()
 
 
 if (ENABLE_TESTING)
-    CPMAddPackage("https://github.com/CxxTest/cxxtest.git#4.4")
+    CPMAddPackage(
+        NAME cxxtest
+        URL "https://github.com/CxxTest/cxxtest/releases/download/4.4/cxxtest-4.4.zip"
+        URL_HASH "SHA256=202d62c07822672138944db5fa8b7648d598836a88f213f09790fdbb221e2011"
+    )
     if (cxxtest_ADDED)
         # Help find_package to find the sources
         set(CxxTest_ROOT ${cxxtest_SOURCE_DIR})
