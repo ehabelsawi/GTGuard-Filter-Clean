@@ -52,17 +52,25 @@ if(imgui_ADDED)
 
 endif()
 
+
+if (ENABLE_TESTING)
+    CPMAddPackage("https://github.com/CxxTest/cxxtest.git#4.4")
+    if (cxxtest_ADDED)
+        # Help find_package to find the sources
+        set(CxxTest_ROOT ${cxxtest_SOURCE_DIR})
+        find_package(CxxTest)
+        if (CXXTEST_FOUND)
+            message(STATUS "CxxTest found. Testing enabled!")
+            include_directories(${CXXTEST_INCLUDE_DIR})
+            enable_testing()
+        endif ()
+    endif ()
+endif ()
+
 include(DevKit)
 
 devkit_enforce_static_linking()
 devkit_enforce_include_path()
-
-find_package(CxxTest)
-if (CXXTEST_FOUND)
-    message(STATUS "CxxTest found. Testing enabled!")
-    include_directories(${CXXTEST_INCLUDE_DIR})
-    enable_testing()
-endif ()
 
 # We are no idiots, ignore these stupid deprecations!
 add_compile_definitions(_CRT_SECURE_NO_DEPRECATE _CRT_NON_CONFORMING_SWPRINTFS)
