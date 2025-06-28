@@ -3,6 +3,8 @@ project(SRO_DevKit)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
+include(cmake/CPM.cmake)
+
 set(DirectX_ROOT ${CMAKE_SOURCE_DIR}/source/third-party/)
 find_package(DirectX)
 
