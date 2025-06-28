@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 project(SRO_DevKit)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
-
+include(cmake/Options.cmake)
 include(cmake/CPM.cmake)
 
 message(STATUS "Downloading dependencies in the background ... please be patient ...")
@@ -67,7 +66,7 @@ if (ENABLE_TESTING)
     endif ()
 endif ()
 
-include(DevKit)
+include(cmake/DevKit.cmake)
 
 devkit_enforce_static_linking()
 devkit_enforce_include_path()
@@ -78,8 +77,6 @@ add_compile_definitions(_CRT_SECURE_NO_DEPRECATE _CRT_NON_CONFORMING_SWPRINTFS)
 # Set target platform ... to ... Windows XP ... oops
 add_definitions(-DWINVER=0x0500)
 add_definitions(-D_WIN32_WINNT=0x0500)
-
-include(Options)
 
 # Set loglevel if supplied as parameter
 if (DEFINED PUT_LOGLEVEL)
