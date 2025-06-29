@@ -13,4 +13,4 @@ target_include_directories(GFXMainFrame
         PUBLIC
         src/
         ${DirectX_INCLUDE_DIRS})
-target_link_libraries(GFXMainFrame BSLib ghidra d3d9)
+target_link_libraries(GFXMainFrame BSLib support d3d9)

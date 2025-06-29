@@ -95,5 +95,5 @@ target_sources(ClientLib PRIVATE
         src/unsorted.cpp
         )
 
-target_link_libraries(ClientLib SROInterfaceLIB GFXMainFrame GFX3DFunction GFXFileManagerLIB NavMesh ClientNet SimpleViewer TypeId imgui support ghidra)
+target_link_libraries(ClientLib SROInterfaceLIB GFXMainFrame GFX3DFunction GFXFileManagerLIB NavMesh ClientNet SimpleViewer TypeId imgui support)
 target_include_directories(ClientLib PUBLIC src/)

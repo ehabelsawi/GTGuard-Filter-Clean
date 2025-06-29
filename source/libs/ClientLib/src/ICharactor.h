@@ -4,7 +4,7 @@
 #include "Data/CharacterData.h"
 #include "IGIDObject.h"
 #include "support/AbiTest.h"
-#include <ghidra/undefined.h>
+#include "support/undefined.h"
 
 enum TRIJOB_TYPE : char { /* Job Type of the Player */
     TRIJOB_HUNTER = 3,

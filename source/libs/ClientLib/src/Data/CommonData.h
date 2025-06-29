@@ -2,7 +2,7 @@
 
 #include "BSLib/BSLib.h"
 #include "TypeId.h"
-#include "ghidra/undefined.h"
+#include "support/undefined.h"
 
 /**
  * Common data from CharacteData and ItemData

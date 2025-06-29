@@ -28,7 +28,7 @@
 #include "Data/TeleportLink.h"
 #include "support/AbiTest.h"
 #include <BSLib/_internal/custom_stl.h>
-#include <ghidra/undefined.h>
+#include "support/undefined.h"
 #include <map>
 
 

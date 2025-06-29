@@ -1,7 +1,7 @@
 #pragma once
 
 #include "d3d9.h"
-#include "ghidra/undefined.h"
+#include "support/undefined.h"
 
 #define g_RStateMgr (*reinterpret_cast<CRStateMgr*>(0x01112428))
 
