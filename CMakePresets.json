@@ -30,20 +30,50 @@
                     "toolchain": "Visual Studio 2005"
                 }
             }
-        },{
-            "name": "RelWithDebInfo-cfg",
-            "inherits": "vc80env",
+        },
+        {
+            "name": "config-cpm",
+            "hidden": true,
+            "cacheVariables": {
+                "CPM_SOURCE_CACHE": "${sourceDir}/.cpm/"
+            }
+        },
+        {
+            "name": "config-default",
+            "hidden": true,
             "generator": "Ninja",
-            "binaryDir": "cmake-build-relwithdebinfo",
+            "inherits": [
+                "vc80env"
+            ],
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+            }
+        },
+        {
+            "name": "default",
+            "inherits": [
+                "config-default",
+                "config-cpm"
+            ]
+        },{
+            "name": "no-imgui",
+            "inherits": [
+                "config-default",
+                "config-cpm"
+            ],
+            "cacheVariables": {
+                "CONFIG_IMGUI": "OFF"
             }
         }
     ],
     "buildPresets": [
         {
             "name": "RelWithDebInfo",
-            "configurePreset": "RelWithDebInfo-cfg"
+            "configurePreset": "default"
+        },
+        {
+            "name": "no-imgui",
+            "configurePreset": "no-imgui"
         }
     ]
 }

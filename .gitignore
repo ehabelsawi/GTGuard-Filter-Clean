@@ -13,3 +13,5 @@ cmake-build-*/
 venv/
 *.pyc
 
+# CPM Cache directory
+.cpm/
