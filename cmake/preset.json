@@ -35,6 +35,7 @@
       "name": "config-default",
       "hidden": true,
       "generator": "Ninja",
+      "binaryDir": "cmake-build-${presetName}",
       "inherits": [
         "vc80env"
       ],

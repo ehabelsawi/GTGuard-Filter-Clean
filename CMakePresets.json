@@ -22,7 +22,6 @@
                 "config-default",
                 "config-cpm"
             ],
-            "binaryDir": "cmake-build-no-imgui",
             "cacheVariables": {
                 "CONFIG_IMGUI": "OFF"
             }
