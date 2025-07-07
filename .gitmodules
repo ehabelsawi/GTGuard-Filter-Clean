@@ -1,6 +1,0 @@
-[submodule "source/third-party/dxsdk"]
-	path = source/third-party/dxsdk
-	url = https://gitlab.com/florian0/dxsdk9b-minimal
-[submodule "source/third-party/cxxtest"]
-	path = source/third-party/cxxtest
-	url = https://github.com/CxxTest/cxxtest.git
