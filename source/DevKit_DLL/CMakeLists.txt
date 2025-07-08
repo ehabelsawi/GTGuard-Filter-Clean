@@ -7,22 +7,6 @@ target_sources(DevKit_DLL PRIVATE
         src/hooks/CGame_Hook.cpp
         src/examples/IFflorian0.cpp
         src/examples/NIFKyuubi09.cpp
-        src/imgui_windows/ImGui_Windows.cpp
-        src/imgui_windows/BasicWindow.cpp
-        src/imgui_windows/InterfaceDebugger.cpp
-        src/imgui_windows/SoundTool.cpp
-        src/imgui_windows/NavMeshTool.cpp
-        src/imgui_windows/EntityExplorer.cpp
-        src/imgui_windows/NotificationTool.cpp
-        src/imgui_windows/AboutWindow.cpp
-        src/imgui_windows/SystemMessage.cpp
-        src/imgui_windows/InterfaceTree.cpp
-        src/imgui_windows/ProcessViewer.cpp
-        src/imgui_windows/PartyInfo.cpp
-        src/imgui_windows/CharacterData.cpp
-        src/imgui_windows/ItemData.cpp
-        src/imgui_windows/ErrorMessageTool.cpp
-        src/imgui_windows/Inventory.cpp
         src/Util.cpp
         src/QuickStart.cpp
         src/MathUtil.cpp
@@ -36,6 +20,28 @@ target_link_libraries(DevKit_DLL
         support
         winmm
 )
+
+if (CONFIG_IMGUI)
+    target_sources(DevKit_DLL PRIVATE
+            src/imgui_windows/ImGui_Windows.cpp
+            src/imgui_windows/BasicWindow.cpp
+            src/imgui_windows/InterfaceDebugger.cpp
+            src/imgui_windows/SoundTool.cpp
+            src/imgui_windows/NavMeshTool.cpp
+            src/imgui_windows/EntityExplorer.cpp
+            src/imgui_windows/NotificationTool.cpp
+            src/imgui_windows/AboutWindow.cpp
+            src/imgui_windows/SystemMessage.cpp
+            src/imgui_windows/InterfaceTree.cpp
+            src/imgui_windows/ProcessViewer.cpp
+            src/imgui_windows/PartyInfo.cpp
+            src/imgui_windows/CharacterData.cpp
+            src/imgui_windows/ItemData.cpp
+            src/imgui_windows/ErrorMessageTool.cpp
+            src/imgui_windows/Inventory.cpp)
+
+    target_link_libraries(DevKit_DLL imgui)
+endif ()
 
 set_target_properties(DevKit_DLL
         PROPERTIES

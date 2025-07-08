@@ -4,7 +4,7 @@
 #include "IRMManager.h"
 #include "TextBoard.h"
 #include "support/AbiTest.h"
-#include <ghidra/undefined.h>
+#include "support/undefined.h"
 
 class CIFWnd : public CGWnd, public CTextBoard {
     GFX_DECLARE_DYNAMIC_EXISTING(CIFWnd, 0x00EE9808)

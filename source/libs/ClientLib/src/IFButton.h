@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ghidra/undefined.h>
+#include "support/undefined.h"
 #include "IFStatic.h"
 
 class CIFButton : public CIFStatic {

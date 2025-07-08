@@ -1,7 +1,7 @@
 #include "AboutWindow.h"
 
 #include <GInterface.h>
-#include <imgui/imgui.h>
+#include "imgui.h"
 
 #include "SRIFLib/NIFWnd.h"
 #include "SRIFLib/NInterfaceResource.h"

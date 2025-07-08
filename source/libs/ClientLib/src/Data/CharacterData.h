@@ -1,7 +1,7 @@
 #pragma once
 
 #include <BSLib/BSLib.h>
-#include <ghidra/undefined.h>
+#include "support/undefined.h"
 
 #include "CommonData.h"
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ghidra/undefined.h"
+#include "support/undefined.h"
 #include <BSLib/BSLib.h>
 #include <d3d9.h>
 #include <string>

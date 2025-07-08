@@ -1,7 +1,7 @@
 #include "NavMeshTool.h"
 #include "../MathUtil.h"
 
-#include <imgui/imgui.h>
+#include "imgui.h"
 #include <GFX3DFunction/GFXVideo3d.h>
 #include <GFX3DFunction/DrawingHelpers.h>
 #include <unsorted.h>
