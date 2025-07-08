@@ -1,6 +1,6 @@
 #include "SystemMessage.h"
 
-#include <imgui/imgui.h>
+#include "imgui.h"
 #include <IFSystemMessage.h>
 #include <GInterface.h>
 #include <BSLib/multibyte.h>

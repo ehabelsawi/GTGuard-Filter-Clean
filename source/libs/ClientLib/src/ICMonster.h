@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ICNonuser.h"
-#include <ghidra/undefined.h>
+#include "support/undefined.h"
 
 class CICMonster : public CICNonuser {
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ghidra/undefined.h"
+#include "support/undefined.h"
 #include <d3d9.h>
 
 class SWorld *GETMAP();

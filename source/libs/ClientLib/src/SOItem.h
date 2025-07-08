@@ -2,7 +2,7 @@
 
 #include "Data/ItemData.h"
 #include <BSLib/BSLib.h>
-#include <ghidra/undefined.h>
+#include "support/undefined.h"
 
 enum Blue : short {
     BLUE_INT = 0x0005,

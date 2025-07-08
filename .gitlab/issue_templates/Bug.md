@@ -30,4 +30,4 @@ Describe the expected behaviour.
 * Devkit Version / Git-Tag / Git-Commit
 
 # Sanity check
-[] I have checked previous issues and found no similar issue. 
+- [ ] I have checked previous issues and found no similar issue. 

@@ -1,6 +1,6 @@
 #include "EntityExplorer.h"
 
-#include <imgui/imgui.h>
+#include "imgui.h"
 #include <EntityManagerClient.h>
 #include <GFX3DFunction/GFXVideo3d.h>
 #include <Game.h>

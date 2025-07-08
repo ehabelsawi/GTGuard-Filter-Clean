@@ -2,7 +2,7 @@
 
 #include "PSilkroad.h"
 #include "support/AbiTest.h"
-#include <ghidra/undefined.h>
+#include "support/undefined.h"
 
 class CNetProcessIn;
 

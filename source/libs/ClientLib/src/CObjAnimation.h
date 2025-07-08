@@ -4,7 +4,7 @@
 #include "support/AbiTest.h"
 #include <BSLib/BSLib.h>
 #include <d3d9.h>
-#include <ghidra/undefined.h>
+#include "support/undefined.h"
 
 class CCObjAnimation {
 public:

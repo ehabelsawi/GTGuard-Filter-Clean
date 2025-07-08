@@ -10,5 +10,4 @@ target_include_directories(NavMesh
         ${DirectX_INCLUDE_DIRS}
         PRIVATE include/NavMesh)
 
-target_link_libraries(NavMesh ${DirectX_LIBRARIES})
-target_link_directories(NavMesh PUBLIC ${DirectX_LIBRARY_PATHS})
+target_link_libraries(NavMesh d3d9)

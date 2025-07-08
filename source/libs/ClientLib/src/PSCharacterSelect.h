@@ -4,7 +4,7 @@
 #include "CObjAnimation.h"
 #include "IFStatic.h"
 #include "PSOuterInterface.h"
-#include <ghidra/undefined.h>
+#include "support/undefined.h"
 
 class CPSCharacterSelect : public CPSOuterInterface, public CAnimationCallback {
 
