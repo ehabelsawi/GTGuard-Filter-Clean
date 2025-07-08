@@ -170,8 +170,6 @@ struct SChatMetaData {
 
 typedef std::n_map<DWORD, CGWnd::wnd_pos> mapWndPos;
 
-#define GWND_POSTIONS_COUNT 10 + 1
-
 class CGInterface : public CIFWnd {
 public:
     enum eTimerIds {
@@ -184,6 +182,9 @@ public:
         SUSPEND_MODE_NONE,
         SUSPEND_MODE_TELPORTIONG = 11,
     };
+
+private:
+    static const int nGWndSavePostionsID[];
 
 public:
     // int OnKeyDown(int keycode, int a3, char a4);
