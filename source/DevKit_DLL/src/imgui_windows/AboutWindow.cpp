@@ -39,6 +39,7 @@ void AboutWindow::Render() {
     ImGui::TextWrapped("If you imported the files for the demo window correctly, "
                        "you can go ahead and press the button below to show it.");
 
+    // TODO: Add an toggles for the example windows and rework them plz?
     if (g_pCGInterface == NULL) {
         ImGui::TextWrapped("Log in to show the cif demo window btn.");
     } else {

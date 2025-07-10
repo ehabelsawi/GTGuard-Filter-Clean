@@ -12,6 +12,21 @@
 
 #include "support/MemberFunctionHook.h"
 
+const int CGInterface::nGWndSavePostionsID[] = {
+    GDR_MAINPOPUP,
+    GDR_STORE,
+    GDR_STORAGEROOM,
+    GDR_EXCHANGE,
+    GDR_WORLDMAP,
+    GDR_COS_WND,
+    GDR_GAMEGUIDE,
+    GDR_ALCHEMYBOX,
+    GDR_AUTO_POTION,
+    GDR_EXT_QUICK_SLOT,
+    // Our windows
+    GDR_FLORIAN0,
+};
+
 HOOK_ORIGINAL_MEMBER(0x0079D5B0, &CGInterface::ToggleActionWnd);
 void CGInterface::ToggleActionWnd() {
     // If MainPopup is visible and page 'action' is active
@@ -305,21 +320,145 @@ void CGInterface::SetOnMiddleOfScreen(DWORD dwNInterfaceID) {
 }
 
 void CGInterface::SaveGWndPostion(DWORD dwID, CGWnd::wnd_pos sWndPos) {
-    reinterpret_cast<void(__thiscall *)(CGInterface *, DWORD, CGWnd::wnd_pos)>(0x0079a840)(this, dwID, sWndPos);
+    mapWndPos::iterator it = m_mapWindowPos.find(dwID);
+    if (it == m_mapWindowPos.end()) {
+        m_mapWindowPos.insert(mapWndPos::value_type(dwID, sWndPos));
+        return;
+    }
+
+    it->second = sWndPos;
 }
 
 void CGInterface::SaveGWndPosOnMiddleOfScreen(DWORD dwID, CGWnd *pParent) {
     CGWnd *pParentWnd = pParent;
-    if (pParentWnd == NULL)
+    if (pParentWnd == NULL) {
         pParentWnd = g_pCGInterface;
+    }
 
     CIFWnd *pWnd = (CIFWnd *) pParentWnd->GetChildControl(dwID);
-    if (pWnd == NULL)
+    if (pWnd == NULL) {
         return;
+    }
 
     wnd_pos sNewPos = {(theApp.GetClientDimensionStuff().width / 2) - (pWnd->GetBounds().size.width / 2),
                        (theApp.GetClientDimensionStuff().height / 2) - (pWnd->GetBounds().size.height / 2)};
     pWnd->MoveGWnd2(sNewPos);
 
     SaveGWndPostion(dwID, sNewPos);
+}
+
+bool CGInterface::GetSavedGWndPostion(DWORD dwID, OUT CGWnd::wnd_pos &sPos, BOOL bPosOnScreen) {
+    mapWndPos::iterator it = m_mapWindowPos.find(dwID);
+    if (it == m_mapWindowPos.end()) {
+        return false;
+    }
+
+    sPos = (*it).second;
+
+    if (bPosOnScreen) {
+        CIFWnd *pWnd = m_IRM.GetResObj(dwID, true);
+        if (pWnd != NULL) {
+            int nResolutionWidth = theApp.GetClientDimensionStuff().width;
+            int nResolutionHeight = theApp.GetClientDimensionStuff().height;
+            wnd_size sWndSize = pWnd->GetSize();
+
+            if (nResolutionWidth < (sPos.x + sWndSize.width)) {
+                sPos.x = (nResolutionWidth - sWndSize.width);
+            }
+
+            if (nResolutionHeight < (sPos.y + sWndSize.height)) {
+                sPos.y = (nResolutionHeight - sWndSize.height);
+            }
+        }
+    }
+    return true;
+}
+
+void CGInterface::SaveGWndsPostionData() {
+    CHAR szBuffer[0x200];// PATH_MAX define iguess?
+    sprintf_s(szBuffer, "%s\\Setting\\wndpos.dat", theApp.GetWorkingDir());
+
+    FILE *f = fopen(szBuffer, "wb+");
+    if (f == NULL) {
+        return;
+    }
+
+    int nUnknown = 3;
+    fwrite(&nUnknown, sizeof(int), 1, f);
+
+    int nCount = size(nGWndSavePostionsID);
+    fwrite(&nCount, sizeof(int), 1, f);
+
+    int nResolutionWidth = theApp.GetClientDimensionStuff().width;
+    int nResolutionHeight = theApp.GetClientDimensionStuff().height;
+    fwrite(&nResolutionWidth, sizeof(int), 1, f);
+    fwrite(&nResolutionHeight, sizeof(int), 1, f);
+
+    wnd_pos sPosData;
+
+    //=======================================================
+    for (int p = 0; p < size(nGWndSavePostionsID); ++p) {
+        CIFWnd *pWnd = m_IRM.GetResObj(nGWndSavePostionsID[p], true);
+        if (pWnd != NULL) {
+            sPosData = pWnd->GetPos();
+        } else {
+            GetSavedGWndPostion(nGWndSavePostionsID[p], sPosData, TRUE);
+        }
+        fwrite(&sPosData.x, sizeof(int), 1, f);
+        fwrite(&sPosData.y, sizeof(int), 1, f);
+    }
+    //=======================================================
+
+    fclose(f);
+}
+
+void CGInterface::LoadGWndsPostionData() {
+    CHAR szBuffer[0x200];// PATH_MAX define iguess?
+    sprintf_s(szBuffer, "%s\\Setting\\wndpos.dat", theApp.GetWorkingDir());
+
+    FILE *f = fopen(szBuffer, "wb+");
+    if (f == NULL) {
+        return;
+    }
+
+    int nUnknwon;
+    fread(&nUnknwon, sizeof(int), 1, f);
+
+    if (nUnknwon != 3) {
+        fclose(f);
+        SaveGWndsPostionData();
+        return;
+    }
+
+    int nCount;
+    int nResolutionWidth;
+    int nResolutionHeight;
+
+    fread(&nCount, sizeof(int), 1, f);
+    fread(&nResolutionWidth, sizeof(int), 1, f);
+    fread(&nResolutionHeight, sizeof(int), 1, f);
+
+    if (nResolutionWidth != theApp.GetClientDimensionStuff().width ||
+        nResolutionHeight != theApp.GetClientDimensionStuff().height) {
+        fclose(f);
+        SaveGWndsPostionData();
+        return;
+    }
+
+    wnd_pos sPosData;
+
+    //=======================================================
+    for (int p = 0; p < size(nGWndSavePostionsID); ++p) {
+        fread(&sPosData.x, sizeof(int), 1, f);
+        fread(&sPosData.y, sizeof(int), 1, f);
+
+        CIFWnd *pWnd = m_IRM.GetResObj(nGWndSavePostionsID[p], true);
+        if (pWnd != NULL) {
+            pWnd->MoveGWnd(sPosData.x, sPosData.y);
+        }
+        SaveGWndPostion(nGWndSavePostionsID[p], sPosData);
+    }
+    //=======================================================
+
+    fclose(f);
 }
