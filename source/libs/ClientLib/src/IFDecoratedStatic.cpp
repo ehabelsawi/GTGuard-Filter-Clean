@@ -50,8 +50,8 @@ CIFDecoratedStatic::CIFDecoratedStatic()
 	this->set_N00009BDD(0);
 	this->set_N00009C18(0);
 
-	this->N00009BD5 = 32;
-	this->N00009BD8 = 32;
+	this->N038C = 32;
+	this->N0390 = 32;
 	this->N00009C20 = 1;
 	this->N00000609 = 1;
 	this->N00009BFC = 0;
@@ -100,4 +100,48 @@ void CIFDecoratedStatic::sub_634470(std::n_string a1)
 void CIFDecoratedStatic::sub_633990()
 {
 	reinterpret_cast<void(__thiscall*)(CIFDecoratedStatic*)>(0x00633990)(this);
+}
+void CIFDecoratedStatic::FUN_00634470(std::n_wstring a1){
+    reinterpret_cast<void(__thiscall*)(CIFDecoratedStatic*, std::n_wstring)>(0x00634470)(this, a1);
+}
+void CIFDecoratedStatic::FUN_00634470N(std::n_string a1){
+    reinterpret_cast<void(__thiscall*)(CIFDecoratedStatic*, std::n_string)>(0x00634470)(this, a1);
+}
+void CIFDecoratedStatic::set_N00009BDC(int a1)
+{
+    N00009BDC = a1;
+}
+void CIFDecoratedStatic::FUN_00633910(char a1)
+{
+    reinterpret_cast<void(__thiscall*)(CIFDecoratedStatic*, char)>(0x00633910)(this, a1);
+}
+
+void CIFDecoratedStatic::FUN_00633c70(int a1)
+{
+    reinterpret_cast<void(__thiscall*)(CIFDecoratedStatic*, int)>(0x00633c70)(this, a1);
+}
+void CIFDecoratedStatic::FUN_00633950(int a1)
+{
+    reinterpret_cast<void(__thiscall*)(CIFDecoratedStatic*, int)>(0x00633950)(this, a1);
+}
+void CIFDecoratedStatic::FUN_00633960(int a1)
+{
+    reinterpret_cast<void(__thiscall*)(CIFDecoratedStatic*, int)>(0x00633960)(this, a1);
+}
+void CIFDecoratedStatic::FUN_00633b90(int a1, int a2)
+{
+    reinterpret_cast<void(__thiscall*)(CIFDecoratedStatic*, int, int)>(0x00633b90)(this, a1, a2);
+}
+void CIFDecoratedStatic::FUN_00633970(int a1)
+{
+    reinterpret_cast<void(__thiscall*)(CIFDecoratedStatic*, int)>(0x00633970)(this, a1);
+}
+void CIFDecoratedStatic::FUN_00634330(int a1)
+{
+    reinterpret_cast<void(__thiscall*)(CIFDecoratedStatic*, int)>(0x00634330)(this, a1);
+}
+void CIFDecoratedStatic::FUN_00634300()
+{
+
+    reinterpret_cast<void(__thiscall*)(CIFDecoratedStatic*)>(0x00634300)(this);
 }

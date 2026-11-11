@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IFWnd.h"
-
+#include "SOItem.h"
 class CIFTargetWindowPlayer : public CIFWnd {
     GFX_DECLARE_DYNAMIC_EXISTING(CIFTargetWindowPlayer, 0x00eea5dc)
 
@@ -15,7 +15,12 @@ public:
 
     /// \address 0069b0d0
     void FUN_0069b0d0(int objectId);
-
+    void GetTargetPlayerInfo();
+    void UpdateItemSlot(int ItemSlot, CSOItem* tempItemInfo, std::n_string CN16);
+    void UpdateCharName(std::n_string CN16);
+    void Hide();
+    void ShowTargetWnd();
+    void UpdateRenderStatic();
 private:
     int m_objectId; //0x036C
 
@@ -26,4 +31,8 @@ private:
     END_FIXTURE()
 
     RUN_FIXTURE(CIFTargetWindowPlayer)
+
+
+
+
 };

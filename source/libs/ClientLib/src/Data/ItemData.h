@@ -16,11 +16,63 @@ struct SItemData : public SCommonData {
 
     bool IsItemCOS() const;
 
+    bool IsReverse() const;
+    bool IsAvatar() const;
+    bool IsAvatarHat() const;
+    bool IsAvatarAttach() const;
+    bool IsNasrun() const;
+    bool IsHPPotion() const;
+    bool IsMPPotion() const;
+    bool IsVIGOR() const;
+    bool IsPill() const;
+    bool IsPuriPill() const;
+    bool IsPETHpPotion() const;
+    bool IsPETMpPotion() const;
+    bool IsCureCOS() const;
+    bool IsPetRes() const;
+    bool IsAttackPet() const;
+    bool IsResurrectScroll() const;
+    bool IsReturnScroll() const;
+    bool IsRepairHammer() const;
+    bool IsArrow() const;
+    bool IsBolt() const;
+    bool IsAlchemyTablet() const;
+    bool IsMagicStone() const;
+    bool IsMagicStone2() const;
+    bool IsAttrStone() const;
+    bool IsElixir() const;
+    bool IsAlchemyMaterial() const;
+    bool IsZerkScroll() const;
+    bool IsMagicPop() const;
+    bool IsMagicPopWinCard() const;
+    bool IsLuckyPowder() const;
+    bool IsEnhancer() const;
+    bool IsProofStone() const;
+
+    bool IsChSword() const;
+    bool IsChBlade() const;
+    bool IsChSpear() const;
+    bool IsChBow() const;
+    bool IsChTBlade() const;
+
+
+    bool IsEuSword() const;
+    bool IsEuTSword() const;
+    bool IsEuAxe() const;
+    bool IsEuDarkStaff() const;
+    bool IsEuTStaff() const;
+    bool IsEuCrossbow() const;
+    bool IsEuDagger() const;
+    bool IsEuHarp() const;
+    bool IsEuStaff() const;
+
+
     unsigned int m_maxStack;          //0x01C0
     unsigned int m_reqGender;         //0x01C4
     unsigned int n_reqStr;            //0x01C8
     unsigned int m_reqInt;            //0x01CC
-    unsigned int m_itemClass;         //0x01D0
+    byte m_itemClass;         //0x01D0
+    char pad[3];
     unsigned int m_setId;             //0x01D4
     unsigned int m_durabilityMin;     //0x01D8
     unsigned int m_durabilityMax;     //0x01DC
@@ -125,6 +177,7 @@ private:
     END_FIXTURE()
 
     RUN_FIXTURE(SItemData)
+
 };
 
 class CItemData {

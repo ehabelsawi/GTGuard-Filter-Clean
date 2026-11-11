@@ -1,7 +1,8 @@
 #pragma once
 
+#include <BSLib/_internal/custom_stl.h>
 #include "d3d9.h"
-#include "support/undefined.h"
+#include "ghidra/undefined.h"
 
 #define g_RStateMgr (*reinterpret_cast<CRStateMgr*>(0x01112428))
 
@@ -20,9 +21,10 @@ public:
     /// \address 00470060
     void FUN_00470060(undefined4 param_1, int param_2, int param_3);
 
+    int FUN_0047e880(short* p1);
     /// \address 00470310
     HRESULT SetDeviceFVFState(DWORD dwFVF);
-
+    void FUN_004700a0();
     template<DWORD Stage, D3DTEXTURESTAGESTATETYPE Type>
     static inline void SetStageOperator(DWORD value) {
         static DWORD currentValue = 0;

@@ -4,6 +4,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <CustomData/CustomSettingManager.h>
+#include <SecondBar/IFExtQuickSlotSecond.h>
+#include <SecondBar/IFExtQuickSlotCustom.h>
+#include <Macro/IFMacroMenu.h>
+#include <Menu/IFMenu.h>
+#include <GFXMainFrame/Controler.h>
 #include "GInterface.h"
 
 #include "GlobalDataManager.h"
@@ -11,21 +17,6 @@
 #include "Game.h"
 
 #include "support/MemberFunctionHook.h"
-
-const int CGInterface::nGWndSavePostionsID[] = {
-    GDR_MAINPOPUP,
-    GDR_STORE,
-    GDR_STORAGEROOM,
-    GDR_EXCHANGE,
-    GDR_WORLDMAP,
-    GDR_COS_WND,
-    GDR_GAMEGUIDE,
-    GDR_ALCHEMYBOX,
-    GDR_AUTO_POTION,
-    GDR_EXT_QUICK_SLOT,
-    // Our windows
-    GDR_FLORIAN0,
-};
 
 HOOK_ORIGINAL_MEMBER(0x0079D5B0, &CGInterface::ToggleActionWnd);
 void CGInterface::ToggleActionWnd() {
@@ -210,11 +201,36 @@ void CGInterface::ToggleWorldMap() {
         g_sNewInterfaceMgr.GetInterfaceObj(GDR_WORLDMAP)->OnGWndShow();
         FUN_0079ab80(g_sNewInterfaceMgr.GetInterfaceObj(GDR_WORLDMAP));
         SetOnMiddleOfScreen(GDR_WORLDMAP);
+        CIFMenu *menu = g_pCGInterface->m_IRM.GetResObj<CIFMenu>(MainMenuID, 1);
+        if(menu->CanSendPing)
+        {
+            menu->CanSendPing = false;
+            g_Controler->SetCustomCursor(149);
+        }
     }
 }
 
 HOOK_ORIGINAL_MEMBER(0x0079c750, &CGInterface::ToggleAutoPotion);
 void CGInterface::ToggleAutoPotion(bool bVisible) {
+
+    if(m_Settings->EnableMacro)
+    {
+        if (this->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->IsVisible()) {
+            this->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->ShowGWnd(false);
+            CGEffSoundBody::get()->PlaySound(L"snd_window_close");
+        }
+        else {
+            this->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->ActivateTabPage(0);
+
+            this->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->ActivateTabPage(0);
+            this->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->UpdateMenuSize();
+            //this->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->ActivateTabPage(0);
+            this->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->ShowGWnd(true);
+            CGEffSoundBody::get()->PlaySound(L"snd_window_open");
+        }
+        return;
+    }
+
     CIFWnd *pAutoPotion = m_IRM.GetResObj(GDR_AUTO_POTION, true);
 
     // If close it up
@@ -245,7 +261,32 @@ void CGInterface::ToggleAutoPotion(bool bVisible) {
 }
 
 void CGInterface::CreateFlorian0Event() {
-    GetAlarmManager()->CreateGuideIcon(GDR_FLORIAN0_GUIDE);
+    GetAlarmManager()->CreateGuideIcon(GDR_MENU_GUIDE);
+    GetAlarmManager()->CreateGuideIcon(GDR_CHEST_GUIDE);
+    if(m_Settings->EnableMacro)
+    {
+        GetAlarmManager()->CreateGuideIcon(GDR_MACRO_GUIDE);
+    }
+   // GetAlarmManager()->CreateGuideIcon(GDR_ALCHEM_MACRO_GUIDE);
+   /* this->m_IRM.CreateInterfaceSection("Battery", this);
+    this->m_IRM.CreateInterfaceSection("BatteryNum", this);
+
+    this->m_IRM.GetResObj(201, 1)->ShowGWnd(true);
+    this->m_IRM.GetResObj(202, 1)->ShowGWnd(true);
+*/
+    GetAlarmManager()->CreateGuideIcon(GDR_FACEBOOK_GUIDE);
+    GetAlarmManager()->CreateGuideIcon(GDR_DISCORD_GUIDE);
+    GetAlarmManager()->CreateGuideIcon(GDR_DAILY_LOGIN);
+    wnd_rect sz;
+    sz.pos.x = 0;
+    sz.pos.y = 0;
+    sz.size.width = 32;
+    sz.size.height = 32;
+    CGWnd::CreateInstance(this, GFX_RUNTIME_CLASS(CIFStatic), sz, JobIconID, 0);
+
+    // GetAlarmManager()->CreateGuideIcon(GDR_WEB_GUIDE);
+    CMsgStreamBuffer buf(0xA400);
+    SendMsg(buf);
 }
 
 CAlramGuideMgrWnd *CGInterface::GetAlarmManager() {
@@ -302,6 +343,7 @@ CIFExtQuickSlot *CGInterface::GetExtQuickSlot() {
 }
 
 void CGInterface::FUN_00777a70(undefined4 param_1, undefined4 param_2) {
+    //printf("%d %d \n", param_1, param_2);
     reinterpret_cast<void(__thiscall *)(CGInterface *, undefined4, undefined4)>(0x00777a70)(this, param_1, param_2);
 }
 
@@ -320,145 +362,92 @@ void CGInterface::SetOnMiddleOfScreen(DWORD dwNInterfaceID) {
 }
 
 void CGInterface::SaveGWndPostion(DWORD dwID, CGWnd::wnd_pos sWndPos) {
-    mapWndPos::iterator it = m_mapWindowPos.find(dwID);
-    if (it == m_mapWindowPos.end()) {
-        m_mapWindowPos.insert(mapWndPos::value_type(dwID, sWndPos));
-        return;
-    }
-
-    it->second = sWndPos;
+    reinterpret_cast<void(__thiscall *)(CGInterface *, DWORD, CGWnd::wnd_pos)>(0x0079a840)(this, dwID, sWndPos);
 }
+void CGInterface::Fun_00777f00() /// this is loading slt
+{
 
+    if(m_Settings->SecondarySlot)
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFExtQuickSlot>(GDR_EXT_QUICK_SLOT, 1)->ShowGWnd(false);
+        for (int i = 0; i < 50; i++) {
+            if(g_pCGInterface->m_IRM.GetResObj<CIFExtQuickSlotSecond>(1351, 1)->myslots[i] != NULL)
+            g_pCGInterface->m_IRM.GetResObj<CIFExtQuickSlotSecond>(1351, 1)->myslots[i]->m_pMySlot->m_pSlot->ClearSlot();
+        }
+    }
+    if(m_Settings->SecondarySlot)
+    {
+        for (int i = 0; i < 40; i++) {
+            if(g_pCGInterface->m_IRM.GetResObj<CIFExtQuickSlotCustom>(1363, 1)->myslots[i] != NULL)
+            g_pCGInterface->m_IRM.GetResObj<CIFExtQuickSlotCustom>(1363, 1)->myslots[i]->m_pMySlot->m_pSlot->ClearSlot();
+        }
+    }
+    if(m_Settings->EnableMacro)
+    {
+        for (int i = 0; i < 12; i++) {
+            if(g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->MySlots[i] != NULL)
+                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->MySlots[i]->m_pMySlot->m_pSlot->ClearSlot();
+        }
+
+        if(g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoSkillSlot->SkillWeaponSlot != NULL)
+            g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoSkillSlot->SkillWeaponSlot->m_pMySlot->m_pSlot->ClearSlot();
+
+        if(g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoSkillSlot->BuffWeaponSlot != NULL)
+            g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoSkillSlot->BuffWeaponSlot->m_pMySlot->m_pSlot->ClearSlot();
+
+
+        if(g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoSkillSlot->SkillShieldSlot != NULL)
+            g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoSkillSlot->SkillShieldSlot->m_pMySlot->m_pSlot->ClearSlot();
+
+        if(g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoSkillSlot->BuffShieldSlot != NULL)
+            g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoSkillSlot->BuffShieldSlot->m_pMySlot->m_pSlot->ClearSlot();
+
+
+        for(int i = 0; i < 24; i++)
+        {
+            if (g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoSkillSlot->skillslots[i] != NULL)
+                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoSkillSlot->skillslots[i]->m_pMySlot->m_pSlot->ClearSlot();
+
+            if (g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoSkillSlot->buffslots[i] != NULL)
+                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoSkillSlot->buffslots[i]->m_pMySlot->m_pSlot->ClearSlot();
+
+
+        }
+        for(int i = 0; i < 12; i++)
+        {
+            if (g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoScrollSlot->Slot1[i] != NULL)
+                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoScrollSlot->Slot1[i]->m_pMySlot->m_pSlot->ClearSlot();
+
+            if (g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoScrollSlot->Slot1[i] != NULL)
+                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoScrollSlot->Slot1[i]->m_pMySlot->m_pSlot->ClearSlot();
+
+
+        }
+
+    }
+    //CMsgStreamBuffer buf(0xA400);
+    //buf << (byte)1;
+    //SendMsg(buf);
+    reinterpret_cast<void(__thiscall*)(CGInterface*)>(0x00777f00)(this);
+
+
+    /* for()
+     g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->MyMacroAutoPotionData.insert(std::make_pair(SlotSeq, Data));
+     g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->UpdateSlot(SlotSeq, SlotType, Data, Active, Value);
+ */
+}
 void CGInterface::SaveGWndPosOnMiddleOfScreen(DWORD dwID, CGWnd *pParent) {
     CGWnd *pParentWnd = pParent;
-    if (pParentWnd == NULL) {
+    if (pParentWnd == NULL)
         pParentWnd = g_pCGInterface;
-    }
 
     CIFWnd *pWnd = (CIFWnd *) pParentWnd->GetChildControl(dwID);
-    if (pWnd == NULL) {
+    if (pWnd == NULL)
         return;
-    }
 
     wnd_pos sNewPos = {(theApp.GetClientDimensionStuff().width / 2) - (pWnd->GetBounds().size.width / 2),
                        (theApp.GetClientDimensionStuff().height / 2) - (pWnd->GetBounds().size.height / 2)};
     pWnd->MoveGWnd2(sNewPos);
 
     SaveGWndPostion(dwID, sNewPos);
-}
-
-bool CGInterface::GetSavedGWndPostion(DWORD dwID, OUT CGWnd::wnd_pos &sPos, BOOL bPosOnScreen) {
-    mapWndPos::iterator it = m_mapWindowPos.find(dwID);
-    if (it == m_mapWindowPos.end()) {
-        return false;
-    }
-
-    sPos = (*it).second;
-
-    if (bPosOnScreen) {
-        CIFWnd *pWnd = m_IRM.GetResObj(dwID, true);
-        if (pWnd != NULL) {
-            int nResolutionWidth = theApp.GetClientDimensionStuff().width;
-            int nResolutionHeight = theApp.GetClientDimensionStuff().height;
-            wnd_size sWndSize = pWnd->GetSize();
-
-            if (nResolutionWidth < (sPos.x + sWndSize.width)) {
-                sPos.x = (nResolutionWidth - sWndSize.width);
-            }
-
-            if (nResolutionHeight < (sPos.y + sWndSize.height)) {
-                sPos.y = (nResolutionHeight - sWndSize.height);
-            }
-        }
-    }
-    return true;
-}
-
-void CGInterface::SaveGWndsPostionData() {
-    CHAR szBuffer[0x200];// PATH_MAX define iguess?
-    sprintf_s(szBuffer, "%s\\Setting\\wndpos.dat", theApp.GetWorkingDir());
-
-    FILE *f = fopen(szBuffer, "wb+");
-    if (f == NULL) {
-        return;
-    }
-
-    int nUnknown = 3;
-    fwrite(&nUnknown, sizeof(int), 1, f);
-
-    int nCount = size(nGWndSavePostionsID);
-    fwrite(&nCount, sizeof(int), 1, f);
-
-    int nResolutionWidth = theApp.GetClientDimensionStuff().width;
-    int nResolutionHeight = theApp.GetClientDimensionStuff().height;
-    fwrite(&nResolutionWidth, sizeof(int), 1, f);
-    fwrite(&nResolutionHeight, sizeof(int), 1, f);
-
-    wnd_pos sPosData;
-
-    //=======================================================
-    for (int p = 0; p < size(nGWndSavePostionsID); ++p) {
-        CIFWnd *pWnd = m_IRM.GetResObj(nGWndSavePostionsID[p], true);
-        if (pWnd != NULL) {
-            sPosData = pWnd->GetPos();
-        } else {
-            GetSavedGWndPostion(nGWndSavePostionsID[p], sPosData, TRUE);
-        }
-        fwrite(&sPosData.x, sizeof(int), 1, f);
-        fwrite(&sPosData.y, sizeof(int), 1, f);
-    }
-    //=======================================================
-
-    fclose(f);
-}
-
-void CGInterface::LoadGWndsPostionData() {
-    CHAR szBuffer[0x200];// PATH_MAX define iguess?
-    sprintf_s(szBuffer, "%s\\Setting\\wndpos.dat", theApp.GetWorkingDir());
-
-    FILE *f = fopen(szBuffer, "wb+");
-    if (f == NULL) {
-        return;
-    }
-
-    int nUnknwon;
-    fread(&nUnknwon, sizeof(int), 1, f);
-
-    if (nUnknwon != 3) {
-        fclose(f);
-        SaveGWndsPostionData();
-        return;
-    }
-
-    int nCount;
-    int nResolutionWidth;
-    int nResolutionHeight;
-
-    fread(&nCount, sizeof(int), 1, f);
-    fread(&nResolutionWidth, sizeof(int), 1, f);
-    fread(&nResolutionHeight, sizeof(int), 1, f);
-
-    if (nResolutionWidth != theApp.GetClientDimensionStuff().width ||
-        nResolutionHeight != theApp.GetClientDimensionStuff().height) {
-        fclose(f);
-        SaveGWndsPostionData();
-        return;
-    }
-
-    wnd_pos sPosData;
-
-    //=======================================================
-    for (int p = 0; p < size(nGWndSavePostionsID); ++p) {
-        fread(&sPosData.x, sizeof(int), 1, f);
-        fread(&sPosData.y, sizeof(int), 1, f);
-
-        CIFWnd *pWnd = m_IRM.GetResObj(nGWndSavePostionsID[p], true);
-        if (pWnd != NULL) {
-            pWnd->MoveGWnd(sPosData.x, sPosData.y);
-        }
-        SaveGWndPostion(nGWndSavePostionsID[p], sPosData);
-    }
-    //=======================================================
-
-    fclose(f);
 }

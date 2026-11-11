@@ -15,6 +15,8 @@
 #include "IFChatViewer.h"
 
 #include <Game.h>
+#include <sstream>
+#include <ExtraUI/IFMSFPS.h>
 
 #include "support/GlobalPtr.h"
 
@@ -167,7 +169,10 @@ void __stdcall WriteToChatWindow(ChatType type, const std::n_wstring &strRecipie
 
     switch (type) {
         case CHAT_All:
-        case CHAT_Global:
+        case CHAT_Global:// dene
+        {
+            return;
+        }
         case CHAT_Stall:
             local_64 = L":";
             break;
@@ -296,4 +301,54 @@ void __stdcall FUN_00bbda70(undefined4 a1) {
 
 CIFWnd *GetWndByGID(int hgWnd) {
     return reinterpret_cast<CIFWnd *(__cdecl *)(int)>(0x00ba1140)(hgWnd);
+}
+void OngoingNetMessage(CMsgStreamBuffer& Msg) {
+
+    if (Msg.msgid() == 0x7021)
+    {
+       if(g_pCGInterface->m_IRM.GetResObj<CIFMSFPS>(1952, 1) != NULL)
+       {
+          g_pCGInterface->m_IRM.GetResObj<CIFMSFPS>(1952, 1)->OnMovementRequest(Msg);
+       }
+    }
+
+    reinterpret_cast<void(__cdecl *)(CMsgStreamBuffer&)>(0x008418D0)(Msg);
+}
+std::n_wstring KisaYazi(const std::n_wstring& orijinal, size_t maksUzunluk)
+{
+    if (orijinal.size() <= maksUzunluk) {
+        return orijinal;
+    }
+    else {
+        return orijinal.substr(0, maksUzunluk) + L"...";
+    }
+}
+std::wstring Insert(INT64 test)
+{
+
+
+    std::stringstream ss;
+    ss << test;
+    std::string str = ss.str();
+
+    std::stringstream buffer(str.c_str());
+
+
+    long unitAmount;
+    buffer >> unitAmount;
+
+    std::wstring commafiedAmount;
+    int cnt = 0;
+    do
+    {
+        commafiedAmount.insert(0, 1, char('0' + unitAmount % 10));
+        unitAmount /= 10;
+        if (++cnt == 3 && unitAmount)
+        {
+            commafiedAmount.insert(0, 1, ',');
+            cnt = 0;
+        }
+    } while (unitAmount);
+
+    return commafiedAmount;
 }

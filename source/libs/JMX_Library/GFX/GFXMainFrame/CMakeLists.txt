@@ -1,4 +1,4 @@
-add_library(GFXMainFrame STATIC)
+add_library(GFXMainFrame STATIC src/GFXMainFrame/EntityManager.cpp)
 
 target_sources(GFXMainFrame PRIVATE
         src/GFXMainFrame/GFXMainFrame.cpp
@@ -13,4 +13,5 @@ target_include_directories(GFXMainFrame
         PUBLIC
         src/
         ${DirectX_INCLUDE_DIRS})
-target_link_libraries(GFXMainFrame BSLib support d3d9)
+target_link_libraries(GFXMainFrame BSLib ghidra ${DirectX_LIBRARIES})
+target_link_directories(GFXMainFrame PUBLIC ${DirectX_LIBRARY_PATHS})

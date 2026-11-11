@@ -25,6 +25,7 @@ public:
     /// \address 006a2560
     bool OnCreate(long ln) override;
 
+    void ActiveAutoMastery();
     /// \address 006a1c50
     void OnUpdate() override;
 

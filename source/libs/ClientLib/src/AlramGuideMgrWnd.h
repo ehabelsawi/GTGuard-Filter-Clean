@@ -12,7 +12,7 @@ public:
     CAlramGuideMgrWnd();
 
     /// \address 0065c430
-    void UpdateGuidesPos();
+    void PrepareGuides();
 
     /// \address 0065c4f0
     void RemoveAllGuides();

@@ -122,6 +122,10 @@ void CGWndBase::sub_B9DA70(bool b) {
 int CGWndBase::UniqueID() const {
     return this->m_UniqueID;
 }
+void CGWndBase::SetUniqueID(int A)
+{
+    m_UniqueID = A;
+}
 
 void CGWndBase::sub_B8F440(const RECT &rect) {
     N000006FD = rect;

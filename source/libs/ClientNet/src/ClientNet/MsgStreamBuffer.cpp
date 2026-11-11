@@ -32,7 +32,11 @@ CMsgStreamBuffer::SMsgStreamNode::SMsgStreamNode() {
 void CMsgStreamBuffer::Write(const void *data, size_t size) {
     reinterpret_cast<void (__thiscall *)(CMsgStreamBuffer *, const void *, size_t)>(0x00508FE0)(this, data, size);
 }
-
+CMsgStreamBuffer &CMsgStreamBuffer::operator<<(const std::n_wstring &str) {
+    (*this) << (WORD) str.length();
+    Write(str.c_str(), str.length() * 2);
+    return *this;
+}
 CMsgStreamBuffer &CMsgStreamBuffer::operator<<(const std::n_string &str) {
     (*this) << (WORD) str.length();
     Write(str.c_str(), str.length());
@@ -74,6 +78,9 @@ WORD CMsgStreamBuffer::msgid() const {
 
 CMsgStreamBuffer &CMsgStreamBuffer::operator>>(std::n_string &str) {
     return reinterpret_cast<CMsgStreamBuffer &(__thiscall *)(CMsgStreamBuffer *, std::n_string &)>(0x004f7a70)(this, str);
+}
+CMsgStreamBuffer &CMsgStreamBuffer::operator>>(std::n_wstring &str) {
+    return reinterpret_cast<CMsgStreamBuffer &(__thiscall *)(CMsgStreamBuffer *, std::n_wstring &)>(0x005b5e50)(this, str);
 }
 
 void CMsgStreamBuffer::Read(void *value, size_t numBytes) {

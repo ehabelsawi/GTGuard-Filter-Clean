@@ -27,3 +27,5 @@ template<typename T, int address>
 void OverrideObject() {
     override_objects.push_back(&OverrideRtClassAt<T, address>);
 }
+
+void PatchWatermark();

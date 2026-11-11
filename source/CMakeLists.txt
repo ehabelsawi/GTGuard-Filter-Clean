@@ -15,5 +15,8 @@ add_subdirectory(libs/TypeId)
 add_subdirectory(tests)
 
 add_subdirectory(support)
+add_subdirectory(third-party/imgui)
+add_subdirectory(third-party/ghidra)
 
 add_subdirectory(DevKit_DLL)
+add_subdirectory(libs/DiscordRichPresence)

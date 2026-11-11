@@ -8,6 +8,10 @@
 #include "SRO_MSG_DEF.h"
 #include "CharacterDependentData.h"
 #include <BSLib/multibyte.h>
+#include <CustomData/CustomDataManager.h>
+#include <CustomInterface/IFCustomEmojiList.h>
+#include <GlobalItemLinking/GlobalItemLinking.h>
+#include <CustomData/CustomSettingManager.h>
 
 // CIFChatViewer_Delete                   .text 007A97D0 00000012 00000000 00000004 R . . . . . .
 // CIFChatViewer_Create                   .text 007AF5C0 00000067 00000014 00000000 R . . . . . .
@@ -46,6 +50,7 @@ GFX_IMPLEMENT_DYNCREATE_FN(CIFChatViewer, CIFWnd)
 
 #define TIMER_CHATBLOCK 82
 
+#define GDR_EMOJIES 500
 GFX_BEGIN_MESSAGE_MAP(CIFChatViewer, CIFWnd)
 
                     ONG_CHAR()
@@ -62,9 +67,22 @@ GFX_BEGIN_MESSAGE_MAP(CIFChatViewer, CIFWnd)
                     ONG_BSSig_u38(2, 0x806D, GDR_LIST_APPRENTICE, &CIFChatViewer::OnListChatThing)
 
                     ONG_COMMAND(GDR_CHAT_MODE_BTN, &CIFChatViewer::OnChatMode)
+                    ONG_COMMAND(GDR_EMOJIES, &CIFChatViewer::OnEmojiButtonClick)
 
 GFX_END_MESSAGE_MAP()
 
+void CIFChatViewer::OnEmojiButtonClick()
+{
+    if(g_pCGInterface->m_IRM.GetResObj<CIFCustomEmojiList>(1360, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFCustomEmojiList>(1360, 1)->ShowGWnd(false);
+    }
+    else
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFCustomEmojiList>(1360, 1)->ShowGWnd(true);
+
+    }
+}
 
 // CIFChatViewer::Func_4(void) .text 007A9970 00000023 00000000 00000004 R . . . . . .
 int CIFChatViewer::Func_4(int a2) {
@@ -97,14 +115,19 @@ void CIFChatViewer::OnTimer(int timerId) {
             m_bChattingAllowed = true;
 
             m_InputBox->SetText(L"");
-
+            #if 0
+            g_global->m_LinkedGlobalItemEnd = 0;
+            g_global->m_LinkedGlobalItemBegin = 0;
+            g_global->m_CurrentLinkedItemName = std::wstring();
+            g_global->m_LinkedGlobalSlot = 0;
+            #endif
             this->sub_7A9A40();
         }
     }
 }
 
 bool CIFChatViewer::OnCreate(long ln) {
-    m_IRM.LoadFromFile("resinfo\\ifchatviewer.txt");
+    m_IRM.LoadFromFile("clientlibrary\\resinfo\\ifchatviewer.txt");
 
     m_IRM.CreateInterfaceSection("Create", this);
 
@@ -273,7 +296,15 @@ bool CIFChatViewer::OnCreate(long ln) {
     m_ChatBlockLabel = m_IRM.GetResObj(GDR_CHAT_STA_PENALTY, 1);
 
     UpdateChatSize();
-
+    std::n_wstring EmojiList = L"Emoji list";
+    this->m_IRM.GetResObj(500, 1)->SetStyleThingy(TOOLTIP);
+    this->m_IRM.GetResObj(500, 1)->SetTooltip(EmojiList);
+    this->m_IRM.GetResObj(500, 1)->ShowGWnd(false);
+    if(m_Settings->ENABLE_EMOJI_SYSTEM)
+    {
+        this->m_IRM.GetResObj(500, 1)->ShowGWnd(true);
+    }
+    //initializeEmojis();
 
     return true;
 }
@@ -287,7 +318,14 @@ void CIFChatViewer::ShowGWnd(bool a2) {
     m_Button_ChatTabHide->ShowGWnd(a2);
     CIFWnd::ShowGWnd(a2);
 }
+void CIFChatViewer::OnUpdate()
+{
+    reinterpret_cast<void(__thiscall *)(CIFChatViewer *)>(0x006528a0)(this);
+    wnd_pos x = this->m_IRM.GetResObj<CIFButton>(41, 1)->GetPos();
 
+    this->m_IRM.GetResObj<CIFButton>(500, 1)->MoveGWnd(x.x + 390, x.y);
+
+}
 int CIFChatViewer::Func_36(int a1, short action, int a3, int a4) {
     if (action <= 0) {
         if (action < 0) {
@@ -328,6 +366,12 @@ int CIFChatViewer::OnChar(UINT nChar, UINT a2, UINT a3) {
     // Print error message to system log when chatting is blocked
     if (!m_bChattingAllowed) {
         m_InputBox->SetText(L"");
+#if 0
+        g_global->m_LinkedGlobalItemEnd = 0;
+        g_global->m_LinkedGlobalItemBegin = 0;
+        g_global->m_CurrentLinkedItemName = std::wstring();
+        g_global->m_LinkedGlobalSlot = 0;
+#endif
         wchar_t buffer[64];
         swprintf_s(buffer, TSM_GETTEXTPTR(L"UIIT_MSG_CANT_CHATTING"));
         g_pCGInterface->WriteSystemMessage(SYSLOG_NONE, buffer);
@@ -415,12 +459,17 @@ int CIFChatViewer::OnChar(UINT nChar, UINT a2, UINT a3) {
             RECT param1;
             if (dword_EECC18 && g_pCGInterface->TryParseChatCommands(input_text.c_str(), param1, param2)) {
                 m_InputBox->SetText(L"");
+#if 0
+                g_global->m_LinkedGlobalItemEnd = 0;
+                        g_global->m_LinkedGlobalItemBegin = 0;
+                        g_global->m_CurrentLinkedItemName = std::wstring();
+                        g_global->m_LinkedGlobalSlot = 0;
+#endif
                 return 1;
             }
 
 
             SChatMessage chatMessage;
-
             if (!sub_4F9C50()) {
                 std::n_wstring strMessage;
                 std::n_wstring strRecipient;
@@ -445,6 +494,12 @@ int CIFChatViewer::OnChar(UINT nChar, UINT a2, UINT a3) {
                             return 1;
                         }
                         m_InputBox->SetText(L"");
+#if 0
+                        g_global->m_LinkedGlobalItemEnd = 0;
+                        g_global->m_LinkedGlobalItemBegin = 0;
+                        g_global->m_CurrentLinkedItemName = std::wstring();
+                        g_global->m_LinkedGlobalSlot = 0;
+#endif
                         return 1;
                     } else {
                         if (N00009C5E != CHAT_All && N00009C5E != CHAT_AllGM && N00009C5E != CHAT_Global) {
@@ -460,8 +515,13 @@ int CIFChatViewer::OnChar(UINT nChar, UINT a2, UINT a3) {
                                         SYSLOG_ERR,
                                         TSM_GETTEXTPTR(L"UIIT_MSG_PARTYERR_CANT_FIND_PARTY")
                                 );
-
                                 m_InputBox->SetText(L"");
+#if 0
+                                g_global->m_LinkedGlobalItemEnd = 0;
+                        g_global->m_LinkedGlobalItemBegin = 0;
+                        g_global->m_CurrentLinkedItemName = std::wstring();
+                        g_global->m_LinkedGlobalSlot = 0;
+#endif
                                 return 1;
                             }
 
@@ -472,6 +532,12 @@ int CIFChatViewer::OnChar(UINT nChar, UINT a2, UINT a3) {
                                 );
 
                                 m_InputBox->SetText(L"");
+#if 0
+                                g_global->m_LinkedGlobalItemEnd = 0;
+                        g_global->m_LinkedGlobalItemBegin = 0;
+                        g_global->m_CurrentLinkedItemName = std::wstring();
+                        g_global->m_LinkedGlobalSlot = 0;
+#endif
                                 return 1;
                             }
 
@@ -482,6 +548,12 @@ int CIFChatViewer::OnChar(UINT nChar, UINT a2, UINT a3) {
                                 );
 
                                 m_InputBox->SetText(L"");
+#if 0
+                                g_global->m_LinkedGlobalItemEnd = 0;
+                        g_global->m_LinkedGlobalItemBegin = 0;
+                        g_global->m_CurrentLinkedItemName = std::wstring();
+                        g_global->m_LinkedGlobalSlot = 0;
+#endif
                                 return 1;
                             }
                         }
@@ -535,6 +607,9 @@ int CIFChatViewer::OnChar(UINT nChar, UINT a2, UINT a3) {
                         case CHAT_Union:
                         case CHAT_Academy:
                             pReq << nChatMessageToBeSend;
+#if 0
+                            pReq << g_global->m_LinkedGlobalSlot;
+#endif
                             break;
 
                         case CHAT_PM:
@@ -542,10 +617,12 @@ int CIFChatViewer::OnChar(UINT nChar, UINT a2, UINT a3) {
                             strRecipient = TO_NSTRING(metadata.strRecipient);
 
                             pReq << strRecipient << nChatMessageToBeSend;
+                            #if 0
+                            pReq << g_global->m_LinkedGlobalSlot;
+                            #endif
                             break;
                     }
                 SENDMSG()
-
                 // Recent Commands maybe?
 #if 0
                 if (sub_4F9C50()) {
@@ -561,9 +638,21 @@ int CIFChatViewer::OnChar(UINT nChar, UINT a2, UINT a3) {
                         m_InputBox->SetText(L";");
                     } else {
                         m_InputBox->SetText(L"");
+#if 0
+                        g_global->m_LinkedGlobalItemEnd = 0;
+                        g_global->m_LinkedGlobalItemBegin = 0;
+                        g_global->m_CurrentLinkedItemName = std::wstring();
+                        g_global->m_LinkedGlobalSlot = 0;
+#endif
                     }
                 } else if (m_currentTabPage == TAB_ALL && (N00009C5E == CHAT_All || N00009C5E == CHAT_Global)) {
                     m_InputBox->SetText(L""); //Probably should leave this use case for the Else statement...
+#if 0
+                    g_global->m_LinkedGlobalItemEnd = 0;
+                        g_global->m_LinkedGlobalItemBegin = 0;
+                        g_global->m_CurrentLinkedItemName = std::wstring();
+                        g_global->m_LinkedGlobalSlot = 0;
+#endif
                 } else if (m_currentTabPage == TAB_ALL && N00009C5E == CHAT_PM) {
                     // Insert name of dude
                     std::n_wstring newTbText = L"$";
@@ -571,6 +660,13 @@ int CIFChatViewer::OnChar(UINT nChar, UINT a2, UINT a3) {
                     newTbText += L" ";
 
                     m_InputBox->SetText(newTbText.c_str());
+#if 0
+                    g_global->m_LinkedGlobalItemEnd = 0;
+                        g_global->m_LinkedGlobalItemBegin = 0;
+                        g_global->m_CurrentLinkedItemName = std::wstring();
+                        g_global->m_LinkedGlobalSlot = 0;
+#endif
+
                 } else if (m_currentTabPage == TAB_PARTY || (N00009C5E == CHAT_Party && m_currentTabPage == TAB_ALL)) {
                     m_InputBox->SetText(L"#");
                 } else if (m_currentTabPage == TAB_GUILD || (N00009C5E == CHAT_Guild && m_currentTabPage == TAB_ALL)) {
@@ -582,6 +678,12 @@ int CIFChatViewer::OnChar(UINT nChar, UINT a2, UINT a3) {
                     m_InputBox->SetText(L"&");
                 } else {
                     m_InputBox->SetText(L"");
+#if 0
+                    g_global->m_LinkedGlobalItemEnd = 0;
+                        g_global->m_LinkedGlobalItemBegin = 0;
+                        g_global->m_CurrentLinkedItemName = std::wstring();
+                        g_global->m_LinkedGlobalSlot = 0;
+#endif
                 }
 
             }
@@ -903,8 +1005,15 @@ void CIFChatViewer::ActivateTabPage(eTabPage page) {
                 m_ChatLists[TAB_ALL]->ShowGWnd(true);
 
             if (v8)
+            {
                 m_InputBox->SetText(L"");
-
+#if 0
+            g_global->m_LinkedGlobalItemEnd = 0;
+            g_global->m_LinkedGlobalItemBegin = 0;
+            g_global->m_CurrentLinkedItemName = std::wstring();
+            g_global->m_LinkedGlobalSlot = 0;
+#endif
+            }
             break;
         case TAB_PARTY:
             if (!N00009C81)

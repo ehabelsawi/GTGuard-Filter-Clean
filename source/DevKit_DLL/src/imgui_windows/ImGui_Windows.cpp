@@ -1,8 +1,8 @@
 #include "ImGui_Windows.h"
 #include <Windows.h>
-#include "imgui.h"
-#include "examples/imgui_impl_dx9.h"
-#include "examples/imgui_impl_win32.h"
+#include "imgui/imgui.h"
+#include "imgui/examples/imgui_impl_dx9.h"
+#include "imgui/examples/imgui_impl_win32.h"
 
 #include <GFX3DFunction/GFXVideo3d.h>
 #include <GFX3DFunction/DrawingHelpers.h>
@@ -12,7 +12,6 @@
 
 #include "../MathUtil.h"
 #include "../hooks/Hooks.h"
-#include "AboutWindow.h"
 #include "CharacterData.h"
 #include "EntityExplorer.h"
 #include "ErrorMessageTool.h"
@@ -27,6 +26,8 @@
 #include "ProcessViewer.h"
 #include "SoundTool.h"
 #include "SystemMessage.h"
+#include "NavigationTool.h"
+#include "../CircleDrawTool.h"
 #include <BSLib/Debug.h>
 #include <BSLib/multibyte.h>
 
@@ -40,7 +41,6 @@ static NavMeshTool navmeshExplorer;
 static EntityExplorer entityExplorer;
 static SoundTool soundTool;
 static NotificationTool notificationTool;
-static AboutWindow aboutWnd;
 static SystemMessage systemMessage;
 static ErrorMessageTool errorMessageTool;
 static InterfaceTree interfaceTree;
@@ -49,6 +49,9 @@ static Inventory inventory;
 static PartyInfo partyInfo;
 static CharacterData characterData;
 static ItemData itemData;
+static NavigationTool navigationTool;
+CircleDrawTool circleDrawTool;
+
 
 void ImGui_OnCreate(HWND hWindow, void *msghandler, int a3) {
     BS_DEBUG("ImGui_OnCreate");
@@ -101,7 +104,7 @@ void ImGui_OnEndScene() {
             processViewer.MenuItem();
 
             inventory.MenuItem();
-
+            navigationTool.MenuItem();
             ImGui::EndMenu();
         }
 
@@ -112,26 +115,16 @@ void ImGui_OnEndScene() {
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu("Help")) {
-            aboutWnd.MenuItem();
-            if (ImGui::MenuItem("Online Help")) {
-                ShellExecute(NULL,
-                             TEXT("open"),
-                             TEXT("https://florian0.gitlab.io/sro_devkit/"),
-                             NULL, NULL, SW_SHOWNORMAL);
-            }
-            ImGui::EndMenu();
-        }
+
 
         ImGui::EndMainMenuBar();
     }
-
+    circleDrawTool.Render();
     interfaceDebugger.Render();
     entityExplorer.Render();
     soundTool.Render();
     notificationTool.Render();
     navmeshExplorer.Render();
-    aboutWnd.Render();
     systemMessage.Render();
     errorMessageTool.Render();
     interfaceTree.Render();
@@ -140,6 +133,7 @@ void ImGui_OnEndScene() {
     partyInfo.Render();
     characterData.Render();
     itemData.Render();
+    navigationTool.Render();
 
     ImGui::EndFrame();
 

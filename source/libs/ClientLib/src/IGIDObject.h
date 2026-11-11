@@ -47,18 +47,25 @@ public:
     const std::n_wstring &GetName() const;
 
     const SCommonData *GetCommonData() const;
-
+    void ChangeTitleColor(D3DCOLOR Color);
     const int GetUniqueId() const;
+    void ChangeName(std::n_wstring Name);
+    void ChangeTitle(std::n_wstring Title);
+    void UpdateNameColor(UINT32 color);
+    bool IsChinese();
+    bool IsEurope();
+
 private:
     char pad_00DC[28]; //0x00DC
 protected:
     int m_uniqueId; // 0x00F8
 private:
     char pad_00FC[20]; // 0x00FC
-protected:
+public:
     std::n_wstring m_name; //0x0110
     CGFontTexture fonttexture_playername; //0x012C
     std::n_wstring m_titleText; //0x0194
+public:
     CGFontTexture fonttexture_title; //0x01B0
 private:
     char pad_0218[8]; //0x0218
@@ -76,4 +83,6 @@ BEGIN_FIXTURE()
     END_FIXTURE()
 
     RUN_FIXTURE(CIGIDObject)
+
+
 };

@@ -49,8 +49,9 @@ private:
     int m_SlotOfChattingItem;
     // Number of items left in slot
     int m_NumberOfItemsLeft;
-
+public:
     CIFEdit *m_pEdit;
+private:
     CIFStatic *m_pCreatedStatic;
     CIFDragableArea *m_pDragableArea;
 

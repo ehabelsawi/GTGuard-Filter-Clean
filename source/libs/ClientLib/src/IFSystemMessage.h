@@ -3,6 +3,8 @@
 #include "IFWnd.h"
 
 #include "IFChatOptionBoard.h"
+#include "IFTextBox.h"
+#include "IFVerticalScroll.h"
 
 enum eLogType : BYTE {
     SYSLOG_NONE,
@@ -23,7 +25,12 @@ enum eLogType : BYTE {
 };
 
 class CIFSystemMessage : public CIFWnd {
+GFX_DECLARE_DYNAMIC_EXISTING(CIFSystemMessage, 0x00eec268)
 public:
+    bool OnCreateIMPL(long ln);
+    void OnUpdateIMPL();
+    /// \address 007B89E0
+    CIFTextBox *GetTextBox();
     /// \address 007B89E0
     void WriteMessage(int a1, D3DCOLOR color, const wchar_t *msg, int a2, int a3);
 
@@ -37,7 +44,8 @@ public:
 private:
     char pad_036c[20]; //0x036C
     CIFChatOptionBoard *m_pOptionBoard; //0x0380
-    char pad_0384[8]; //0x0384
+    CIFTextBox* m_TextBox;
+    CIFVerticalScroll* m_Scroll;
 private:
 BEGIN_FIXTURE()
         ENSURE_SIZE(0x038C)

@@ -39,7 +39,7 @@ void CIFStatic::OnGfxMessage(Event3D *pEvent) {
 }
 
 void CIFStatic::RenderMyself() {
-    CIFWnd::RenderMyself();
+    /*CIFWnd::RenderMyself();
 
     if (m_FontTexture.HasCharacters()) {
         m_FontTexture.RenderTheText(static_cast<DWORD>(m_fTextRenderPosStartX), static_cast<DWORD>(m_fTextRenderPosStartY), TB_Func_8());
@@ -48,11 +48,12 @@ void CIFStatic::RenderMyself() {
 
     if (m_dwTextFGColor != 0) {
         RenderTextureColor(m_dwTextFGColor);
-    }
+    }*/
+    reinterpret_cast<void (__thiscall *)(CIFStatic *)>(0x0064D940)(this);
 }
 
 void CIFStatic::Func_42() {
-    if (m_FontTexture.HasCharacters()) {
+   /* if (m_FontTexture.HasCharacters()) {
         RECT local_10;
         GetSomeRECT(local_10);
         const float startX = static_cast<float>(local_10.left);
@@ -94,7 +95,8 @@ void CIFStatic::Func_42() {
                 m_fTextRenderPosStartY = endY - bgHeight;
                 break;
         }
-    }
+    }*/
+    reinterpret_cast<void (__thiscall *)(CIFStatic *)>(0x0064D9B0)(this);
 }
 
 bool CIFStatic::SetTextFormatted(const wchar_t *format, ...) {

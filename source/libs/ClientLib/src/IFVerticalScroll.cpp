@@ -1,5 +1,5 @@
 #include "IFVerticalScroll.h"
-
+GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFVerticalScroll, 0x00ee9968)
 void CIFVerticalScroll::sub_65A390(RECT a2) {
     m_field_0x3a8 = 0;
 
@@ -32,12 +32,12 @@ void CIFVerticalScroll::sub_65A5A0(int a2) {
     if (a2 == 0) {
         a2 = m_field_0x3a0;
     }
-    FUN_00659150(m_field_0x3a4 - a2);
+    FUN_00659150(m_CurrentIndex - a2);
 }
 
 void CIFVerticalScroll::sub_65A5C0(int a2) {
     if (a2 == 0) {
         a2 = m_field_0x3a0;
     }
-    FUN_00659150(m_field_0x3a4 + a2);
+    FUN_00659150(m_CurrentIndex + a2);
 }

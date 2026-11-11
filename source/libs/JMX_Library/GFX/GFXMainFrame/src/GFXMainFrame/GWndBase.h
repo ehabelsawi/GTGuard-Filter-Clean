@@ -2,20 +2,21 @@
 
 #include "BSLib/BSLib.h"
 #include "support/AbiTest.h"
-#include <list>
 #include <Windows.h>
+#include <list>
 
 /// Holds data about events, mainly in the 3d-space. It's unknown if this structure is also used for the general
 /// messaging system.
 struct Event3D {
     char pad_0000[4]; //0x0000
-    int Msg;          //0x0004
-    char pad_0008[12];//0x0008
-    int lParam;       //0x0014
-    int wParam;       //0x0018
-};//Size: 0x001C
+    int Msg; //0x0004
+    char pad_0008[12]; //0x0008
+    int lParam; //0x0014
+    int wParam; //0x0018
+}; //Size: 0x001C
 
 class CGWndBase;
+
 
 
 typedef std::n_list<CGWndBase *> GWND_LIST;
@@ -26,8 +27,8 @@ typedef std::n_list<CGWndBase *> GWND_LIST;
  *         avoid an endless loop
  *
  */
-class CGWndBase : public CObjChild {// size 32 + 100 = 132
-    GFX_DECLARE_DYNAMIC_EXISTING(CGWndBase, 0x0110F630)
+class CGWndBase : public CObjChild { // size 32 + 100 = 132
+GFX_DECLARE_DYNAMIC_EXISTING(CGWndBase, 0x0110F630)
 
 private:
     enum eListLockType : BYTE {
@@ -42,15 +43,6 @@ public:
     };
 
     struct wnd_pos {
-    public:
-        wnd_pos &operator=(wnd_pos &pos) {
-            x = pos.x;
-            y = pos.y;
-
-            return *this;
-        }
-
-    public:
         int x;
         int y;
     };
@@ -79,6 +71,7 @@ public:
 
 
 public:
+
     /// \address 00B90A80
     virtual void Func_7(CGWndBase *a2);
 
@@ -134,6 +127,7 @@ public:
 
 
 public:
+
     /// Constructor, what shall I say about this?
     /// \address 00B8FCD0
     CGWndBase();
@@ -151,7 +145,7 @@ public:
     /// Returns the numeric identifier of this control.
     /// \returns ID of this control
     int UniqueID() const;
-
+    void SetUniqueID(int A);
     void SetFocus_MAYBE();
 
     /// \brief Get the bounds of this object (position and size)
@@ -206,43 +200,44 @@ public:
     /// \address 00b90b00
     CGWndBase *GetChildControl(DWORD dwID);
 
+
 protected:
     /// \address 00B8F440
     void sub_B8F440(const RECT &rect);
 
-public:// 0046c8b6 getting call by global ptr
+public: // 0046c8b6 getting call by global ptr
     CGWndBase *GetParentControl() const;
 
 private:
-    LONG m_lnListLockRead;     //0x0020
-    LONG m_lnListLockWrite;    //0x0024
-    bool N000006F5;            //0x0028
-    char pad_0029[3];          //0x0029
-    int m_hgWnd;               //0x002C
-    CGWndBase *m_parentControl;//0x0030
-    int m_UniqueID;            //0x0034
-    int N000006F9;             //0x0038
-    bool N000006FB;            //0x003C
-    char pad_003D[3];          //0x003D
-    wnd_rect bounds;           //0x0040 was private, 40
-    RECT N000006FD;            //0x0050
-    char pad_0060[1];          //0x0060
+    LONG m_lnListLockRead; //0x0020
+    LONG m_lnListLockWrite; //0x0024
+    bool N000006F5; //0x0028
+    char pad_0029[3]; //0x0029
+    int m_hgWnd; //0x002C
+    CGWndBase *m_parentControl; //0x0030
+    int m_UniqueID; //0x0034
+    int N000006F9; //0x0038
+    bool N000006FB; //0x003C
+    char pad_003D[3]; //0x003D
+    wnd_rect bounds; //0x0040 was private, 40
+    RECT N000006FD; //0x0050
+    char pad_0060[1]; //0x0060
 protected:
-    bool m_bVisible;  //0x0061 61
-    bool m_bClickable;//0x0062
-    bool N0000074F;   //0x0063
+    bool m_bVisible; //0x0061 61
+    bool m_bClickable; //0x0062
+    bool N0000074F; //0x0063
     bool m_bDragable; //0x0064
 private:
-    char pad_0065[3];//0x0065
-    int N00000703;   //0x0068
-    int m_iflist;    //0x006C
+    char pad_0065[3]; //0x0065
+    int N00000703; //0x0068
+    int m_iflist; //0x006C
     short N00000705; //0x0070
-    char pad_0072[6];//0x0072
+    char pad_0072[6]; //0x0072
 public:
     GWND_LIST N00000707;//0x0078
 private:
-    BEGIN_FIXTURE()
-    ENSURE_SIZE(132)
+BEGIN_FIXTURE()
+        ENSURE_SIZE(132)
     END_FIXTURE()
 
     RUN_FIXTURE(CGWndBase)

@@ -1,7 +1,5 @@
-#pragma once
-
-#include <BSLib/BSLib.h>
 #include <string>
+#include <BSLib/BSLib.h>
 
 // Stolen from here https://github.com/ianchi/jThread/blob/master/src/winUtil.cpp
 

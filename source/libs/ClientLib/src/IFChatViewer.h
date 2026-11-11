@@ -1,6 +1,6 @@
 #pragma once
 
-#include "support/undefined.h"
+#include <ghidra/undefined.h>
 #include "IFWnd.h"
 #include "IFChatModeViewer.h"
 #include "IFSelectableArea.h"
@@ -64,7 +64,7 @@ public:
     /// Show or hide the control
     /// \address 007A9B60
     void ShowGWnd(bool) override;
-
+    void OnUpdate() override;
     /// \address 007A9A00
     int Func_36(int a1, short action, int a3, int a4) override;
 
@@ -224,7 +224,9 @@ private:
     CIFButton *m_Button_ChatTabHide; //0x0444
     CIFButton *m_Button_WhisperList; //0x0448
     CIFTextBox *m_CurrentActiveChatlist; //0x044C
+public:
     CIFTextBox *m_ChatLists[5]; //0x0450
+private:
     CIFButton *m_Button_ChatSize; //0x0464
     CIFWnd *m_ChatBlockLabel; //0x0468
     int N00009C71; //0x046C
@@ -241,7 +243,9 @@ private:
     CIFChatModeViewer *m_ChatModeView_Wnd; //0x0494
     CIFWhisperList *m_pWhisperList; //0x0498
     CIFVerticalScroll *m_Scroll; //0x049C
+public:
     CIFEdit *m_InputBox; //0x04A0
+private:
     CIFSelectableArea **m_pTabs; //0x04A4 is a pointer, type unknown
     int N00009C80; //0x04A8
     char N00009C81; //0x04AC
@@ -275,5 +279,6 @@ public:
     END_FIXTURE()
 
     RUN_FIXTURE(CIFChatViewer)
+void OnEmojiButtonClick();
 };
 

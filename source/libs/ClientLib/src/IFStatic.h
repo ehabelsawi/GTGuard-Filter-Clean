@@ -45,7 +45,7 @@ public:
     /// \address 0064D750
     virtual bool Func_51(const wchar_t *text);
 
-private:
+public:
     DWORD m_dwTextFGColor;       //0x036C
     float m_fTextRenderPosStartX;//0x0370
     float m_fTextRenderPosStartY;//0x0374

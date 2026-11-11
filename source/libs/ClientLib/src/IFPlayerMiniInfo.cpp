@@ -1,4 +1,6 @@
+#include <CustomData/CustomSettingManager.h>
 #include "IFPlayerMiniInfo.h"
+#include "GInterface.h"
 
 #define GDR_PMI_GAUGE_HP 0
 #define GDR_PMI_GAUGE_MP 1
@@ -56,4 +58,29 @@
 void CIFPlayerMiniInfo::Render()
 {
 	reinterpret_cast<void(__thiscall*)(CIFPlayerMiniInfo*)>(0x007B7C60)(this);
+}
+
+bool CIFPlayerMiniInfo::GetZerkButtonState()
+{
+    return m_IRM.GetResObj<CIFButton>(13, 1)->IsVisible();
+}
+
+void CIFPlayerMiniInfo::OnUpdateIMPL() {
+
+    if(m_Settings->ENABLE_NEW_JOB_UI)
+    {
+        g_pCGInterface->GetGuiFromList<CIFStatic>(JobIconID)->MoveGWnd(this->GetPos().x + 205, this->GetPos().y + 25);
+        g_pCGInterface->GetGuiFromList<CIFStatic>(JobIconID)->BringToFront();
+
+    }
+/*
+    CIFWnd *wind = g_pCGInterface->m_IRM.GetResObj(201, 1);
+    if(wind != NULL)
+    {
+        wind->MoveGWnd(this->GetPos().x + this->GetSize().width - 38, this->GetPos().y + 70);
+    }
+*/
+    reinterpret_cast<void (__thiscall *)(CIFPlayerMiniInfo *)>(0x007b7c60)(this);
+
+
 }

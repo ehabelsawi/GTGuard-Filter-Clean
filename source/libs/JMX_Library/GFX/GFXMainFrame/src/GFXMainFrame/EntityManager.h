@@ -1,14 +1,19 @@
 #pragma once
 
 #include <BSLib/BSLib.h>
-#include "IObject.h"
 
 #include <map>
+class CIObject;
+// TODO: This is bad. Don't make global typedefs like that.
 
 class CEntityManager : public CObjChild
 {
 public:
-	char _gap[4];
+    /// \address 00ba3770
+    void DestroyEntityIC(void* p);
 
-	std::map<int, CIObject*> entities;
+    char _gap[4];
+
+    // TODO: How sure are we that this is CIEntity and not CIObject? There's the proof for that.
+    std::map<int, CIObject*> entities;
 };

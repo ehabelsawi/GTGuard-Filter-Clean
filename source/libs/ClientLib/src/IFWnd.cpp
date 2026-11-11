@@ -192,7 +192,10 @@ bool CIFWnd::SetText(const wchar_t *src) {
 const wchar_t *CIFWnd::GetText() {
     return m_innerText.c_str();
 }
-
+std::n_wstring CIFWnd::GetNText()
+{
+    return m_innerText;
+}
 // CIFWnd::Func_42(void) .text 00652AF0 00000001   R . . . . . .
 void CIFWnd::Func_42() {
     // Empty in original
@@ -296,4 +299,7 @@ void CIFWnd::sub_6526E0(char a0, unsigned char opacity, float time, float a4, ch
     reinterpret_cast<void(__thiscall *)(CIFWnd *, char, unsigned char, float, float, char)>(0x6526E0)(this, a0,
                                                                                                       opacity, time,
                                                                                                       a4, a5);
+}
+void CIFWnd::FUN_00636330(){
+    reinterpret_cast<void(__thiscall *)(CIFWnd *)>(0x00636330)(this);
 }

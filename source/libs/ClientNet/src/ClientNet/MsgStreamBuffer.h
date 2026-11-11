@@ -70,7 +70,7 @@ public:
 
     /// \address 0x004f7a70
     CMsgStreamBuffer &operator>>(std::n_string &str);
-
+    CMsgStreamBuffer &operator>>(std::n_wstring &str);
     template<typename T>
     void Read(T &value) {
         Read(&value, sizeof(T));
@@ -79,6 +79,7 @@ public:
     //
     // Write
     //
+    CMsgStreamBuffer &operator<<(const std::n_wstring &str);
 
     CMsgStreamBuffer &operator<<(const std::n_string &str);
 
@@ -95,7 +96,7 @@ private:
 
     void Read(void* value, size_t numBytes);
 
-private:
+public:
     unsigned int m_currentReadBytes;
     unsigned int m_availableBytesForReading;
     unsigned char field_0xc;

@@ -34,6 +34,30 @@ CIFListCtrl::SLineOfText *CIFListCtrl::sub_63A940() {
     return reinterpret_cast<CIFListCtrl::SLineOfText *(__thiscall *) (CIFListCtrl *)>(0x63A940)(this);
 }
 
+CIFListCtrl::SLineOfText* CIFListCtrl::GetTextByIndex(int index) {
+    int* piVar1;
+    int iVar2;
+
+    iVar2 = 0;
+    if (*(int*)((int)this + 0x3bc) == 0) {
+        return 0;
+    }
+    piVar1 = *(int**)((int)this + 0x3b8);
+    while (true) {
+        piVar1 = (int*)*piVar1;
+        if (piVar1 == (int*)*(int*)((int)this + 0x3b8)) {
+            return 0;
+        }
+        if (iVar2 == index) break;
+        if (piVar1 == (int*)*(int*)((int)this + 0x3b8)) goto LAB_0063a980;
+        iVar2 = iVar2 + 1;
+    }
+    if (piVar1 != (int*)*(int*)((int)this + 0x3b8)) {
+        return (CIFListCtrl::SLineOfText*)(piVar1 + 2);
+    }
+    LAB_0063a980:
+    return reinterpret_cast<CIFListCtrl::SLineOfText * (__thiscall*)(CIFListCtrl*)>(0x639500)(this);
+}
 int CIFListCtrl::GetNumberOfItems() const {
     return m_numberOfItems;
 }
@@ -41,3 +65,7 @@ int CIFListCtrl::GetNumberOfItems() const {
 void CIFListCtrl::SetLineHeight(int height) {
     m_LineHeight = height;
 }
+void CIFListCtrl::FUN_00638d20(unsigned char p1){
+    reinterpret_cast<void*(__thiscall*)(CIFListCtrl*, unsigned char)>(0x00638d20)(this, p1);
+}
+/// get selected Index 00638c50

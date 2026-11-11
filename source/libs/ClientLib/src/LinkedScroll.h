@@ -23,10 +23,11 @@ public:
     CLinkedScroll();
 
 
-private:
-    CIFScrollbar *m_Scrollbar;
-    CPMLLayer *m_PMLLayer;
-    bool N00009699;
-    void *unknown;
-    bool N0000969B;
+public:
+    CIFScrollbar *m_Scrollbar; // 0x36C
+    CPMLLayer *m_PMLLayer; // // 0x370
+    int SelectedIndexStartby0; // 0x374
+    int OnHoverIndexStartby1; // 0x378
+    unsigned char N0000969B;
+
 };

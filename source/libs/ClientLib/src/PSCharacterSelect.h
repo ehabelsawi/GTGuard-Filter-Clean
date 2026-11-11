@@ -4,9 +4,132 @@
 #include "CObjAnimation.h"
 #include "IFStatic.h"
 #include "PSOuterInterface.h"
-#include "support/undefined.h"
+#include <ghidra/undefined.h>
 
+#define m_Characterselect (*reinterpret_cast<CharacterSelect *>(0xec2d6c))
+class CharacterSelect {
+    struct Vec3 {
+    public:
+        float X;
+        float Y;
+        float Z;
+    };
+    struct AnimationFrame {
+    public:
+        float time;    //0x0000
+        Vec3 position; //0x0004
+        Vec3 rotation; //0x0010
+        float distance;//0x001C
+    };                 //Size: 0x0020
+
+    struct Character3DLocation {
+    public:
+        Vec3 Position; //0x0000
+        float rotation;//0x000C
+    };                 //Size: 0x0010
+
+public:
+    void *RTTI_INFO;             //0x0000
+    char pad_0004[24];           //0x0004
+    AnimationFrame KeyframeStart;//0x001C
+    AnimationFrame KeyframeEnd;  //0x003C
+    AnimationFrame N00000058;    //0x005C
+    AnimationFrame N00000059;    //0x007C
+    AnimationFrame N0000005A;    //0x009C
+    AnimationFrame BoxFrame;     //0x00BC
+    Character3DLocation Char3D1; //0x00DC
+    Character3DLocation Char3D2; //0x00EC
+    /* BEGIN_FIXTURE()
+ENSURE_SIZE(0x0120)
+ENSURE_OFFSET(KeyframeStart, 0x001C)
+ENSURE_OFFSET(KeyframeEnd, 0x003C)
+ENSURE_OFFSET(N00000058, 0x005C)
+ENSURE_OFFSET(N00000059, 0x007C)
+ENSURE_OFFSET(N0000005A, 0x009C)
+ENSURE_OFFSET(N0000005B, 0x00BC)
+ENSURE_OFFSET(Char3D1, 0x00DC)
+ENSURE_OFFSET(Char3D2, 0x00EC)
+END_FIXTURE()
+
+RUN_FIXTURE(CharacterSelect)*/
+};
 class CPSCharacterSelect : public CPSOuterInterface, public CAnimationCallback {
+    struct wtf
+    {
+    public:
+        char pad_0000[432]; //0x0000
+        wchar_t * CharNamePtr; //0x01B0
+    };
+    struct CPSCharacterSelect_SCharacterInfo
+    {
+    public:
+        char pad_0000[4];     //0x0000
+        void *CCompChar;      //0x0004
+        char pad_0008[48];    //0x0008
+        int CharheadID;       //0x0038
+        int Charhead5;    //0x003C
+        int Charhead13;   //0x0040
+        int CharChestID;  //0x0044
+        int CharChest5;   //0x0048
+        int CharChest15;  //0x004C
+        int CharSoulder;  //0x0050
+        int CharSoulder5; //0x0054
+        int CharSoulder14;//0x0058
+        int CharHandsID;  //0x005C
+        int CharHands5;   //0x0060
+        int CharHands17;  //0x0064
+        int CharLegsID;   //0x0068
+        int CharLegs5;    //0x006C
+        int CharLegs16;   //0x0070
+        int CharFootID;   //0x0074
+        int CharFoot5;    //0x0078
+        int CharFoot18;   //0x007C
+        int CharWeaponID; //0x0080
+        int CharWeapon5;  //0x0084
+        int CharWeapon39; //0x0088
+        int CharShieldID; //0x008C
+        int CharShield5;  //0x0090
+        int CharShield53; //0x0094
+        int CharSuitID;   //0x0098
+        int CharSuitIDUnk;//0x009C
+        int CharSuitID100;//0x00A0
+        char pad_00A4[260];   //0x00A4
+        int ObjID;        //0x01A8
+        std::n_wstring CharName;   //0x01AC
+        char pad_01C8[12]; //0x01C8
+        int N000000BE; //0x01D4
+        char pad_01D8[52]; //0x01D8
+
+        int Unk7;         //0x020C
+        int HeadID;       //0x0210
+        int Unk5;         //0x0214
+        char pad_0218[4];     //0x0218
+        int ChestItemID;      //0x021C
+        int unkchest5;    //0x0220
+        char pad_0224[4];     //0x0224
+        int ShoulderID;   //0x0228
+        int unksohulder5; //0x022C
+        char pad_0230[4];     //0x0230
+        int HandsID;      //0x0234
+        int unkHandsID;   //0x0238
+        char pad_023C[4];     //0x023C
+        int LegsID;       //0x0240
+        int unkLegs5;     //0x0244
+        char pad_0248[4];     //0x0248
+        int footID;       //0x024C
+        int unkfoot5;     //0x0250
+        char pad_0254[4];     //0x0254
+        int WeaponID;     //0x0258
+        int UnkWep5;      //0x025C
+        char pad_0260[4];     //0x0260
+        int ShieldID;     //0x0264
+        int unkShield5;   //0x0268
+        char pad_026C[4];     //0x026C
+        int SuitID;       //0x0270
+        int SUitID5;      //0x0274
+        char pad_0278[1504];  //0x0278
+
+    };
 
     enum {
         GDR_STA_SCREENUP = 1,
@@ -84,32 +207,46 @@ class CPSCharacterSelect : public CPSOuterInterface, public CAnimationCallback {
         GDR_STA_NAME_DUPLICATE = 940,
         GDR_BTN_NDOK = 942,
         GDR_STA_NDSUBJECT = 943,
-        GDR_TEXT = 10000
+        GDR_TEXT = 10000,
+        GDR_REGION = 1925,
+
     };
 
 public:
-
+    void aCPSCharacterSelect();
     /// \address 0085eb10
     bool OnCreateIMPL(long ln);
 
-private:
+public:
     /// \address 0085b400
     void FUN_0085b400();
 
     /// \address 008560e0
     void FUN_008560e0();
-
+    void CreatePIN();
+    GFX_MSGMAP* MessageMap();
     /// \address 008548d0
     void FUN_008548d0(bool a1);
 
 public: /* only public for hook */
     /// \address 0085b1f0
     void TriggerAnimation_Intro();
-private:
-    /// \address 00854860
-    void FUN_00854860(CIFStatic* obj, unsigned char opacity, float time, float a4, char a5);
+    int OnStart();
+    bool OnServerPacketRecv(class CMsgStreamBuffer *MsgBuffer);
+    wchar_t *Convert(std::n_string name);
 
-private:
+public:
+    /// \address 00854860
+    void FUN_00854860(CIFStatic *obj, unsigned char opacity, float time, float a4, char a5);
+    int FUN_0085B680(BYTE a2);
+    void FUN_008548b0();
+    int FUN_0085ddb0(Event3D* p1);
+    unsigned int OnDisappear(bool a1);
+    CGWndBase *GetWindowByUniqueID(int Id);
+    void FUN_00855400(int p1, float p2);
+    void ClickIdol();
+    int* un(int p1);
+public:
     undefined field_0x110;
     undefined field_0x111;
     undefined field_0x112;
@@ -133,23 +270,9 @@ private:
     undefined field_0x12d;
     undefined field_0x12e;
     undefined1 m_btCurState;
-    undefined1 m_characters;
-    undefined field_0x131;
-    undefined field_0x132;
-    undefined field_0x133;
-    undefined field_0x134;
-    undefined field_0x135;
-    undefined field_0x136;
-    undefined field_0x137;
-    undefined field_0x138;
-    undefined field_0x139;
-    undefined field_0x13a;
-    undefined field_0x13b;
-    undefined field_0x13c;
-    undefined field_0x13d;
-    undefined field_0x13e;
-    undefined field_0x13f;
-    undefined field_0x140;
+    std::n_vector<CPSCharacterSelect_SCharacterInfo*> m_characters;
+
+
     undefined field_0x141;
     undefined field_0x142;
     undefined field_0x143;
@@ -188,10 +311,10 @@ private:
     undefined field_0x225;
     undefined field_0x226;
     undefined field_0x227;
-    CIFStatic * idol_label[2];
+    CIFStatic *idol_label[2];
 
 private:
-    BEGIN_FIXTURE()
+BEGIN_FIXTURE()
         ENSURE_SIZE(0x230)
         ENSURE_OFFSET(m_seconds_elapsed, 0x120)
         ENSURE_OFFSET(idols, 0x160)
@@ -200,4 +323,8 @@ private:
     END_FIXTURE()
 
     RUN_FIXTURE(CPSCharacterSelect)
+
+
+
+
 };

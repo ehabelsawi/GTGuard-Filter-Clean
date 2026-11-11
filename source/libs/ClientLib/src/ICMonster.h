@@ -1,10 +1,10 @@
 #pragma once
 
 #include "ICNonuser.h"
-#include "support/undefined.h"
+#include <ghidra/undefined.h>
 
 class CICMonster : public CICNonuser {
-
+GFX_DECLARE_DYNAMIC_EXISTING(CICMonster, 0x00ef1a84)
 public:
     /// \address 009d3e70
     void Func_15(int param_1, float *param_2) override;

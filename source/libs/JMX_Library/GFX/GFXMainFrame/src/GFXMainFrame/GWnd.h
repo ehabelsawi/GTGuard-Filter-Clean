@@ -108,6 +108,8 @@ public:
     /// \address 00ba0e40
     void EraseWindowObj();
 
+    BOOL EraseWindowObj2(CGWnd *pGWnd);
+
     /// Create a new CGWnd-instance based on the given runtime class
     /// \deprecated This function is deprecated. Please use the one that uses wnd_rect instead of RECT!
     /// \param pParent Parent control this control should live in
@@ -143,6 +145,20 @@ public:
     /// \see GetDraggedGWnd for details on dragged controls
     /// \address 00b9db10
     static void SetDraggedGWnd(CGWnd* wnd);
+
+
+
+    template<typename T>
+    T *GetGuiFromList(int Id) {
+        for (std::n_list<CGWndBase *>::const_iterator it = this->N00000707.begin();
+             it != this->N00000707.end();
+             ++it) {
+            if ((*it)->UniqueID() == Id) {
+                return (T *) (*it);
+            }
+        }
+        return 0;
+    }
 };
 
 #define g_pOnMouseDownClickCtrl (*((CGWnd**)0x0110f5fc))

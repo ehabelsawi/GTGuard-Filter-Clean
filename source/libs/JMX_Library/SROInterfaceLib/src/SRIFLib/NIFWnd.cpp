@@ -104,6 +104,8 @@ CNIFWnd::CNIFWnd() {
 
     m_strParentsId = "";
     m_cdwParentsId = 0;
+
+   // reinterpret_cast<CNIFWnd*(__thiscall*)(CNIFWnd*)>(0x0046c3d0)(this);
 }
 
 CNIFWnd::~CNIFWnd() {
@@ -113,6 +115,7 @@ CNIFWnd::~CNIFWnd() {
         g_pNewInterfaceToolTips->EraseWindowObj();
         g_pNewInterfaceToolTips = NULL;
     }
+  //  reinterpret_cast<CNIFWnd*(__thiscall*)(CNIFWnd*)>(0x0046c620)(this);
 }
 
 int CNIFWnd::OnCreatedInstance(UINT lParam, UINT wParam) {

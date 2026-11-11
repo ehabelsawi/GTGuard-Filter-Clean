@@ -5,21 +5,17 @@
 
 
 class CIFSlotWithHelpEx : public CNIFWnd {
+GFX_DECLARE_DYNAMIC_EXISTING(CIFSlotWithHelpEx, 0x00eea4d0)
 public:
     /// \address 00687d40
     bool OnCreate(long ln) override;
 
     /// \address 00687db0
     void Func_26(int a1) override;
-
+    bool Func_28IMPL(CGWnd* a1, int a2, int a3);
 public:
     CIFSlotWithHelp *m_pSlot; //0x0348
 
 private:
-BEGIN_FIXTURE()
-        ENSURE_SIZE(0x34c)
-        ENSURE_OFFSET(m_pSlot, 0x0348)
-    END_FIXTURE()
 
-    RUN_FIXTURE(CIFSlotWithHelpEx)
 };

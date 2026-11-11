@@ -6,6 +6,8 @@
 #define g_Controler (*(CControler**)0x0110F7D4)
 
 class CControler : CObjChild {
+public:
+    void SetCustomCursor(int resourceId);
     struct WindowsKeys {
         char pad_0000[8];
         bool BACKSPACE_Key;
@@ -138,6 +140,7 @@ public: // this is public as here 0053a65e
     bool m_bCursorVisible; //0x0020
 private:// cursour info
     char pad_0021[3]; //0x0021
+public:
     int N00000065; //0x0024  // change when cursour icon change...
     HCURSOR m_currentCursor; //0x0028
     char pad_002c[36]; //0x002c

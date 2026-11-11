@@ -11,3 +11,7 @@ void CCObjAnimation::SetLocation(const D3DVECTOR &position) {
 void CCObjAnimation::SetRotation(float rotation) {
     reinterpret_cast<void(__thiscall *)(CCObjAnimation *, float)>(0x00a5a8c0)(this, rotation);
 }
+void CCObjAnimation::Func_3IMPL(undefined4 p1, undefined4 p2, undefined4 p3 , undefined4 p4 , float p5 , float p6){
+    //printf("%d %d %d %d %f %f\n", p1, p2, p3, p4, p5, p6);
+    reinterpret_cast<void(__thiscall *)(CCObjAnimation *, undefined4, undefined4, undefined4, undefined4, float, float)>(0x00a5b6d0)(this,p1,p2,p3,p4,p5,p6);
+}

@@ -2,7 +2,7 @@
 
 #include "GWnd.h"
 #include "support/GlobalVar.h"
-#include "support/undefined.h"
+#include <ghidra/undefined.h>
 
 class CProcess : public CGWnd {
 GFX_DECLARE_DYNAMIC_EXISTING(CProcess, 0x0110FA70);

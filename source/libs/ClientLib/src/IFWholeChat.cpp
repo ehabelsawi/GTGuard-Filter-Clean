@@ -1,3 +1,4 @@
+#include <GlobalItemLinking/GlobalItemLinking.h>
 #include "IFWholeChat.h"
 #include "support/MemberFunctionHook.h"
 #include "GInterface.h"
@@ -72,7 +73,9 @@ bool CIFWholeChat::OnCreate(long ln) {
     m_pEdit->SetTextmode(bounds.size.width);
 
     m_pEdit->SetFocus_MAYBE();
-
+    g_global->m_LinkedGlobalItemEnd = 0;
+    g_global->m_LinkedGlobalItemBegin = 0;
+    g_global->m_CurrentLinkedItemName = std::wstring();
     return true;
 }
 
@@ -135,6 +138,9 @@ void CIFWholeChat::CloseDialog() {
 
 undefined1 CIFWholeChat::OnCloseWnd() {
     g_pCGInterface->FUN_0079b8a0(0, 0xffffffff);
+    g_global->m_LinkedGlobalItemEnd = 0;
+    g_global->m_LinkedGlobalItemBegin = 0;
+    g_global->m_CurrentLinkedItemName = std::wstring();
     return 1;
 }
 

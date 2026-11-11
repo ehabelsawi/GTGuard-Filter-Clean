@@ -213,7 +213,7 @@ private:
 
     /// \address 0x008A4960
     void OnB071(CMsgStreamBuffer &msg);
-
+    void SkillDamageParsing(CMsgStreamBuffer &msg);
     /// \address 0x008A59E0
     void OnB0BD(CMsgStreamBuffer &msg);
 
@@ -669,7 +669,70 @@ private:
 
     /// \address 0x00873140
     void On3078(CMsgStreamBuffer &msg);
-
+    void UpdateNameColor(CMsgStreamBuffer &msg);
+    void RemoveNameColor(CMsgStreamBuffer &msg);
+    void CharTitleManager(CMsgStreamBuffer &msg);
+    void CharTitleManagerColors(CMsgStreamBuffer &msg);
+    void AddTitleToTitleManager(CMsgStreamBuffer &msg);
+    void AddColorToTitleManagerColor(CMsgStreamBuffer &msg);
+    void UpdateTitleColor(CMsgStreamBuffer &msg);
+    void RemoveTitleColor(CMsgStreamBuffer &msg);
+    void CharacterIconManager(CMsgStreamBuffer &msg);
+    void AddIconToIconManager(CMsgStreamBuffer &msg);
+    void UpdateCharacterIconLeft(CMsgStreamBuffer &msg);
+    void RemoveCharacterIconLeft(CMsgStreamBuffer &msg);
+    void UpdateCharacterIconRight(CMsgStreamBuffer &msg);
+    void RemoveCharacterIconRight(CMsgStreamBuffer &msg);
+    void RankCategories(CMsgStreamBuffer &msg);
+    void LoadRank(CMsgStreamBuffer &msg);
+    void LoadOwnRank(CMsgStreamBuffer &msg);
+    void LoadUniqueHistory(CMsgStreamBuffer &msg);
+    void UpdateUniqueHistory(CMsgStreamBuffer &msg);
+    void LoadEventRegister(CMsgStreamBuffer &msg);
+    void LoadEventSchedule(CMsgStreamBuffer &msg);
+    void NoticeSystem(CMsgStreamBuffer &msg);
+    void UpdateNewTitle(CMsgStreamBuffer &msg);
+    void RemoveNewTitle(CMsgStreamBuffer &msg);
+    void LoadChest(CMsgStreamBuffer &msg);
+    void AddItemToChest(CMsgStreamBuffer &msg);
+    void LoadAchievement(CMsgStreamBuffer &msg);
+    void LoadAchievementCondition(CMsgStreamBuffer &msg);
+    void UpdateAchievementCondition(CMsgStreamBuffer &msg);
+    void LiveUniqueDPS(CMsgStreamBuffer &msg);
+    void PartyMemberViewerPacket(CMsgStreamBuffer &msg);
+    void SetSavedLocation(CMsgStreamBuffer &msg);
+    void LoadSavedLocations(CMsgStreamBuffer &msg);
+    void CustomNoticesTextVariabla(CMsgStreamBuffer &msg);
+    void LoadSilkRank(CMsgStreamBuffer &msg);
+    void LoadAttendance(CMsgStreamBuffer &msg);
+    void LoadAttendanceRewardState(CMsgStreamBuffer &msg);
+    void LoadAttendanceReward(CMsgStreamBuffer &msg);
+    void LoadMacroAutoPotionData(CMsgStreamBuffer &msg);
+    void LoadMacroSetting(CMsgStreamBuffer &msg);
+    void GlobalChatting(CMsgStreamBuffer &msg);
+    void AlchemyLink(CMsgStreamBuffer &msg);
+    void SetEventTimer(CMsgStreamBuffer &msg);
+    void CreateKillCounter(CMsgStreamBuffer &msg);
+    void IncreaseKillCounter(CMsgStreamBuffer &msg);
+    void FellowPetAnimation(CMsgStreamBuffer &msg);
+    void CreateTeamKillCounter(CMsgStreamBuffer &msg);
+    void IncreaseTeamKillCounter(CMsgStreamBuffer &msg);
+    void CreateJobKillCounter(CMsgStreamBuffer &msg);
+    void IncreaseJobKillCounter(CMsgStreamBuffer &msg);
+    void LoadFellowData(CMsgStreamBuffer &msg);
+    void LockItemInfo(CMsgStreamBuffer &msg);
+    void UnLockItemInfo(CMsgStreamBuffer &msg);
+    void TimedItemInfo(CMsgStreamBuffer &msg);
+    void ItemLockUnlockNotice(CMsgStreamBuffer &msg);
+    void ItemLockUnlockNotice2(CMsgStreamBuffer &msg);
+    void IncreateFtwKillCounter(CMsgStreamBuffer&msg);
+    void GetMapPing(CMsgStreamBuffer &msg);
+    void OnChatReceiveItemLink(CMsgStreamBuffer &msg);
+    void NewAlchemyResult(CMsgStreamBuffer &msg);
+    void GetSomeInfos(CMsgStreamBuffer &msg);
+    void TargetPlayerItemInfo(CMsgStreamBuffer &msg);
+    void UpdateCounterWnd(CMsgStreamBuffer &msg);
+    void HandleCircle(CMsgStreamBuffer &msg);
 private:
     std::n_hash_map<int, void (__thiscall CNetProcessIn::*)(CMsgStreamBuffer &)> m_handlers; // 0x20
 
@@ -678,4 +741,6 @@ private:
     END_FIXTURE()
 
     RUN_FIXTURE(CNetProcessIn)
+void FailAlchemy(CMsgStreamBuffer& msg);
+void StallType(CMsgStreamBuffer& msg);
 };

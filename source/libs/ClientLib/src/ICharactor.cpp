@@ -1,6 +1,12 @@
+#include <GFX3DFunction/RStateMgr.h>
+#include <CustomData/CustomDataManager.h>
 #include "ICharactor.h"
 
 CLASSLINK_STATIC_IMPL(CICharactor)
+void CICharactor::ShowMessageAboveEntity(const std::n_wstring &message, D3DCOLOR color) {
+    reinterpret_cast<void(__thiscall*)(CICharactor*, const std::n_wstring *, D3DCOLOR)>(0x009c77c0)(this, &message, color);
+}
+
 
 unsigned int CICharactor::GetCurrentHp() const {
     return m_hpCurrent;
@@ -29,4 +35,9 @@ void CICharactor::Func_15(int param_1, float *param_2) {
 
 void CICharactor::Func_15_impl(int param_1, float *param_2) {
     CICharactor::Func_15(param_1, param_2);
+}
+
+void CICharactor::SetTitleName(char hwanlevel)
+{
+    reinterpret_cast<void(__thiscall*)(CICharactor*, char)>(0x009ca930)(this, hwanlevel);
 }

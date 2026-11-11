@@ -1,3 +1,4 @@
+#include <CustomData/CustomSettingManager.h>
 #include "AlramGuideMgrWnd.h"
 
 #include "IFConfirmReputationGuide.h"
@@ -7,9 +8,19 @@
 #include "IFServerEventGuide.h"
 #include "IFOpenMarketAlramGuide.h"
 #include "IFEventGuideSecond.h"
-#include "IFflorian0Guide.h"
+#include "IFMenuGuide.h"
 
 #include "GInterface.h"
+#include "Game.h"
+#include "IFMagicStateBoard.h"
+#include "IFStateSlot.h"
+#include "Guides/IFChestGuide.h"
+#include "Social/IFFacebookGuide.h"
+#include "Social/IFDiscordGuide.h"
+#include "Web/IFWebGuide.h"
+#include <DailyLogin/IFDailyLoginGuide.h>
+#include <MacroAlchemy/IFAlchemyMacroGuide.h>
+#include "Macro/IFMacroGuide.h"
 
 GFX_IMPLEMENT_DYNAMIC_EXISTING(CAlramGuideMgrWnd, 0x00ee99a8)
 
@@ -20,7 +31,7 @@ CAlramGuideMgrWnd::CAlramGuideMgrWnd() {
     m_btGuidesCount = 0;
 }
 
-void CAlramGuideMgrWnd::UpdateGuidesPos() {
+void CAlramGuideMgrWnd::PrepareGuides() {
     wnd_pos posMgr = GetPos();
 
     listGUIDES::iterator it = m_listGuides.begin();
@@ -39,6 +50,16 @@ void CAlramGuideMgrWnd::UpdateGuidesPos() {
             }
         }
     }
+
+    if (m_Settings->MoveSkillBoard) {
+        const ClientResolutonData &res = CGame::GetClientDimensionStuff();
+        CIFWnd *playerinfo = g_pCGInterface->m_IRM.GetResObj(11, 1);
+        CIFWnd *wind = g_pCGInterface->m_IRM.GetResObj(22, 1);
+
+        /// x 220 y 10
+        wind->MoveGWnd(((playerinfo->GetPos().x + playerinfo->GetSize().width) + 27), wind->GetPos().y);
+    }
+
 }
 
 void CAlramGuideMgrWnd::RemoveAllGuides() {
@@ -112,19 +133,43 @@ CIFWnd *CAlramGuideMgrWnd::CreateGuideIcon(int nWndID) {
         case GDR_EVENTGUIDE_SECOND:
             pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFEventGuideSecond), rect, GDR_EVENTGUIDE_SECOND, 0);
             break;
+        case GDR_CHEST_GUIDE:
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFChestGuide), rect, GDR_CHEST_GUIDE, 0);
+            break;
+        case GDR_MENU_GUIDE:
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFMenuGuide), rect, GDR_MENU_GUIDE, 0);
+            break;
 
-        case GDR_FLORIAN0_GUIDE:
-            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFflorian0Guide), rect, GDR_FLORIAN0_GUIDE, 0);
+        case GDR_FACEBOOK_GUIDE:
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFFacebookGuide), rect, GDR_FACEBOOK_GUIDE, 0);
+            break;
+
+        case GDR_DISCORD_GUIDE:
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFDiscordGuide), rect, GDR_DISCORD_GUIDE, 0);
+            break;
+
+        case GDR_WEB_GUIDE:
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFWebGuide), rect, GDR_WEB_GUIDE, 0);
+            break;
+
+        case GDR_DAILY_LOGIN:
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFDailyLoginGuide), rect, GDR_DAILY_LOGIN, 0);
+            break;
+
+        case GDR_MACRO_GUIDE:
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFMacroGuide), rect, GDR_MACRO_GUIDE, 0);
+            break;
+        case GDR_ALCHEM_MACRO_GUIDE:
+            pObj = (CIFWnd *) CreateInstance(this, GFX_RUNTIME_CLASS(CIFAlchemyMacroGuide), rect, GDR_ALCHEM_MACRO_GUIDE, 0);
             break;
 
         default:
             assert(false);
     }
-
     m_listGuides.push_back(pObj);
     m_btGuidesCount++;
 
-    UpdateGuidesPos();
+    PrepareGuides();
 
     return pObj;
 }
@@ -134,10 +179,9 @@ void CAlramGuideMgrWnd::RemoveGuide(DWORD dwID) {
     for (; it != m_listGuides.end(); ++it) {
         if ((*it)->UniqueID() != dwID)
             continue;
-
-        (*it)->EraseWindowObj();
+        (*it)->ShowGWnd(false);
         m_listGuides.erase(it);
+        // Hmmm why this is not m_btGuidesCount minus too?
         break;
     }
-    UpdateGuidesPos();
 }

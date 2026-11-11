@@ -4,7 +4,7 @@
 #include "support/AbiTest.h"
 #include <BSLib/BSLib.h>
 #include <d3d9.h>
-#include "support/undefined.h"
+#include <ghidra/undefined.h>
 
 class CCObjAnimation {
 public:
@@ -16,6 +16,8 @@ public:
     virtual void Func_5();
 
 public:
+
+    void Func_3IMPL(undefined4, undefined4, undefined4, undefined4, float, float);
     /// \address 00a5b4b0
     void SetResource(const std::n_string &path, undefined4 a2);
 

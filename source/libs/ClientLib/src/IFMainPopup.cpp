@@ -1,4 +1,6 @@
 #include <BSLib/Debug.h>
+#include <CustomData/CustomSettingManager.h>
+#include <ctime>
 #include "IFMainPopup.h"
 #include "TextStringManager.h"
 #include "GInterface.h"
@@ -45,9 +47,10 @@ CIFMainPopup::CIFMainPopup() :
 bool CIFMainPopup::OnCreate(long ln) {
     CIFMainFrame::OnCreate(ln);
 
-    m_IRM.LoadFromFile("resinfo\\ifmainpopup.txt");
 
-    m_IRM.CreateInterfaceSection("Create", this);
+        m_IRM.LoadFromFile("resinfo\\ifmainpopup.txt");
+        m_IRM.CreateInterfaceSection("Create", this);
+
 
     m_pInventoryWindow = m_IRM.GetResObj<CIFInventory>(GDR_INVENTORY, 1);
     m_pEquipmentWindow = m_IRM.GetResObj<CIFEquipment>(GDR_EQUIPMENT, 1);
@@ -97,18 +100,19 @@ bool CIFMainPopup::OnCreate(long ln) {
     m_pBtnApprentice->SetTooltip(TSM_GETTEXT(L"UIIT_CTL_TC_SHORTKEY_L"));
     m_pBtnApprentice->SetStyleThingy(TOOLTIP);
 
-#ifndef CONFIG_OLD_MAINPOPUP
-    m_pBtnInventory->ShowGWnd(false);
-    m_pBtnSkill->ShowGWnd(false);
-    m_pBtnAction->ShowGWnd(false);
-    m_pBtnParty->ShowGWnd(false);
-    m_pBtnCharacter->ShowGWnd(false);
-    m_pBtnQuest->ShowGWnd(false);
-    m_pBtnApprentice->ShowGWnd(false);
+    if(!m_Settings->EnableOldMainPopup)
+    {
+        m_pBtnInventory->ShowGWnd(false);
+        m_pBtnSkill->ShowGWnd(false);
+        m_pBtnAction->ShowGWnd(false);
+        m_pBtnParty->ShowGWnd(false);
+        m_pBtnCharacter->ShowGWnd(false);
+        m_pBtnQuest->ShowGWnd(false);
+        m_pBtnApprentice->ShowGWnd(false);
 
-    m_IRM.GetResObj(GDR_MAINPOPUP_LEFT_DECO_STATIC, 1)->ShowGWnd(false);
-#endif
+        m_IRM.GetResObj(GDR_MAINPOPUP_LEFT_DECO_STATIC, 1)->ShowGWnd(false);
 
+    }
     m_pInventoryWindow->BringToFront();
 
     return true;
@@ -149,7 +153,15 @@ void CIFMainPopup::ShowSubPage(int nPageId) {
             m_pBackground->SetGWndSize(9, 292);
 
             MoveGWnd(((res.width - GetSize().width) - 80), GetPos().y);
+            wnd_pos x = this->GetPos();
+
+
+            //shortbutton->MoveGWnd(x.x + 264, x.y + 340);
+
             BringToFront();
+
+            /* mySkillSlot->BringToFront();
+             mySkillSlot->ShowGWnd(true);*/
             break;
         }
 
@@ -199,7 +211,7 @@ void CIFMainPopup::ShowSubPage(int nPageId) {
             m_pPlayerInfoWindow->ShowGWnd(true);
             m_pBackground->ShowGWnd(false);
 
-            MoveGWnd(80, GetPos().y);
+            MoveGWnd(((res.width - GetSize().width) - 80), GetPos().y);
             BringToFront();
             break;
         }
@@ -224,8 +236,9 @@ void CIFMainPopup::ShowSubPage(int nPageId) {
             m_pBackground->ShowGWnd(true);
             m_pBackground->ShowGWnd(false);
 
-            MoveGWnd(80, GetPos().y);
+            MoveGWnd(((res.width - GetSize().width) - 80), GetPos().y);
             BringToFront();
+
             break;
         }
     }
@@ -252,10 +265,11 @@ void CIFMainPopup::OnClick_BtnParty() {
 }
 
 void CIFMainPopup::OnClick_BtnQuest() {
+    g_pCGInterface->ToggleQuestNew();
 #ifdef CONFIG_OLD_MAINPOPUP
     g_pCGInterface->ToggleQuestNew();
 #else
-    ShowSubPage(GDR_QUEST);
+//    ShowSubPage(GDR_QUEST);
 #endif
 }
 
@@ -301,6 +315,10 @@ void CIFMainPopup::ShowGWnd(bool bVisible) {
         m_pPlayerInfoWindow->ShowGWnd(false);
         m_pQuestWindow->ShowGWnd(false);
         m_pApprenticeShipWindow->ShowGWnd(false);
+        if(m_Settings->EnableAutoSkill)
+        {
+            this->GetSkill()->GetGuiFromList<CIFSkillBoard>(10)->OnCloseWndIMPL();
+        }
     }
 
     CIFMainFrame::ShowGWnd(bVisible);

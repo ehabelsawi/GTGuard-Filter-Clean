@@ -8,3 +8,6 @@ uregion CIObject::GetRegion() const {
 D3DVECTOR CIObject::GetLocation() const {
     return location;
 }
+CRTNavCellQuad *CIObject::GetNavCell() const {
+    return m_navcell;
+}

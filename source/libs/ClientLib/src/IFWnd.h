@@ -4,7 +4,7 @@
 #include "IRMManager.h"
 #include "TextBoard.h"
 #include "support/AbiTest.h"
-#include "support/undefined.h"
+#include <ghidra/undefined.h>
 
 class CIFWnd : public CGWnd, public CTextBoard {
     GFX_DECLARE_DYNAMIC_EXISTING(CIFWnd, 0x00EE9808)
@@ -94,7 +94,8 @@ public:
 
     /// \address 006526E0
     void sub_6526E0(char n00009771, unsigned char opacity, float time, float a4, char a5);
-
+    std::n_wstring GetNText();
+    void FUN_00636330();
 protected:
     /// \address 00654d10
     void RenderTextureColor(DWORD dwColor);
@@ -110,6 +111,7 @@ private:
 
     void Set_N00000687(char a2);
 
+
 private:
     int N000005A9;             //0x0184
     int m_current_style;       //0x0188
@@ -122,7 +124,7 @@ protected:
     CIRMManager m_IRM;//0x01BC m_IRM at 1BC
 public:               /* public as of 007ABE89 */
     void *N00000608;  //0x01EC
-protected:
+public:
     int N00000609;//0x01F0
 private:
     int N0000060A;               //0x01F4
@@ -142,7 +144,10 @@ private:
     float N0000062A;             //0x0240
     float N0000062B;             //0x0244
     float N0000062C;             //0x0248
-    char pad_024C[8];            //0x024C
+public:
+    float N0000062D; //0x024C
+    float N0250; // 0x250
+private:
     float N0000062F;             //0x0254
     float N00009C60;             //0x0258
     float N00009C61;             //0x025C

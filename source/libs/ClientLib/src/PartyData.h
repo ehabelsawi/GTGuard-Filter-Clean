@@ -3,8 +3,9 @@
 struct SPartyData
 {
 private:
-    char pad_0000[14]; //0x0000
+    char pad_0000[13]; //0x0000
 public:
+    bool bIsPartyMaster;
     bool bInParty; //0x000E
 private:
     char pad_000f[1]; //0x000F

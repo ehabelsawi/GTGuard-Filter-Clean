@@ -1,7 +1,7 @@
 #pragma once
 
 #include "support/AbiTest.h"
-#include "support/undefined.h"
+#include <ghidra/undefined.h>
 
 #include "CharacterStatistics.h"
 
@@ -58,10 +58,13 @@ public:
 
     /// \address 00987130
     const STrainingCampData &GetTrainingCampData() const;
+    int GetRegisteredPartyID();
 
 private:
     SPartyData m_partyData; //0x0020
-    char pad_0034[276]; //0x0034
+    char pad_0034[84]; //0x0034
+    int MyPartyID; //0x0088
+    char pad_00345[188]; //0x0034
     SGuildData m_sGuildData; //0x0148
     char pad_01e8[96]; //0x01E8
     STrainingCampData m_sTrainingCampData; //0x0248

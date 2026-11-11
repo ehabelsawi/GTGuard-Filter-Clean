@@ -46,6 +46,13 @@ class TypeId {
     };
 
 public:
+
+
+    tid_t getTypeID1() const;
+    tid_t getTypeID2() const;
+    tid_t getTypeID3() const;
+    tid_t getTypeID4() const;
+
     explicit TypeId(unsigned short tid) : m_type_id_value(tid) {}
 
     template<unsigned short TID1, unsigned short TID2, unsigned short TID3, unsigned short TID4>
@@ -69,6 +76,6 @@ public:
                ((m_type_id_value & TID3_MASK) == TID_ARG(TID3, TID3_OFFSET));
     }
 
-private:
+public:
     unsigned short m_type_id_value;
 };

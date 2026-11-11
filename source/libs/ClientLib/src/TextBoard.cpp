@@ -60,8 +60,10 @@ void CTextBoard::TB_Func_1(float a2) {
 void CTextBoard::TB_Func_2() {
     this->sub_655CA0(this->N00009C30);
 
-    if (this->N00009769) {
-        if (this->N00009C30) {
+    if ( this->N00009769 )
+    {
+        if ( this->N00009C30 )
+        {
             CGFXVideo3d::UpdateTextureStageState<D3DTSS_COLOROP>(4);
             CGFXVideo3d::UpdateTextureStageState<D3DTSS_COLORARG1>(2);
             CGFXVideo3d::UpdateTextureStageState<D3DTSS_COLORARG2>(3);
@@ -69,12 +71,13 @@ void CTextBoard::TB_Func_2() {
 
         this->TB_Func_11();
 
-        if (this->N00009C30) {
+        if ( this->N00009C30 )
+        {
             CGFXVideo3d::UpdateTextureStageState<D3DTSS_COLOROP>(2);
             CGFXVideo3d::UpdateTextureStageState<D3DTSS_COLORARG1>(2);
         }
     }
-    if (this->m_FontTexture.HasCharacters())
+    if ( this->m_FontTexture.get_N000007BC() )
         TB_Func_4();
 
     this->ResetTextureAlphaState();

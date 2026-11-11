@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Managers/COSDataMgr.h>
 #include "ICUser.h"
 #include "SOItem.h"
 
@@ -19,7 +20,7 @@ public:
 
     /// \address 009d6580
     std::n_wstring GetCharName() const;
-
+    const std::n_wstring &GetTitleName() const;
     unsigned char GetCurrentLevel() const;
 
     long long int GetCurrentExp() const;
@@ -39,7 +40,19 @@ public:
 
     /// \address 009d68f0
     undefined4 FUN_009d68f0();
+    int GetWorldID();
+    DWORD GetObjEffect();
+    void MakeEffect(unsigned __int32 effectID);
+    void RemoveEffect(unsigned __int32 effectID);
 
+    CICPlayer* GetCICPlayerByUniqueID(DWORD UniqueID);
+    boolean CheckSpeedOverlap(DWORD32 SkillID, DWORD32 Target);
+    DWORD32 GetBuffListBase(DWORD32 Target);
+    boolean TargetIsBuffInUse(DWORD32 SkillID, DWORD32 Target);
+    boolean CheckPhyOverlap(DWORD32 SkillID, DWORD32 Target);
+    boolean CheckMagOverlap(DWORD32 SkillID, DWORD32 Target);
+    static void __fastcall EffectHook(CICPlayer* param_1);
+    void RemoveExistingUniqueData(const DWORD dead_object);
 private:
     char pad_082C[32]; //0x082C
     std::n_wstring m_wstrCharName; //0x084C
@@ -75,10 +88,13 @@ private:
     char N000094A7; //0x2090 bit 0 = isGameMaster
     char pad_2091[7]; //0x2091
     std::n_wstring m_wstrJobAlias; // 0x2098
-    char pad_20B4[48]; //0x20B4
+    char pad_20B4[28]; //0x20B4
+    void *CQuestManager; //0x20D0
+public:
+    CCOSDataMgr *CCOSDataMgr; //0x20D4
+    char pad_20D8[12]; //0x20D8
     short m_sWorldID; //0x20E4
     char pad_20E6[50]; //0x20E6
-
 
     BEGIN_FIXTURE()
         ENSURE_SIZE(0x2118)

@@ -9,24 +9,30 @@ struct SPartyMemberData
 public:
     std::n_wstring m_charactername; //0x0000
     std::n_wstring m_guildname; //0x001C
-private:
-    char pad_0038[8]; //0x0038
+public:
+    int refobjID;//0x0038
+    int UserJID;//0x003c
 public:
     int currentLevel; //0x0040
     int currentHP; //0x0044 HP in Percent/10
     int maxHP; //0x0048
     int currentMP; //0x004C MP in Percent/10
     int maxMP; //0x0050
-private:
-    char pad_0054[6]; //0x0054
+public:
+    int test1; // 0x0054
+    byte TEST2;
+    BYTE TEST3;
 public:
     uregion region; //0x005A
     D3DVECTOR position; //0x005C
-private:
-    char pad_0068[16]; //0x0068
+public:
+    int test4;
+    int Mastery1;
+    int Mastery2;
+    int unknown;
 
 private:
-    BEGIN_FIXTURE()
+BEGIN_FIXTURE()
         ENSURE_OFFSET(m_charactername, 0x0000)
         ENSURE_OFFSET(m_guildname, 0x001C)
         ENSURE_OFFSET(currentLevel, 0x0040)

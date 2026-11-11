@@ -19,6 +19,7 @@
 #define dword_EECC18 (*reinterpret_cast<int*>(0xEECC18))
 
 // extern GlobalPtr<CGWndBase, 0x0110F60C> g_CurrentIF_UnderCursor;
+#define g_Timebase_AnimationSpeedCorrection (*reinterpret_cast<float*>(0x0110f7fc))
 
 enum ChatType : char {
     CHAT_All = 1,
@@ -66,3 +67,7 @@ void __stdcall FUN_00bbda70(undefined4 a1);
 
 /// \address 00ba1140
 CIFWnd *GetWndByGID(int hgWnd);
+
+std::wstring Insert(INT64 test);
+std::n_wstring KisaYazi(const std::n_wstring& orijinal, size_t maksUzunluk);
+void OngoingNetMessage(CMsgStreamBuffer& Msg);

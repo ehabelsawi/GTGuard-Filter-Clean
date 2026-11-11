@@ -1,4 +1,6 @@
+#include <CustomData/CustomDataManager.h>
 #include "IFTargetWindow.h"
+#include "ICPlayer.h"
 
 GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFTargetWindow, 0x00eea57c)
 
@@ -51,19 +53,34 @@ bool CIFTargetWindow::OnCreate(long ln) {
 void CIFTargetWindow::OnUpdate() {
     //printf("%s\n", __FUNCTION__);
     reinterpret_cast<void (__thiscall *)(const CIFTargetWindow*)>(0x00698ae0)(this);
+
 }
 
-void CIFTargetWindow::ShowGWnd(bool bVisible) {
+void CIFTargetWindow::ShowGWndIMPL(bool bVisible) {
     //printf("%s\n", __FUNCTION__);
-    //reinterpret_cast<void (__thiscall *)(const CIFTargetWindow*, bool)>(0x00698b50)(this, bVisible);
-    if (bVisible == false) {
-        m_pGDR_TW_JOB_PLAYERWND->ShowGWnd(false);
-        m_pGDR_TW_SPECIALMOBWND->ShowGWnd(false);
-        m_pGDR_TW_COMMONENEMY->ShowGWnd(false);
-        m_pGDR_TW_FORTRESSSTRUCTER->ShowGWnd(false);
-        m_pCIFBuffViewer->ShowGWnd(false);
+    reinterpret_cast<void (__thiscall *)(const CIFTargetWindow*, bool)>(0x00698b50)(this, bVisible);
+    if(bVisible == 1)
+    {
+        if(g_pMyPlayerObj != NULL)
+        {
+            if(m_CustomDataManager->m_EventMapSettings.find(g_pMyPlayerObj->GetRegion().r) != m_CustomDataManager->m_EventMapSettings.end())
+            {
+                if(m_CustomDataManager->m_EventMapSettings[g_pMyPlayerObj->GetRegion().r].HideBuffViewer)
+                {
+                    if(m_pCIFBuffViewer != NULL)
+                    {
+                        if(m_pCIFBuffViewer->IsVisible())
+                        {
+                            m_pCIFBuffViewer->ShowGWnd(false);
+                        }
+                    }
+                }
+            }
+        }
+
     }
-    CIFWnd::ShowGWnd(bVisible);
+
+   // CIFWnd::ShowGWnd(bVisible);
 }
 
 undefined1 CIFTargetWindow::OnCloseWnd() {

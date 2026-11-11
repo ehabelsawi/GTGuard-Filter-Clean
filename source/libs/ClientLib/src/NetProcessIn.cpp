@@ -3,18 +3,96 @@
 #include "ICPlayer.h"
 #include <BSLib/multibyte.h>
 #include <BSLib/Debug.h>
+#include <Menu/IFTitleManager.h>
+#include <sstream>
+#include <CustomData/CustomDataManager.h>
+#include <Menu/IFIconManager.h>
+#include <Menu/IFDynamicRanking.h>
+#include <Menu/IFUniqueHistory.h>
+#include <Menu/IFEventRegister.h>
+#include <Menu/IFEventSchedule.h>
+#include <CustomData/CustomSettingManager.h>
+#include <Guides/IFChest.h>
+#include <Menu/IFAchievements.h>
+#include <CustomData/CustomCICPlayer.h>
+#include <CustomInterface/IFPartyMemberViewer.h>
+#include <CustomInterface/IFSavedLocation.h>
+#include <NewItemMall/IFVItemMall.h>
+#include <DailyLogin/IFDailyLogin.h>
+#include <CustomInterface/IFSoxEffect.h>
+#include <Macro/IFMacroMenu.h>
+#include <Macro/IFMacro.h>
+#include <MacroAlchemy/IFAlchemyMacro.h>
+#include <GlobalItemLinking/GlobalItemLinking.h>
+#include <CustomInterface/IFKillCounter.h>
+#include <Menu/IFChangelog.h>
+#include <CustomInterface/IFCustomMessageBox.h>
+#include <Menu/IFMenu.h>
+#include <Menu/IFGrantName.h>
+#include <Social/IFSocial.h>
+#include <NewItemMall/IFVSelectMall.h>
+#include <NewItemMall/IFVAvatarMallBuyItemList.h>
+#include <NewItemMall/IFVItemMallBuyItem.h>
+#include <ctime>
+#include <CustomInterface/IFTeamCounter.h>
+#include <CustomInterface/IFJobCounter.h>
+#include <LockItems/IFItemLocker.h>
+#include <LockItems/IFItemUnlocker.h>
+#include <LockItems/IFNewMsgBox.h>
+#include <CustomInterface/IFFortressWar.h>
+#include <SRIFLib/NIFEnchantWnd.h>
+#include <ExtraUI/IFItemTranslationWnd.h>
+#include <DiscordRichPresence/DiscordManager.h>
+#include <ExtraUI/IFTargetPlayerEquip.h>
+#include <ExtraUI/IFMSFPS.h>
+#include <ExtraUI/IFSettings.h>
+#include <ExtraUI/IFCounterWnd.h>
 #include "CharacterDependentData.h"
 #include "TextStringManager.h"
 #include "Game.h"
 #include "PSMission.h"
 #include "GInterface.h"
-
+#include "GlobalDataManager.h"
+#include "IFMagicStateBoard.h"
+#include "CustomInterface/IFDps.h"
+#include "IFChatViewer.h"
+#include "ICMonster.h"
+#include "ICCos.h"
+#include "IFTargetWindow.h"
 
 #ifdef CONFIG_DEBUG_NET_RECEIVE
 #define DEBUG_PRINT_CALL() printf("%s\n", __FUNCTION__);
 #else
 #define DEBUG_PRINT_CALL()
 #endif
+#define DEFAULT_SYSTEM_COLOR 0xFFDBC99B
+
+void StringReplaceAll(std::n_wstring &Value, const std::wstring &From, const std::wstring &To) {
+    if (From.empty())
+        return;
+    size_t start_pos = 0;
+    while ((start_pos = Value.find(From.c_str(), start_pos)) != std::wstring::npos) {
+        Value.replace(start_pos, From.length(), To.c_str());
+        start_pos += To.length();// Increase the same length in case 'To' contains 'From', like replacing 'x' with 'yx'
+    }
+}
+
+
+std::vector<std::n_wstring> wsplit(const std::n_wstring &InputString, wchar_t delimiterChar) {
+    std::vector<std::n_wstring> ResultVec;
+    size_t start = 0;
+    size_t end = InputString.find(delimiterChar);
+
+    while (end != std::n_wstring::npos) {
+        ResultVec.push_back(InputString.substr(start, end - start));
+        start = end + 1;
+        end = InputString.find(delimiterChar, start);
+    }
+    ResultVec.push_back(InputString.substr(start));
+
+    return ResultVec;
+}
+
 
 void CNetProcessIn::RegisterPacketHandlers() {
     BS_DEBUG("Registering Handlers");
@@ -237,9 +315,2627 @@ void CNetProcessIn::RegisterPacketHandlers() {
     m_handlers.insert(std::make_pair(0xFFD, &CNetProcessIn::OnFFD));
     m_handlers.insert(std::make_pair(0xB05E, &CNetProcessIn::OnB05E));
     m_handlers.insert(std::make_pair(0x3078, &CNetProcessIn::On3078));
+    m_handlers.insert(std::make_pair(0x200A, &CNetProcessIn::CharTitleManager));
+    m_handlers.insert(std::make_pair(0x200B, &CNetProcessIn::CharTitleManagerColors));
+    m_handlers.insert(std::make_pair(0x168B, &CNetProcessIn::AddTitleToTitleManager));
+    m_handlers.insert(std::make_pair(0x168C, &CNetProcessIn::AddColorToTitleManagerColor));
+    m_handlers.insert(std::make_pair(0x170A, &CNetProcessIn::UpdateTitleColor));
+    m_handlers.insert(std::make_pair(0x170B, &CNetProcessIn::RemoveTitleColor));
+    m_handlers.insert(std::make_pair(0x201B, &CNetProcessIn::CharacterIconManager));
+    m_handlers.insert(std::make_pair(0x168D, &CNetProcessIn::AddIconToIconManager)); // done
+
+    m_handlers.insert(std::make_pair(0x173F, &CNetProcessIn::UpdateCharacterIconLeft));
+    m_handlers.insert(std::make_pair(0x174A, &CNetProcessIn::RemoveCharacterIconLeft));
+    m_handlers.insert(std::make_pair(0x174B, &CNetProcessIn::UpdateCharacterIconRight));
+    m_handlers.insert(std::make_pair(0x174E, &CNetProcessIn::RemoveCharacterIconRight));
+    m_handlers.insert(std::make_pair(0x170F, &CNetProcessIn::RankCategories));
+    m_handlers.insert(std::make_pair(0x170E, &CNetProcessIn::LoadRank));
+    m_handlers.insert(std::make_pair(0x171A, &CNetProcessIn::LoadOwnRank));
+
+    m_handlers.insert(std::make_pair(0x208A, &CNetProcessIn::UpdateUniqueHistory));
+    m_handlers.insert(std::make_pair(0x171B, &CNetProcessIn::LoadUniqueHistory));
+    m_handlers.insert(std::make_pair(0x171C, &CNetProcessIn::LoadEventRegister));
+    m_handlers.insert(std::make_pair(0x171E, &CNetProcessIn::LoadEventSchedule));
+    m_handlers.insert(std::make_pair(0x168A, &CNetProcessIn::NoticeSystem));
+    m_handlers.insert(std::make_pair(0x202B, &CNetProcessIn::UpdateNewTitle));
+    m_handlers.insert(std::make_pair(0x202C, &CNetProcessIn::RemoveNewTitle));
+    m_handlers.insert(std::make_pair(0x205E, &CNetProcessIn::LoadChest));
+    m_handlers.insert(std::make_pair(0x203B, &CNetProcessIn::AddItemToChest));
+    m_handlers.insert(std::make_pair(0x177A, &CNetProcessIn::LoadAchievement));
+    m_handlers.insert(std::make_pair(0x177B, &CNetProcessIn::LoadAchievementCondition));
+    m_handlers.insert(std::make_pair(0x177C, &CNetProcessIn::LoadAchievementCondition));
+    m_handlers.insert(std::make_pair(0x177E, &CNetProcessIn::UpdateAchievementCondition));
+    m_handlers.insert(std::make_pair(0x177F, &CNetProcessIn::LiveUniqueDPS));
+    m_handlers.insert(std::make_pair(0x178E, &CNetProcessIn::PartyMemberViewerPacket));
+    m_handlers.insert(std::make_pair(0x180C, &CNetProcessIn::SetSavedLocation));
+    m_handlers.insert(std::make_pair(0x206C, &CNetProcessIn::LoadSavedLocations));
+    m_handlers.insert(std::make_pair(0x169C, &CNetProcessIn::CustomNoticesTextVariabla));
+    m_handlers.insert(std::make_pair(0x209C, &CNetProcessIn::LoadSilkRank));
+    m_handlers.insert(std::make_pair(0x208C, &CNetProcessIn::LoadAttendance));
+    m_handlers.insert(std::make_pair(0x209A, &CNetProcessIn::LoadAttendanceRewardState));
+    m_handlers.insert(std::make_pair(0x208B, &CNetProcessIn::LoadAttendanceReward));
+    m_handlers.insert(std::make_pair(0x204A, &CNetProcessIn::LoadMacroAutoPotionData));
+    m_handlers.insert(std::make_pair(0x204B, &CNetProcessIn::LoadMacroSetting));
+    m_handlers.insert(std::make_pair(0x179B, &CNetProcessIn::GlobalChatting));
+    m_handlers.insert(std::make_pair(0x209F, &CNetProcessIn::AlchemyLink));
+    m_handlers.insert(std::make_pair(0x2010, &CNetProcessIn::FailAlchemy));
+    m_handlers.insert(std::make_pair(0x220A, &CNetProcessIn::SetEventTimer));
+    m_handlers.insert(std::make_pair(0x207A, &CNetProcessIn::CreateKillCounter));
+    m_handlers.insert(std::make_pair(0x207C, &CNetProcessIn::IncreaseKillCounter));
+    m_handlers.insert(std::make_pair(0x182C, &CNetProcessIn::FellowPetAnimation));
+    m_handlers.insert(std::make_pair(0x189A, &CNetProcessIn::CreateTeamKillCounter));
+    m_handlers.insert(std::make_pair(0x189B, &CNetProcessIn::IncreaseTeamKillCounter));
+    m_handlers.insert(std::make_pair(0x189C, &CNetProcessIn::CreateJobKillCounter));
+    m_handlers.insert(std::make_pair(0x189D, &CNetProcessIn::IncreaseJobKillCounter));
+    m_handlers.insert(std::make_pair(0x206B, &CNetProcessIn::LoadFellowData));
+    m_handlers.insert(std::make_pair(0x186D, &CNetProcessIn::StallType));
+    m_handlers.insert(std::make_pair(0xF200, &CNetProcessIn::LockItemInfo));
+    m_handlers.insert(std::make_pair(0x5028, &CNetProcessIn::UnLockItemInfo));
+    m_handlers.insert(std::make_pair(0x5025, &CNetProcessIn::TimedItemInfo));
+    m_handlers.insert(std::make_pair(0xF201, &CNetProcessIn::ItemLockUnlockNotice));
+    m_handlers.insert(std::make_pair(0x5015, &CNetProcessIn::ItemLockUnlockNotice2));
+
+    m_handlers.insert(std::make_pair(0x193F, &CNetProcessIn::IncreateFtwKillCounter));
+    m_handlers.insert(std::make_pair(0x193E, &CNetProcessIn::GetMapPing));
+    m_handlers.insert(std::make_pair(0x705E, &CNetProcessIn::OnChatReceiveItemLink));
+    m_handlers.insert(std::make_pair(0x5017, &CNetProcessIn::NewAlchemyResult));
+    m_handlers.insert(std::make_pair(0x1209, &CNetProcessIn::GetSomeInfos));
+    m_handlers.insert(std::make_pair(0x5039, &CNetProcessIn::TargetPlayerItemInfo));
+    m_handlers.insert(std::make_pair(0x5040, &CNetProcessIn::UpdateCounterWnd));
+
+
+    m_handlers.insert(std::make_pair(0x5114, &CNetProcessIn::HandleCircle));
+    m_handlers.insert(std::make_pair(0xA405, &CNetProcessIn::UpdateNameColor));
+    m_handlers.insert(std::make_pair(0xA406, &CNetProcessIn::RemoveNameColor));
+}
+void CNetProcessIn::RemoveNameColor(CMsgStreamBuffer &msg)
+{
+    std::n_string CharName167;
+    msg >> CharName167;
+
+    std::n_wstring CharName16 = TO_NWSTRING(CharName167);
+
+    if (m_CustomDataManager->_ActiveNameColors.find(CharName16) != m_CustomDataManager->_ActiveNameColors.end())
+    {
+        m_CustomDataManager->_ActiveNameColors.erase(CharName16);
+    }
+    CLASSLINK_LOOP_BEGIN(CICUser)
+        if (wcscmp(obj->GetName().c_str(), CharName16.c_str()) == 0)
+            obj->UpdateNameColor(0xffffff);
+    CLASSLINK_LOOP_END(CICUser)
+    msg.FlushRemaining();
+}
+void CNetProcessIn::UpdateNameColor(CMsgStreamBuffer &msg)
+{
+    std::n_string CharName167;
+    unsigned __int32 NewColor;
+    msg >> CharName167 >> NewColor;
+
+    std::n_wstring CharName16 = TO_NWSTRING(CharName167);
+
+    CLASSLINK_LOOP_BEGIN(CICUser)
+
+        if(obj->GetJobLevel() == 4)
+        {
+            if (wcscmp(obj->GetName().c_str(), CharName16.c_str()) == 0)
+                obj->UpdateNameColor(NewColor);
+        }
+    CLASSLINK_LOOP_END(CICUser)
+
+    if (m_CustomDataManager->_ActiveNameColors.find(CharName16.c_str()) != m_CustomDataManager->_ActiveNameColors.end()) {
+        m_CustomDataManager->_ActiveNameColors[CharName16] = NewColor;
+    } else {
+
+        m_CustomDataManager->_ActiveNameColors.insert((std::make_pair(CharName16, NewColor)));
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::HandleCircle(CMsgStreamBuffer &msg)
+{
+    byte CurStage = 0;
+    byte ShowHide = 0;
+    int Timer = 0 ;
+    msg >> CurStage >> ShowHide >> Timer;
+
+
+    switch (CurStage)
+    {
+
+        case 0:
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFGrantName>(GrantNameID, 1)->SetBattleRoyaleRegionStartTime();
+        }
+            break;
+        case 1:
+        {
+            //Rebot::Config.CircleShow = ShowHide;
+            g_pCGInterface->m_IRM.GetResObj<CIFGrantName>(GrantNameID, 1)->SetBattleRoyaleStage_1_Time(1);
+            m_CustomDataManager->CircleGreenShow = ShowHide;
+        }
+            break;
+        case 2:
+        {
+            //Rebot::Config.CircleShow = ShowHide;
+            //g_pCGInterface->GetCIFSTEffectGUI()->SetBattleRoyaleStage_2_Time(1);
+            m_CustomDataManager->CircleGreenShow = ShowHide;
+        }
+            break;
+        case 3:
+        {
+            //Rebot::Config.CircleShow = ShowHide;
+            g_pCGInterface->m_IRM.GetResObj<CIFGrantName>(GrantNameID, 1)->SetBattleRoyaleStage_2_Time(1);
+            m_CustomDataManager->CircleGreenShow = ShowHide;
+        }
+            break;
+        case 5:
+        {
+            //Rebot::Config.CircleShow = ShowHide;
+            g_pCGInterface->m_IRM.GetResObj<CIFGrantName>(GrantNameID, 1)->SetBattleRoyaleStage_3_Time(1);
+            m_CustomDataManager->CircleGreenShow = ShowHide;
+        }
+            break;
+        case 7:
+        {
+            //Rebot::Config.CircleShow = ShowHide;
+            g_pCGInterface->m_IRM.GetResObj<CIFGrantName>(GrantNameID, 1)->SetBattleRoyaleStage_4_Time(1);
+            m_CustomDataManager->CircleGreenShow = ShowHide;
+        }
+            break;
+        case 9:
+        {
+            //Rebot::Config.CircleShow = ShowHide;
+            g_pCGInterface->m_IRM.GetResObj<CIFGrantName>(GrantNameID, 1)->SetBattleRoyaleStage_5_Time(1);
+            m_CustomDataManager->CircleGreenShow = ShowHide;
+        }
+            break;
+        case 16:
+        {
+           m_CustomDataManager->x1 = 0;
+           m_CustomDataManager->x2 = 0;
+           m_CustomDataManager->y1 = 0;
+           m_CustomDataManager->y2 = 0;
+           m_CustomDataManager->cercle = -47;
+           m_CustomDataManager->cercleX = 321;
+           m_CustomDataManager->cercleY = 202;
+           m_CustomDataManager->cercleRadius = 176;
+           m_CustomDataManager->CircleShow = false;
+           m_CustomDataManager->CircleGreenShow = false;
+           g_pCGInterface->m_IRM.GetResObj<CIFGrantName>(GrantNameID, 1)->SetBattleRoyaleRegionKillTime();
+            // g_pCGInterface->GetCIFSTBloodEffectGUI()->ShowGWnd(false);
+        }
+            break;
+        case 17:
+        {
+            // g_pCGInterface->GetCIFSTBloodEffectGUI()->ShowGWnd(ShowHide);
+        }
+            break;
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::UpdateCounterWnd(CMsgStreamBuffer &msg)
+{
+    int Left, Right;
+    msg >> Left >> Right;
+
+    g_pCGInterface->m_IRM.GetResObj<CIFCounterWnd>(CounterWndNew, 1)->UpdateCounter(Left, Right);
+    g_pCGInterface->m_IRM.GetResObj<CIFCounterWnd>(CounterWndNew, 1)->UpdateMenuSize();
+    g_pCGInterface->m_IRM.GetResObj<CIFCounterWnd>(CounterWndNew, 1)->ShowGWnd(true);
+
+    msg.FlushRemaining();
+}
+void CNetProcessIn::TargetPlayerItemInfo(CMsgStreamBuffer &msg)
+{
+    byte ItemSlot;
+    msg >> ItemSlot;
+
+    int Len;
+    msg >> Len;
+    std::list<BYTE> listBytes;
+
+    for (int i = 0; i < Len; i++) {
+
+        byte bytesa;
+        msg >> bytesa;
+        listBytes.push_back(bytesa);
+    }
+
+    int ItemID;
+    msg >> ItemID;
+
+    std::n_string TargetCharName;
+    msg >> TargetCharName;
+    if(g_pCGInterface->m_IRM.GetResObj<CIFTargetWindow>(16, 1) != NULL)
+    {
+        if(g_pCGInterface->m_IRM.GetResObj<CIFTargetWindow>(16, 1)->m_pGDR_TW_PLAYERWND != NULL)
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFTargetWindow>(16, 1)->m_pGDR_TW_PLAYERWND->UpdateCharName(TargetCharName);
+        }
+    }
+
+    CMsgStreamBuffer buf(0xB034);
+    for (std::list<BYTE>::iterator it = listBytes.begin(); it != listBytes.end(); ++it) {
+        buf << BYTE(*it);
+    }
+
+    //reading the item information directly through a packet by sector1337 (no need for inv slot anymore)
+    CSOItem *tempItemInfo = new CSOItem();
+    tempItemInfo->ReadFromPacket(&buf, 1);
+    tempItemInfo->SetEnabled(true);
+
+    if (tempItemInfo) {
+        if(g_pCGInterface->m_IRM.GetResObj<CIFTargetWindow>(16, 1) != NULL)
+        {
+            if(g_pCGInterface->m_IRM.GetResObj<CIFTargetWindow>(16, 1)->m_pGDR_TW_PLAYERWND != NULL)
+            {
+                g_pCGInterface->m_IRM.GetResObj<CIFTargetWindow>(16, 1)->m_pGDR_TW_PLAYERWND->UpdateItemSlot(ItemSlot, tempItemInfo, TargetCharName);
+            }
+        }
+
+    }
+
+    msg.FlushRemaining();
+}
+void CNetProcessIn::GetSomeInfos(CMsgStreamBuffer & msg)
+{
+    byte type;
+    msg >> type;
+    if(type == 0)
+    {
+        std::n_string Mail;
+        msg >> Mail;
+        m_Player->MailAddress = TO_WSTRING(Mail).c_str();
+    }
+    else if (type == 1)
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFItemLocker>(ItemLocker, 1)->StartRemainingTime();
+    }
+    else if (type == 2)
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFItemUnlocker>(Itemunlocker, 1)->StartRemainingTime();
+    }
+
+   msg.FlushRemaining();
 }
 
 
+void CNetProcessIn::NewAlchemyResult(CMsgStreamBuffer &msg)
+{
+    enum
+    {
+        SUCCESS = 0,
+        FAIL = 1,
+        ALC_ERROR = 2,
+    };
+    byte Type;
+    msg >> Type;
+
+    if(Type == 0) /// W PROOF
+    {
+
+        byte result;
+        msg >> result;
+        if (result == SUCCESS)
+        {
+            byte ItemSlot;
+            msg >> ItemSlot;
+
+            byte EnhancerSlot;
+            msg >> EnhancerSlot;
+
+            byte ProofSlot;
+            msg >> ProofSlot;
+
+            byte btNewOptLevel;
+            msg >> btNewOptLevel;
+
+            int nRefItemID;
+            msg >> nRefItemID;
+
+            byte AdvPlus;
+            msg >> AdvPlus;
+
+            CIFInventory *inventory = g_pCGInterface->GetMainPopup()->GetInventory();
+
+            if(g_pCGInterface->GetGuiFromList<CNIFEnchantWnd>(168) != NULL)
+            {
+                g_pCGInterface->GetGuiFromList<CNIFEnchantWnd>(168)->AlchemyIsSucces();
+            }
+            CSOItem*enhancercheck = inventory->GetItemBySlot(EnhancerSlot-13);
+            if(enhancercheck == NULL)
+            {
+                if(g_pCGInterface->GetGuiFromList<CNIFEnchantWnd>(168) != NULL)
+                {
+                    g_pCGInterface->GetGuiFromList<CNIFEnchantWnd>(168)->ClearProofSlot();
+                }
+
+            }
+            wchar_t Buffers[250];
+            swprintf(Buffers, sizeof(Buffers), TSM_GETTEXTPTR(L"UIIT_MSG_REINFORCERR_SUCCESS"), btNewOptLevel + AdvPlus);
+            g_pCGInterface->WriteSystemMessage(SYSLOG_NONE, Buffers);
+        }
+        else if(result == FAIL)
+        {
+            byte ItemSlot;
+            msg >> ItemSlot;
+
+            byte EnhancerSlot;
+            msg >> EnhancerSlot;
+
+            byte ProofSlot;
+            msg >> ProofSlot;
+
+            byte btNewOptLevel;
+            msg >> btNewOptLevel;
+
+            int nRefItemID;
+            msg >> nRefItemID;
+
+            byte AdvPlus;
+            msg >> AdvPlus;
+
+            g_pCGInterface->WriteSystemMessage(SYSLOG_NONE, L"The enhancement level on the equipment is gone [-1], because the alchemy enhancement failed.");
+            if(g_pCGInterface->GetGuiFromList<CNIFEnchantWnd>(168) != NULL)
+            {
+                g_pCGInterface->GetGuiFromList<CNIFEnchantWnd>(168)->AlchemyIsFailed();
+            }
+        }
+        else if(result == ALC_ERROR)
+        {
+            g_pCGInterface->WriteSystemMessage(SYSLOG_NONE, L"The enhancement stopped. Check your items");
+            if(g_pCGInterface->GetGuiFromList<CNIFEnchantWnd>(168) != NULL)
+            {
+                g_pCGInterface->GetGuiFromList<CNIFEnchantWnd>(168)->AlchemyIsFailed();
+            }
+        }
+    }
+    else if(Type == 1) /// W(O PROOF
+    {
+        byte result;
+        msg >> result;
+        if (result == SUCCESS)
+        {
+            byte ItemSlot;
+            msg >> ItemSlot;
+
+            byte EnhancerSlot;
+            msg >> EnhancerSlot;
+
+            byte btNewOptLevel;
+            msg >> btNewOptLevel;
+            int nRefItemID;
+            msg >> nRefItemID;
+            byte AdvPlus;
+            msg >> AdvPlus;
+            CIFInventory *inventory = g_pCGInterface->GetMainPopup()->GetInventory();
+
+            if(g_pCGInterface->GetGuiFromList<CNIFEnchantWnd>(168) != NULL)
+            {
+                g_pCGInterface->GetGuiFromList<CNIFEnchantWnd>(168)->AlchemyIsSucces();
+            }
+            CSOItem*enhancercheck = inventory->GetItemBySlot(EnhancerSlot-13);
+            if(enhancercheck == NULL)
+            {
+                if(g_pCGInterface->GetGuiFromList<CNIFEnchantWnd>(168) != NULL)
+                {
+                    g_pCGInterface->GetGuiFromList<CNIFEnchantWnd>(168)->ClearProofSlot();
+                }
+
+            }
+            wchar_t Buffers[250];
+            swprintf(Buffers, sizeof(Buffers), TSM_GETTEXTPTR(L"UIIT_MSG_REINFORCERR_SUCCESS"), btNewOptLevel + AdvPlus);
+            g_pCGInterface->WriteSystemMessage(SYSLOG_NONE, Buffers);
+        }
+        else if(result == FAIL)
+        {
+            g_pCGInterface->WriteSystemMessage(SYSLOG_NONE, L"The enhancement level on the equipment is gone [-1], because the alchemy enhancement failed.");
+            if(g_pCGInterface->GetGuiFromList<CNIFEnchantWnd>(168) != NULL)
+            {
+                g_pCGInterface->GetGuiFromList<CNIFEnchantWnd>(168)->AlchemyIsFailed();
+                g_pCGInterface->GetGuiFromList<CNIFEnchantWnd>(168)->PressNewAlchemyTab();
+            }
+        }
+        else if(result == ALC_ERROR)
+        {
+            g_pCGInterface->WriteSystemMessage(SYSLOG_NONE, L"The enhancement stopped. Check your items");
+            if(g_pCGInterface->GetGuiFromList<CNIFEnchantWnd>(168) != NULL)
+            {
+                g_pCGInterface->GetGuiFromList<CNIFEnchantWnd>(168)->AlchemyIsFailed();
+            }
+        }
+    }
+
+
+
+    msg.FlushRemaining();
+}
+void CNetProcessIn::OnChatReceiveItemLink(CMsgStreamBuffer &msg) {
+    DEBUG_PRINT_CALL()
+#if 1
+    std::n_wstring senderW;
+    std::n_wstring messageW;
+    std::n_string messageA;
+    std::n_string senderA;
+
+    int entityId;
+    bool bIsFromMyself = false;
+
+    ChatType chatType;
+
+    msg >> chatType;
+
+    switch (chatType) {
+        case CHAT_All:
+        case CHAT_AllGM: {
+            msg >> entityId >> messageA;
+
+            messageW = acp_n_decode(messageA);
+
+            CIGIDObject *pObject = GetCharacterObjectByID_MAYBE(entityId);
+
+            if (pObject == NULL) {
+                senderW = L"???";
+            } else {
+                if (pObject->IsSame(GFX_RUNTIME_CLASS(CICPlayer)))
+                    return;
+
+                senderW = pObject->GetName();
+
+                if (pObject->IsKindOf(GFX_RUNTIME_CLASS(CICUser))) {
+                    BS_DEBUG("Job type is %d", reinterpret_cast<CICUser *>(pObject)->GetJobType());
+
+                    if (reinterpret_cast<CICUser *>(pObject)->GetJobType() != TRIJOB_NOJOB) {
+                        senderW.insert(0, L"*");
+                    }
+                }
+            }
+            break;
+        }
+
+        default: {
+            msg >> senderA >> messageA;
+
+            messageW = acp_n_decode(messageA);
+            senderW = acp_n_decode(senderA);
+
+            if (senderW == g_pMyPlayerObj->GetCharName())
+            {
+                bIsFromMyself = true;
+            }
+
+
+            break;
+        }
+
+        case CHAT_Party : {
+            msg >> senderA >> messageA;
+
+            senderW = acp_n_decode(senderA);
+            messageW = acp_n_decode(messageA);
+
+            if (senderW == g_pMyPlayerObj->GetCharName())
+            {
+                bIsFromMyself = true;
+            }
+
+
+            if(g_pMyPlayerObj->GetJobType() != TRIJOB_NOJOB) {
+                senderW.insert(0, L"*");
+            }
+            break;
+        }
+
+        case CHAT_Global: {
+            msg >> senderA >> messageA;
+
+            messageW = acp_n_decode(messageA);
+
+            if (senderA.length() == 0) {
+                senderW = L"???";
+            } else {
+                senderW = acp_n_decode(senderA);
+            }
+
+            if (g_pMyPlayerObj->GetCharName() == senderW) {
+                bIsFromMyself = true;
+            }
+
+            break;
+        }
+
+        case CHAT_Notice: {
+            msg >> messageA;
+            messageW = acp_n_decode(messageA);
+            bIsFromMyself = false;
+            break;
+        }
+
+        case CHAT_Stall: {
+            msg >> senderA >> messageA;
+
+            messageW = acp_n_decode(messageA);
+            senderW = acp_n_decode(senderA);
+
+            if (senderW == g_pMyPlayerObj->GetCharName())
+            {
+                bIsFromMyself = true;
+            }
+
+
+            break;
+        }
+
+        case CHAT_NPC: {
+            msg >> entityId >> messageA;
+
+            CIGIDObject *pObject = GetCharacterObjectByID_MAYBE(entityId);
+
+            if (pObject == NULL) {
+                senderW = L"???";
+            } else {
+                if (pObject->IsSame(GFX_RUNTIME_CLASS(CICPlayer))) {
+                    senderW = reinterpret_cast<CICPlayer *>(pObject)->GetCharName();
+                    bIsFromMyself = true;
+                } else {
+                    senderW = pObject->GetName();
+                }
+            }
+
+            messageW = g_CTextStringManager->FUN_008c9bb0(messageW);
+
+            if (pObject->IsKindOf(GFX_RUNTIME_CLASS(CICUser))) {
+                chatType = CHAT_All;
+            }
+
+            break;
+        }
+
+        case CHAT_Academy: {
+            msg >> senderA >> messageA;
+
+            messageW = acp_n_decode(messageA);
+            senderW = acp_n_decode(senderA);
+
+            if (senderW == g_pMyPlayerObj->GetCharName())
+            {
+                bIsFromMyself = true;
+            }
+
+
+        }
+
+    }
+
+    int Len;
+    msg >> Len;
+    std::list<BYTE> listBytes;
+
+    for (int i = 0; i < Len; i++) {
+
+        byte bytesa;
+        msg >> bytesa;
+        listBytes.push_back(bytesa);
+    }
+
+    if(chatType == CHAT_PM)
+    {
+        GlobalChat info = GlobalChat();
+        //CIFChatViewer* main12 = g_pCGInterface->m_IRM.GetResObj<CIFChatViewer>(1, 1);
+        CIFChatViewer *chatView = (CIFChatViewer *) g_pCGInterface->m_IRM.GetResObj(1, 1);
+        int index = chatView->m_ChatLists[0]->GetNumberOfItems();
+        if (index == 100) {
+            index = 99;
+            for (std::list<GlobalChat>::iterator currentGlobalData = g_global->GlobalChatLog.begin(); currentGlobalData != g_global->GlobalChatLog.end(); currentGlobalData++) {
+                if (currentGlobalData->completed) {
+                    currentGlobalData->index -= 1;//99 =98
+                }
+            }
+        }
+
+
+        info.index = index;
+        info.listBytes = listBytes;
+        info.Message = messageW;
+
+        info.completed = true;
+
+
+        g_global->GlobalChatLog.push_back(info);
+    }
+
+    if (g_pMyPlayerObj == NULL)
+        return;
+
+
+    if (senderW.length() == 0) {
+        senderW = acp_n_decode(senderA);
+    }
+
+    if (messageW.length() == 0) {
+        messageW = acp_n_decode(messageA);
+    }
+
+    WriteToChatWindow(chatType, senderW, entityId, messageW, bIsFromMyself);
+
+#else
+    reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x00877810)(this, msg);
+#endif
+}
+void CNetProcessIn::GetMapPing(CMsgStreamBuffer &msg)
+{
+    byte type;
+    msg >> type;
+    if(type == 0)
+    {
+        int RegionID, PosX, PosY, PosZ, Seconds;
+        msg >> RegionID >> PosX >> PosY >> PosZ >> Seconds;
+
+        CIFMenu * menu = g_pCGInterface->m_IRM.GetResObj<CIFMenu>(MainMenuID, 1);
+        g_pCGInterface->GetAlarmManager()->CreateGuideIcon(GDR_WEB_GUIDE);
+    }
+    else if(type == 1)
+    {
+        int RegionID, PosX, PosY, PosZ, Seconds, MapT;
+        msg >> RegionID >> PosX >> PosY >> PosZ >> Seconds >> MapT;
+        CIFMenu * menu = g_pCGInterface->m_IRM.GetResObj<CIFMenu>(MainMenuID, 1);
+        menu->PingedRegionID = RegionID;
+        menu->PingedPosX = PosX;
+        menu->PingedPosY = PosY;
+        menu->PingedPosZ = PosZ;
+        menu->MapIndex = Seconds;
+        menu->MapType = MapT;
+        g_pCGInterface->GetAlarmManager()->CreateGuideIcon(GDR_WEB_GUIDE);
+
+    }
+
+
+    msg.FlushRemaining();
+}
+void CNetProcessIn::IncreateFtwKillCounter(CMsgStreamBuffer &msg)
+{
+
+    byte Type;
+    msg >> Type;
+    if(Type == 0)
+    {
+        BYTE sCount;
+        std::n_string Player;
+        int Kills;
+        msg >> sCount;
+        BYTE i = 0;
+        g_pCGInterface->m_IRM.GetResObj<CIFFortressWar>(FtwKillCounter, 1)->ClearPlayer();
+
+        while (i < sCount && sCount > 0) {
+            i++;
+            msg >> Player >> Kills;
+            wchar_t Buffers[250];
+            swprintf(Buffers, sizeof(Buffers), L"%d", Kills);
+            if (Kills == -1) {
+                swprintf(Buffers, sizeof(Buffers), L"-");
+            }
+            std::n_wstring Name = TO_NWSTRING(Player);
+            g_pCGInterface->m_IRM.GetResObj<CIFFortressWar>(FtwKillCounter, 1)->WritePlayerKill(i, Name.c_str(), Buffers);
+
+        }
+    }
+    if(Type == 1)
+    {
+        BYTE sCount;
+        std::n_string Player;
+        int Kills;
+        msg >> sCount;
+        BYTE i = 0;
+        g_pCGInterface->m_IRM.GetResObj<CIFFortressWar>(FtwKillCounter, 1)->ClearGuild();
+
+        while (i < sCount && sCount > 0) {
+            i++;
+            msg >> Player >> Kills;
+            wchar_t Buffers[250];
+            swprintf(Buffers, sizeof(Buffers), L"%d", Kills);
+            if (Kills == -1) {
+                swprintf(Buffers, sizeof(Buffers), L"-");
+            }
+            std::n_wstring Name = TO_NWSTRING(Player);
+            g_pCGInterface->m_IRM.GetResObj<CIFFortressWar>(FtwKillCounter, 1)->WriteGuildKill(i, Name.c_str(), Buffers);
+
+        }
+    }
+    if(Type == 2)
+    {
+        BYTE sCount;
+        std::n_string Player;
+        int Kills;
+        msg >> sCount;
+        BYTE i = 0;
+        g_pCGInterface->m_IRM.GetResObj<CIFFortressWar>(FtwKillCounter, 1)->ClearUnion();
+
+        while (i < sCount && sCount > 0) {
+            i++;
+            msg >> Player >> Kills;
+            wchar_t Buffers[250];
+            swprintf(Buffers, sizeof(Buffers), L"%d", Kills);
+            if (Kills == -1) {
+                swprintf(Buffers, sizeof(Buffers), L"-");
+            }
+            std::n_wstring Name = TO_NWSTRING(Player);
+            g_pCGInterface->m_IRM.GetResObj<CIFFortressWar>(FtwKillCounter, 1)->WriteUnionKill(i, Name.c_str(), Buffers);
+
+        }
+    }
+    g_pCGInterface->m_IRM.GetResObj<CIFFortressWar>(FtwKillCounter, 1)->UpdateMenuSize();
+    if(!g_pCGInterface->m_IRM.GetResObj<CIFFortressWar>(FtwKillCounter, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFFortressWar>(FtwKillCounter, 1)->ShowGWnd(true);
+    }
+    msg.FlushRemaining();
+}
+
+void CNetProcessIn::ItemLockUnlockNotice2(CMsgStreamBuffer &msg)
+{
+    byte type;
+    msg >> type;
+
+    if(type == 0)
+    {
+        g_pCGInterface->ShowMessage_Warning(L"You cannot proceed this action on a locked item.");
+        g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, L"You cannot proceed this action on a locked item.");
+
+    }
+    else if(type == 1)
+    {
+        g_pCGInterface->ShowMessage_Warning(L"You cannot proceed this action on a locked item.");
+        g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, L"You cannot proceed this action on a locked item.");
+    }
+    else if(type == 3)
+    {
+        g_pCGInterface->ShowMessage_Warning(L"Gold amount is not enough for equip translation.");
+        g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, L"Gold amount is not enough for equip translation.");
+    }
+    else if(type == 4)
+    {
+        if (g_pCGInterface->m_IRM.GetResObj<CIFItemLocker>(ItemLocker, 1)->IsVisible())
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFItemLocker>(ItemLocker, 1)->EnableStateLockButton();
+        }
+        if (g_pCGInterface->m_IRM.GetResObj<CIFItemUnlocker>(Itemunlocker, 1)->IsVisible())
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFItemUnlocker>(Itemunlocker, 1)->EnableStateLockButton();
+        }
+    }
+    else if(type == 5)
+    {
+        g_pCGInterface->ShowMessage_Warning(L"You cannot proceed this action on a unlocked item.");
+        g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, L"You cannot proceed this action on a unlocked item.");
+
+    }
+    else if(type == 6)
+    {
+        g_pCGInterface->ShowMessage_Warning(L"Silk amount is not enough for equip translation.");
+        g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, L"Silk amount is not enough for equip translation.");
+    }
+    else if(type == 7)
+    {
+        g_pCGInterface->ShowMessage_Warning(L"The target character is hide self items.");
+        g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, L"The target character is hide self items.");
+       /* if(g_pCGInterface->m_IRM.GetResObj<CIFTargetWindow>(16, 1) != NULL)
+        {
+            if(g_pCGInterface->m_IRM.GetResObj<CIFTargetWindow>(16, 1)->m_pGDR_TW_PLAYERWND != NULL)
+            {
+                g_pCGInterface->m_IRM.GetResObj<CIFTargetWindow>(16, 1)->m_pGDR_TW_PLAYERWND->Hide();
+            }
+        }*/
+    }
+    else if(type == 8)
+    {
+        if(g_pCGInterface->m_IRM.GetResObj<CIFTargetWindow>(16, 1) != NULL)
+        {
+            if(g_pCGInterface->m_IRM.GetResObj<CIFTargetWindow>(16, 1)->m_pGDR_TW_PLAYERWND != NULL)
+            {
+                g_pCGInterface->m_IRM.GetResObj<CIFTargetWindow>(16, 1)->m_pGDR_TW_PLAYERWND->ShowTargetWnd();
+                g_pCGInterface->m_IRM.GetResObj<CIFTargetWindow>(16, 1)->m_pGDR_TW_PLAYERWND->UpdateRenderStatic();
+            }
+        }
+    }
+    else if(type == 9)
+    {
+       bool Value;
+       msg >> Value;
+       bool RememberPC;
+       msg >> RememberPC;
+        CIFSettings* setting = g_pCGInterface->m_IRM.GetResObj<CIFSettings>(SettingsWndID, 1);
+        if(setting != NULL)
+        {
+            setting->HideCharInfo->SetCheckBoxState(Value);
+            setting->RememberPC->SetCheckBoxState(RememberPC);
+            setting->HideCharInfoSetting = Value;
+            setting->RememberPCSetting = RememberPC;
+
+        }
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::ItemLockUnlockNotice(CMsgStreamBuffer &msg)
+{
+    std::n_wstring MsgNotice;
+    msg >> MsgNotice;
+
+    byte itemslot;
+    msg >> itemslot;
+
+    if (itemslot >= 13) {
+        CSOItem *p = g_pCGInterface->GetMainPopup()->GetInventory()->GetItemBySlot(itemslot-13);
+
+        if (p != NULL) {
+
+            const SItemData *data = &g_CGlobalDataManager->GetItemData(p->m_refObjItemId);
+            if(data != NULL)
+            {
+                std::wstring ItemNames = g_CTextStringManager->GetString2(data->NameStrID.c_str())->c_str();
+
+                StringReplaceAll(MsgNotice, L"{wpname}", ItemNames);
+            }
+        }
+    }
+
+
+    g_pCGInterface->ShowMessage_Warning(MsgNotice);
+    g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, MsgNotice.c_str());
+
+    if (g_pCGInterface->m_IRM.GetResObj<CIFItemLocker>(ItemLocker, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFItemLocker>(ItemLocker, 1)->ShowGWnd(false);
+        g_pCGInterface->m_IRM.GetResObj<CIFItemLocker>(ItemLocker, 1)->Clear();
+        CGEffSoundBody::get()->PlaySound(L"snd_window_close");
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFItemUnlocker>(Itemunlocker, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFItemUnlocker>(Itemunlocker, 1)->ShowGWnd(false);
+        g_pCGInterface->m_IRM.GetResObj<CIFItemUnlocker>(Itemunlocker, 1)->Clear();
+        CGEffSoundBody::get()->PlaySound(L"snd_window_close");
+    }
+
+    msg.FlushRemaining();
+}
+void CNetProcessIn::TimedItemInfo(CMsgStreamBuffer &msg)
+{
+    byte type;
+    msg >> type;
+    byte targetslotnum;
+    msg >> targetslotnum;
+
+    if(type == 0)
+    {
+        long min;
+        msg >> min;
+        if (targetslotnum >= 13) {
+            CSOItem *p = g_pCGInterface->GetMainPopup()->GetInventory()->GetItemBySlot(targetslotnum-13);
+
+            if (p != NULL) {
+                p->itemtimes = min;
+            }
+        }
+        else if (targetslotnum <= 12) {
+            g_pCGInterface->GetMainPopup()->GetEquipment()->SetItemTime(targetslotnum, min);
+        }
+    }
+    else if(type == 1)
+    {
+        if (targetslotnum >= 13) {
+            CSOItem *p = g_pCGInterface->GetMainPopup()->GetInventory()->GetItemBySlot(targetslotnum-13);
+            if (p != NULL) {
+                p->itemtimes = 0;
+            }
+        }
+        else if (targetslotnum <= 12) {
+            g_pCGInterface->GetMainPopup()->GetEquipment()->SetItemTime(targetslotnum, 0);
+
+        }
+    }
+    else if(type == 2)
+    {
+        long min;
+        msg >> min;
+        CSOItem *p = g_pCGInterface->GetMainPopup()->GetEquipment()->Test4(targetslotnum-1);
+        if (p != NULL) {
+            //    printf("%ls \n", p->GetItemData()->CodeName.c_str());
+            p->itemtimes = min;
+        }
+    }
+    else if(type == 3)
+    {
+        g_pCGInterface->GetMainPopup()->GetEquipment()->SetItemTime(20, 0);
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::UnLockItemInfo(CMsgStreamBuffer &msg)
+{
+    byte targetslotnum;
+    msg >> targetslotnum; /// its slot number
+
+    if(targetslotnum < 13)
+    {
+        if(g_pCGInterface->GetMainPopup()->GetEquipment() != NULL)
+        {
+            g_pCGInterface->GetMainPopup()->GetEquipment()->SetSlotUnLock(targetslotnum);
+        }
+    }
+    else if(targetslotnum > 12)
+    {
+        if(g_pCGInterface->GetMainPopup()->GetInventory() != NULL)
+        {
+            CSOItem *p = g_pCGInterface->GetMainPopup()->GetInventory()->GetItemBySlot(targetslotnum-13);
+            if (p != NULL) {
+                p->ItemLocked = 0;
+            }
+        }
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::LockItemInfo(CMsgStreamBuffer &msg)
+{
+    byte type;
+    msg >> type; /// type 0 is equipment and inventory /// type 1 is avatar
+    byte targetslotnum;
+    msg >> targetslotnum; /// its slot number
+    if(type == 0)
+    {
+        if(targetslotnum < 13)
+        {
+            if(g_pCGInterface->GetMainPopup()->GetEquipment() != NULL)
+            {
+                g_pCGInterface->GetMainPopup()->GetEquipment()->SetSlotLock(targetslotnum);
+            }
+        }
+        else if(targetslotnum > 12)
+        {
+            if(g_pCGInterface->GetMainPopup()->GetInventory() != NULL)
+            {
+                CSOItem *p = g_pCGInterface->GetMainPopup()->GetInventory()->GetItemBySlot(targetslotnum-13);
+                if (p != NULL) {
+                    p->ItemLocked = 1;
+                }
+            }
+        }
+
+    }
+    else if(type == 1)
+    {
+        CSOItem *p = g_pCGInterface->GetMainPopup()->GetEquipment()->Test4(targetslotnum-1);
+        if (p != NULL) {
+            if(p->GetItemData() != NULL)
+            {
+                p->ItemLocked = 1;
+            }
+            //    printf("%ls \n", p->GetItemData()->CodeName.c_str());
+
+        }
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::LoadFellowData(CMsgStreamBuffer &msg)
+{
+    m_Player->m_FellowSkillData.clear();
+    byte Count;
+    msg >> Count;
+    byte i = 0;
+    while (i < Count && Count > 0) {
+        i++;
+        __int64 ID64;
+        msg >> ID64;
+
+        byte Enable_Skill_1, Enable_Skill_2,Enable_Skill_3,Enable_Skill_4,Enable_Skill_5;
+        msg >> Enable_Skill_1 >> Enable_Skill_2 >> Enable_Skill_3 >> Enable_Skill_4 >> Enable_Skill_5;
+
+        CustomCICPlayer::Fellow_SkillData Data = CustomCICPlayer::Fellow_SkillData();
+        Data.ID64 = ID64;
+        Data.Enable_Skill_1 = Enable_Skill_1;
+        Data.Enable_Skill_2 = Enable_Skill_2;
+        Data.Enable_Skill_3 = Enable_Skill_3;
+        Data.Enable_Skill_4 = Enable_Skill_4;
+        Data.Enable_Skill_5 = Enable_Skill_5;
+        m_Player->m_FellowSkillData.push_back(Data);
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::IncreaseJobKillCounter(CMsgStreamBuffer &msg)
+{
+    BYTE sCount;
+    msg >> sCount;
+
+    std::n_string Players;
+    byte Team;
+    int Kills;
+    int RedTeamKills;
+    int BlueTeamKills;
+
+    BYTE i = 0;
+    g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->Clear();
+
+    while (i < sCount && sCount > 0) {
+        i++;
+        msg >>  Players >> Team >> Kills >> RedTeamKills >> BlueTeamKills;
+
+        std::n_wstring Player = TO_NWSTRING(Players);
+
+        g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->WriteLine(i, Team, Player.c_str(), Kills, RedTeamKills, BlueTeamKills);
+
+    }
+    g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->UpdateMenuSize();
+    if(!g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->ShowGWnd(true);
+    }
+
+    msg.FlushRemaining();
+}
+void CNetProcessIn::CreateJobKillCounter(CMsgStreamBuffer &msg)
+{
+    byte type;
+    msg >> type;
+
+    if (type == 0)
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->Clear();
+    }
+    else if(type == 1)
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->Clear();
+        if(!g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->IsVisible())
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->UpdateMenuSize();
+            g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->ShowGWnd(true);
+        }
+        else
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->UpdateMenuSize();
+        }
+    }
+    else if(type == 2)
+    {
+        if(!g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->IsVisible())
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->Clear();
+            g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->UpdateMenuSize();
+            g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->ShowGWnd(true);
+        }
+        else
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->Clear();
+            g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->UpdateMenuSize();
+        }
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::IncreaseTeamKillCounter(CMsgStreamBuffer &msg)
+{
+    BYTE sCount;
+    msg >> sCount;
+
+    std::n_string Players;
+    byte Team;
+    int Kills;
+    int RedTeamKills;
+    int BlueTeamKills;
+
+    BYTE i = 0;
+    g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->Clear();
+
+    while (i < sCount && sCount > 0) {
+        i++;
+        msg >>  Players >> Team >> Kills >> RedTeamKills >> BlueTeamKills;
+
+        std::n_wstring Player = TO_NWSTRING(Players);
+
+        g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->WriteLine(i, Team, Player.c_str(), Kills, RedTeamKills, BlueTeamKills);
+
+    }
+    g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->UpdateMenuSize();
+    if(!g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->ShowGWnd(true);
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::CreateTeamKillCounter(CMsgStreamBuffer &msg)
+{
+    byte type;
+    msg >> type;
+
+    if (type == 0)
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->Clear();
+    }
+    else if(type == 1)
+    {
+        if(!g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->IsVisible())
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->UpdateMenuSize();
+            g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->ShowGWnd(true);
+        }
+        else
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->UpdateMenuSize();
+        }
+    }
+    else if(type == 2)
+    {
+        if(!g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->IsVisible())
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->Clear();
+            g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->UpdateMenuSize();
+            g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->ShowGWnd(true);
+        }
+        else
+        {
+           g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->Clear();
+           g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->UpdateMenuSize();
+        }
+    }
+    msg.FlushRemaining();
+}
+time_t LastAniTime;
+void CNetProcessIn::FellowPetAnimation(CMsgStreamBuffer &msg) {
+    unsigned int uqId;
+    msg >> uqId;
+    byte AniID;
+    msg >> AniID;
+    CICCos *pUser = static_cast<CICCos *>(GetCharacterObjectByID_MAYBE(uqId));
+    if (pUser == NULL) {
+        goto LAB_0063a980;
+    }
+    if (pUser->GetCommonData() != NULL)
+    {
+        if (m_CustomDataManager->m_RefFellowPetSystem.find(pUser->GetCommonData()->NameStrID) != m_CustomDataManager->m_RefFellowPetSystem.end()) {
+
+            if (time(NULL) - LastAniTime >= 5) {
+                pUser->m_pCCObjAnimation->FUN_00a5faf0(AniID, 400, 400, 0, 1065353216, 1065353216);
+               // pUser->MakeEffect()
+            }
+        }
+        LAB_0063a980:
+        /*     pUser->m_pCCObjAnimation->FUN_00a5faf0(0, 0, 200, 0, 1065353216, 1065353216);*/
+        LastAniTime = time(NULL);
+    }
+
+    msg.FlushRemaining();
+}
+void CNetProcessIn::CreateKillCounter(CMsgStreamBuffer &msg)
+{
+    byte type;
+    msg >> type;
+    std::n_string Titlex;
+    msg >> Titlex;
+    std::n_wstring Title = TO_NWSTRING(Titlex);
+    if (type == 0)
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->m_pTitleText->SetText(Title.c_str());
+        g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->Clear();
+    }
+    else if(type == 1)
+    {
+        if(!g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->IsVisible())
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->m_pTitleText->SetText(Title.c_str());
+            g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->UpdateMenuSize();
+            g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->ShowGWnd(true);
+        }
+        else
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->m_pTitleText->SetText(Title.c_str());
+            g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->UpdateMenuSize();
+        }
+    }
+    else if(type == 2)
+    {
+        if(!g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->IsVisible())
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->Clear();
+            g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->m_pTitleText->SetText(Title.c_str());
+            g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->UpdateMenuSize();
+            g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->ShowGWnd(true);
+        }
+        else
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->Clear();
+            g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->m_pTitleText->SetText(Title.c_str());
+            g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->UpdateMenuSize();
+        }
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::IncreaseKillCounter(CMsgStreamBuffer &msg)
+{
+    BYTE sCount;
+    msg >> sCount;
+
+    BYTE i = 0;
+    g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->Clear();
+
+    while (i < sCount && sCount > 0) {
+        i++;
+
+        std::n_string CharName166;
+        int Kills;
+        msg >> CharName166;
+        msg >> Kills;
+
+        std::n_wstring CharName16 = TO_NWSTRING(CharName166);
+        wchar_t Buffers[250];
+        swprintf(Buffers, sizeof(Buffers), L"%d", Kills);
+
+        g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->WriteLine(i, CharName16.c_str(), Buffers);
+    }
+    if(!g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->UpdateMenuSize();
+        g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->ShowGWnd(true);
+    }
+    msg.FlushRemaining();
+}
+
+void CNetProcessIn::SetEventTimer(CMsgStreamBuffer &msg)
+{
+    byte type;
+    msg >> type;
+    if(type == 0)
+    {
+        int timesecond;
+        msg >> timesecond;
+        g_pCGInterface->m_IRM.GetResObj<CIFTimerWnd>(410, 1)->ShowGWnd(true);
+        g_pCGInterface->m_IRM.GetResObj<CIFTimerWnd>(410, 1)->SetTimer(timesecond, 0);
+        g_pCGInterface->m_IRM.GetResObj<CIFTimerWnd>(410, 1)->StartTimerWnd2();
+    }
+    else if(type == 1)
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFTimerWnd>(410, 1)->ShowGWnd(false);
+    }
+
+    msg.FlushRemaining();
+}
+void CNetProcessIn::FailAlchemy(CMsgStreamBuffer &msg)
+{
+    /// there is not have linked fail.
+    std::n_wstring CharName16;
+    msg >> CharName16;
+
+    int itemID = 0;
+    msg >> itemID;
+
+    const SItemData *data = &g_CGlobalDataManager->GetItemData(itemID);
+
+    std::wstring ItemNames = g_CTextStringManager->GetString2(data->NameStrID.c_str())->c_str();
+
+
+    std::wstring Item = L"<" + ItemNames + L">";
+   /* std::wstring underline = L"\u035F";
+    std::wstring ItemName;
+    for (int i = 0; i < Item.size(); i++) {
+        std::wstring bkp = Item.substr(i, 1);
+        ItemName.append(underline);
+        ItemName.append(bkp);
+    }*/
+    std::n_wstring Message;
+
+    ///Message = L"Ng­êi ch¬i [{charname}] ®· failed mãn ®å [{wpname}]";
+    Message = TSM_GETTEXTPTR(L"UIIT_ALCHEMY_FAIL_MSG");
+    
+
+    StringReplaceAll(Message, L"{wpname}", Item);
+
+    StringReplaceAll(Message, L"{charname}", CharName16.c_str());
+
+
+    D3DCOLOR color;
+    color = D3DCOLOR_RGBA(255, 0, 0, 255);// Màu đỏ
+    g_pCGInterface->ShowMessage_Notice(Message.c_str());
+    g_pCGInterface->FUN_00777c30(CHAT_Global, Message.c_str(), color, 1);
+
+    msg.FlushRemaining();
+
+}
+void CNetProcessIn::StallType(CMsgStreamBuffer &msg)
+{
+    bool type;
+    msg >> type;
+
+    m_Settings->stallType = type;
+    msg.FlushRemaining();
+}
+void CNetProcessIn::AlchemyLink(CMsgStreamBuffer &msg)
+{
+    std::n_wstring CharName16;
+    msg >> CharName16;
+
+    int itemID = 0;
+    msg >> itemID;
+
+    byte Plus;
+    msg >> Plus;
+
+    byte AdvLevel;
+    msg >> AdvLevel;
+
+    int Len;
+    msg >> Len;
+    std::list<BYTE> listBytes;
+
+    for (int i = 0; i < Len; i++) {
+
+        byte bytesa;
+        msg >> bytesa;
+        listBytes.push_back(bytesa);
+    }
+
+    const SItemData *data = &g_CGlobalDataManager->GetItemData(itemID);
+
+    std::wstring ItemNames = g_CTextStringManager->GetString2(data->NameStrID.c_str())->c_str();
+
+
+    std::wstring Item = L"<" + ItemNames + L">";
+    //std::wstring underline = L"\u035F";
+    //std::wstring ItemName;
+    //for (int i = 0; i < Item.size(); i++) {
+    //    std::wstring bkp = Item.substr(i, 1);
+    //    ItemName.append(underline);
+    //    ItemName.append(bkp);
+    //}
+    std::n_wstring Message;
+    if(AdvLevel == 0)
+    {
+        Message = TSM_GETTEXTPTR(L"UUIT_ALCHEMY_LINK_MSG_1");
+     
+    }
+    else
+    {
+        Message = TSM_GETTEXTPTR(L"UUIT_LKD_DAC_BIET");
+ 
+    }
+
+
+    StringReplaceAll(Message, L"{wpname}", Item);
+
+    StringReplaceAll(Message, L"{charname}", CharName16.c_str());
+
+
+    std::wstringstream wss;
+    wss << Plus + AdvLevel;
+    std::wstring wstr = wss.str();
+
+
+    StringReplaceAll(Message, L"{plus}", wstr);
+
+
+    GlobalChat info = GlobalChat();
+    //CIFChatViewer* main12 = g_pCGInterface->m_IRM.GetResObj<CIFChatViewer>(1, 1);
+    CIFChatViewer *chatView = (CIFChatViewer *) g_pCGInterface->m_IRM.GetResObj(1, 1);
+    int index = chatView->m_ChatLists[0]->GetNumberOfItems();
+    if (index == 100) {
+        index = 99;
+        for (std::list<GlobalChat>::iterator currentGlobalData = g_global->GlobalChatLog.begin(); currentGlobalData != g_global->GlobalChatLog.end(); currentGlobalData++) {
+            if (currentGlobalData->completed) {
+                currentGlobalData->index -= 1;//99 =98
+            }
+        }
+    }
+
+
+    info.index = index;
+    info.listBytes = listBytes;
+    info.Message = Message;
+
+    info.completed = true;
+
+
+    g_global->GlobalChatLog.push_back(info);
+
+    //D3DCOLOR color;
+    //color = D3DCOLOR_RGBA(0xff, 0xae, 0xc3, 255);
+
+    //g_pCGInterface->ShowMessage_Notice(Message.c_str());
+    //g_pCGInterface->FUN_00777c30(CHAT_Global, Message.c_str(), color, 1);
+    D3DCOLOR color;
+    color = D3DCOLOR_RGBA(0, 255, 0, 255);// Màu xanh lá cây
+    g_pCGInterface->ShowMessage_Notice(Message.c_str());
+    g_pCGInterface->FUN_00777c30(CHAT_Global, Message.c_str(), color, 1);
+
+
+
+   /* AlchemyLogStr info = AlchemyLogStr();
+    //CIFChatViewer* main12 = g_pCGInterface->m_IRM.GetResObj<CIFChatViewer>(1, 1);
+    CIFSystemMessage *chatView = (CIFSystemMessage *) g_pCGInterface->m_IRM.GetResObj(68, 1);
+    int index = chatView->GetTextBox()->GetNumberOfItems();
+    if (index == 100) {
+        index = 99;
+        for (std::list<AlchemyLogStr>::iterator currentGlobalData = g_global->AlchemyLog.begin(); currentGlobalData != g_global->AlchemyLog.end(); currentGlobalData++) {
+            if (currentGlobalData->completed) {
+                currentGlobalData->index -= 1;//99 =98
+            }
+        }
+    }
+
+
+    info.index = index;
+    info.listBytes = listBytes;
+    info.Message = Message;
+    info.CosIDForPet = itemID;
+    info.completed = true;
+
+
+    g_global->AlchemyLog.push_back(info);
+*/
+
+  //  g_pCGInterface->ShowLogMessage(0x00cec8, Message.c_str());
+
+
+    msg.FlushRemaining();
+}
+void CNetProcessIn::GlobalChatting(CMsgStreamBuffer &msg)
+{
+    byte GlobalType;
+    msg >> GlobalType;
+
+    std::n_string Messagesex;
+    msg >> Messagesex;
+
+    std::n_wstring Message = TO_NWSTRING(Messagesex);
+
+    int color;
+    msg >> color;
+    if(GlobalType == 0)
+    {
+        g_pCGInterface->FUN_00777c30(CHAT_Global, Message.c_str(), color, 1);
+
+
+        std::n_wstring newmsg = Message.c_str();
+        std::vector<std::n_wstring> splitted = wsplit(newmsg, L':');
+        std::n_wstring string = std::n_wstring(splitted[1]);
+        std::n_wstring charname = std::n_wstring(splitted[0]);
+        CICUser *entity = 0;
+
+        CLASSLINK_LOOP_BEGIN(CICUser)
+            if (obj->GetName() == charname.c_str()) {
+                entity = obj;
+                if (entity)
+                    entity->ShowMessageAboveEntity(string, color);
+            }
+        CLASSLINK_LOOP_END(CICUser)
+    }
+    else if(GlobalType == 1)
+    {
+        int Len;
+        msg >> Len;
+        std::list<BYTE> listBytes;
+
+        for (int i = 0; i < Len; i++) {
+
+            byte bytesa;
+            msg >> bytesa;
+            listBytes.push_back(bytesa);
+        }
+
+        int itemID = 0;
+        msg >> itemID;
+        const SItemData *data = &g_CGlobalDataManager->GetItemData(itemID);
+        std::wstring ItemNames = g_CTextStringManager->GetString2(data->NameStrID.c_str())->c_str();
+
+
+        std::wstring Item = L"<" + ItemNames + L">";
+     
+        StringReplaceAll(Message, L"{wpname}", Item.c_str());
+
+        GlobalChat info = GlobalChat();
+        //CIFChatViewer* main12 = g_pCGInterface->m_IRM.GetResObj<CIFChatViewer>(1, 1);
+        CIFChatViewer *chatView = (CIFChatViewer *) g_pCGInterface->m_IRM.GetResObj(1, 1);
+        int index = chatView->m_ChatLists[0]->GetNumberOfItems();
+        if (index == 100) {
+            index = 99;
+            for (std::list<GlobalChat>::iterator currentGlobalData = g_global->GlobalChatLog.begin(); currentGlobalData != g_global->GlobalChatLog.end(); currentGlobalData++) {
+                if (currentGlobalData->completed) {
+                    currentGlobalData->index -= 1;//99 =98
+                }
+            }
+        }
+
+
+        info.index = index;
+        info.listBytes = listBytes;
+        info.Message = Message;
+
+        info.completed = true;
+
+
+        g_global->GlobalChatLog.push_back(info);
+
+
+        g_pCGInterface->FUN_00777c30(CHAT_Global, Message.c_str(), color, 1);
+        //     g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, Message.c_str());
+
+
+        std::n_wstring newmsg = Message.c_str();
+        std::vector<std::n_wstring> splitted = wsplit(newmsg, L':');
+        std::n_wstring string = std::n_wstring(splitted[1]);
+        std::n_wstring charname = std::n_wstring(splitted[0]);
+        CICUser *entity = 0;
+
+
+        CLASSLINK_LOOP_BEGIN(CICUser)
+            if (obj->GetName() == charname.c_str()) {
+                entity = obj;
+                if (entity)
+                    entity->ShowMessageAboveEntity(string, color);
+            }
+        CLASSLINK_LOOP_END(CICUser)
+    }
+
+    msg.FlushRemaining();
+}
+void CNetProcessIn::LoadMacroSetting(CMsgStreamBuffer &msg)
+{
+
+    CIFMacroMenu* MacroMenu = g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1);
+
+    MacroMenu->AutoPotionSlot->ActivateTabPage(0);
+    MacroMenu->AutoSkillSlot->ActivateTabPage(0);
+    MacroMenu->AutoHuntSlot->ActivateTabPage(0);
+    MacroMenu->PickupFilterSlot->ActivateTabPage(0);
+
+    msg >> MacroMenu->AutoPotionSlot->Macro_AutoPotion;
+
+    if(MacroMenu->AutoPotionSlot->Macro_AutoPotion)
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFMacro>(MacroID, 1)->ActiveAutoPotion();
+    }
+
+    msg >> MacroMenu->AutoSkillSlot->Macro_AutoSkill;
+
+    if(MacroMenu->AutoSkillSlot->Macro_AutoSkill)
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFMacro>(MacroID, 1)->ActiveAutoSkill();
+    }
+
+
+    //msg >> MacroMenu->AutoHuntSlot->Macro_AutoHunt;
+
+    byte aa;
+    msg >> aa; // auto hunt
+
+
+
+    msg >> MacroMenu->PickupFilterSlot->Macro_PetFilter;
+    if(MacroMenu->PickupFilterSlot->Macro_PetFilter)
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFMacro>(MacroID, 1)->ActivePetFilter();
+    }
+
+    msg >> MacroMenu->AutoScrollSlot->Macro_AutoScroll;
+    if(MacroMenu->AutoScrollSlot->Macro_AutoScroll)
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFMacro>(MacroID, 1)->ActiveAutoScroll();
+    }
+
+    msg.FlushRemaining();
+}
+void CNetProcessIn::LoadMacroAutoPotionData(CMsgStreamBuffer &msg)
+{
+    byte Count;
+    msg >> Count;
+    byte i = 0;
+    while (i < Count && Count > 0) {
+        i++;
+
+        byte SlotSeq, Active, Value;
+        msg >> SlotSeq >> Active >> Value;
+        g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->LoadSettings(SlotSeq, Active, Value);
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::LoadAttendanceReward(CMsgStreamBuffer & msg){
+    byte Count;
+    msg >> Count;
+    byte i = 0;
+    while (i < Count && Count > 0) {
+        i++;
+        int ID, ItemID, ItemCount, DayCount;
+        msg >> ID;
+        msg >> ItemID;
+        msg >> ItemCount;
+        msg >> DayCount;
+        CIFDailyLogin::RefAttendanceEventStruct Data = CIFDailyLogin::RefAttendanceEventStruct();
+        Data.ID = ID;
+        Data.ItemID = ItemID;
+        Data.ItemCount = ItemCount;
+        Data.DayCount = DayCount;
+        g_pCGInterface->m_IRM.GetResObj<CIFDailyLogin>(DailyLoginID, 1)->m_RefAttendanceRewards.insert((std::make_pair(ID, Data)));
+    }
+    g_pCGInterface->m_IRM.GetResObj<CIFDailyLogin>(DailyLoginID, 1)->UpdateMenuSize();
+    msg.FlushRemaining();
+}
+void CNetProcessIn::LoadAttendanceRewardState(CMsgStreamBuffer & msg){
+    BYTE sCount;
+    msg >> sCount;
+
+    BYTE j = 0;
+    for (int j = 0; j < 50; ++j)
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFDailyLogin>(DailyLoginID, 1)->rewardslot[j]->OpenReceiveButton(false);
+    }
+
+    int i = 0;
+    while (i < sCount && sCount > 0) {
+        i++;
+        int RefRewardID;
+        msg >> RefRewardID;
+        for (int x = 0; x < 50; ++x)
+        {
+            if(g_pCGInterface->m_IRM.GetResObj<CIFDailyLogin>(DailyLoginID, 1)->rewardslot[x]->RefRewardID == RefRewardID)
+            {
+                g_pCGInterface->m_IRM.GetResObj<CIFDailyLogin>(DailyLoginID, 1)->rewardslot[x]->OpenReceiveButton(true);
+            }
+        }
+    }
+
+    msg.FlushRemaining();
+}
+void CNetProcessIn::LoadAttendance(CMsgStreamBuffer & msg){
+    byte DayCount;
+    msg >> DayCount;
+
+    for (int i = 0; i < 35; ++i)
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFDailyLogin>(DailyLoginID, 1)->dayslots[i]->ClearOK();
+    }
+    for(int i = 0; i < DayCount; i++)
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFDailyLogin>(DailyLoginID, 1)->dayslots[i]->ShowOK();
+    }
+    msg.FlushRemaining();
+}
+
+void CNetProcessIn::LoadSilkRank(CMsgStreamBuffer &msg)
+{
+
+    msg >>  g_pCGInterface->m_IRM.GetResObj<CIFVItemMall>(NewItemMallId, 1)->SilkHistory;
+    msg >>  g_pCGInterface->m_IRM.GetResObj<CIFVItemMall>(NewItemMallId, 1)->SilkRank;
+
+    msg.FlushRemaining();
+}
+void CNetProcessIn::CustomNoticesTextVariabla(CMsgStreamBuffer &msg)
+{
+    __int8 operators = 0;
+    msg >> operators;
+    std::n_wstring Message;
+    msg >> Message;
+    int ItemID;
+    msg >> ItemID;
+
+
+    //  g_CTextStringManager->GetString(&variable.c_str());
+    std::n_wstring NoticeStr = Message.c_str();
+
+    std::n_wstring ItemNames = std::n_wstring();
+    const SItemData *data = &g_CGlobalDataManager->GetItemData(ItemID);
+    if(data != NULL)
+    {
+        ItemNames = g_CTextStringManager->GetString2(data->NameStrID.c_str())->c_str();
+    }
+
+    wchar_t NoticeStr2[1000];
+    swprintf_s(NoticeStr2, sizeof(NoticeStr2), Message.c_str(), ItemNames.c_str());
+
+
+    D3DCOLOR color;
+    color = D3DCOLOR_RGBA(0xff, 0xae, 0xc3, 255);
+    if (operators == 1) {
+        g_pCGInterface->ShowMessage_Quest(NoticeStr2);
+        g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, NoticeStr2);
+    } else if (operators == 2) {
+        g_pCGInterface->ShowMessage_Notice(NoticeStr);
+        g_pCGInterface->FUN_00777c30(CHAT_AllGM, NoticeStr2, color, 1);
+    } else if (operators == 3) {
+        g_pCGInterface->ShowMessage_Warning(NoticeStr);
+        g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, NoticeStr2);
+    } else if (operators == 4) {
+        g_pCGInterface->ShowMessage_Notice(NoticeStr);
+        g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, NoticeStr2);
+    }
+        /*else if (operators == 4) {
+                g_pCGInterface->ShowMessage_Purble(Message.c_str());
+                g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, Message.c_str());
+            }
+            else if (operators == 5) {
+                g_pCGInterface->ShowMessage_Orange(Message.c_str());
+                g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, Message.c_str());
+            }*/
+    else if (operators == 6) {
+        g_pCGInterface->ShowMessage_Quest(NoticeStr2);
+    } else if (operators == 7) {
+        g_pCGInterface->ShowMessage_Notice(NoticeStr2);
+    } else if (operators == 8) {
+        g_pCGInterface->ShowMessage_Warning(NoticeStr2);
+    } else if (operators == 9) {
+        CIFSystemMessage *systemmessage = g_pCGInterface->GetSystemMessageView();
+        systemmessage->WriteMessage(255, 0xFFFF00, NoticeStr2, 7, 7);
+    } else if (operators == 11) {
+        g_pCGInterface->ShowLogMessage(color, NoticeStr2);// RED SYSTEM MESSAGE
+    } else if (operators == 12) {
+        g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, NoticeStr2);// sadece default renk sağ taraf
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::LoadSavedLocations(CMsgStreamBuffer &msg)
+{
+    byte Count;
+    msg >> Count;
+    byte i = 0;
+    while (i < Count && Count > 0) {
+        i++;
+        byte LocationID;
+        int RegionID;
+        int WorldID;
+        msg >> LocationID >> RegionID >> WorldID;
+        CIFSavedLocation::SavedLocation_Data Data = CIFSavedLocation::SavedLocation_Data();
+        Data.LocationID = LocationID;
+        Data.RegionID = RegionID;
+        Data.WorldID = WorldID;
+        g_pCGInterface->m_IRM.GetResObj<CIFSavedLocation>(SavedLocation, 1)->m_SavedLocation.insert((std::make_pair(LocationID, Data)));
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::SetSavedLocation(CMsgStreamBuffer &msg)
+{
+    byte LocationID;
+    int RegionID;
+    msg >> LocationID >> RegionID;
+    g_pCGInterface->m_IRM.GetResObj<CIFSavedLocation>(SavedLocation, 1)->SetButtonText(LocationID, RegionID);
+    msg.FlushRemaining();
+}
+void CNetProcessIn::PartyMemberViewerPacket(CMsgStreamBuffer &msg)
+{
+    byte type;
+    msg >> type;
+    if (type == 0) /// send part info
+    {
+        std::n_string TargetChar;
+        msg >> TargetChar;
+        const SPartyData& partyData = g_CCharacterDependentData.GetPartyData();
+        CMsgStreamBuffer buf(0x185C);
+        buf << (BYTE)0x0;
+        buf << TargetChar;
+        buf << (BYTE)(partyData.NumberOfMembers);
+        for (int i = 0; i < partyData.NumberOfMembers; ++i)
+        {
+
+            const SPartyMemberData& memberData = g_CCharacterDependentData.GetPartyMemberData(i);
+            //buf << std::n_string(TO_NSTRING(memberData.m_charactername));
+            buf << (byte)memberData.currentLevel;
+            buf << memberData.refobjID;
+            buf << memberData.Mastery1;
+            buf << memberData.Mastery2;
+        }
+        SendMsg(buf);
+    }
+    else if (type == 1) /// show and read party info
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFPartyMemberViewer>(PartyMemberViewer, 1)->Clear();
+        BYTE count;
+        msg >> count;
+
+        int i = 0;
+        while (i < count && count > 0) {
+            i++;
+            int Race;
+            msg >> Race;
+            byte Charlevel;
+            msg >> Charlevel;
+            int Mastery1;
+            msg >> Mastery1;
+            int Mastery2;
+            msg >> Mastery2;
+
+            g_pCGInterface->m_IRM.GetResObj<CIFPartyMemberViewer>(PartyMemberViewer, 1)->WriteLine(i, Race, Charlevel, Mastery1, Mastery2);
+        }
+        g_pCGInterface->m_IRM.GetResObj<CIFPartyMemberViewer>(PartyMemberViewer, 1)->ShowGWnd(true);
+
+    }
+    else if (type == 2)
+    {
+        std::n_string TargetChar;
+        msg >> TargetChar;
+        const SPartyData& partyData = g_CCharacterDependentData.GetPartyData();
+        CMsgStreamBuffer buf(0x185C);
+        buf << (BYTE)0x1;
+        buf << TargetChar;
+
+        // En yüksek iki btLevel değerlerini tutacak değişkenler
+        unsigned char highest1 = 0;
+        unsigned char highest2 = 0;
+
+        // En yüksek iki btLevel değerine sahip nMasteryId'leri tutacak değişkenler
+        int masteryId1 = 0;
+        int masteryId2 = 0;
+
+
+        // Map'i dolaşarak en yüksek iki btLevel değerine sahip MasteryID'leri bul
+        std::map<int, sMasteryData *>::iterator it;
+        for (it = g_pCGInterface->GetMainPopup()->GetSkill()->sSkillMaps.m_masteryData.begin(); it != g_pCGInterface->GetMainPopup()->GetSkill()->sSkillMaps.m_masteryData.end(); ++it) {
+            sMasteryData *data = it->second;
+            // Eğer mevcut MasteryID, en büyük MasteryID'den büyükse, ikinci en büyük MasteryID'yi güncelle
+            if (data->btLevel > highest1) {
+                highest2 = highest1;
+                highest1 = data->btLevel;
+                masteryId2 = masteryId1;
+                masteryId1 = it->first;
+            }
+                // Eğer mevcut btLevel, ikinci en büyük btLevel'den büyükse, ikinci en büyük btLevel'i güncelle
+            else if (data->btLevel > highest2) {
+                highest2 = data->btLevel;
+                masteryId2 = it->first;
+            }
+        }
+        buf << g_pMyPlayerObj->GetCommonData()->RefObjectId;
+        buf << g_pMyPlayerObj->GetCurrentLevel();
+        buf << masteryId1;
+        buf << masteryId2;
+        SendMsg(buf);
+    }
+    else if (type == 3)
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFPartyMemberViewer>(PartyMemberViewer, 1)->Clear();
+        int Race;
+        msg >> Race;
+
+        byte Charlevel;
+        msg >> Charlevel;
+
+        int Mastery1;
+        msg >> Mastery1;
+
+        int Mastery2;
+        msg >> Mastery2;
+
+
+          g_pCGInterface->m_IRM.GetResObj<CIFPartyMemberViewer>(PartyMemberViewer, 1)->WriteLine(1, Race, Charlevel, Mastery1, Mastery2);
+          g_pCGInterface->m_IRM.GetResObj<CIFPartyMemberViewer>(PartyMemberViewer, 1)->ShowGWnd(true);
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::LiveUniqueDPS(CMsgStreamBuffer &msg)
+{
+    std::n_string DMG;
+    std::n_string PlayerID;
+    int MobID;
+    BYTE RecordCount;//BYTE a çevirdim az paket olsun diye :D iyi ypamışsın :D dene bakalım
+
+    std::wstring UniqueName = L"";
+    msg >> MobID >> RecordCount;
+    BYTE i = 0;
+
+    static const CCharacterData *uqdata = NULL;
+    uqdata = g_CGlobalDataManager->GetCharacter(MobID);
+
+    if(uqdata != NULL)
+    {
+        UniqueName = g_CTextStringManager->GetString2(uqdata->GetData().NameStrID.c_str())->c_str();
+        g_pCGInterface->m_IRM.GetResObj<CIFDps>(DPSID, 1)->Clear();
+        g_pCGInterface->m_IRM.GetResObj<CIFDps>(DPSID, 1)->SetUniqueName(UniqueName.c_str());
+        bool test = g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->DpsEnabled();
+
+        if (test == true)
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFDps>(DPSID, 1)->OpenDPS(10000);
+        }
+
+
+        while (i < RecordCount && RecordCount > 0) {
+            i++;
+            msg >> PlayerID >> DMG;
+            g_pCGInterface->m_IRM.GetResObj<CIFDps>(DPSID, 1)->WriteLine(i, TO_WSTRING(PlayerID).c_str(), TO_WSTRING(DMG).c_str());
+        }
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::UpdateAchievementCondition(CMsgStreamBuffer &msg) {
+    int RefAchievementID;
+    int RefAchievementConditionID;
+    __int64 ProgressCount;
+    byte State;
+    msg >> RefAchievementID >> RefAchievementConditionID >> ProgressCount >> State;
+
+
+    if(m_Player->m_Achievements.find(RefAchievementID) != m_Player->m_Achievements.end())
+    {
+        m_Player->m_Achievements[RefAchievementID] = State;
+    }
+    if(m_Player->m_AchievementsCondition.find(RefAchievementConditionID) != m_Player->m_AchievementsCondition.end())
+    {
+        m_Player->m_AchievementsCondition[RefAchievementConditionID].ProgressCount = ProgressCount;
+    }
+    g_pCGInterface->m_IRM.GetResObj<CIFAchievements>(AchievementsID, 1)->OnListUpdated();
+
+}
+void CNetProcessIn::LoadAchievementCondition(CMsgStreamBuffer &msg) {
+    int count;
+    msg >> count;
+
+    int i = 0;
+    while (i < count && count > 0) {
+        i++;
+        int RefAchievementConditionID, AchievementID;
+        __int64 ProgressCount;
+        msg >> RefAchievementConditionID >> AchievementID >> ProgressCount;
+        CustomCICPlayer::SAchievementsCondition data = CustomCICPlayer::SAchievementsCondition();
+        data.RefAchievementConditionID = RefAchievementConditionID;
+        data.AchievementID = AchievementID;
+        data.ProgressCount = ProgressCount;
+        m_Player->m_AchievementsCondition.insert(std::make_pair(data.RefAchievementConditionID, data));
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::LoadAchievement(CMsgStreamBuffer &msg) {
+    int count;
+    msg >> count;
+
+    int i = 0;
+    while (i < count && count > 0) {
+        i++;
+            int RefAchievementID;
+            byte State;
+            msg >> RefAchievementID >> State;
+
+            m_Player->m_Achievements.insert(std::make_pair(RefAchievementID, State));
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::AddItemToChest(CMsgStreamBuffer &msg) {
+
+    int ID;
+    int ItemID;
+    int Quantity;
+    std::n_string Date;
+    std::n_string Type;
+    byte Plus;
+
+    msg >> ID >> ItemID >> Quantity >> Date >> Type >> Plus;
+
+    CIFChest::CharChest Cate = CIFChest::CharChest();
+    Cate.DbID = ID;
+    Cate.ItemID = ItemID;
+    Cate.Quantity = Quantity;
+    Cate.Date = TO_NWSTRING(Date);
+    Cate.Type = TO_NWSTRING(Type);
+    Cate.Plus = Plus;
+    g_pCGInterface->m_IRM.GetResObj<CIFChest>(ChestID, 1)->my_Chest.insert(std::make_pair(ID, Cate));
+
+    g_pCGInterface->m_IRM.GetResObj<CIFChest>(ChestID, 1)->Clear();
+    g_pCGInterface->m_IRM.GetResObj<CIFChest>(ChestID, 1)->UpdateRanks();
+
+
+    msg.FlushRemaining();
+}
+void CNetProcessIn::LoadChest(CMsgStreamBuffer &msg)
+{
+    g_pCGInterface->m_IRM.GetResObj<CIFChest>(ChestID, 1)->my_Chest.clear();
+    g_pCGInterface->m_IRM.GetResObj<CIFChest>(ChestID, 1)->Clear();
+    int count;
+    msg >> count;
+
+    int i = 0;
+    while (i < count && count > 0) {
+        i++;
+        int ID;
+        int ItemID;
+        int Quantity;
+        std::n_string Date;
+        std::n_string Type;
+        byte Plus;
+
+        msg >> ID >> ItemID >> Quantity >> Date >> Type >> Plus;
+
+        CIFChest::CharChest Cate = CIFChest::CharChest();
+        Cate.DbID = ID;
+        Cate.ItemID = ItemID;
+        Cate.Quantity = Quantity;
+        Cate.Date = TO_NWSTRING(Date);
+        Cate.Type = TO_NWSTRING(Type);
+        Cate.Plus = Plus;
+        g_pCGInterface->m_IRM.GetResObj<CIFChest>(ChestID, 1)->my_Chest.insert(std::make_pair(ID, Cate));
+        g_pCGInterface->m_IRM.GetResObj<CIFChest>(ChestID, 1)->UpdateRanks();
+    }
+    msg.FlushRemaining();
+}
+
+
+void CNetProcessIn::RemoveNewTitle(CMsgStreamBuffer &msg) {
+    std::n_string CharName167;
+    msg >> CharName167;
+
+    std::n_wstring CharName16 = TO_NWSTRING(CharName167);
+
+    if (m_CustomDataManager->_ActiveTitleNameNew.find(CharName16) != m_CustomDataManager->_ActiveTitleNameNew.end())
+    {
+        m_CustomDataManager->_ActiveTitleNameNew.erase(CharName16);
+    }
+    CLASSLINK_LOOP_BEGIN(CICUser)
+        if (wcscmp(obj->GetName().c_str(), CharName16.c_str()) == 0)
+        {
+            obj->ChangeName(CharName16);
+            obj->SetTitleName(obj->m_hwanlevel);
+        }
+    CLASSLINK_LOOP_END(CICUser)
+    msg.FlushRemaining();
+}
+void CNetProcessIn::UpdateNewTitle(CMsgStreamBuffer &msg)
+{
+    std::n_string CharName167;
+
+    std::n_string NewTitle7;
+    msg >> CharName167 >> NewTitle7;
+
+    std::n_wstring CharName16 = TO_NWSTRING(CharName167);
+
+    std::n_wstring NewTitle = TO_NWSTRING(NewTitle7);
+
+    if (m_CustomDataManager->_ActiveTitleNameNew.find(CharName16) == m_CustomDataManager->_ActiveTitleNameNew.end()) {
+        m_CustomDataManager->_ActiveTitleNameNew.insert(std::make_pair(CharName16, NewTitle));
+    } else {
+        m_CustomDataManager->_ActiveTitleNameNew[CharName16] = NewTitle;
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::NoticeSystem(CMsgStreamBuffer &msg)
+{
+    byte operators;
+    msg >> operators;
+    std::n_wstring Message;
+    msg >> Message;
+    D3DCOLOR color;
+    color = D3DCOLOR_RGBA(0xff, 0xae, 0xc3, 255);
+    //if (operators == 1) {
+    //    g_pCGInterface->ShowMessage_Quest(Message.c_str());
+    //    g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, Message.c_str());
+    //}
+    //else if (operators == 2) {
+    //    g_pCGInterface->ShowMessage_Notice(Message.c_str());
+    //    g_pCGInterface->FUN_00777c30(CHAT_AllGM, Message.c_str(), color, 1);
+    //}
+    //else if (operators == 3) {
+    //    g_pCGInterface->ShowMessage_Warning(Message.c_str());
+    //    g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, Message.c_str());
+    //}
+    //else if (operators == 4) {
+    //    g_pCGInterface->ShowMessage_Notice(Message.c_str());
+    //    g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, Message.c_str());
+    //}
+    if (operators == 1) {
+        g_pCGInterface->ShowMessage_Quest(Message.c_str());
+        g_pCGInterface->ShowLogMessage(0x00FF00, Message.c_str());// Xanh lá
+    }
+    if (operators == 2) {
+        g_pCGInterface->ShowMessage_Quest(Message.c_str());
+        g_pCGInterface->ShowLogMessage(0x00FFFF, Message.c_str());// Xanh da trời
+    }
+    if (operators == 3) {
+        g_pCGInterface->ShowMessage_Quest(Message.c_str());
+        g_pCGInterface->ShowLogMessage(0xFF0000, Message.c_str());// đỏ
+    }
+    if (operators == 4) {
+        g_pCGInterface->ShowMessage_Quest(Message.c_str());
+        g_pCGInterface->ShowLogMessage(0xFFFF00, Message.c_str());// vàng
+    }
+    else if (operators == 5) {
+        g_pCGInterface->ShowMessage_Quest(Message.c_str());
+    }
+    else if (operators == 6) {
+        g_pCGInterface->ShowMessage_Notice(Message.c_str());
+    }
+    else if (operators == 7) {
+        g_pCGInterface->ShowMessage_Warning(Message.c_str());
+    }
+    else if (operators == 8) {
+        CIFSystemMessage* systemmessage = g_pCGInterface->GetSystemMessageView();
+        systemmessage->WriteMessage(255, 0xFFFF00, Message.c_str(), 7, 7);
+    }
+    else if (operators == 9) {
+        g_pCGInterface->ShowLogMessage(color, Message.c_str()); // RED SYSTEM MESSAGE
+    }
+    else if (operators == 10)
+    {
+        g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, Message.c_str());// sadece default renk sağ taraf
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::LoadEventSchedule(CMsgStreamBuffer &msg)
+{
+    byte count;
+    msg >> count;
+
+    byte i = 0;
+    while (i < count && count > 0) {
+        i++;
+        int ID;
+        std::n_wstring EventName;
+        byte Day;
+        std::n_wstring Time;
+        msg >> ID >> EventName >> Day >> Time;
+
+
+        CIFEventSchedule::EventSchedule Cate = CIFEventSchedule::EventSchedule();
+        Cate.ID = ID;
+        Cate.EventName = EventName.c_str();
+        Cate.Day = Day;
+        Cate.Time = Time.c_str();
+        g_pCGInterface->m_IRM.GetResObj<CIFEventSchedule>(EventScheduleID, 1)->EventScheduleList.push_back(Cate);
+    }
+    g_pCGInterface->m_IRM.GetResObj<CIFEventSchedule>(EventScheduleID, 1)->UpdateList();
+    msg.FlushRemaining();
+}
+void CNetProcessIn::LoadEventRegister(CMsgStreamBuffer &msg)
+{
+    byte count;
+    msg >> count;
+
+    byte i = 0;
+    while (i < count && count > 0) {
+        i++;
+        byte ID;
+        std::n_wstring EventName;
+        std::n_wstring EventDesc;
+        msg >> ID >> EventName >> EventDesc;
+
+        CIFEventRegister::Events Cate = CIFEventRegister::Events();
+        Cate.DBID = ID;
+        Cate.EventName = EventName.c_str();
+        Cate.EventDesc = EventDesc.c_str();
+        g_pCGInterface->m_IRM.GetResObj<CIFEventRegister>(EventRegisterID, 1)->EventList.push_back(Cate);
+    }
+    g_pCGInterface->m_IRM.GetResObj<CIFEventRegister>(EventRegisterID, 1)->UpdateEvents();
+    msg.FlushRemaining();
+}
+void CNetProcessIn::UpdateUniqueHistory(CMsgStreamBuffer &msg)
+{
+
+    int UniqueID;
+    std::n_wstring KillerName;
+    byte State;
+    __int64 time;
+    int RegID, PosX, PosZ, PosY;
+    msg >> UniqueID >> KillerName >> State >> time >> RegID >> PosX >> PosY >> PosZ;
+    //printf("%d %ls %lld %d %d %d %d\n", UniqueID, KillerName.c_str(), time, RegID, PosX, PosY, PosZ);
+
+    if(g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->UniqueHistoryList.find(UniqueID)
+       != g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->UniqueHistoryList.end())
+    {
+        const CCharacterData *uqdata = NULL;
+        uqdata = g_CGlobalDataManager->GetCharacter(UniqueID);
+
+        std::wstring UniqueName = L"<Unknown>";
+
+        if (uqdata != NULL) {
+            UniqueName = g_CTextStringManager->GetString2(uqdata->GetData().NameStrID.c_str())->c_str();
+        }
+        if(State == 1)
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->UniqueHistoryList[UniqueID].Killer = L"<None>";
+        }
+        else
+        {
+            g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->UniqueHistoryList[UniqueID].Killer = KillerName.c_str();
+        }
+        g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->UniqueHistoryList[UniqueID].UniqueName = UniqueName;
+        g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->UniqueHistoryList[UniqueID].Status = State;
+        g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->UniqueHistoryList[UniqueID].Elapsedtime = time;
+        g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->UniqueHistoryList[UniqueID].RegionID = RegID;
+        g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->UniqueHistoryList[UniqueID].KilledX = PosX;
+        g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->UniqueHistoryList[UniqueID].KilledZ = PosZ;
+        g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->UniqueHistoryList[UniqueID].KilledY = PosY;
+        g_pCGInterface->GetGuiFromList<CIFUniqueHistory>(UniqueHistoryID)->UniqueHistoryList[UniqueID].DpsMeter.clear();
+    }
+    else
+    {
+        const CCharacterData *uqdata = NULL;
+        uqdata = g_CGlobalDataManager->GetCharacter(UniqueID);
+
+        std::wstring UniqueName = L"<Unknown>";
+
+        if (uqdata != NULL) {
+            UniqueName = g_CTextStringManager->GetString2(uqdata->GetData().NameStrID.c_str())->c_str();
+        }
+
+        CIFUniqueHistory::UniqueHistory New = CIFUniqueHistory::UniqueHistory();
+        New.UniqueName = UniqueName;
+        New.Status = State;
+        New.Elapsedtime = time;
+        New.RegionID = RegID;
+        New.KilledX = PosX;
+        New.KilledZ = PosZ;
+        if(State == 1)
+        {
+            New.Killer = L"<None>";
+        }
+        else
+        {
+            New.Killer = KillerName.c_str();
+        }
+        g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->UniqueHistoryList.insert(std::make_pair(UniqueID, New));
+    }
+
+    byte DpsCount;
+    msg >> DpsCount;
+
+    byte i = 0;
+    while (i < DpsCount && DpsCount > 0) {
+        i++;
+        std::n_string Names, Value;
+        msg >> Names >> Value;
+
+        if(g_pCGInterface->GetGuiFromList<CIFUniqueHistory>(UniqueHistoryID)->UniqueHistoryList.find(UniqueID)
+           != g_pCGInterface->GetGuiFromList<CIFUniqueHistory>(UniqueHistoryID)->UniqueHistoryList.end())
+        {
+            g_pCGInterface->GetGuiFromList<CIFUniqueHistory>(UniqueHistoryID)->
+                    UniqueHistoryList[UniqueID].DpsMeter.insert(std::make_pair(TO_NWSTRING(Names), TO_NWSTRING(Value)));
+        }
+    }
+
+    g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->Clear();
+    g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->UpdateRanks();
+    msg.FlushRemaining();
+}
+void CNetProcessIn::LoadUniqueHistory(CMsgStreamBuffer &msg)
+{
+    BYTE sCount;
+    msg >> sCount;
+    BYTE i = 0;
+    g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->UniqueHistoryList.clear();
+
+    while (i < sCount && sCount > 0) {
+        i++;
+        int UniqueID;
+        std::n_wstring KillerName;
+        byte State;
+        __int64 time;
+        int RegID, PosX, PosZ, PosY;
+        msg >> UniqueID >> KillerName >> State >> time >> RegID >> PosX >> PosY >> PosZ;
+
+
+        const CCharacterData *uqdata = NULL;
+        uqdata = g_CGlobalDataManager->GetCharacter(UniqueID);
+
+        std::wstring UniqueName = L"<Unknown>";
+
+        if (uqdata != NULL) {
+            UniqueName = g_CTextStringManager->GetString2(uqdata->GetData().NameStrID.c_str())->c_str();
+        }
+
+        CIFUniqueHistory::UniqueHistory New = CIFUniqueHistory::UniqueHistory();
+        New.UniqueName = UniqueName;
+        New.Status = State;
+        New.Elapsedtime = time;
+        New.RegionID = RegID;
+        New.KilledX = PosX;
+        New.KilledY = PosY;
+        New.KilledZ = PosZ;
+        New.DpsMeter = std::map<std::n_wstring, std::n_wstring>();
+        if(State == 1)
+        {
+            New.Killer = L"<None>";
+        }
+        else
+        {
+            New.Killer = KillerName.c_str();
+        }
+        g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->UniqueHistoryList.insert(std::make_pair(UniqueID, New));
+
+
+        byte DpsCount;
+        msg >> DpsCount;
+
+        byte j = 0;
+        while (j < DpsCount && DpsCount > 0) {
+            j++;
+            std::n_string Names, Value;
+            msg >> Names >> Value;
+            printf("%s %s \n", Names.c_str(), Value.c_str());
+            if(g_pCGInterface->GetGuiFromList<CIFUniqueHistory>(UniqueHistoryID)->UniqueHistoryList.find(UniqueID)
+               != g_pCGInterface->GetGuiFromList<CIFUniqueHistory>(UniqueHistoryID)->UniqueHistoryList.end())
+            {
+                g_pCGInterface->GetGuiFromList<CIFUniqueHistory>(UniqueHistoryID)->
+                        UniqueHistoryList[UniqueID].DpsMeter.insert(std::make_pair(TO_NWSTRING(Names), TO_NWSTRING(Value))); }
+        }
+
+    }
+
+    g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->Clear();
+    g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->UpdateRanks();
+    msg.FlushRemaining();
+}
+void CNetProcessIn::LoadOwnRank(CMsgStreamBuffer &msg)
+{
+    std::n_string Name;
+    int No;
+    int Point;
+    msg >> Name >> No >> Point;
+    g_pCGInterface->m_IRM.GetResObj<CIFDynamicRanking>(DynamicRankingID, 1)->UpdateSelfRank(TO_NWSTRING(Name), No, Point);
+
+    msg.FlushRemaining();
+}
+void CNetProcessIn::LoadRank(CMsgStreamBuffer &msg)
+{
+    BYTE sCount;
+    msg >> sCount;
+    BYTE i = 0;
+    g_pCGInterface->m_IRM.GetResObj<CIFDynamicRanking>(DynamicRankingID, 1)->RankList.clear();
+
+    while (i < sCount && sCount > 0) {
+        i++;
+        //  int No;
+        std::n_string Name1;
+        std::n_string Guild1;
+        int Points;
+        msg >> Name1 >> Guild1 >> Points;
+
+        std::n_wstring Name = TO_NWSTRING(Name1);
+        std::n_wstring Guild = TO_NWSTRING(Guild1);
+        std::wstring MyPoints = Insert(Points);
+
+        CIFDynamicRanking::RankStruct uqR = CIFDynamicRanking::RankStruct();
+        //uqR.LineNum = No;
+        uqR.Charname = Name.c_str();
+        uqR.Guild = Guild.c_str();
+        uqR.Points = MyPoints;
+
+        g_pCGInterface->m_IRM.GetResObj<CIFDynamicRanking>(DynamicRankingID, 1)->RankList.push_back(uqR);
+    }
+
+    g_pCGInterface->m_IRM.GetResObj<CIFDynamicRanking>(DynamicRankingID, 1)->Clear();
+    g_pCGInterface->m_IRM.GetResObj<CIFDynamicRanking>(DynamicRankingID, 1)->UpdateSelfRank(L"empty", 0, -1);
+    g_pCGInterface->m_IRM.GetResObj<CIFDynamicRanking>(DynamicRankingID, 1)->UpdateRanks();
+    msg.FlushRemaining();
+}
+void CNetProcessIn::RankCategories(CMsgStreamBuffer &msg)
+{
+    byte Count;
+    msg >> Count;
+    g_pCGInterface->m_IRM.GetResObj<CIFDynamicRanking>(DynamicRankingID, 1)->RankCategorys.clear();
+    int i = 0;
+    while (i < Count && Count > 0) {
+        i++;
+
+
+        int ID;
+        msg >> ID;
+
+        std::n_string Categorys;
+        msg >> Categorys;
+        std::n_wstring Category = TO_NWSTRING(Categorys);
+
+
+            g_pCGInterface->m_IRM.GetResObj<CIFDynamicRanking>(DynamicRankingID, 1)->RankCategorys.insert(std::make_pair(Category, ID));
+            wchar_t buffer[255];
+            std::n_wstring strmsg;
+            swprintf_s(buffer, sizeof(buffer), Category.c_str());
+            strmsg.assign(buffer);
+            g_pCGInterface->m_IRM.GetResObj<CIFDynamicRanking>(DynamicRankingID, 1)->m_popup->m_list->sub_64F8A0(strmsg, 0, 0xffffff, 0xffffff, -1, 0, 0);
+
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::RemoveCharacterIconRight(CMsgStreamBuffer &msg)
+{
+    std::n_string CharName167;
+    msg >> CharName167;
+    std::n_wstring CharName16 = TO_NWSTRING(CharName167);
+    if (m_CustomDataManager->m_RightCharIcons.find(CharName16) != m_CustomDataManager->m_RightCharIcons.end())
+    {
+        m_CustomDataManager->m_RightCharIcons.erase(CharName16);
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::UpdateCharacterIconRight(CMsgStreamBuffer &msg)
+{
+    std::n_string CharName167;
+    int IconID;
+    msg >> CharName167 >> IconID;
+
+    std::n_wstring CharName16 = TO_NWSTRING(CharName167);
+    if (m_CustomDataManager->m_RightCharIcons.find(CharName16) != m_CustomDataManager->m_RightCharIcons.end()) {
+        m_CustomDataManager->m_RightCharIcons[CharName16] = IconID;
+    } else {
+        m_CustomDataManager->m_RightCharIcons.insert((std::make_pair(CharName16, IconID)));
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::RemoveCharacterIconLeft(CMsgStreamBuffer &msg)
+{
+    std::n_string CharName167;
+    msg >> CharName167;
+    std::n_wstring CharName16 = TO_NWSTRING(CharName167);
+    if (m_CustomDataManager->m_LeftCharIcons.find(CharName16) != m_CustomDataManager->m_LeftCharIcons.end())
+    {
+        m_CustomDataManager->m_LeftCharIcons.erase(CharName16);
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::UpdateCharacterIconLeft(CMsgStreamBuffer &msg)
+{
+    std::n_string CharName167;
+    int IconID;
+    msg >> CharName167 >> IconID;
+
+    std::n_wstring CharName16 = TO_NWSTRING(CharName167);
+    if (m_CustomDataManager->m_LeftCharIcons.find(CharName16) != m_CustomDataManager->m_LeftCharIcons.end()) {
+        m_CustomDataManager->m_LeftCharIcons[CharName16] = IconID;
+    } else {
+        m_CustomDataManager->m_LeftCharIcons.insert((std::make_pair(CharName16, IconID)));
+    }
+    msg.FlushRemaining();
+}
+
+void CNetProcessIn::AddIconToIconManager(CMsgStreamBuffer &msg)
+{
+    int DBID;
+    msg >> DBID;
+    std::n_string MediaPath;
+    msg >> MediaPath;
+    byte Side;
+    msg >> Side;
+    CIFIconManager::IconStruct IconStruct =  CIFIconManager::IconStruct();
+    IconStruct.DBID = DBID;
+    IconStruct.side = Side;
+    IconStruct.MediaPath = TO_NWSTRING(MediaPath);
+    g_pCGInterface->m_IRM.GetResObj<CIFIconManager>(IconManagerID, 1)->IconList.push_back(IconStruct);
+    g_pCGInterface->m_IRM.GetResObj<CIFIconManager>(IconManagerID, 1)->Clear();
+    g_pCGInterface->m_IRM.GetResObj<CIFIconManager>(IconManagerID, 1)->ClearDDJ();
+    g_pCGInterface->m_IRM.GetResObj<CIFIconManager>(IconManagerID, 1)->LoadItems();
+    msg.FlushRemaining();
+}
+void CNetProcessIn::CharacterIconManager(CMsgStreamBuffer &msg)
+{
+    byte Count;
+    msg >> Count;
+
+    int i = 0;
+    while (i < Count && Count > 0) {
+        i++;
+
+        int DBID;
+        msg >> DBID;
+
+        std::n_string MediaPath;
+        msg >> MediaPath;
+
+        byte Side;
+        msg >> Side;
+        CIFIconManager::IconStruct IconStruct =  CIFIconManager::IconStruct();
+        IconStruct.DBID = DBID;
+        IconStruct.side = Side;
+        IconStruct.MediaPath = TO_NWSTRING(MediaPath);
+        g_pCGInterface->m_IRM.GetResObj<CIFIconManager>(IconManagerID, 1)->IconList.push_back(IconStruct);
+    }
+    g_pCGInterface->m_IRM.GetResObj<CIFIconManager>(IconManagerID, 1)->LoadItems();
+    msg.FlushRemaining();
+}
+void CNetProcessIn::RemoveTitleColor(CMsgStreamBuffer &msg)
+{
+    std::n_string CharName167;
+    msg >> CharName167;
+
+    std::n_wstring CharName16 = TO_NWSTRING(CharName167);
+
+    if (m_CustomDataManager->_ActiveTitleColors.find(CharName16) != m_CustomDataManager->_ActiveTitleColors.end())
+    {
+        m_CustomDataManager->_ActiveTitleColors.erase(CharName16);
+    }
+    CLASSLINK_LOOP_BEGIN(CICUser)
+        if (wcscmp(obj->GetName().c_str(), CharName16.c_str()) == 0)
+            obj->ChangeTitleColor(0xFFE65B);
+    CLASSLINK_LOOP_END(CICUser)
+    msg.FlushRemaining();
+}
+void CNetProcessIn::UpdateTitleColor(CMsgStreamBuffer &msg)
+{
+    std::n_string CharName167;
+    unsigned __int32 NewColor;
+    msg >> CharName167 >> NewColor;
+
+    std::n_wstring CharName16 = TO_NWSTRING(CharName167);
+
+    CLASSLINK_LOOP_BEGIN(CICUser)
+        if (wcscmp(obj->GetName().c_str(), CharName16.c_str()) == 0)
+            obj->ChangeTitleColor(NewColor);
+    CLASSLINK_LOOP_END(CICUser)
+
+    if (m_CustomDataManager->_ActiveTitleColors.find(CharName16.c_str()) != m_CustomDataManager->_ActiveTitleColors.end()) {
+        m_CustomDataManager->_ActiveTitleColors[CharName16] = NewColor;
+    } else {
+
+        m_CustomDataManager->_ActiveTitleColors.insert((std::make_pair(CharName16, NewColor)));
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::AddColorToTitleManagerColor(CMsgStreamBuffer &msg)
+{
+    int DBID;
+    std::n_string ColorName;
+    unsigned __int32 ColorCode;
+
+    msg >> DBID >> ColorName >> ColorCode;
+
+
+    CIFTitleManager::ColorStruct ColorStruct =  CIFTitleManager::ColorStruct();
+    ColorStruct.DBID = DBID;
+    ColorStruct.ColorName = TO_WSTRING(ColorName);
+    ColorStruct.ColorCode = ColorCode; /// yellow
+    g_pCGInterface->m_IRM.GetResObj<CIFTitleManager>(TitleManagerID, 1)->ColorList.push_back(ColorStruct);
+    g_pCGInterface->m_IRM.GetResObj<CIFTitleManager>(TitleManagerID, 1)->ActivateTabPage(1);
+    msg.FlushRemaining();
+}
+void CNetProcessIn::AddTitleToTitleManager(CMsgStreamBuffer &msg)
+{
+    byte TitleID;
+    std::n_string TitleName;
+    msg >> TitleID >> TitleName;
+
+    const std::n_wstring &regionname = g_CTextStringManager->GetString(TO_WSTRING(TitleName).c_str());
+    std::wstring TitleNames;
+
+    TitleNames = regionname.c_str();
+    if (TitleNames.empty())
+        TitleNames = L"<Unknown>";
+    CIFTitleManager::TitleStruct TitleStruct =  CIFTitleManager::TitleStruct();
+    TitleStruct.TitleID = TitleID;
+    TitleStruct.TitleName = TitleNames;
+    g_pCGInterface->m_IRM.GetResObj<CIFTitleManager>(TitleManagerID, 1)->TitleList.push_back(TitleStruct);
+    g_pCGInterface->m_IRM.GetResObj<CIFTitleManager>(TitleManagerID, 1)->ActivateTabPage(0);
+    msg.FlushRemaining();
+}
+void CNetProcessIn::CharTitleManagerColors(CMsgStreamBuffer &msg)
+{
+    byte Count;
+    msg >> Count;
+
+    int i = 0;
+    while (i < Count && Count > 0) {
+        i++;
+        int DBID;
+        std::n_string ColorName;
+        unsigned __int32 ColorCode;
+        msg >> DBID;
+        msg >> ColorName;
+        msg >> ColorCode;
+        CIFTitleManager::ColorStruct ColorStruct =  CIFTitleManager::ColorStruct();
+        ColorStruct.DBID = DBID;
+        ColorStruct.ColorName = TO_WSTRING(ColorName);
+        ColorStruct.ColorCode = ColorCode; /// yellow
+        g_pCGInterface->m_IRM.GetResObj<CIFTitleManager>(TitleManagerID, 1)->ColorList.push_back(ColorStruct);
+    }
+    msg.FlushRemaining();
+}
+void CNetProcessIn::CharTitleManager(CMsgStreamBuffer &msg) {
+    byte Count;
+    msg >> Count;
+
+    int i = 0;
+    while (i < Count && Count > 0) {
+        i++;
+        byte TitleID;
+        std::n_string TitleName;
+        msg >> TitleID >> TitleName;
+
+        std::stringstream Reg;
+        Reg << TitleName;
+        const std::n_wstring &regionname = g_CTextStringManager->GetString(TO_WSTRING(TitleName).c_str());
+        std::wstring TitleNames;
+
+        TitleNames = regionname.c_str();
+        if (TitleNames.empty())
+            TitleNames = L"</>";
+        CIFTitleManager::TitleStruct TitleStruct =  CIFTitleManager::TitleStruct();
+        TitleStruct.TitleID = TitleID;
+        TitleStruct.TitleName = TitleNames;
+        g_pCGInterface->m_IRM.GetResObj<CIFTitleManager>(TitleManagerID, 1)->TitleList.push_back(TitleStruct);
+    }
+    g_pCGInterface->m_IRM.GetResObj<CIFTitleManager>(TitleManagerID, 1)->ActivateTabPage(0);
+    msg.FlushRemaining();
+}
 void CNetProcessIn::OnUpdateGameTime(CMsgStreamBuffer &msg) {
     DEBUG_PRINT_CALL()
 
@@ -288,11 +2984,187 @@ void CNetProcessIn::On3405(CMsgStreamBuffer &msg) {
 }
 
 void CNetProcessIn::On34b5(CMsgStreamBuffer &msg) {
+
+    m_Player->m_FellowSkillData.clear();
+
+    if(g_pCGInterface->m_IRM.GetResObj<CIFDps>(DPSID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFDps>(DPSID, 1)->ShowGWnd(false);
+    }
+
+    g_pCGInterface->OnItemMallSectionControl(false);
+    if (g_pCGInterface->m_IRM.GetResObj<CIFCounterWnd>(CounterWndNew, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFCounterWnd>(CounterWndNew, 1)->ShowGWnd(false);
+
+    }
+
+    if (g_pCGInterface->m_IRM.GetResObj<CIFFortressWar>(FtwKillCounter, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFFortressWar>(FtwKillCounter, 1)->ShowGWnd(false);
+    }
+
+    if (g_pCGInterface->m_IRM.GetResObj<CIFAlchemyMacro>(AlchemyMacro, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFAlchemyMacro>(AlchemyMacro, 1)->ShowGWnd(false);
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFSettings>(1951, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFSettings>(1951, 1)->ShowGWnd(false);
+    }
+
+    if(g_pCGInterface->m_IRM.GetResObj<CIFVAvatarMallBuyItemList>(AvatarMallBuyListId, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFVAvatarMallBuyItemList>(AvatarMallBuyListId, 1)->ShowGWnd(false);
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFVItemMallBuyItem>(NewItemMallBuyId, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFVItemMallBuyItem>(NewItemMallBuyId, 1)->ShowGWnd(false);
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFVSelectMall>(SelectMallId, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFVSelectMall>(SelectMallId, 1)->ShowGWnd(false);
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFVItemMall>(NewItemMallId, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFVItemMall>(NewItemMallId, 1)->OnCloseWnd();
+    }
+
+    if(g_pCGInterface->m_IRM.GetResObj<CIFDailyLogin>(DailyLoginID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFDailyLogin>(DailyLoginID, 1)->ShowGWnd(false);
+    }
+    if(g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->Clear();
+        g_pCGInterface->m_IRM.GetResObj<CIFKillCounter>(1382, 1)->ShowGWnd(false);
+    }
+    if(g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->Clear();
+        g_pCGInterface->m_IRM.GetResObj<CIFTeamCounter>(TeamCounterID, 1)->ShowGWnd(false);
+    }
+    if(g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->Clear();
+        g_pCGInterface->m_IRM.GetResObj<CIFJobCounter>(JobCounterID, 1)->ShowGWnd(false);
+
+    }
+    if(g_pCGInterface->m_IRM.GetResObj<CIFItemLocker>(ItemLocker, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFItemLocker>(ItemLocker, 1)->OnCloseWnd();
+    }
+    if(g_pCGInterface->m_IRM.GetResObj<CIFItemUnlocker>(Itemunlocker, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFItemUnlocker>(Itemunlocker, 1)->OnCloseWnd();
+    }
+    else if( g_pCGInterface->m_IRM.GetResObj<CIFNewMsgBox>(1394, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFNewMsgBox>(1394, 1)->ShowGWnd(false);
+    }
+
+    if(g_pCGInterface->m_IRM.GetResObj<CIFDps>(DPSID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFDps>(DPSID, 1)->ShowGWnd(false);
+    }
+    if(g_pCGInterface->m_IRM.GetResObj<CIFItemTranslationWnd>(1361, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFItemTranslationWnd>(1361, 1)->OnCloseWnd();
+    }
+
+    if(g_pCGInterface->m_IRM.GetResObj<CIFSocial>(SocialWndID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFSocial>(SocialWndID, 1)->ShowGWnd(false);
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFMacro>(MacroID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFMacro>(MacroID, 1)->ShowGWnd(false);
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->ShowGWnd(false);
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFChest>(ChestID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFChest>(ChestID, 1)->OnCloseWnd();
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFGrantName>(GrantNameID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFGrantName>(GrantNameID, 1)->ShowGWnd(false);
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFTitleManager>(TitleManagerID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFTitleManager>(TitleManagerID, 1)->ShowGWnd(false);
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFIconManager>(IconManagerID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFIconManager>(IconManagerID, 1)->ShowGWnd(false);
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFDynamicRanking>(DynamicRankingID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFDynamicRanking>(DynamicRankingID, 1)->ShowGWnd(false);
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFUniqueHistory>(UniqueHistoryID, 1)->OnCloseWnd();
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFEventRegister>(EventRegisterID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFEventRegister>(EventRegisterID, 1)->ShowGWnd(false);
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFEventSchedule>(EventScheduleID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFEventSchedule>(EventScheduleID, 1)->ShowGWnd(false);
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFAchievements>(AchievementsID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFAchievements>(AchievementsID, 1)->ShowGWnd(false);
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFMenu>(MainMenuID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFMenu>(MainMenuID, 1)->ShowGWnd(false);
+    }
+    if(g_pCGInterface->m_IRM.GetResObj<CIFSavedLocation>(SavedLocation, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFSavedLocation>(SavedLocation, 1)->ShowGWnd(false);
+        m_Player->ReverseSlot = 9999;
+    }
+    if(g_pCGInterface->m_IRM.GetResObj<CIFCustomMessageBox>(CustomMessageBox, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFCustomMessageBox>(CustomMessageBox, 1)->ShowGWnd(false);
+    }
+    if(g_pCGInterface->m_IRM.GetResObj<CIFSavedLocation>(SavedLocation, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFSavedLocation>(SavedLocation, 1)->ShowGWnd(false);
+    }
+    if (g_pCGInterface->m_IRM.GetResObj<CIFChangelog>(ChangelogID, 1)->IsVisible())
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFChangelog>(ChangelogID, 1)->ShowGWnd(false);
+    }
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x0086e100)(this, msg);
 }
 
 void CNetProcessIn::On300c(CMsgStreamBuffer &msg) {
+    unsigned short type = 0;
+    msg >> type;
+    if(type == 0x0c1b)
+    {
+        unsigned short WorldID;
+        msg >> WorldID;
+
+        std::wstring WorldCode;
+        g_CGlobalDataManager->GetWorldCodeByID(&WorldCode, WorldID);
+        wchar_t buffer[0x100];
+        if (WorldCode.compare(L"INS_BOSS_DUNGEON") == 0)
+        {
+           g_pCGInterface->ShowMessage_Warning(TSM_GETTEXTPTR(L"UIIT_MSG_BOSS_DUNGEON_PARTY_MASTER_JOIN"));
+           g_pCGInterface->ShowLogMessage(DEFAULT_SYSTEM_COLOR, TSM_GETTEXTPTR(L"UIIT_MSG_BOSS_DUNGEON_PARTY_MASTER_JOIN"));
+            msg.FlushRemaining();
+            return;
+        }
+    }
+    msg.m_currentReadBytes = 0;
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x00874ea0)(this, msg);
 }
@@ -313,21 +3185,69 @@ void CNetProcessIn::On34a6(CMsgStreamBuffer &msg) {
 }
 
 void CNetProcessIn::On3020(CMsgStreamBuffer &msg) {
+    if (m_Settings->EnableServerInfoSkill) {
+        CIFMagicStateBoard *test = g_pCGInterface->m_IRM.GetResObj<CIFMagicStateBoard>(22, 1);
+        test->FUN_008048c0(548, 2340, 0, 0, 0, 0, 372179968, 116, 124, 136, 0, 15, 0);
+    }
+
+    if (theApp.GetCurrentProcess() != NULL) {
+        std::n_wstring cn16 = g_pMyPlayerObj->GetCharName().c_str();;
+        std::n_wstring charname = L"[ " + cn16 + L" ]";
+        std::n_wstring tag = L" VSROR_Client";
+        std::n_wstring finaltext = charname + tag;
+        SetWindowText(theApp.GetHWnd(), TO_STRING(finaltext).c_str());
+        SetWindowLong(theApp.GetHWnd(), GWL_STYLE,
+                      GetWindowLong(theApp.GetHWnd(), GWL_STYLE) | WS_MINIMIZEBOX);
+    }
+    if (g_pMyPlayerObj != NULL) {
+        m_dc->UpdateState(IN_GAME);
+    }
+    msg.m_currentReadBytes = 0;
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x008a6dc0)(this, msg);
 }
 
 void CNetProcessIn::OnObjectListBegin(CMsgStreamBuffer &msg) {
+    if(m_Settings->EnableUniqueTarget)
+    {
+        msg >> m_CustomDataManager->g_GroupSpawn_Type;
+        msg.m_currentReadBytes = 0;
+    }
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x008ac0e0)(this, msg);
 }
 
 void CNetProcessIn::OnObjectListData(CMsgStreamBuffer &msg) {
+    if(m_Settings->EnableUniqueTarget)
+    {
+        for (size_t i = 0; i < (msg.m_availableBytesForReading / 4); i++)
+        {
+            DWORD dead_object;
+            msg >> dead_object;
+            m_CustomDataManager->g_despawned_objects.push_back(dead_object);
+        }
+    msg.m_currentReadBytes = 0;
+    }
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x008ac170)(this, msg);
 }
 
+
 void CNetProcessIn::OnObjectListEnd(CMsgStreamBuffer &msg) {
+    if(m_Settings->EnableUniqueTarget)
+    {
+        if (m_CustomDataManager->g_GroupSpawn_Type == 2)
+        {
+            for (std::vector<DWORD>::iterator shit = m_CustomDataManager->g_despawned_objects.begin(); shit != m_CustomDataManager->g_despawned_objects.end(); shit++)
+            {
+                g_pMyPlayerObj->RemoveExistingUniqueData(*shit);
+            }
+            m_CustomDataManager->g_despawned_objects.clear();
+            std::vector<DWORD>(m_CustomDataManager->g_despawned_objects.begin(), m_CustomDataManager->g_despawned_objects.end()).swap(m_CustomDataManager->g_despawned_objects);
+        }
+        msg.m_currentReadBytes = 0;
+    }
+
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x008ac3d0)(this, msg);
 }
@@ -353,6 +3273,21 @@ void CNetProcessIn::OnObjectEntered(CMsgStreamBuffer &msg) {
 }
 
 void CNetProcessIn::OnObjectLeft(CMsgStreamBuffer &msg) {
+    if(m_Settings->EnableUniqueTarget)
+    {
+    if (g_pMyPlayerObj)
+    {
+        DWORD dead_object;
+        msg >> dead_object;
+        g_pMyPlayerObj->RemoveExistingUniqueData(dead_object);
+        /* for(std::map<unsigned __int32, int>::iterator test = my_Maps->EventSuit.begin(); test != my_Maps->EventSuit.end(); test++)
+        {
+            my_Maps->EventSuit.erase(dead_object);
+        }*/
+
+    }
+    msg.m_currentReadBytes = 0;
+    }
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x008a6cc0)(this, msg);
 }
@@ -363,6 +3298,49 @@ void CNetProcessIn::On3076(CMsgStreamBuffer &msg) {
 }
 
 void CNetProcessIn::On30bf(CMsgStreamBuffer &msg) {
+
+
+    unsigned int uniqueId;
+    msg >> uniqueId;
+    if(g_pMyPlayerObj != NULL)
+    {
+        if(g_pMyPlayerObj->GetUniqueId() == uniqueId)
+        {
+            byte updateType, updateState;
+            msg >> updateType >> updateState;
+            if(updateType == 4)
+            {
+                if(updateState == 1) /// ZERK MATE
+                {
+                    for(std::map<int, CCOSDataMgr::CosData*>::iterator it = g_pMyPlayerObj->CCOSDataMgr->CosList.begin();
+                        it != g_pMyPlayerObj->CCOSDataMgr->CosList.end(); ++it)
+                    {
+                        CICCos *pUser = (CICCos*)GetCharacterObjectByID_MAYBE(it->first);
+                        if (pUser != NULL) {
+                            static const CCharacterData *data = NULL;
+                            data = g_CGlobalDataManager->GetCharacter(pUser->GetCommonData()->RefObjectId);
+                            if(data)
+                            {
+                                std::n_wstring NameStr = pUser->GetCommonData()->NameStrID;
+                                if(m_CustomDataManager->m_RefFellowPetSystem[NameStr].SelfSkill_1 > 0 && data->GetData().Level >= m_CustomDataManager->m_RefFellowPetSystem[NameStr].SelfSkill_Active_Level_1)
+                                {
+                                    CMsgStreamBuffer buf(0x169A);
+                                    buf << byte(18);
+                                    buf << it->first;
+                                    buf << data->GetData().Level;
+                                    //printf("%d \n", it->first);
+                                    SendMsg(buf);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    msg.m_currentReadBytes = 0;
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x008a80a0)(this, msg);
 }
@@ -488,6 +3466,83 @@ void CNetProcessIn::On3052(CMsgStreamBuffer &msg) {
 }
 
 void CNetProcessIn::On3057(CMsgStreamBuffer &msg) {
+    if(m_Settings->EnableMacro)
+    {
+        unsigned __int32 uniqueId;
+        msg >> uniqueId;
+        unsigned __int16 updateSource;
+        msg >> updateSource;
+        byte updateFlag;
+        msg >> updateFlag;
+        if (updateFlag == 1)// HP
+        {
+            int CharHp;
+            msg >> CharHp;
+            if (uniqueId == g_pMyPlayerObj->GetUniqueId())
+            {
+                if(! g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->CharacterHpTimerRunning)
+                {
+                    g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->CheckCharacterHP();
+                }
+                if(! g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->CharacterVigorTimerRunning)
+                {
+                    g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->CheckCharacterVigorHP();
+                }
+            }
+        }
+        if (updateFlag == 2)// MP
+        {
+            int CharMp;
+            msg >> CharMp;
+            if (uniqueId == g_pMyPlayerObj->GetUniqueId())
+            {
+                if(!g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->CharacterMpTimerRunning)
+                {
+                    g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->CheckCharacterMP();
+                }
+                if(!g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->CharacterVigorTimerRunning)
+                {
+                    g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->CheckCharacterVigorMP();
+                }
+            }
+        }
+        if(updateFlag == 4)
+        {
+
+            byte effect;
+            msg >> effect;
+            if (uniqueId == g_pMyPlayerObj->GetUniqueId())
+            {
+                if(!g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->CharacterPillTimerRunning)
+                {
+                    g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->CheckCharacterPILL();
+                }
+
+                if(!g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->CharacterPillTimerRunningPuri)
+                {
+                    g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->CheckCharacterPILLPuri();
+                }
+            }
+            if (g_pMyPlayerObj->CCOSDataMgr->CosList.find(uniqueId) !=  g_pMyPlayerObj->CCOSDataMgr->CosList.end())
+            {
+                if(!g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->PetPillTimerRunning)
+                {
+                    g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->CheckPetPILL();
+                }
+            }
+        }
+        if(updateFlag == 5)
+        {
+            if (g_pMyPlayerObj->CCOSDataMgr->CosList.find(uniqueId) !=  g_pMyPlayerObj->CCOSDataMgr->CosList.end())
+            {
+                if(!g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->PetHpTimerRunning)
+                {
+                    g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->CheckPetHP();
+                }
+            }
+        }
+        msg.m_currentReadBytes = 0;
+    }
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x008A9E30)(this, msg);
 }
@@ -541,26 +3596,33 @@ void CNetProcessIn::OnChatReceive(CMsgStreamBuffer &msg) {
     ChatType chatType;
 
     msg >> chatType;
+    //printf("Chat Type: %d\n", chatType);
 
     switch (chatType) {
         case CHAT_All:
         case CHAT_AllGM: {
             msg >> entityId >> messageA;
+         //   printf("Entity ID: %d, MessageA: %s\n", entityId, messageA.c_str());
 
             messageW = acp_n_decode(messageA);
+           // printf("MessageW: %ls\n", messageW.c_str());
 
             CIGIDObject *pObject = GetCharacterObjectByID_MAYBE(entityId);
 
             if (pObject == NULL) {
                 senderW = L"???";
+             //   printf("Sender is unknown.\n");
             } else {
-                if (pObject->IsSame(GFX_RUNTIME_CLASS(CICPlayer)))
+                if (pObject->IsSame(GFX_RUNTIME_CLASS(CICPlayer))) {
+               //     printf("Sender is the same as the current player.\n");
                     return;
+                }
 
                 senderW = pObject->GetName();
+                //printf("SenderW: %ls\n", senderW.c_str());
 
                 if (pObject->IsKindOf(GFX_RUNTIME_CLASS(CICUser))) {
-                    BS_DEBUG("Job type is %d", reinterpret_cast<CICUser *>(pObject)->GetJobType());
+                  //  printf("Job type is %d\n", reinterpret_cast<CICUser *>(pObject)->GetJobType());
 
                     if (reinterpret_cast<CICUser *>(pObject)->GetJobType() != TRIJOB_NOJOB) {
                         senderW.insert(0, L"*");
@@ -572,33 +3634,43 @@ void CNetProcessIn::OnChatReceive(CMsgStreamBuffer &msg) {
 
         default: {
             msg >> senderA >> messageA;
+            //printf("SenderA: %s, MessageA: %s\n", senderA.c_str(), messageA.c_str());
 
             messageW = acp_n_decode(messageA);
             senderW = acp_n_decode(senderA);
 
-            if (senderW == g_pMyPlayerObj->GetCharName())
+            if (senderW == g_pMyPlayerObj->GetCharName()) {
+              //  printf("Message is from myself, ignoring.\n");
                 return;
+            }
 
+//            printf("SenderW: %ls, MessageW: %ls\n", senderW.c_str(), messageW.c_str());
             break;
         }
 
         case CHAT_Party : {
             msg >> senderA >> messageA;
+  //          printf("Party - SenderA: %s, MessageA: %s\n", senderA.c_str(), messageA.c_str());
 
             senderW = acp_n_decode(senderA);
             messageW = acp_n_decode(messageA);
 
-            if (g_pMyPlayerObj->GetName() == senderW)
+            if (g_pMyPlayerObj->GetName() == senderW) {
+    //            printf("Message is from myself, ignoring.\n");
                 return;
+            }
 
             if(g_pMyPlayerObj->GetJobType() != TRIJOB_NOJOB) {
                 senderW.insert(0, L"*");
             }
+
+      //      printf("Party - SenderW: %ls, MessageW: %ls\n", senderW.c_str(), messageW.c_str());
             break;
         }
 
         case CHAT_Global: {
             msg >> senderA >> messageA;
+        //    printf("Global - SenderA: %s, MessageA: %s\n", senderA.c_str(), messageA.c_str());
 
             messageW = acp_n_decode(messageA);
 
@@ -612,11 +3684,13 @@ void CNetProcessIn::OnChatReceive(CMsgStreamBuffer &msg) {
                 bIsFromMyself = true;
             }
 
+          //  printf("Global - SenderW: %ls, MessageW: %ls\n", senderW.c_str(), messageW.c_str());
             break;
         }
 
         case CHAT_Notice: {
             msg >> messageA;
+            //printf("Notice - MessageA: %s\n", messageA.c_str());
             messageW = acp_n_decode(messageA);
             bIsFromMyself = false;
             break;
@@ -624,23 +3698,29 @@ void CNetProcessIn::OnChatReceive(CMsgStreamBuffer &msg) {
 
         case CHAT_Stall: {
             msg >> senderA >> messageA;
+            //printf("Stall - SenderA: %s, MessageA: %s\n", senderA.c_str(), messageA.c_str());
 
             messageW = acp_n_decode(messageA);
             senderW = acp_n_decode(senderA);
 
-            if (g_pMyPlayerObj->GetName() == senderW)
+            if (g_pMyPlayerObj->GetName() == senderW) {
+              //  printf("Message is from myself, ignoring.\n");
                 return;
+            }
 
+            //printf("Stall - SenderW: %ls, MessageW: %ls\n", senderW.c_str(), messageW.c_str());
             break;
         }
 
         case CHAT_NPC: {
             msg >> entityId >> messageA;
+            //printf("NPC - Entity ID: %d, MessageA: %s\n", entityId, messageA.c_str());
 
             CIGIDObject *pObject = GetCharacterObjectByID_MAYBE(entityId);
 
             if (pObject == NULL) {
                 senderW = L"???";
+              //  printf("Sender is unknown.\n");
             } else {
                 if (pObject->IsSame(GFX_RUNTIME_CLASS(CICPlayer))) {
                     senderW = reinterpret_cast<CICPlayer *>(pObject)->GetCharName();
@@ -656,26 +3736,31 @@ void CNetProcessIn::OnChatReceive(CMsgStreamBuffer &msg) {
                 chatType = CHAT_All;
             }
 
+            //printf("NPC - SenderW: %ls, MessageW: %ls\n", senderW.c_str(), messageW.c_str());
             break;
         }
 
         case CHAT_Academy: {
             msg >> senderA >> messageA;
+            //printf("Academy - SenderA: %s, MessageA: %s\n", senderA.c_str(), messageA.c_str());
 
             messageW = acp_n_decode(messageA);
             senderW = acp_n_decode(senderA);
 
-            if (g_pMyPlayerObj->GetCharName() == senderW)
+            if (g_pMyPlayerObj->GetCharName() == senderW) {
+              //  printf("Message is from myself, ignoring.\n");
                 return;
+            }
 
-
+//            printf("Academy - SenderW: %ls, MessageW: %ls\n", senderW.c_str(), messageW.c_str());
+            break;
         }
-
     }
 
-    if (g_pMyPlayerObj == NULL)
+    if (g_pMyPlayerObj == NULL) {
+  //      printf("MyPlayerObj is NULL.\n");
         return;
-
+    }
 
     if (senderW.length() == 0) {
         senderW = acp_n_decode(senderA);
@@ -685,12 +3770,16 @@ void CNetProcessIn::OnChatReceive(CMsgStreamBuffer &msg) {
         messageW = acp_n_decode(messageA);
     }
 
+   /* printf("Final - ChatType: %d, SenderW: %ls, EntityID: %d, MessageW: %ls, FromMyself: %d\n",
+           chatType, senderW.c_str(), entityId, messageW.c_str(), bIsFromMyself);
+*/
     WriteToChatWindow(chatType, senderW, entityId, messageW, bIsFromMyself);
 
 #else
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x00877810)(this, msg);
 #endif
 }
+
 
 void CNetProcessIn::On3091(CMsgStreamBuffer &msg) {
     DEBUG_PRINT_CALL()
@@ -703,6 +3792,11 @@ void CNetProcessIn::On302D(CMsgStreamBuffer &msg) {
 }
 
 void CNetProcessIn::OnB021(CMsgStreamBuffer &msg) {
+    if(g_pCGInterface->m_IRM.GetResObj<CIFMSFPS>(1952, 1) != NULL)
+    {
+        g_pCGInterface->m_IRM.GetResObj<CIFMSFPS>(1952, 1)->OnMovementResponse(msg);
+    }
+    msg.m_currentReadBytes = 0;
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x008A5750)(this, msg);
 }
@@ -738,15 +3832,244 @@ void CNetProcessIn::On3200(CMsgStreamBuffer &msg) {
 }
 
 void CNetProcessIn::OnB070(CMsgStreamBuffer &msg) {
+    /*byte bSuccessFlag;
+    msg >> bSuccessFlag;
+
+    if (g_pMyPlayerObj && bSuccessFlag == 1 )//&& MsgBuffer->m_currentReadBytes >= 20) // i'am just checking static size here, so i guess no any problems may occur while parsing.
+    {
+        byte _type;
+        msg >> _type;
+        byte _reason;
+        msg >> _reason;
+        if (_type == 2)//Attack action
+        {
+            unsigned int SkillID;
+            msg >> SkillID;
+            unsigned int AttackerID;
+            msg >> AttackerID;
+            unsigned int SkillInstanceUniqueID;
+            msg >> SkillInstanceUniqueID;
+            unsigned int TargetID;
+            msg >> TargetID;
+            if (AttackerID > 0)//Attacker ID will never be 0
+            {
+                CICharactor * Attacker = GetCharacterObjectByID_MAYBE(AttackerID);
+
+                if(Attacker)
+                {
+                    printf("%p \n", Attacker);
+                    if(Attacker->IsSame(GFX_RUNTIME_CLASS(CICMonster)))
+                    {
+                        if(Attacker->GetCommonData() != NULL)
+                        {
+                            if(Attacker->GetCommonData()->Rarity == 3 || Attacker->GetCommonData()->Rarity == 8)
+                            {
+                                std::map<int, int>::iterator iter = m_CustomDataManager->UniqueTargetHashmap.find(AttackerID);
+
+                                if(iter != m_CustomDataManager->UniqueTargetHashmap.end())
+                                {
+                                    if(m_CustomDataManager->UniqueTargetHashmap[AttackerID] != TargetID)
+                                    {
+                                        CICPlayer *pUser = g_pMyPlayerObj->GetCICPlayerByUniqueID(m_CustomDataManager->UniqueTargetHashmap[AttackerID]); // Doğru arama
+                                        if (pUser != NULL) { // pUser geçerli mi kontrol et
+                                            DWORD effect = g_CGlobalDataManager->GetEffectIdByName(L"SYSTEM_AGGRO_EFFECT");
+                                            if (effect)
+                                            {
+                                                pUser->RemoveEffect(effect);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        CICPlayer *pUser = g_pMyPlayerObj->GetCICPlayerByUniqueID(TargetID);
+                                        if (pUser != NULL) { // pUser geçerli mi kontrol et
+                                            DWORD effect = g_CGlobalDataManager->GetEffectIdByName(L"SYSTEM_AGGRO_EFFECT");
+                                            if (effect) {
+                                               pUser->MakeEffect(effect);
+
+                                            }
+                                        }
+                                    }
+                                    m_CustomDataManager->UniqueTargetHashmap[AttackerID] = TargetID;
+                                }
+                                else
+                                {
+                                    m_CustomDataManager->UniqueTargetHashmap.insert(std::make_pair(Attacker->GetUniqueId(), TargetID));
+                                    CICPlayer *pUser = g_pMyPlayerObj->GetCICPlayerByUniqueID(TargetID); // Doğru arama
+                                    if (pUser != NULL) { // pUser geçerli mi kontrol et
+                                        DWORD effect = g_CGlobalDataManager->GetEffectIdByName(L"SYSTEM_AGGRO_EFFECT");
+                                        if (effect) {
+                                                pUser->MakeEffect(effect);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+          //  SkillDamageParsing(msg);
+
+        }
+    }
+    msg.m_currentReadBytes = 0;*/
+    if(m_Settings->EnableUniqueTarget)
+    {
+        unsigned __int8 bSuccessFlag;
+        msg >> bSuccessFlag;
+        if (g_pMyPlayerObj && bSuccessFlag == 1 && msg.m_availableBytesForReading >= 20) // i'am just checking static size here, so i guess no any problems may occur while parsing.
+        {
+            unsigned __int8 _type;
+            msg >> _type;
+            unsigned __int8 _reason;
+            msg >> _reason;
+            if (_type == 2)//Attack action
+            {
+                unsigned __int32 skillID;
+                msg >> skillID;
+                unsigned __int32 AttackerID;
+                msg >> AttackerID;
+                unsigned __int32 SkillInstanceUniqueID;
+                msg >> SkillInstanceUniqueID;
+                unsigned __int32 AttackedID;
+                msg >> AttackedID;// MAIN TARGET Unique ID
+                if (AttackerID > 0)//Attacker ID will never be 0
+                {
+                    //well, i'm stressed the one that i've used here,GetCICPlayerByUniqueID this function is nullable
+                    //well, no problems but I firstly need to verify that parsing xD kk
+                    CICPlayer* CICAttacker = g_pMyPlayerObj->GetCICPlayerByUniqueID(AttackerID);
+
+                    DWORD check_shit = *(DWORD*)(CICAttacker);
+                    if (CICAttacker && check_shit == 0xDE26C4) // checking if the unique id is MOB exactly a MOnster you know :D ye but the thing is that those client functions are already crashable
+                    {
+                        static const CCharacterData *m_ObjectData = NULL;
+
+                        m_ObjectData = g_CGlobalDataManager->GetCharacter(CICAttacker->GetCommonData()->RefObjectId);
+
+                        if (m_ObjectData && (m_ObjectData->GetData().Rarity == 3 || m_ObjectData->GetData().Rarity == 8))
+                        {
+                            DWORD effect = g_CGlobalDataManager->GetEffectIdByName(L"SYSTEM_AGGRO_EFFECT");
+                            if(effect)
+                            {
+                                std::map<int, int>::iterator it = m_CustomDataManager->UniqueTargetHashmap.find(AttackerID);
+                                if (it == m_CustomDataManager->UniqueTargetHashmap.end()) // first attack, let the shit begin.
+                                {
+                                    m_CustomDataManager->UniqueTargetHashmap[AttackerID] = AttackedID;//i'am using these maps for unique target, lel this packet is a pain in the ass, i hope you are parsing it correctly xDD
+                                    m_CustomDataManager->UniqueTargetHashmapPlayer[AttackedID] = AttackerID;
+
+                                    CICPlayer* CICAttacked = g_pMyPlayerObj->GetCICPlayerByUniqueID(AttackedID);
+                                    if (CICAttacked)
+                                    {
+                                        CICAttacked->MakeEffect(effect);
+                                    }
+                                }
+                                else
+                                {
+                                    if (it->second != AttackedID) // Attacker is changed, let them switch.
+                                    {
+                                        UINT32 oldTarget = it->second;
+
+                                        CICPlayer* CICOldTarget = g_pMyPlayerObj->GetCICPlayerByUniqueID(oldTarget);
+                                        if (CICOldTarget) CICOldTarget->RemoveEffect(effect);
+
+                                        CICPlayer* CICNewTarget = g_pMyPlayerObj->GetCICPlayerByUniqueID(AttackedID);
+                                        if (CICNewTarget) CICNewTarget->MakeEffect(effect);
+
+
+                                        m_CustomDataManager->UniqueTargetHashmap[AttackerID] = AttackedID;
+                                        m_CustomDataManager->UniqueTargetHashmap[AttackedID] = AttackedID;
+
+                                        m_CustomDataManager->UniqueTargetHashmapPlayer.erase(oldTarget);
+                                    }
+                                    else if (it->second == AttackedID) //attacker is same, check if he still have the effect
+                                    {
+                                        CICPlayer* CICCurrentTarget = g_pMyPlayerObj->GetCICPlayerByUniqueID(AttackedID);
+
+                                        if (CICCurrentTarget)
+                                        {
+                                            if(CICCurrentTarget->GetObjEffect() != effect)
+                                                CICCurrentTarget->MakeEffect(effect);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                //SkillDamageParsing(msg);
+            }
+        }
+        msg.m_currentReadBytes = 0;
+    }
+
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x008A5FD0)(this, msg);
 }
 
 void CNetProcessIn::OnB071(CMsgStreamBuffer &msg) {
+    byte bSuccessFlag;
+    msg >> bSuccessFlag;
+    if (g_pMyPlayerObj && bSuccessFlag == 1 )
+    {
+        DWORD32 SkillID;
+        msg >> SkillID;
+        DWORD32 AttackerID;
+        msg >> AttackerID;
+        //SkillDamageParsing(msg);
+    }
+    msg.m_currentReadBytes = 0;
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x008A4960)(this, msg);
 }
+void CNetProcessIn::SkillDamageParsing(CMsgStreamBuffer& msg)
+{
+    byte hasDamage;
+    msg >> hasDamage;
+    if (hasDamage==1)
+    {
+        byte hitCount ;
+        msg >> hitCount;
+        byte targetCount;
+        msg >> targetCount;
+        for (byte j = 0; j < targetCount; j++)
+        {
+            DWORD32 targetUniqueID;
+            msg >> targetUniqueID;
+            byte dmgEffect ;
+            msg >>dmgEffect;
+            if (( dmgEffect & 0x80 ) != 0 || ( dmgEffect & 0x2 ) != 0 || ( dmgEffect & 0x8 ) != 0)
+                continue;
 
+            // Since there it's not enough flags to check, then this way have to be used
+            byte dmgState ;
+            msg >> dmgState;
+            DWORD32 dmgValue;
+            msg >> dmgValue;
+            if ((dmgState & 32) != 0 )
+            {
+                    CIObject *SelectdObject = GetCharacterObjectByID_MAYBE(targetUniqueID);
+                    if (!strcmp(SelectdObject->GetRuntimeClass()->m_lpszClassName, "CICMonster")) {
+                        CICMonster *SelectdUser = (CICMonster *) SelectdObject;
+                }
+                /*g_pCGInterface->GetCIFSTEffectGUI()->SetIgnoreDamageTime(9);
+                */
+                wchar_t message[1000];
+                swprintf_s(message, L"ignore ????????????? %d",dmgValue);
+                CIFSystemMessage *systemmessage = reinterpret_cast<CIFSystemMessage *>(g_pCGInterface->m_IRM.GetResObj(68, 1));
+                int color = D3DCOLOR_ARGB(255, 255, 0, 0);
+                systemmessage->WriteMessage(0xFF, color, message, 0, 1);
+            }
+
+            byte unkByte01 ;
+            msg >> unkByte01;
+            byte unkByte02 ;
+            msg >> unkByte02;
+            byte unkByte03 ;
+            msg >> unkByte03;
+
+        }
+    }
+}
 void CNetProcessIn::OnB0BD(CMsgStreamBuffer &msg) {
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x008A59E0)(this, msg);
@@ -808,6 +4131,125 @@ void CNetProcessIn::OnB202(CMsgStreamBuffer &msg) {
 }
 
 void CNetProcessIn::OnB034(CMsgStreamBuffer &msg) {
+    if(m_Settings->EnablePickSoxEffect)
+    {
+
+        byte one;
+        byte status;
+        msg >> one >> status;
+        if(status == 6)
+        {
+            byte slot;
+            msg >> slot;
+            if(slot != 254)
+            {
+                int unk;
+                int ItemID;
+                msg >> unk >> ItemID;
+                if(g_CGlobalDataManager->GetItem(ItemID) != NULL)
+                {
+                    if(g_CGlobalDataManager->GetItem(ItemID)->GetData().Rarity == 3 ||
+                       g_CGlobalDataManager->GetItem(ItemID)->GetData().Rarity == 2 ||  g_CGlobalDataManager->GetItem(ItemID)->GetData().Rarity == 6)
+                    {
+                        CIFSoxEffect * m_wheel = g_pCGInterface->m_IRM.GetResObj<CIFSoxEffect>(1600, 1);
+                        m_wheel->UpdateMenuSize();
+                        m_wheel->ShowGWnd(true);
+                        m_wheel->m_itempic->TB_Func_13(g_CGlobalDataManager->GetItem(ItemID)->GetData().AssocFileIcon, 1, 1);
+                        m_wheel->ddjPath = "clientlibrary\\soxeffect\\pickup_rarebox_";
+                        m_wheel->ddjCount = 20;
+                        m_wheel->ddjMinSpeed = 0.03f;
+                        m_wheel->ddjCurrentIndex = 1;
+                        m_wheel->operational = true;
+                    }
+                }
+
+            }
+        }
+        else if(status == 17)
+        {
+            unsigned int PetUniqueID;
+            byte Slot;
+            unsigned int unk;
+            int ItemID;
+            msg >> PetUniqueID >> Slot >> unk >> ItemID;
+
+            if(g_CGlobalDataManager->GetItem(ItemID) != NULL)
+            {
+                if(g_CGlobalDataManager->GetItem(ItemID)->GetData().Rarity == 3 || g_CGlobalDataManager->GetItem(ItemID)->GetData().Rarity == 2)
+                {
+                    CIFSoxEffect * m_wheel = g_pCGInterface->m_IRM.GetResObj<CIFSoxEffect>(1600, 1);
+                    m_wheel->UpdateMenuSize();
+                    m_wheel->ShowGWnd(true);
+                    m_wheel->m_itempic->TB_Func_13(g_CGlobalDataManager->GetItem(ItemID)->GetData().AssocFileIcon, 1, 1);
+                    m_wheel->ddjPath = "clientlibrary\\soxeffect\\pickup_rarebox_";
+                    m_wheel->ddjCount = 20;
+                    m_wheel->ddjMinSpeed = 0.03;
+                    m_wheel->ddjCurrentIndex = 1;
+                    m_wheel->operational = true;
+                }
+            }
+        }
+        ///fix disconetx F10
+        //else  if(status == 0x18) {
+        //    UINT16 usShopGroupId;
+        //    msg >> usShopGroupId;
+        //    BYTE btGroupIndex, btTabIndex, btSlotIndex, btSlotsCount;
+        //    msg >> btGroupIndex;
+        //    msg >> btTabIndex;
+        //    msg >> btSlotIndex;
+        //    msg >> btSlotsCount;
+
+        //    std::vector<BYTE> vSlots;
+
+        //    for(int i = 0; i < btSlotsCount; i++) {
+        //        BYTE btSlot;
+        //        msg >> btSlot;
+        //        vSlots.push_back(btSlot);
+        //    }
+
+        //    UINT16 usQuantity;
+        //    msg >> usQuantity;
+
+        //    CSOItemPackage* pSOItemPackage = g_CGlobalDataManager->GetSOPackageByShopData(usShopGroupId,btGroupIndex, btTabIndex, btSlotIndex);
+        //    if(pSOItemPackage != NULL)
+        //    {
+        //        int nQuantity = pSOItemPackage->GetPackageItemData()->m_vScrapData[0]->m_quantity;
+
+        //        if(nQuantity == 0)
+        //        {
+        //            if(pSOItemPackage && pSOItemPackage->GetSOItem())
+        //            {
+        //                for(int i = 0; i < vSlots.size(); i++)
+        //                {
+        //                    g_pCGInterface->GetMainPopup()->GetInventory()->FakePick(pSOItemPackage->GetSOItem()->m_refObjItemId, vSlots[i],
+        //                                                                             usQuantity > 0 ? usQuantity : 1);
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if(pSOItemPackage && pSOItemPackage->GetSOItem())
+        //            {
+        //                for(int i = 0; i < vSlots.size(); i++)
+        //                {
+        //                    g_pCGInterface->GetMainPopup()->GetInventory()->FakePick(pSOItemPackage->GetSOItem()->m_refObjItemId, vSlots[i],
+        //                                                                             nQuantity > 0 ? nQuantity : 1);
+        //                }
+        //            }
+        //        }
+
+        //        if (g_pCGInterface->GetItemMall()->GetBuyItemCount() > 0) {
+        //            g_pCGInterface->GetItemMall()->SetBuyItemCount(g_pCGInterface->GetItemMall()->GetBuyItemCount() - 1);
+        //        }
+        //        msg.FlushRemaining();
+        //        return;
+        //    }
+
+        //}
+
+        msg.m_currentReadBytes = 0;
+    }
+
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x0087F370)(this, msg);
 }
@@ -1003,6 +4445,91 @@ void CNetProcessIn::OnB06C(CMsgStreamBuffer &msg) {
 }
 
 void CNetProcessIn::On706D(CMsgStreamBuffer &msg) {
+    if(m_Settings->EnableMacro)
+    {
+        unsigned int ReqID, UserJID, PTID,PrimaryMast,SecondaryMast;
+        msg >> ReqID >> UserJID >> PTID >> PrimaryMast >> SecondaryMast;
+        byte JobState, memberInfoFlag;
+        msg >> JobState >> memberInfoFlag;
+
+        int memberInfoJID;
+        msg >> memberInfoJID;
+
+        std::n_string CharName;
+        // unsigned short namelenght;
+        //msg >> namelenght;
+
+        msg >> CharName;
+
+
+        if(g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1) != NULL)
+            {
+                if(g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot != NULL)
+                {
+                    if(g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->Macro_AutoHunt)
+                    {
+                        if(g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->GDR_ACCEPT_JOIN_PT_REQ->GetCheckedState_MAYBE())
+                        {
+                            if(g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoPartyOnlyFromList->GetCheckedState_MAYBE())
+                            {
+                                if(!CharName.empty())
+                                {
+                                    std::n_wstring chars = TO_WSTRING(CharName).c_str();
+                                    if(g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoPartyMemberList.find(chars) !=
+                                       g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoPartyMemberList.end())
+                                    {
+                                        // accept
+                                        CMsgStreamBuffer buf(0x306E);
+                                        buf << ReqID;
+                                        buf << UserJID;
+                                        buf << (byte)1;
+                                        SendMsg(buf);
+                                    }
+                                    else
+                                    {
+                                        // refuse
+                                        CMsgStreamBuffer buf(0x306E);
+                                        buf << ReqID;
+                                        buf << UserJID;
+                                        buf << (byte)0;
+                                        SendMsg(buf);
+                                    }
+                                }
+                                else
+                                {
+                                    // refuse
+                                    CMsgStreamBuffer buf(0x306E);
+                                    buf << ReqID;
+                                    buf << UserJID;
+                                    buf << (byte)0;
+                                    SendMsg(buf);
+                                }
+                            }
+                            else
+                            {
+                                // accept
+                                CMsgStreamBuffer buf(0x306E);
+                                buf << ReqID;
+                                buf << UserJID;
+                                buf << (byte)1;
+                                SendMsg(buf);
+                            }
+                        }
+                        else
+                        {
+                            // refuse
+                            CMsgStreamBuffer buf(0x306E);
+                            buf << ReqID;
+                            buf << UserJID;
+                            buf << (byte)0;
+                            SendMsg(buf);
+                        }
+                    }
+                }
+            }
+
+        msg.m_currentReadBytes = 0;
+    }
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x00884660)(this, msg);
 }
@@ -1018,6 +4545,226 @@ void CNetProcessIn::OnB081(CMsgStreamBuffer &msg) {
 }
 
 void CNetProcessIn::On3080(CMsgStreamBuffer &msg) {
+    if(m_Settings->EnableMacro)
+    {
+        byte Type;
+        msg >> Type;
+
+        if(g_pMyPlayerObj->GetCurrentHp() == 0)
+        {
+            if(g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1) != NULL)
+            {
+                if(g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot != NULL)
+                {
+                    if(g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->Macro_AutoHunt)
+                    {
+                        if(g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoHuntSetting[RETURN_TOWN_SETTING] == eTownSetting::WAIT_FOR_RES) // wait for ress
+                        {
+                            if(Type == 4)
+                            {
+                                CMsgStreamBuffer buf(0x3080);
+                                buf << (byte)1;
+                                buf << (byte)1;
+                                SendMsg(buf);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if(Type == 2)
+            {
+                unsigned int SenderUniqueID;
+                msg >> SenderUniqueID;
+
+                byte PartyType;
+                msg >> PartyType;
+                if(g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1) != NULL)
+                {
+                    if(g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot != NULL)
+                    {
+                        CIFMacroMenuAutoHunt * AutoHuntSlot = g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot;
+                        if(AutoHuntSlot->AutoPartyAcceptCheckBox->GetCheckedState_MAYBE())
+                        {
+                            if(AutoHuntSlot->AutoPartyOnlyFromList->GetCheckedState_MAYBE())
+                            {
+                                CICharactor *pUser = static_cast<CICharactor *>(GetCharacterObjectByID_MAYBE(SenderUniqueID));
+                                if(pUser)
+                                {
+                                    if(pUser->GetJobType() == g_pMyPlayerObj->GetJobType())
+                                    {
+                                        if(AutoHuntSlot->AutoPartyMemberList.find(pUser->GetName())
+                                           != AutoHuntSlot->AutoPartyMemberList.end())
+                                        {
+                                            // 0x4 GDR_PT_EXP_FREE_ITEM_FREECheckBox
+                                            // 0x5 GDR_PT_EXP_AUTO_ITEM_NOCheckBox
+                                            // 0x6 GDR_PT_EXP_FREE_ITEM_AUTO_CHECKBOX
+                                            // 0x7 GDR_PT_EXP_AUTO_ITEM_AUTOCheckBox
+                                            if(PartyType == 0x4)
+                                            {
+                                                if(AutoHuntSlot->GDR_PT_EXP_FREE_ITEM_FREECheckBox->GetCheckedState_MAYBE())
+                                                {
+                                                    CMsgStreamBuffer buf(0x3080); //Accept
+                                                    buf << byte(1);
+                                                    buf << byte(1);
+                                                    SendMsg(buf);
+                                                }
+                                                else
+                                                {
+                                                    CMsgStreamBuffer buf(0x3080); //Accept
+                                                    buf << byte(2);
+                                                    buf << (unsigned short)11276;
+                                                    SendMsg(buf);
+                                                }
+                                            }
+                                            if(PartyType == 0x5)
+                                            {
+                                                if(AutoHuntSlot->GDR_PT_EXP_AUTO_ITEM_NOCheckBox->GetCheckedState_MAYBE())
+                                                {
+                                                    CMsgStreamBuffer buf(0x3080); //Accept
+                                                    buf << byte(1);
+                                                    buf << byte(1);
+                                                    SendMsg(buf);
+                                                }
+                                                else
+                                                {
+                                                    CMsgStreamBuffer buf(0x3080); //Accept
+                                                    buf << byte(2);
+                                                    buf << (unsigned short)11276;
+                                                    SendMsg(buf);
+                                                }
+                                            }
+                                            if(PartyType == 0x6)
+                                            {
+                                                if(AutoHuntSlot->GDR_PT_EXP_FREE_ITEM_AUTO_CHECKBOX->GetCheckedState_MAYBE())
+                                                {
+                                                    CMsgStreamBuffer buf(0x3080); //Accept
+                                                    buf << byte(1);
+                                                    buf << byte(1);
+                                                    SendMsg(buf);
+                                                }
+                                                else
+                                                {
+                                                    CMsgStreamBuffer buf(0x3080); //Accept
+                                                    buf << byte(2);
+                                                    buf << (unsigned short)11276;
+                                                    SendMsg(buf);
+                                                }
+                                            }
+                                            if(PartyType == 0x7)
+                                            {
+                                                if(AutoHuntSlot->GDR_PT_EXP_AUTO_ITEM_AUTOCheckBox->GetCheckedState_MAYBE())
+                                                {
+                                                    CMsgStreamBuffer buf(0x3080); //Accept
+                                                    buf << byte(1);
+                                                    buf << byte(1);
+                                                    SendMsg(buf);
+                                                }
+                                                else
+                                                {
+                                                    CMsgStreamBuffer buf(0x3080); //Accept
+                                                    buf << byte(2);
+                                                    buf << (unsigned short)11276;
+                                                    SendMsg(buf);
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            CMsgStreamBuffer buf(0x3080); //refuse
+                                            buf << byte(2);
+                                            buf << (unsigned short)11276;
+                                            SendMsg(buf);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        CMsgStreamBuffer buf(0x3080); //Accept
+                                        buf << byte(2);
+                                        buf << (unsigned short)11276;
+                                        SendMsg(buf);
+                                    }
+                                }
+
+                            }
+                            else
+                            {
+                                if(PartyType == 0x4)
+                                {
+                                    if(AutoHuntSlot->GDR_PT_EXP_FREE_ITEM_FREECheckBox->GetCheckedState_MAYBE())
+                                    {
+                                        CMsgStreamBuffer buf(0x3080); //Accept
+                                        buf << byte(1);
+                                        buf << byte(1);
+                                        SendMsg(buf);
+                                    }
+                                    else
+                                    {
+                                        CMsgStreamBuffer buf(0x3080); //Accept
+                                        buf << byte(2);
+                                        buf << (unsigned short)11276;
+                                        SendMsg(buf);
+                                    }
+                                }
+                                if(PartyType == 0x5)
+                                {
+                                    if(AutoHuntSlot->GDR_PT_EXP_AUTO_ITEM_NOCheckBox->GetCheckedState_MAYBE())
+                                    {
+                                        CMsgStreamBuffer buf(0x3080); //Accept
+                                        buf << byte(1);
+                                        buf << byte(1);
+                                        SendMsg(buf);
+                                    }
+                                    else
+                                    {
+                                        CMsgStreamBuffer buf(0x3080); //Accept
+                                        buf << byte(2);
+                                        buf << (unsigned short)11276;
+                                        SendMsg(buf);
+                                    }
+                                }
+                                if(PartyType == 0x6)
+                                {
+                                    if(AutoHuntSlot->GDR_PT_EXP_FREE_ITEM_AUTO_CHECKBOX->GetCheckedState_MAYBE())
+                                    {
+                                        CMsgStreamBuffer buf(0x3080); //Accept
+                                        buf << byte(1);
+                                        buf << byte(1);
+                                        SendMsg(buf);
+                                    }
+                                    else
+                                    {
+                                        CMsgStreamBuffer buf(0x3080); //Accept
+                                        buf << byte(2);
+                                        buf << (unsigned short)11276;
+                                        SendMsg(buf);
+                                    }
+                                }
+                                if(PartyType == 0x7)
+                                {
+                                    if(AutoHuntSlot->GDR_PT_EXP_AUTO_ITEM_AUTOCheckBox->GetCheckedState_MAYBE())
+                                    {
+                                        CMsgStreamBuffer buf(0x3080); //Accept
+                                        buf << byte(1);
+                                        buf << byte(1);
+                                        SendMsg(buf);
+                                    }
+                                    else
+                                    {
+                                        CMsgStreamBuffer buf(0x3080); //Accept
+                                        buf << byte(2);
+                                        buf << (unsigned short)11276;
+                                        SendMsg(buf);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        msg.m_currentReadBytes = 0;
+    }
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x0088AA60)(this, msg);
 }
@@ -1381,8 +5128,408 @@ void CNetProcessIn::On30EF(CMsgStreamBuffer &msg) {
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x0088A770)(this, msg);
 }
+std::wstring intToWString(int number) {
+    wchar_t buffer[10];
+    swprintf(buffer, sizeof(buffer) / sizeof(wchar_t), L"%d", number);
+    return std::wstring(buffer);
+}
+void tokenizeLine(const wchar_t* line, std::vector<int>& values) {
+    const wchar_t* token = line;
+    int value;
+    while (swscanf(token, L"%d", &value) == 1) {
+        values.push_back(value);
+        token = std::wcschr(token, L' ');
+        if (token == NULL) break;
+        token++; // Boşluğu atla
+    }
+}
 
 void CNetProcessIn::On3305(CMsgStreamBuffer &msg) {
+    if(m_Settings->EnableMacro)
+    {
+        if (!m_Player->FirstSpawn) {
+            m_Player->FirstSpawn = true;
+            if (g_pMyPlayerObj != NULL) {
+
+                CIFSettings* setting = g_pCGInterface->m_IRM.GetResObj<CIFSettings>(SettingsWndID, 1);
+                char buffersetting[0x200];
+                sprintf(buffersetting, "%s\\Setting\\Client_Extra.txt", theApp.GetWorkingDir());
+
+                FILE *filesettings = fopen(buffersetting, "r");
+                if (filesettings != NULL) {
+                    wchar_t line[512];
+                    while (fgetws(line, sizeof(line) / sizeof(wchar_t), filesettings) != NULL) {
+                        int value = 0;
+                        wchar_t settingName[256] = {0};
+
+                        if (wcsstr(line, L"Fps Window: ") != NULL) {
+                            if (swscanf(line, L"Fps Window: %d", &value) == 1) {
+                                setting->EnableShowFps->SetCheckBoxState(value);
+
+                            }
+                        }
+                        else if (wcsstr(line, L"Infinity Zoom: ") != NULL) {
+                            if (swscanf(line, L"Infinity Zoom: %d", &value) == 1) {
+                                setting->EnableZoom->SetCheckBoxState(value);
+                            }
+                        }
+                        else if (wcsstr(line, L"Always Active Window: ") != NULL) {
+                            if (swscanf(line, L"Always Active Window: %d", &value) == 1) {
+                                setting->EnableActiveWnd->SetCheckBoxState(value);
+                            }
+                        }
+                     /*   else if (wcsstr(line, L"Extend Background Limit: ") != NULL) {
+                            if (swscanf(line, L"Extend Background Limit: %d", &value) == 1) {
+                                setting->BgLimit->SetCheckBoxState(value);
+                            }
+                        }*/
+                    }
+
+                    setting->ClickFPSCheckBox();
+                    fclose(filesettings); // Dosyayı kapat
+                }
+
+
+
+
+                CIFMacroMenu* CustomMacro = g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1);
+                CustomMacro->AutoPotionSlot->ActivateTabPage(0);
+                CustomMacro->AutoSkillSlot->ActivateTabPage(0);
+                CustomMacro->AutoHuntSlot->ActivateTabPage(0);
+                CustomMacro->PickupFilterSlot->ActivateTabPage(0);
+
+                char buffer3[0x200];
+                sprintf(buffer3, "%s\\Setting\\%ls_Macro.txt", theApp.GetWorkingDir(), g_pMyPlayerObj->GetCharName().c_str());
+
+                int MinLevel = 0;
+                int MaxLevel = 0;
+                std::n_wstring Title = std::n_wstring();
+
+                FILE *file3 = fopen(buffer3, "r");
+                if (file3 != NULL) {
+                    wchar_t line[512];
+                    while (fgetws(line, sizeof(line) / sizeof(wchar_t), file3) != NULL) {
+                        int value = 0;
+                        wchar_t settingName[256] = {0};
+
+                        if (wcsstr(line, L"Dont attack the monsters: ") != NULL) {
+                            if (swscanf(line, L"Dont attack the monsters: %d", &value) == 1) {
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->DONT_ATTACK_MONSTERCB->SetCheckBoxState(value);
+                            }
+                        }
+                        else if (wcsstr(line, L"Radius: ") != NULL) {
+                            if (swscanf(line, L"Radius: %d", &value) == 1) {
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoHuntSetting[eAutoHuntSetting::RADUIS_SETTING] = value;
+                            }
+                        }
+                        else if (wcsstr(line, L"Hwan setting: ") != NULL) {
+                            if (swscanf(line, L"Hwan setting: %d", &value) == 1) {
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoHuntSetting[eAutoHuntSetting::ZERK_SETTING] = value;
+                            }
+                        }
+                        else if (wcsstr(line, L"Return town setting: ") != NULL) {
+                            if (swscanf(line, L"Return town setting: %d", &value) == 1) {
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoHuntSetting[eAutoHuntSetting::RETURN_TOWN_SETTING] = value;
+                            }
+                        }
+                        else if (wcsstr(line, L"Back town setting: ") != NULL) {
+                            if (swscanf(line, L"Back town setting: %d", &value) == 1) {
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoHuntSetting[eAutoHuntSetting::BACK_HOUR_SETTING] = value;
+                            }
+                        }
+                        else if (wcsstr(line, L"Repair setting: ") != NULL) {
+                            if (swscanf(line, L"Repair setting: %d", &value) == 1) {
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoHuntSetting[eAutoHuntSetting::REPAIR_SETTING] = value;
+                            }
+                        }
+                        else if (wcsstr(line, L"Back town when potion less: ") != NULL) {
+                            if (swscanf(line, L"Back town when potion less: %d", &value) == 1) {
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoReturnHPMPLessCheckbox->SetCheckBoxState(value);
+                            }
+                        }
+                        else if (wcsstr(line, L"Nasrun setting: ") != NULL) {
+                            if (swscanf(line, L"Nasrun setting: %d", &value) == 1) {
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoUseNasrun->SetCheckBoxState(value);
+                            }
+                        }
+                        else if (wcsstr(line, L"Ignore skill setting: ") != NULL) {
+                            if (swscanf(line, L"Ignore skill setting: %d", &value) == 1) {
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoUseNasrunIgnore->SetCheckBoxState(value);
+                            }
+                        }
+                        else if (wcsstr(line, L"Invite to Party: ") != NULL) {
+                            if (swscanf(line, L"Invite to Party: %d", &value) == 1) {
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoPartyInviteCheckBox->SetCheckBoxState(value);
+                            }
+                        }
+                        else if (wcsstr(line, L"Accept party invite: ") != NULL) {
+                            if (swscanf(line, L"Accept party invite: %d", &value) == 1) {
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoPartyAcceptCheckBox->SetCheckBoxState(value);
+                            }
+                        }
+                        else if (wcsstr(line, L"Only from list: ") != NULL) {
+                            if (swscanf(line, L"Only from list: %d", &value) == 1) {
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoPartyOnlyFromList->SetCheckBoxState(value);
+                            }
+                        }
+                        else if (wcsstr(line, L"Accept join party requests: ") != NULL) {
+                            if (swscanf(line, L"Accept join party requests: %d", &value) == 1) {
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->GDR_ACCEPT_JOIN_PT_REQ->SetCheckBoxState(value);
+                            }
+                        }
+                        else if (wcsstr(line, L"Auto reform party: ") != NULL) {
+                            if (swscanf(line, L"Auto reform party: %d", &value) == 1) {
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->GDR_AUTO_REFORM_PARTY->SetCheckBoxState(value);
+                            }
+                        }
+                        else if (wcsstr(line, L"Resurrect party members:") != NULL) {
+                            if (swscanf(line, L"Resurrect party members: %d", &value) == 1) {
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoResPtMembersCB->SetCheckBoxState(value);
+                            }
+                        }
+                        else if (wcsstr(line, L"Auto reform min level: ") != NULL) {
+                            if (swscanf(line, L"Auto reform min level: %d", &value) == 1) {
+                                MinLevel = value;
+                                if (MinLevel > 0) {
+                                    g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->GDR_AUTO_REFORM_PT_LVL_MIN->SetText(intToWString(MinLevel).c_str());
+                                }
+                            }
+                        }
+                        else if (wcsstr(line, L"Auto reform max level: ") != NULL) {
+                            if (swscanf(line, L"Auto reform max level: %d", &value) == 1) {
+
+                                MaxLevel = value;
+                                if (MaxLevel <= m_Settings->ServerMaxLevel) {
+                                    g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->GDR_AUTO_REFORM_PT_LVL_MAX->SetText(intToWString(MaxLevel).c_str());
+                                }
+                            }
+                        }
+                        else if (wcsstr(line, L"Auto party setting: ") != NULL) {
+                            if (swscanf(line, L"Auto party setting: %d", &value) == 1) {
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->LoadPartyExpItemSetting(value);
+                            }
+                        }
+                        else if (wcsstr(line, L"Auto reform party title: ") != NULL) {
+                            wchar_t *pos = wcsstr(line, L"Auto reform party title: ");
+                            if (pos != NULL) {
+                                Title = pos + wcslen(L"Auto reform party title: ");
+                                if (Title.length() > 50) {
+                                    Title.erase(49);
+                                }
+                                size_t endPos = Title.find_last_not_of(L"\r\n");
+                                if (endPos != std::wstring::npos) {
+                                    Title.erase(endPos + 1);
+                                }
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->GDR_AUTO_REFORM_TITLE->SetText(Title.c_str());
+                            }
+                        }
+                        else if (wcsstr(line, L"Auto party member ") != NULL) {
+                            int memberIndex;
+                            wchar_t memberName[256];
+                            // "Auto party member " ifadesini ve indeksi bul
+                            if (swscanf(line, L"Auto party member %d: %ls", &memberIndex, memberName) == 2) {
+                                // Yeni üyeyi haritaya ekle
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoPartyMemberList.insert(std::make_pair(memberName, L""));
+                            }
+                        }
+
+                    }
+
+
+                    g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->LoadSetting();
+
+                    int i = 0;
+                    for(std::map<std::n_wstring , std::n_wstring>::iterator  it =  g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoPartyMemberList.begin();
+                        it !=  g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->AutoPartyMemberList.end(); it++)
+                    {
+                        i++;
+                        if(i < 7)
+                        {
+                            //g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoHuntSlot->m_PartySlot[i-1]->LoadItems(it->first);
+                        }
+                        else
+                        {
+                            break;
+                        }
+
+                    }
+
+                    fclose(file3); // Dosyayı kapat
+                }
+
+
+
+                char buffer34[0x200];
+                sprintf(buffer34, "%s\\Setting\\%ls_MacroAutoBuffSettings.txt", theApp.GetWorkingDir(), g_pMyPlayerObj->GetCharName().c_str());
+
+
+                FILE *file34 = fopen(buffer34, "r");
+                if (file34 != NULL) {
+                    wchar_t line[256];
+                    while (fgetws(line, sizeof(line) / sizeof(wchar_t), file34) != NULL) {
+                        // ":" karakterine kadar olan kısmı anahtar olarak al
+                        wchar_t* pos = std::wcschr(line, L':');
+                        if (pos != NULL) {
+                            *pos = L'\0'; // ":" karakterini null karakteri ile değiştir
+                            std::n_wstring key(line);
+
+                            // Değerleri ayırıp vektöre ekle
+                            std::vector<int> values;
+                            tokenizeLine(pos + 1, values);
+                            // Anahtar ve değeri eşleştir
+                            g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoSkillSlot->PartyBuffList.insert(std::make_pair(key, values));
+                        }
+                    }
+
+                    fclose(file34); // Dosyayı kapat
+                }
+
+                CIFMacroMenuPickFilter *  PickupFilterSlot = g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->PickupFilterSlot;
+                char buffer35[256];
+                sprintf(buffer35, "%s\\Setting\\%ls_PickupFilter.txt", theApp.GetWorkingDir(), g_pMyPlayerObj->GetCharName().c_str());
+                FILE *file35 = fopen(buffer35, "r");
+                if (file35 != NULL) {
+                    char line[256];
+                    while (fgets(line, sizeof(line), file35)) {
+                        int value;
+                        if (sscanf(line, "Enable Pick Filter: %d", &value) == 1) {
+                            PickupFilterSlot->Macro_PetFilter = value;
+                            if(value)
+                            {
+                                g_pCGInterface->m_IRM.GetResObj<CIFMacro>(MacroID, 1)->PetFilterOnOffBtn();
+                            }
+                        }
+                        else if (sscanf(line, "Pick Via Char: %d", &value) == 1) {
+                            PickupFilterSlot->PickViaCharCheckBox->SetCheckBoxState(value);
+                        }
+                        else if (sscanf(line, "Pick Via Pet: %d", &value) == 1) {
+                            if(PickupFilterSlot->PickViaCharCheckBox->GetCheckedState_MAYBE())
+                            {
+                               PickupFilterSlot->PickViaPetCheckBox->SetCheckBoxState(false);
+                            }
+                            else
+                            {
+                                PickupFilterSlot->PickViaPetCheckBox->SetCheckBoxState(true);
+                            }
+                        } else if (sscanf(line, "Only Rare Equipments: %d", &value) == 1) {
+                           PickupFilterSlot->OnlyRareEquiptsCB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Don't Pick Gold: %d", &value) == 1) {
+                            PickupFilterSlot->DontPickGoldCB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Don't Pick Alchemy Tables: %d", &value) == 1) {
+                            PickupFilterSlot->DontPickAlchemytablesCB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Don't Pick Alchemy Stones: %d", &value) == 1) {
+                            PickupFilterSlot->DontPickAlchemyStonesCB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Don't Pick Elixirs: %d", &value) == 1) {
+                           PickupFilterSlot->DontPickElixirsCB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Don't Pick Arrow: %d", &value) == 1) {
+                            PickupFilterSlot->DontPickArrowCB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Don't Pick Return: %d", &value) == 1) {
+                           PickupFilterSlot->DontPickReturnCB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Don't Pick Trash: %d", &value) == 1) {
+                          PickupFilterSlot->DontPickTrashCB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG1: %d", &value) == 1) {
+                            PickupFilterSlot->PickDg1CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG2: %d", &value) == 1) {
+                            PickupFilterSlot->PickDg2CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG3: %d", &value) == 1) {
+                            PickupFilterSlot->PickDg3CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG4: %d", &value) == 1) {
+                            PickupFilterSlot->PickDg4CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG5: %d", &value) == 1) {
+                            PickupFilterSlot->PickDg5CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG6: %d", &value) == 1) {
+                            PickupFilterSlot->PickDg6CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG7: %d", &value) == 1) {
+                            PickupFilterSlot->PickDg7CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG8: %d", &value) == 1) {
+                           PickupFilterSlot->PickDg8CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG9: %d", &value) == 1) {
+                            PickupFilterSlot->PickDg9CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG10: %d", &value) == 1) {
+                            PickupFilterSlot->PickDg10CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG11: %d", &value) == 1) {
+                            PickupFilterSlot->PickDg11CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG12: %d", &value) == 1) {
+                            PickupFilterSlot->PickDg12CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG13: %d", &value) == 1) {
+                            PickupFilterSlot->PickDg13CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG14: %d", &value) == 1) {
+                            PickupFilterSlot->PickDg14CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG15: %d", &value) == 1) {
+                            PickupFilterSlot->PickDg15CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG16: %d", &value) == 1) {
+                            PickupFilterSlot->PickDg16CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG17: %d", &value) == 1) {
+                            PickupFilterSlot->PickDg17CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Pick DG18: %d", &value) == 1) {
+                            PickupFilterSlot->PickDg18CB->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Don't Pick HP/MP: %d", &value) == 1) {
+                            PickupFilterSlot->DontPickHpMp->SetCheckBoxState(value);
+                        } else if (sscanf(line, "Don't Pick Vigor: %d", &value) == 1) {
+                            PickupFilterSlot->DontPickVigor->SetCheckBoxState(value);
+                        }
+                    }
+                    // Dosyayı kapat
+                    fclose(file35);
+                }
+
+/*
+                char buffer36[0x200];
+                sprintf(buffer36, "%s\\Setting\\%ls_MacroAutoPotion.txt", theApp.GetWorkingDir(), g_pMyPlayerObj->GetCharName().c_str());
+
+                // Dosyayı okuma modunda aç
+                FILE *file36 = fopen(buffer36, "r");
+                if (file36 != NULL) {
+                    wchar_t line[256];
+                    while (fgetws(line, sizeof(line) / sizeof(wchar_t), file36) != NULL) {
+                        wchar_t lineCopy[256];
+                        wcscpy(lineCopy, line);
+
+                        // Yeni satır karakterlerini kaldır
+                        wchar_t* newline = std::wcschr(lineCopy, L'\n');
+                        if (newline != NULL) *newline = L'\0';
+                        wchar_t* carriageReturn = std::wcschr(lineCopy, L'\r');
+                        if (carriageReturn != NULL) *carriageReturn = L'\0';
+
+                        // "Setting" ile başlayan satırları işle
+                        if (std::wcsncmp(lineCopy, L"Setting", 7) == 0) {
+                            wchar_t* pos = std::wcschr(lineCopy, L':');
+                            if (pos != NULL) {
+                                // ":" karakterinden sonraki kısmı oku
+                                pos++; // ":" karakterinden bir sonraki karakter
+                                while (*pos == L' ' || *pos == L'\t') pos++; // Boşlukları atla
+
+                                // Değerler
+                                std::vector<int> values;
+                                tokenizeLine2(pos, values);
+
+                                // Debugging için
+                                std::wcout << L"Processed Line: Values: ";
+                                for (size_t i = 0; i < values.size(); ++i) {
+                                    std::wcout << values[i] << L" ";
+                                }
+                                std::wcout << std::endl;
+
+                        if (values.size() >= 3) {
+
+                            CIFMacroAutoPotionSlot::Macro_AutoPotionData Datas = CIFMacroAutoPotionSlot::Macro_AutoPotionData();
+                            Datas.SlotSeq = values[0];
+                            Datas.CheckStatus = values[1];
+                            Datas.Value = values[2];
+
+                            g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->MyMacroAutoPotionData.insert(std::make_pair(values[0], Datas));
+                        }
+                    }
+                        }
+
+                }
+                    fclose(file36); // Dosyayı kapat
+                }
+                g_pCGInterface->m_IRM.GetResObj<CIFMacroMenu>(MacroMenuID, 1)->AutoPotionSlot->UpdateSlot();*/
+            }
+        }
+        msg.m_currentReadBytes = 0;
+    }
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x0087FDD0)(this, msg);
 }
@@ -1448,11 +5595,130 @@ void CNetProcessIn::OnB157(CMsgStreamBuffer &msg) {
 }
 
 void CNetProcessIn::OnB150(CMsgStreamBuffer &msg) {
+/*    byte succesflagmaybe;
+    byte alchemytypemaybe; // 0x2 plus
+
+    msg >> succesflagmaybe;
+    msg >> alchemytypemaybe;
+
+    if(alchemytypemaybe==0x2)
+    {
+        byte alchemyresult;
+        msg >> alchemyresult; // 0x1 succes 0x0 failed
+        byte itemslot;
+        msg >> itemslot;
+        if(alchemyresult == 0x1)
+        {
+            unsigned int unk;
+            msg >> unk;
+            int ItemID;
+            msg >> ItemID;
+            byte CurrentPlus;
+            msg >> CurrentPlus;
+            if(CurrentPlus > 0)
+            {
+                CMsgStreamBuffer buf(0x169A);
+                buf << byte(16);
+                buf << itemslot << CurrentPlus;
+                SendMsg(buf);
+            }
+        }
+    }
+*/
+    msg.m_currentReadBytes = 0;
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x008729E0)(this, msg);
 }
 
 void CNetProcessIn::OnB151(CMsgStreamBuffer &msg) {
+
+    /*
+      byte success;
+      msg >> success;
+      printf("Success: %d\n", success);
+
+      if (success == 1) {
+          byte unk2;
+          byte unk3;
+          msg >> unk2 >> unk3;
+          printf("Unk2: %d, Unk3: %d\n", unk2, unk3);
+
+          byte ItemSlot;
+          msg >> ItemSlot;
+          printf("ItemSlot: %d\n", ItemSlot);
+
+          int unk4;
+          msg >> unk4;
+          printf("Unk4: %d\n", unk4);
+
+          int ItemID;
+          msg >> ItemID;
+          printf("ItemID: %d\n", ItemID);
+
+          byte Plus;
+          msg >> Plus;
+          printf("Plus: %d\n", Plus);
+
+          unsigned long unk5;
+          msg >> unk5;
+          printf("Unk5: %ld\n", unk5);
+
+          int empty;
+          msg >> empty;
+          printf("empty: %d\n", empty);
+
+          int DurabilityMaybe;
+          msg >> DurabilityMaybe;
+          printf("DurabilityMaybe: %d\n", DurabilityMaybe);
+
+          byte TotalBlueMaybe;
+          msg >> TotalBlueMaybe;
+          printf("TotalBlueMaybe: %d\n", TotalBlueMaybe);
+
+           for (int i = 0; i < TotalBlueMaybe; i++) {
+               int Variance, Variance1;
+               msg >> Variance;
+               msg >> Variance1;
+               printf("Variance: %d, Variance1: %d\n", Variance, Variance1);
+           }
+
+           byte its1;
+           msg >> its1;
+           printf("its1: %d\n", its1);
+
+           byte its2;
+           msg >> its2;
+           printf("its2: %d\n", its2);
+
+           byte its3;
+           msg >> its3;
+           printf("its3: %d\n", its3);
+
+           byte its4;
+           msg >> its4;
+           printf("its4: %d\n", its4);
+
+          msg.m_currentReadBytes = 0;
+          return;
+          }
+      else if(success == 2)
+      {
+          msg.m_currentReadBytes = 0;
+      }
+
+      msg.m_currentReadBytes = 0;
+
+      if(g_pCGInterface->m_IRM.GetResObj<CIFAlchemyMacro>(AlchemyMacro, 1)->IsVisible())
+      {
+
+          else
+          {
+
+          }
+          //printf("%d %d %d %d %d %d %d %ld %d %d %ld %d %d %d %d\n", success, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15);
+          msg.m_currentReadBytes = 0;
+      }*/
+
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x00872CD0)(this, msg);
 }
@@ -1506,4 +5772,5 @@ void CNetProcessIn::On3078(CMsgStreamBuffer &msg) {
     DEBUG_PRINT_CALL()
     reinterpret_cast<void (__thiscall *)(CNetProcessIn *, CMsgStreamBuffer &)>(0x00873140)(this, msg);
 }
+
 

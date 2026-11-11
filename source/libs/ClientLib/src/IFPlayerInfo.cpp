@@ -1,3 +1,6 @@
+#include <CustomData/CustomCICPlayer.h>
+#include <CustomData/CustomSettingManager.h>
+#include <Meo/IFStatReset.h>
 #include "IFPlayerInfo.h"
 #include "CharacterDependentData.h"
 #include "GInterface.h"
@@ -11,18 +14,46 @@ GFX_IMPLEMENT_DYNCREATE_FN(CIFPlayerInfo, CIFWnd)
 enum {
     GDR_PI_BTN_ADDHP = 14,
     GDR_PI_BTN_ADDMP = 15,
+    GDR_BTN_SLOT_CHECKBOX_STR = 1000,
+    GDR_BTN_SLOT_CHECKBOX_INT = 1001
 };
 
 GFX_BEGIN_MESSAGE_MAP(CIFPlayerInfo, CIFWnd)
-ONG_COMMAND(GDR_PI_BTN_ADDHP, &CIFPlayerInfo::OnClick_IncrementStr)
-ONG_COMMAND(GDR_PI_BTN_ADDMP, &CIFPlayerInfo::OnClick_IncrementInt)
+                    ONG_COMMAND(GDR_PI_BTN_ADDHP, &CIFPlayerInfo::OnClick_IncrementStr)
+                    ONG_COMMAND(GDR_PI_BTN_ADDMP, &CIFPlayerInfo::OnClick_IncrementInt)
+                    ONG_COMMAND(GDR_BTN_SLOT_CHECKBOX_STR, &CIFPlayerInfo::OnClick_IncrementStrCheckBox)
+                    ONG_COMMAND(GDR_BTN_SLOT_CHECKBOX_INT, &CIFPlayerInfo::OnClick_IncrementIntCheckBox)
+                    ONG_COMMAND(999, &CIFPlayerInfo::OnStatRecall)
 GFX_END_MESSAGE_MAP()
+
 
 bool CIFPlayerInfo::OnCreate(long ln) {
 
-    m_IRM.LoadFromFile("resinfo\\ifplayerinfo_trijob2.txt");
+    if(!m_Settings->EnableAutoStrInt)
+    {
+        m_IRM.LoadFromFile("resinfo\\ifplayerinfo_trijob2.txt");
+        m_IRM.CreateInterfaceSection("Create", this);
+    }
+    else
+    {
+        m_IRM.LoadFromFile("clientlibrary\\resinfo\\ifplayerinfo_trijob2.txt");
+        m_IRM.CreateInterfaceSection("Create", this);
 
-    m_IRM.CreateInterfaceSection("Create", this);
+        this->m_IRM.GetResObj<CIFCheckBox>(GDR_BTN_SLOT_CHECKBOX_STR, 1)->SetCheckBoxState(false);
+        this->m_IRM.GetResObj<CIFCheckBox>(GDR_BTN_SLOT_CHECKBOX_INT, 1)->SetCheckBoxState(false);
+    }
+
+
+    wnd_rect sz;
+    sz.pos.x = 120;
+    sz.pos.y = 76;
+    sz.size.width = 20;
+    sz.size.height = 20;
+    CIFButton* SilkLabel = (CIFButton*)CGWnd::CreateInstance(this, GFX_RUNTIME_CLASS(CIFButton), sz, 999, 0);
+    SilkLabel->TB_Func_13("interface\\ifcommon\\com_minus_button.ddj",1, 1);
+
+    wnd_pos ss = this->m_IRM.GetResObj(9, 1)->GetPos();
+    SilkLabel->MoveGWnd(ss.x+40, ss.y);
 
 
     m_pGDR_PI_TEXT_LEVEL = m_IRM.GetResObj<CIFStatic>(2, 1);
@@ -90,199 +121,28 @@ bool CIFPlayerInfo::OnCreate(long ln) {
     m_pGDR_PI_TEXT_PARRY_DAT->SetTextFormatted(L"%d",
                                                g_CCharacterDependentData.FUN_00987090().field_16);
 
+    if(m_Settings->ENABLE_NEW_JOB_UI)
+    {
+        wnd_pos y = m_pGDR_PI_JOB_ALIAS->GetPos();
+        m_pGDR_PI_JOB_ALIAS->MoveGWnd(y.x + 32, y.y);
+
+        wnd_pos yx = m_pGDR_PI_JOB_ICON->GetPos();
+        m_pGDR_PI_JOB_ICON->MoveGWnd(yx.x - 40, yx.y - 15);
+
+    }
+
+
     return true;
 }
 
 void CIFPlayerInfo::OnUpdate() {
-    if (((g_pMyPlayerObj != NULL) && (g_pMyPlayerObj->GetMaxHp() == 0)) ||
-        (IsVisible() == 0) ||
-        (g_pMyPlayerObj == NULL)) {
-        return;
-    }
-
-    m_IRM.GetResObj<CIFWnd>(1, 1)->SetText(g_pMyPlayerObj->GetCharName().c_str());
-
-    m_pGDR_PI_TEXT_LEVEL->SetTextFormatted(TSM_GETTEXTPTR(L"UIIT_STT_LV_LEVEL"), g_pMyPlayerObj->GetCurrentLevel());
-
-    m_pGDR_PI_TEXT_CURXP2->SetTextFormatted(L"%I64d", g_pMyPlayerObj->GetCurrentExp());
-
-    m_pGDR_PI_TEXT_NEXTXP2->SetTextFormatted(L"%I64d", g_CGlobalDataManager->GetLevelData(g_pMyPlayerObj->GetCurrentLevel()).m_expC);
-
-    m_pGDR_PI_TEXT_STAT2->SetTextFormatted(L"%d", g_pMyPlayerObj->GetStatPointAvailable());
-
-    if (g_CCharacterDependentData.IsInTrainingCamp()) {
-        int points = g_CCharacterDependentData.FUN_00993120(g_pMyPlayerObj->GetCharName());
-
-        if (points != 0) {
-            m_pGDR_PI_HONOR_DATA->SetTextFormatted(L"%d", points);
-            m_pGDR_PI_TEXT_HONOR_STATIC->ShowGWnd(true);
-        }
-    } else {
-        m_pGDR_PI_HONOR_DATA->SetText(TSM_GETTEXTPTR(L"UIIT_STT_TC_CAMP_NOT_JOIN"));
-        m_pGDR_PI_TEXT_HONOR_STATIC->ShowGWnd(true);
-    }
-
-    m_pGDR_PI_BTN_ADDMP->SetEnabledState(g_pMyPlayerObj->GetStatPointAvailable() != 0);
-    m_pGDR_PI_BTN_ADDHP->SetEnabledState(g_pMyPlayerObj->GetStatPointAvailable() != 0);
-
-    float maxHp = static_cast<float>(g_pMyPlayerObj->GetMaxHp());
-    float currentHp = static_cast<float>(min(g_pMyPlayerObj->FUN_009c7880(), g_pMyPlayerObj->GetMaxHp()));
-    m_pGDR_PI_GAUGE_HPGAUGE->m_valueFg = currentHp / maxHp;
-    m_pGDR_PI_GAUGE_HPGAUGE->m_valueBg = currentHp / maxHp;
-
-    float currentMp = static_cast<float>(min(g_pMyPlayerObj->GetCurrentMp(), g_pMyPlayerObj->GetMaxMp()));
-    float maxMp = static_cast<float>(g_pMyPlayerObj->GetMaxMp());
-    m_pGDR_PI_GAUGE_MPGAUGE->m_valueFg = currentMp / maxMp;
-    m_pGDR_PI_GAUGE_MPGAUGE->m_valueBg = currentMp / maxMp;
-
-    m_pGDR_PI_TEXT_LEVEL->Func_50(TSM_GETTEXTPTR(L"UIIT_STT_LV_LEVEL"), g_pMyPlayerObj->GetCurrentLevel());
-
-    m_pGDR_PI_TEXT_CURXP2->Func_50(L"%I64d", g_pMyPlayerObj->GetCurrentExp());
-
-    m_pGDR_PI_TEXT_NEXTXP2->Func_50(L"%I64d", g_CGlobalDataManager->GetLevelData(g_pMyPlayerObj->GetCurrentLevel()).m_expC);
-
-    m_pGDR_PI_TEXT_STAT2->Func_50(L"%d", g_pMyPlayerObj->GetStatPointAvailable());
-
-    if (g_CCharacterDependentData.IsInTrainingCamp()) {
-        int points = g_CCharacterDependentData.FUN_00993120(g_pMyPlayerObj->GetCharName());
-
-        if (points != 0) {
-            m_pGDR_PI_HONOR_DATA->Func_50(L"%d", points);
-            m_pGDR_PI_TEXT_HONOR_STATIC->ShowGWnd(true);
-        }
-    }
-
-    m_pGDR_PI_TEXT_HP_DAT->Func_50(L"%d / %d",
-                                   min(g_pMyPlayerObj->FUN_009c7880(), g_pMyPlayerObj->GetMaxHp()),
-                                   g_pMyPlayerObj->GetMaxHp());
-
-    m_pGDR_PI_TEXT_MP_DAT->Func_50(L"%d / %d",
-                                   min(g_pMyPlayerObj->GetCurrentMp(), g_pMyPlayerObj->GetMaxMp()),
-                                   g_pMyPlayerObj->GetMaxMp());
-
-
-    m_pGDR_PI_TEXT_STRENGTH_DAT->Func_50(L"%d", g_pMyPlayerObj->GetStrength());
-    m_pGDR_PI_TEXT_INTELLECT_DAT->Func_50(L"%d", g_pMyPlayerObj->GetIntelligence());
-
-
-    m_pGDR_PI_TEXT_PHYATT_DAT->Func_50(L"%d ~ %d",
-                                       g_CCharacterDependentData.FUN_00987090().field_0,
-                                       g_CCharacterDependentData.FUN_00987090().field_4);
-
-    m_pGDR_PI_TEXT_PHYDEF_DAT->Func_50(L"%d",
-                                       g_CCharacterDependentData.FUN_00987090().field_10);
-
+    if(m_Settings->ENABLE_NEW_JOB_UI)
     {
-        int value1 = (g_pMyPlayerObj->GetCurrentLevel() * 2 + g_pMyPlayerObj->GetStrength() + 14) * 100;
-        // was float value2 = ((g_pMyPlayerObj->GetCurrentLevel() - 1) * 7 + 56) * 0.857142865657806;
-        int value2 = (g_pMyPlayerObj->GetCurrentLevel() + 7) * 6;
-
-        // Cap at 120 %
-        int value3 = min(120, value1 / value2);
-
-        m_pGDR_PI_TEXT_PHYBAL_DAT->Func_50(L"%d %%", value3);
+        g_pCGInterface->GetGuiFromList<CIFStatic>(JobIconID)->MoveGWnd(this->GetPos().x + 205, this->GetPos().y + 25);
+        g_pCGInterface->GetGuiFromList<CIFStatic>(JobIconID)->BringToFront();
     }
 
-    m_pGDR_PI_TEXT_HIT_DAT->Func_50(L"%d",
-                                    g_CCharacterDependentData.FUN_00987090().field_14);
-
-    m_pGDR_PI_TEXT_MAGATT_DAT->Func_50(L"%d ~ %d",
-                                       g_CCharacterDependentData.FUN_00987090().field_8,
-                                       g_CCharacterDependentData.FUN_00987090().field_C);
-
-    m_pGDR_PI_TEXT_MAGDEF_DAT->Func_50(L"%d",
-                                       g_CCharacterDependentData.FUN_00987090().field_12);
-
-    {
-        float value1 = g_pMyPlayerObj->GetIntelligence() * 100.0f;
-        float value2 = (g_pMyPlayerObj->GetCurrentLevel() + 7) * 4.0f;
-
-        // Cap at 120 %
-        float value3 = min(120, value1 / value2);
-        m_pGDR_PI_TEXT_MAGBAL_DAT->Func_50(L"%d %%", static_cast<int>(value3));
-    }
-
-    m_pGDR_PI_TEXT_PARRY_DAT->Func_50(L"%d",
-                                      g_CCharacterDependentData.FUN_00987090().field_16);
-
-
-    const std::n_wstring &jobAlias = g_pMyPlayerObj->GetJobAlias();
-
-    if (jobAlias.length() == 0) {
-        m_pGDR_PI_JOB_ALIAS->SetTextFormatted(L"<%s>", TSM_GETTEXT(L"UIIT_STT_NONE"));
-    } else {
-        m_pGDR_PI_JOB_ALIAS->SetText(jobAlias.c_str());
-    }
-
-
-    undefined1 jobType = g_pMyPlayerObj->FUN_009db0d0();
-    if (jobType == 0) {
-        m_pGDR_PI_JOB_ICON->TB_Func_13("", 0, 0);
-        m_pGDR_PI_JOB_TITLE->SetTextFormatted(L"<%s>", TSM_GETTEXTPTR(L"UIIT_STT_NONE"));
-        m_pGDR_PI_JOB_GRADE->SetText(L"");
-        m_pGDR_PI_JOB_EXP_GAUGE->m_valueBg = 0.0f;
-        m_pGDR_PI_JOB_EXP_GAUGE->m_valueFg = 0.0f;
-        m_pGDR_PI_JOB_EXP->SetText(L"0 %");
-    } else {
-        int jobLevel = g_pMyPlayerObj->GetJobLevel();
-        const SLevelData &levelData = g_CGlobalDataManager->GetLevelData(jobLevel);
-
-        const wchar_t *title = NULL;
-        int requiredExp = -1;
-
-        if (jobType == 1) {
-            m_pGDR_PI_JOB_ICON->TB_Func_13("interface\\ifcommon\\com_job_merchant.ddj", 0, 0);
-
-            requiredExp = levelData.m_jobExpTrader;
-
-            if (g_pMyPlayerObj->Func_36().Country == 0) {
-                title = L"UIIT_STT_CLASS_MERCHANT_%d";
-            } else {
-                title = L"UIIT_STT_CLASS_EU_MERCHANT_%d";
-            }
-        } else if (jobType == 2) {
-            m_pGDR_PI_JOB_ICON->TB_Func_13("interface\\ifcommon\\com_job_thief.ddj", 0, 0);
-
-            requiredExp = levelData.m_jobExpRobber;
-
-            if (g_pMyPlayerObj->Func_36().Country == 0) {
-                title = L"UIIT_STT_CLASS_THIEF_%d";
-            } else {
-                title = L"UIIT_STT_CLASS_EU_THIEF_%d";
-            }
-        } else if (jobType == 3) {
-            m_pGDR_PI_JOB_ICON->TB_Func_13("interface\\ifcommon\\com_job_hunter.ddj", 0, 0);
-
-            requiredExp = levelData.m_jobExpHunter;
-
-            if (g_pMyPlayerObj->Func_36().Country == 0) {
-                title = L"UIIT_STT_CLASS_HUNTER_%d";
-            } else {
-                title = L"UIIT_STT_CLASS_EU_HUNTER_%d";
-            }
-        }
-
-        wchar_t buffer[0x100];
-        swprintf(buffer, size(buffer), title, jobLevel);
-        m_pGDR_PI_JOB_TITLE->SetText(TSM_GETTEXTPTR(buffer));
-        m_pGDR_PI_JOB_GRADE->SetTextFormatted(L"%d %s", jobLevel, TSM_GETTEXTPTR(L"UIIT_STT_GRADE"));
-
-        if (requiredExp != -1) {
-            int currentExperience = g_pMyPlayerObj->GetCurrentJobExperiencePoints();
-
-            m_pGDR_PI_JOB_EXP_GAUGE->m_valueFg = static_cast<float>(currentExperience) / static_cast<float>(requiredExp);
-            m_pGDR_PI_JOB_EXP_GAUGE->m_valueBg = m_pGDR_PI_JOB_EXP_GAUGE->m_valueFg;
-
-            m_pGDR_PI_JOB_EXP->SetTextFormatted(L"%d%% (%d)",
-                                                static_cast<int>(static_cast<float>(currentExperience) / static_cast<float>(requiredExp) * 100.0f),
-                                                currentExperience);
-        } else {
-            m_pGDR_PI_JOB_EXP_GAUGE->m_valueFg = 1.0f;
-            m_pGDR_PI_JOB_EXP_GAUGE->m_valueBg = 1.0f;
-
-            m_pGDR_PI_JOB_EXP->SetText(L"100%");
-        }
-    }
+    reinterpret_cast<void (__thiscall *)(CIFPlayerInfo *)>(0x006b8910)(this);
 }
 
 void CIFPlayerInfo::ShowGWnd(bool bVisible) {
@@ -302,4 +162,52 @@ void CIFPlayerInfo::OnClick_IncrementStr() {
 
 void CIFPlayerInfo::OnClick_IncrementInt() {
     g_pCGInterface->RequestStatIncrement(0x4b, 2, 0, 1);
+}
+void CIFPlayerInfo::OnClick_IncrementStrCheckBox(){
+    if(m_IRM.GetResObj<CIFCheckBox>(GDR_BTN_SLOT_CHECKBOX_STR, 1)->GetCheckedState_MAYBE())
+    {
+        g_pCGInterface->CreateCustomMessageBox(1, 0);
+        m_IRM.GetResObj<CIFCheckBox>(GDR_BTN_SLOT_CHECKBOX_STR, 1)->SetCheckBoxState(false);
+    }
+    else if(!m_IRM.GetResObj<CIFCheckBox>(GDR_BTN_SLOT_CHECKBOX_STR, 1)->GetCheckedState_MAYBE())
+    {
+        m_Player->Enabled_AutoStr = false;
+        m_IRM.GetResObj<CIFCheckBox>(GDR_BTN_SLOT_CHECKBOX_STR, 1)->SetCheckBoxState(false);
+    }
+}
+void CIFPlayerInfo::EnableAutoStr()
+{
+    m_Player->Enabled_AutoInt = false;
+    m_IRM.GetResObj<CIFCheckBox>(GDR_BTN_SLOT_CHECKBOX_INT, 1)->SetCheckBoxState(false);
+
+    m_Player->Enabled_AutoStr = true;
+    m_IRM.GetResObj<CIFCheckBox>(GDR_BTN_SLOT_CHECKBOX_STR, 1)->SetCheckBoxState(true);
+
+}
+void CIFPlayerInfo::OnStatRecall()
+{
+    CIFStatReset * p = g_pCGInterface->m_IRM.GetResObj<CIFStatReset>(StatRecallWnd, 1);
+    p->ShowGWnd(true);
+    p->UpdateMenuSize();
+}
+void CIFPlayerInfo::OnClick_IncrementIntCheckBox(){
+    if(m_IRM.GetResObj<CIFCheckBox>(GDR_BTN_SLOT_CHECKBOX_INT, 1)->GetCheckedState_MAYBE())
+    {
+        g_pCGInterface->CreateCustomMessageBox(2, 0);
+        m_IRM.GetResObj<CIFCheckBox>(GDR_BTN_SLOT_CHECKBOX_INT, 1)->SetCheckBoxState(false);
+    }
+    else if(!m_IRM.GetResObj<CIFCheckBox>(GDR_BTN_SLOT_CHECKBOX_INT, 1)->GetCheckedState_MAYBE())
+    {
+        m_Player->Enabled_AutoInt = false;
+        m_IRM.GetResObj<CIFCheckBox>(GDR_BTN_SLOT_CHECKBOX_INT, 1)->SetCheckBoxState(false);
+    }
+}
+void CIFPlayerInfo::EnableAutoInt()
+{
+    m_Player->Enabled_AutoStr = false;
+    m_IRM.GetResObj<CIFCheckBox>(GDR_BTN_SLOT_CHECKBOX_STR, 1)->SetCheckBoxState(false);
+
+    m_Player->Enabled_AutoInt = true;
+    m_IRM.GetResObj<CIFCheckBox>(GDR_BTN_SLOT_CHECKBOX_INT, 1)->SetCheckBoxState(true);
+
 }

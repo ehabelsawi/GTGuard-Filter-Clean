@@ -13,10 +13,19 @@ public:
 
     /// \address 0060b1d0
     bool IsPotionOrPillInQuickslot(int slot);
-
+    void PressButtonAutoPotion();
     /// \address 0060b850
     void UseSlot(int slot);
+    void SaveQuickslotData(int byIndexSot);
+    void UpdateSkillSlot(unsigned int p1, unsigned int p2);
+    void FindAndUpdate(int a1, int a2, int a3);
 
+    void FUN_0060e540(byte p1, byte p2, byte p3, byte p4, byte p5);
+
+    void Fun_0060a940(int byte);
+    void LoadSlots(byte SlotSetq, undefined4 SlotType, undefined4 Data);
+    bool Func_28_IMPL(int a1, int a2, int a3);
+    void GetSlotUseItem(undefined4 Slots);
 public:
     char padx[8];
     CNIFGauge *gauge_skillexp; //0x0350
@@ -38,5 +47,7 @@ BEGIN_FIXTURE()
     END_FIXTURE()
 
     RUN_FIXTURE(CNIFUnderMenuBar)
+
+
 
 };

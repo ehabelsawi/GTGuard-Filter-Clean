@@ -1,9 +1,10 @@
 #pragma once
 
-#include "support/undefined.h"
+#include <ghidra/undefined.h>
 #include "IFStatic.h"
 
 class CIFButton : public CIFStatic {
+GFX_DECLARE_DYNAMIC_EXISTING(CIFButton, 0x00ee9828)
 public:
     /// \address 00655fa0
     void FUN_00655fa0(undefined4 a1);

@@ -1,6 +1,6 @@
 #include "InterfaceDebugger.h"
 
-#include "imgui.h"
+#include <imgui/imgui.h>
 #include <GlobalHelpersThatHaveNoHomeYet.h>
 #include <GFXMainFrame/GWndBase.h>
 #include <GFX3DFunction/DrawingHelpers.h>

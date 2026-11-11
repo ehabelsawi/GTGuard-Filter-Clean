@@ -21,7 +21,7 @@ public:
 
 	void AddKeyframe(float a1, const D3DVECTOR& translation, const D3DXVECTOR4& rotation);
 	void sub_4E6630();
-
+    void AddKeyframeForSelectIdol(float a1, const D3DVECTOR& translation, const D3DXVECTOR4& rotation);
 	virtual ~CCameraWorking()
 	{
 		// TODO: Implement ~CCameraWorking (required for destructing CPSOuterInterface)

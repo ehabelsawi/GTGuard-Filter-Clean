@@ -1,7 +1,7 @@
 #pragma once
 
 #include <BSLib/BSLib.h>
-#include "support/undefined.h"
+#include <ghidra/undefined.h>
 
 #include "CommonData.h"
 
@@ -61,7 +61,8 @@ public:
 
     /// \address 00971210
     const SCharacterData &GetData() const;
-
+    bool IsGrapPet() const;
+    bool IsAttackPet() const;
 private:
     //undefined pad[4];
     SCharacterData m_data;

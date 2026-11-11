@@ -32,13 +32,13 @@ private:
 
     void OnClick_Exit();
 
-private:
+public:
     CIFStatic *m_pTitleText; //0x07B0
     CIFDragableArea *m_pHandleBar; //0x07B4
     CIFCloseButton *m_pCloseBtn; //0x07B8
 private:
 BEGIN_FIXTURE()
-        ENSURE_SIZE(0x7bc)
+        ENSURE_SIZE(1980)
         ENSURE_OFFSET(m_pTitleText, 0x7b0)
         ENSURE_OFFSET(m_pHandleBar, 0x7b4)
         ENSURE_OFFSET(m_pCloseBtn, 0x7b8)

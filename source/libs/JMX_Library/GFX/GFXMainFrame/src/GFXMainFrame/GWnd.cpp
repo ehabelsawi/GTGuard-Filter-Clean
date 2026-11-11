@@ -115,7 +115,10 @@ int CGWnd::GetCurrentEventMsgCtrlId() {
 }
 
 void CGWnd::EraseWindowObj() {
-    reinterpret_cast<void (*)(CGWnd *)>(0x00ba0e40)(this);
+    reinterpret_cast<void(*)(CGWnd *)>(0x00ba0e40)(this);
+}
+BOOL CGWnd::EraseWindowObj2(CGWnd *pGWnd) {
+    return reinterpret_cast<BOOL (*)(CGWnd *, CGWnd *)>(0x00ba0e40)(this, pGWnd);
 }
 
 CGWnd *CGWnd::GetDraggedGWnd() {

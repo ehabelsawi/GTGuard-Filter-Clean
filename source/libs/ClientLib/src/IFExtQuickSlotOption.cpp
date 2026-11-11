@@ -35,10 +35,10 @@ void CIFExtQuickSlotOption::SetCheckBoxState(bool bTrasnpearnt, bool bSlotsLocke
                                              bool bTwoLines) {
     BS_DEBUG_LOW("%s </(Transpearnt %d, SlotsLocked %d, BarLocked %d, TwoLines %d)/>", __FUNCTION__, bTrasnpearnt,
                  bSlotsLocked, bToolBarLocked, bTwoLines)
-    m_IRM.GetResObj<CIFCheckBox>(GDR_EXT_QUICKSLOT_OPT_TRANS_CHECKBOX, 1)->FUN_00656d50(bTrasnpearnt);
-    m_IRM.GetResObj<CIFCheckBox>(GDR_EXT_QUICKSLOT_OPT_LOCK_CHECKBOX, 1)->FUN_00656d50(bSlotsLocked);
-    m_IRM.GetResObj<CIFCheckBox>(GDR_EXT_QUICKSLOT_OPT_FIX_CHECKBOX, 1)->FUN_00656d50(bToolBarLocked);
-    m_IRM.GetResObj<CIFCheckBox>(GDR_EXT_QUICKSLOT_OPT_DOUBLELINE_CHECKBOX, 1)->FUN_00656d50(bTwoLines);
+    m_IRM.GetResObj<CIFCheckBox>(GDR_EXT_QUICKSLOT_OPT_TRANS_CHECKBOX, 1)->SetCheckBoxState(bTrasnpearnt);
+    m_IRM.GetResObj<CIFCheckBox>(GDR_EXT_QUICKSLOT_OPT_LOCK_CHECKBOX, 1)->SetCheckBoxState(bSlotsLocked);
+    m_IRM.GetResObj<CIFCheckBox>(GDR_EXT_QUICKSLOT_OPT_FIX_CHECKBOX, 1)->SetCheckBoxState(bToolBarLocked);
+    m_IRM.GetResObj<CIFCheckBox>(GDR_EXT_QUICKSLOT_OPT_DOUBLELINE_CHECKBOX, 1)->SetCheckBoxState(bTwoLines);
 }
 
 void CIFExtQuickSlotOption::ApplyExtQSSetting() {
@@ -64,6 +64,7 @@ bool CIFExtQuickSlotOption::OnCreate(long ln) {
     m_IRM.LoadFromFile("resinfo\\ifextquickslotoption.txt");
     m_IRM.CreateInterfaceSection("Create", this);
 
+    this->m_IRM.GetResObj(30, 1)->SetText(L"Show Second Bar");
     return true;
 }
 

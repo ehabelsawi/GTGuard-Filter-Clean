@@ -7,9 +7,9 @@ class CIFListCtrl : public CIFWnd, public CLinkedScroll {
     GFX_DECLARE_DYNAMIC_EXISTING(CIFListCtrl, 0x00ee9580)
 public:
     struct SLineOfText {
-    private:
-        char pad_0000[24];//0x0000
-    public:
+        char pad_0000[16]; //0x0000
+        int Index; //0x0010
+        char pad_0014[4]; //0x0014
         CGFontTexture *m_font;//0x0018
     };
 
@@ -49,11 +49,14 @@ public:
     /// \address 00638cd0
     int GetNumberOfItems() const override;
 
-private:
+    CIFListCtrl::SLineOfText* GetTextByIndex(int index);
+
+    void FUN_00638d20(unsigned char p1);
+public:
     char pad_0384[1];      //0x0384
     undefined1 field_0x385;//0x0385
     char m_bHighlighLine;  //0x0386
-    char pad_0387[1];      //0x0387
+    byte BlueWithSelected;      //0x0387
     undefined1 field_0x388;//0x0388
     char pad_0389[19];     //0x0389
 
@@ -79,6 +82,7 @@ private:
 
 
     BEGIN_FIXTURE()
+        ENSURE_SIZE(972)
     ENSURE_OFFSET(field_0x385, 0x385)
     ENSURE_OFFSET(field_0x388, 0x388)
     ENSURE_OFFSET(m_bottomAligned, 0x3a8)
@@ -89,4 +93,5 @@ private:
     END_FIXTURE()
 
     RUN_FIXTURE(CIFListCtrl)
+
 };

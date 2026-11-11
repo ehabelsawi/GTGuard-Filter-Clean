@@ -1,15 +1,34 @@
 #include "EntityExplorer.h"
 
-#include "imgui.h"
+#include <imgui/imgui.h>
 #include <EntityManagerClient.h>
 #include <GFX3DFunction/GFXVideo3d.h>
 #include <Game.h>
 #include <GFX3DFunction/DrawingHelpers.h>
 #include <GInterface.h>
+#include <ICPlayer.h>
 
 using namespace Devkit;
 
 EntityExplorer::EntityExplorer() : BasicWindow("Entity Explorer", false) {}
+D3DXVECTOR3 ConvertToGlobalCoordinates(const uregion& region, const D3DXVECTOR3& localCoords) {
+    float globalX, globalY;
+
+    if (region.single.x == 0) {  // Assuming dungeon
+        globalX = localCoords.x / 10.0f;
+        globalY = localCoords.y / 10.0f;
+    } else {  // World map
+        globalX = (region.single.x - 135) * 192 + localCoords.x / 10.0f;
+        globalY = (region.single.y - 92) * 192 + localCoords.y / 10.0f;
+    }
+
+    return D3DXVECTOR3(globalX, globalY, localCoords.z);  // Assuming Z coordinate remains unchanged
+}
+
+float CalculateDistance(const D3DXVECTOR3& loc1, const D3DXVECTOR3& loc2) {
+    D3DXVECTOR3 delta = loc1 - loc2;
+    return D3DXVec3Length(&delta);
+}
 
 void EntityExplorer::Render() {
 
@@ -24,7 +43,8 @@ void EntityExplorer::Render() {
             {"ID",       40},
             {"Address",  70},
             {"Type",     120},
-            {"Position", 500}
+            {"Position", 500},
+            {"Distance", 50}
     };
 
     ImGui::Columns(IM_ARRAYSIZE(headers), "TableTextureColumns", true);
@@ -61,14 +81,31 @@ void EntityExplorer::Render() {
         uregion region = it->second->GetRegion();
         D3DVECTOR location = it->second->GetLocation();
 
-        ImGui::Text("(%d,%d) (%.2f, %.2f, %.2f)",
+        ImGui::Text("(%d,%d) (%.2f, %.2f, %.2f) Region %d",
                     region.single.x,
                     region.single.y,
                     location.x,
                     location.y,
-                    location.z
+                    location.z, region.r
         );
         ImGui::NextColumn();
+
+        D3DXVECTOR3 locationtarget = it->second->GetLocation();
+        D3DXVECTOR3 locationmine = g_pMyPlayerObj->GetLocation();
+
+// Convert local coordinates to global coordinates
+        D3DXVECTOR3 globalTarget = ConvertToGlobalCoordinates(it->second->GetRegion(), locationtarget);
+        D3DXVECTOR3 globalMine = ConvertToGlobalCoordinates(g_pMyPlayerObj->GetRegion(), locationmine);
+
+// Calculate the distance
+        float distance = CalculateDistance(globalTarget, globalMine);
+
+        ImGui::Text("%.02f m", distance / 10);
+
+
+
+        ImGui::NextColumn();
+
 
         ImGui::Separator();
 

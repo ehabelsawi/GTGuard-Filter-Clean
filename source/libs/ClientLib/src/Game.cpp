@@ -1,3 +1,7 @@
+#include <CustomData/CustomDataManager.h>
+#include <BSLib/multibyte.h>
+#include <GFX3DFunction/RStateMgr.h>
+#include <SimpleViewer/VBDynamic.h>
 #include "Game.h"
 
 // CGame::GetFont(int) .text 00BA5460 00000022 00000000 00000004 R . . . . . .

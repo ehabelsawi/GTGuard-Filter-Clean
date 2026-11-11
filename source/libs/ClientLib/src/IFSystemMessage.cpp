@@ -1,4 +1,34 @@
+#include <GlobalItemLinking/GlobalItemLinking.h>
+#include <GFXMainFrame/Controler.h>
 #include "IFSystemMessage.h"
+#include "IFSlotWithHelp.h"
+#include "GInterface.h"
+
+GFX_IMPLEMENT_DYNAMIC_EXISTING(CIFSystemMessage, 0x00eec268)
+
+bool CIFSystemMessage::OnCreateIMPL(long ln) {
+
+
+    bool b = reinterpret_cast<bool (__thiscall *)(CIFSystemMessage *, long)>(0x007bc150)(this, ln);
+   m_TextBox->SetHightlineLine(true);
+   m_TextBox->sub_638B50(1);
+   m_TextBox->sub_64E380(1);
+   m_TextBox->sub_638C70(1);
+   m_TextBox->sub_638D50(1);
+  // m_TextBox->SetHighlightColor(D3DCOLOR_RGBA(255, 255, 255, 102));
+   m_TextBox->sub_638D40(1);
+
+    return b;
+}
+void CIFSystemMessage::OnUpdateIMPL()
+{
+    reinterpret_cast<void (__thiscall *)(CIFSystemMessage *)>(0x006528a0)(this);
+
+}
+CIFTextBox* CIFSystemMessage::GetTextBox()
+{
+    return m_TextBox;
+}
 
 void CIFSystemMessage::WriteMessage(int a1, D3DCOLOR color, const wchar_t *msg, int a2, int a3) {
     // Redirection to original client code
@@ -30,3 +60,4 @@ bool CIFSystemMessage::IsLogAble(BYTE btLogType) {
             return false;
     }
 }
+

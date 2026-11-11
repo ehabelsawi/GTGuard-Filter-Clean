@@ -82,18 +82,18 @@ bool CIFChatOptionBoard::OnCreate(long ln) {
 
     FILE *file = fopen(buffer, "rb+");
     if (file == NULL) {
-        m_pGDR_COB_CB_FIGHT->FUN_00656d50(false);
+        m_pGDR_COB_CB_FIGHT->SetCheckBoxState(false);
         return true;
     }
 
     char config[5];
     fread_s(&config[0], sizeof(config), 1, 5, file);
 
-    m_pGDR_COB_CB_GAIN->FUN_00656d50(config[0] != 0);
-    m_pGDR_COB_CB_FIGHT->FUN_00656d50(config[1] != 0);
-    m_pGDR_COB_CB_STATUS->FUN_00656d50(config[2] != 0);
-    m_pGDR_COB_CB_PARTY->FUN_00656d50(config[3] != 0);
-    m_pGDR_COB_CB_GAME->FUN_00656d50(config[4] != 0);
+    m_pGDR_COB_CB_GAIN->SetCheckBoxState(config[0] != 0);
+    m_pGDR_COB_CB_FIGHT->SetCheckBoxState(config[1] != 0);
+    m_pGDR_COB_CB_STATUS->SetCheckBoxState(config[2] != 0);
+    m_pGDR_COB_CB_PARTY->SetCheckBoxState(config[3] != 0);
+    m_pGDR_COB_CB_GAME->SetCheckBoxState(config[4] != 0);
 
     fclose(file);
 

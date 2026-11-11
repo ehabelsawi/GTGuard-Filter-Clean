@@ -6,7 +6,8 @@ target_sources(MathHelpers PRIVATE
 target_include_directories(MathHelpers
         PUBLIC
         src/
+        ${DirectX_INCLUDE_DIRS}
 )
 
-target_link_libraries(MathHelpers d3d9 d3dx9)
-
+target_link_libraries(MathHelpers ${DirectX_LIBRARIES})
+target_link_directories(MathHelpers PUBLIC ${DirectX_LIBRARY_PATHS})

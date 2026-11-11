@@ -16,5 +16,6 @@ void CPSilkroad::ErrorMessagePar(const wchar_t *message, char codeletter, int co
 }
 
 void CPSilkroad::ShowMessage(const wchar_t *message, D3DCOLOR color) {
+//    printf("%lu \n", color);
     reinterpret_cast<void(__thiscall*)(CPSilkroad *, const wchar_t*, D3DCOLOR)>(0x008613b0)(this, message, color);
 }

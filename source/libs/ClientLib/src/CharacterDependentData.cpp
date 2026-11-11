@@ -39,7 +39,10 @@ undefined4 CCharacterDependentData::FUN_00992940(std::n_wstring *param_1) {
 const SPartyData &CCharacterDependentData::GetPartyData() const {
     return m_partyData;
 }
-
+int CCharacterDependentData::GetRegisteredPartyID()
+{
+    return MyPartyID;
+}
 const SPartyMemberData &CCharacterDependentData::GetPartyMemberData(int memberId) const {
     return reinterpret_cast<const SPartyMemberData &(__thiscall *) (const CCharacterDependentData *, int)>(0x00992400)(this, memberId);
 }

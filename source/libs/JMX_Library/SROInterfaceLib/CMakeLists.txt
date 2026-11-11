@@ -1,4 +1,4 @@
-add_library(SROInterfaceLIB STATIC)
+add_library(SROInterfaceLIB STATIC src/SRIFLib/NIFWorldMap.cpp src/SRIFLib/NIFEnchantWnd.cpp src/SRIFLib/NIFEnchantWnd.h src/SRIFLib/NIFLattice.h src/SRIFLib/NIFAlchemyWnd.cpp src/SRIFLib/NIFAlchemyWnd.h src/SRIFLib/IFSlotWithHelpEx.cpp)
 
 target_sources(SROInterfaceLIB PRIVATE
         src/SRIFLib/NInterfaceResource.cpp

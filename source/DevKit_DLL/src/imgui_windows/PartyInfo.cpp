@@ -4,7 +4,7 @@
 #include <CharacterDependentData.h>
 #include <GInterface.h>
 #include <IFSystemMessage.h>
-#include "imgui.h"
+#include <imgui/imgui.h>
 
 using namespace Devkit;
 
